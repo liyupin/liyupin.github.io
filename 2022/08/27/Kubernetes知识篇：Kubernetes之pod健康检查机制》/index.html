@@ -1,0 +1,667 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Cper Liu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Kubernetes知识篇-Kubernetes之pod健康检查机制一、Pod生命阶段Pending：正在创建的Pod，但是Pod中的容器还没有完全被创建完成，这其中包含集群为容器创建网络，或者下载镜像的过程Running：Pod内所有的容器都已经被创建，且至少一个容器正在处于运行状态、正在启动状态或者重启状态Successed：Pod中所有容器都执行成功后退出，并且没有处于重启的容器Faild：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://liyupin.github.io/2022/08/27/Kubernetes%E7%9F%A5%E8%AF%86%E7%AF%87%EF%BC%9AKubernetes%E4%B9%8Bpod%E5%81%A5%E5%BA%B7%E6%A3%80%E6%9F%A5%E6%9C%BA%E5%88%B6%E3%80%8B/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Kubernetes知识篇-Kubernetes之pod健康检查机制一、Pod生命阶段Pending：正在创建的Pod，但是Pod中的容器还没有完全被创建完成，这其中包含集群为容器创建网络，或者下载镜像的过程Running：Pod内所有的容器都已经被创建，且至少一个容器正在处于运行状态、正在启动状态或者重启状态Successed：Pod中所有容器都执行成功后退出，并且没有处于重启的容器Faild：">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-08-27T01:46:00.000Z">
+<meta property="article:modified_time" content="2022-06-30T16:16:48.343Z">
+<meta property="article:author" content="Cper Liu">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-08-27 09:46" pubdate>
+          2022年8月27日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          52 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Kubernetes知识篇-Kubernetes之pod健康检查机制"><a href="#Kubernetes知识篇-Kubernetes之pod健康检查机制" class="headerlink" title="Kubernetes知识篇-Kubernetes之pod健康检查机制"></a>Kubernetes知识篇-Kubernetes之pod健康检查机制</h1><h2 id="一、Pod生命阶段"><a href="#一、Pod生命阶段" class="headerlink" title="一、Pod生命阶段"></a>一、Pod生命阶段</h2><p>Pending：正在创建的Pod，但是Pod中的容器还没有完全被创建完成，这其中包含集群为容器创建网络，或者下载镜像的过程<br>Running：Pod内所有的容器都已经被创建，且至少一个容器正在处于运行状态、正在启动状态或者重启状态<br>Successed：Pod中所有容器都执行成功后退出，并且没有处于重启的容器<br>Faild：Pod中所有容器都已退出，但是至少还有一个容器退出时为失败状态<br>Unknow：由于一些原因，Pod的状态无法获取，通常是与Pod通信时错误导致的</p>
+<p>如下图所示：</p>
+<h2 id="二、Pod存活与就绪探针"><a href="#二、Pod存活与就绪探针" class="headerlink" title="二、Pod存活与就绪探针"></a>二、Pod存活与就绪探针</h2><h3 id="2-1、背景"><a href="#2-1、背景" class="headerlink" title="2.1、背景"></a>2.1、背景</h3><p>在Kubernetes中pod是最小的计算单元，而一个Pod由多个容器组成，相当于每个容器就是一个应用，应用在运行期间有可能因为某种原因而挂掉，那么如何监控这些容器的稳定性，保证服务在运行期间不会出现问题，发生问题后自动重启等问题，就成为了重中之重的事情，考虑到这点 kubernetes 推出了活性探针机制。</p>
+<p>有了活性探针机制能够保证程序在运行过程中出现问题而重启，但是在kubernetes实际使用中，我们可能会经常出现这样一种问题。</p>
+<p>比如说，pod显示启动成功，且能访问里面的端口，但是却返回错误信息，还有在滚动更新的时候，总会出现一段时间，Pod 对外提供网络访问，但是访问却发生 404，这两个原因，都是因为 Pod 已经成功启动，但是 Pod 的的容器中应用程序还在启动中导致，考虑到这点 Kubernetes 推出了就绪探针机制。</p>
+<h3 id="2-2、Pod三种探针"><a href="#2-2、Pod三种探针" class="headerlink" title="2.2、Pod三种探针"></a>2.2、Pod三种探针</h3><h4 id="2-2-1、LivenessProbe"><a href="#2-2-1、LivenessProbe" class="headerlink" title="2.2.1、LivenessProbe"></a>2.2.1、LivenessProbe</h4><p>LivenessProbe（存活探针）：用于探测容器是否运行。如果存活探测失败，则 kubelet 会杀死容器，并且容器将受到其重启策略的影响决定是否重启。如果容器不提供存活探针，则默认状态为 Success。</p>
+<h4 id="2-2-2、ReadinessProbe"><a href="#2-2-2、ReadinessProbe" class="headerlink" title="2.2.2、ReadinessProbe"></a>2.2.2、ReadinessProbe</h4><p>ReadinessProbe（就绪探针）：一般用于探测容器内的程序是否健康，容器是否准备好服务请求。如果就绪探测失败，endpoint 将从与 Pod 匹配的所有 Service 的端点中删除该 Pod 的 IP 地址。初始延迟之前的就绪状态默认为 Failure。如果容器不提供就绪探针，则默认状态为 Success。</p>
+<h4 id="2-2-3、startupProbe"><a href="#2-2-3、startupProbe" class="headerlink" title="2.2.3、startupProbe"></a>2.2.3、startupProbe</h4><p>startupProbe（启动探针）: 探测容器中的应用是否已经启动。如果提供了启动探测(startup probe)，则禁用所有其他探测，直到它成功为止。如果启动探测失败，kubelet 将杀死容器，容器服从其重启策略进行重启。如果容器没有提供启动探测，则默认状态为成功 Success。</p>
+<p>可以自定义在 pod 启动时是否执行这些检测，如果不设置，则检测结果均默认为通过，如果设置，则顺序为 startupProbe&gt;readinessProbe&gt;livenessProbe，如果一个yaml中定义了startupProbe探测和livenessProbe或者startupProbe和readinessProbe，则只有startupProbe探测成功后，才执行livenessProbe和readinessProbe探测。</p>
+<h3 id="2-3、Pod三种探测方式"><a href="#2-3、Pod三种探测方式" class="headerlink" title="2.3、Pod三种探测方式"></a>2.3、Pod三种探测方式</h3><p>目前LivenessProbe和ReadinessProbe两种探针都支持下面三种探测方法：<br>1、ExecAction：在容器中执行指定的命令，如果执行成功，退出码为 0 则探测成功。<br>2、TCPSocketAction：通过容器的 IP 地址和端口号执行 TCP 检 查，如果能够建立 TCP 连接，则表明容器健康。<br>3、HTTPGetAction：通过容器的IP地址、端口号及路径调用 HTTP Get方法，如果响应的状态码大于等于200且小于400，则认为容器健康</p>
+<p>Success：表示通过检测<br>Failure：表示未通过检测<br>Unknow：表示检测没有正常进行</p>
+<h3 id="2-4、Pod探针属性"><a href="#2-4、Pod探针属性" class="headerlink" title="2.4、Pod探针属性"></a>2.4、Pod探针属性</h3><p>两种探针有许多字段可选，可以用来更加精确的控制LivenessProbe和ReadinessProbe两种探针的探测。</p>
+<p>initialDelaySeconds：Pod启动后首次进行检查的等待时间，单位“秒”<br>periodSeconds：检查的间隔时间，默认为10s，单位“秒”<br>timeoutSeconds：探针执行检测请求后，等待响应的超时时间，默认为1s，单位“秒”<br>successThreshold：探针检测失败后认为成功的最小连接成功次数，默认为1s，在liveness探针中必须为1s，最小为1s<br>failureThreshold：探测失败的重试次数，重试一定次数后将认为失败，在readiness探针中，Pod会被标记为未就绪，默认3s，最小值1s</p>
+<h3 id="2-5、Pod两种探针的区别"><a href="#2-5、Pod两种探针的区别" class="headerlink" title="2.5、Pod两种探针的区别"></a>2.5、Pod两种探针的区别</h3><p>Pod 的 ReadinessProbe 探针使用方式和 LivenessProbe 探针探测方法一样，也是支持三种，只是一个是用于探测应用的存活，一个是判断是否对外提供流量的条件。</p>
+<p>总的来说 ReadinessProbe 和 LivenessProbe是使用相同探测的方式，只是探测后对Pod的处置方式不同。</p>
+<p>存活性探针LivenessProbe：当检测失败后将容器杀死，并根据Pod的重启策略来决定对应措施<br>就绪性探针ReadinessProbe：当检测失败后，将Pod的IP:Port从对应Service关联的EndPoint地址列表中删除</p>
+<h2 id="三、探针使用示例"><a href="#三、探针使用示例" class="headerlink" title="三、探针使用示例"></a>三、探针使用示例</h2><h3 id="3-1、LivenessProbe探针使用示例"><a href="#3-1、LivenessProbe探针使用示例" class="headerlink" title="3.1、LivenessProbe探针使用示例"></a>3.1、LivenessProbe探针使用示例</h3><h4 id="3-1-1、通过Exec方式做健康检测"><a href="#3-1-1、通过Exec方式做健康检测" class="headerlink" title="3.1.1、通过Exec方式做健康检测"></a>3.1.1、通过Exec方式做健康检测</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs bash">vim liveness-exec.yaml<br><br>apiVersion: v1<br>kind: Pod<br>metadata:<br>  name: liveness-exec<br>  labels:<br>    app: liveness<br>spec:<br>  containers:<br>  - name: liveness<br>    image: busybox<br>    imagePullPolicy: IfNotPresent<br>    args:<br>    - /bin/sh<br>    - -c<br>    - <span class="hljs-built_in">echo</span> ok &gt;  /tmp/healthy; <span class="hljs-built_in">sleep</span> 100; <span class="hljs-built_in">rm</span> -rf /tmp/healthy; <span class="hljs-built_in">sleep</span> 1000<br>    livenessProbe:<br>      initialDelaySeconds: 5 <span class="hljs-comment">#Pod启动后首次进行检查的等待时间</span><br>      periodSeconds: 5 <span class="hljs-comment">#检查的间隔时间</span><br>      <span class="hljs-built_in">exec</span>:<br>        <span class="hljs-built_in">command</span>:<br>        - <span class="hljs-built_in">cat</span><br>        - /tmp/healthy<br></code></pre></td></tr></table></figure>
+
+<p>说明：通过执行 cat &#x2F;tmp&#x2F;healthy 来判断一个容器是否正常运行。在创建 &#x2F;tmp&#x2F;healthy文件100s后将其删除，而LivenessProbe健康检测的初始时间（initialDelaySeconds）为105s，探测结果为fail，将导致kubelet杀掉容器并重启它。</p>
+<p>如下图所示：</p>
+<p>等待一段时间，查看pod重启次数</p>
+<h4 id="3-1-2、通过HTTPGetAction方式做健康探测"><a href="#3-1-2、通过HTTPGetAction方式做健康探测" class="headerlink" title="3.1.2、通过HTTPGetAction方式做健康探测"></a>3.1.2、通过HTTPGetAction方式做健康探测</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs bash">vim liveness-http.yaml<br><br>apiVersion: v1<br>kind: Pod<br>metadata:<br>  name: liveness-http <span class="hljs-comment">#定义pod名称</span><br>  labels:<br>    name: mynginx<br>spec:<br>  restartPolicy: OnFailure <span class="hljs-comment">#定义pod重启策略</span><br>  containers:<br>  - name: nginx<br>    image: nginx<br>    imagePullPolicy: IfNotPresent<br>    ports:<br>    - containerPort: 80<br>    livenessProbe:      <span class="hljs-comment">#定义探测机制</span><br>      httpGet:          <span class="hljs-comment">#探测方式为httpGet</span><br>        scheme: HTTP    <span class="hljs-comment">#指定协议</span><br>        path: /healthy  <span class="hljs-comment">#指定路径下的文件，如果不存在，探测失败</span><br>        port: 80<br>      initialDelaySeconds: 10   <span class="hljs-comment">#当容器运行多久之后开始探测（单位是s）</span><br>      periodSeconds: 5          <span class="hljs-comment">#探测频率（单位s），每隔5秒探测一次</span><br>---<br>apiVersion: v1  <span class="hljs-comment">#关联一个service对象</span><br>kind: Service<br>metadata:<br>  name: web-svc<br>spec:<br>  selector:<br>    name: mynginx<br>  ports:<br>  - protocol: TCP<br>    port: 80<br>    targetPort: 80<br></code></pre></td></tr></table></figure>
+
+<p>如下图所示：</p>
+<h3 id="3-2、ReadinessProbe探针使用示例"><a href="#3-2、ReadinessProbe探针使用示例" class="headerlink" title="3.2、ReadinessProbe探针使用示例"></a>3.2、ReadinessProbe探针使用示例</h3><h4 id="3-2-1、通过Exec方式做健康检测"><a href="#3-2-1、通过Exec方式做健康检测" class="headerlink" title="3.2.1、通过Exec方式做健康检测"></a>3.2.1、通过Exec方式做健康检测</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs bash">vim readiness-exec.yaml<br><br>apiVersion: v1<br>kind: Pod<br>metadata:<br>  name: readiness-exec<br>  labels:<br>    app: readiness<br>spec:<br>  containers:<br>  - name: readiness-exec<br>    image: busybox<br>    imagePullPolicy: IfNotPresent<br>    args:<br>    - /bin/sh<br>    - -c<br>    - <span class="hljs-built_in">echo</span> ok &gt;  /tmp/healthy; <span class="hljs-built_in">sleep</span> 100; <span class="hljs-built_in">rm</span> -rf /tmp/healthy; <span class="hljs-built_in">sleep</span> 600<br>    readinessProbe:<br>      <span class="hljs-built_in">exec</span>:<br>        <span class="hljs-built_in">command</span>:<br>        - <span class="hljs-built_in">cat</span><br>        - /tmp/healthy<br>      initialDelaySeconds: 5<br>      periodSeconds: 5<br></code></pre></td></tr></table></figure>
+
+<p>如下图所示：</p>
+<p>说明：可以看到找不到该文件，表示探测失败，但是readiness机制与liveness机制不同，它并不会重启pod，而是连续探测3次失败后，则将容器设置为不可用的状态。</p>
+<h4 id="3-2-2、通过HTTPGetAction方式做健康探测"><a href="#3-2-2、通过HTTPGetAction方式做健康探测" class="headerlink" title="3.2.2、通过HTTPGetAction方式做健康探测"></a>3.2.2、通过HTTPGetAction方式做健康探测</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs bash">vim readiness-http.yaml<br><br>apiVersion: v1<br>kind: Pod<br>metadata:<br>  name: readiness-http <span class="hljs-comment">#定义pod名称</span><br>  labels:<br>    name: mynginx<br>spec:<br>  restartPolicy: OnFailure <span class="hljs-comment">#定义pod重启策略</span><br>  containers:<br>  - name: nginx<br>    image: nginx<br>    imagePullPolicy: IfNotPresent<br>    ports:<br>    - containerPort: 80<br>    readinessProbe:      <span class="hljs-comment">#定义探测机制</span><br>      httpGet:          <span class="hljs-comment">#探测方式为httpGet</span><br>        scheme: HTTP    <span class="hljs-comment">#指定协议</span><br>        path: /healthy  <span class="hljs-comment">#指定路径下的文件，如果不存在，探测失败</span><br>        port: 80<br>      initialDelaySeconds: 10   <span class="hljs-comment">#当容器运行多久之后开始探测（单位是s）</span><br>      periodSeconds: 5          <span class="hljs-comment">#探测频率（单位s），每隔5秒探测一次</span><br>---<br>apiVersion: v1  <span class="hljs-comment">#关联一个service对象</span><br>kind: Service<br>metadata:<br>  name: web-svc<br>spec:<br>  selector:<br>    name: mynginx<br>  ports:<br>  - protocol: TCP<br>    port: 80<br>    targetPort: 80<br></code></pre></td></tr></table></figure>
+<p>如下图所示：</p>
+<p>说明：查看pod的Events信息，通过探测，可以知道pod是不健康的，且http访问失败。它并不会重启，而是直接将pod设置为不可用的状态。</p>
+<h4 id="3-2-3、通过TCP方式做健康探测"><a href="#3-2-3、通过TCP方式做健康探测" class="headerlink" title="3.2.3、通过TCP方式做健康探测"></a>3.2.3、通过TCP方式做健康探测</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs bash">vim readiness-tcp.yaml <br><br>apiVersion: v1<br>kind: Pod<br>metadata:<br>  name: readiness-tcp<br>  labels:<br>    app: readiness<br>spec:<br>  containers:<br>  - name: goproxy<br>    image: k8s.gcr.io/goproxy:0.1<br>    imagePullPolicy: IfNotPresent<br>    ports:<br>    - containerPort: 8080<br>    readinessProbe:<br>      tcpSocket:<br>        port: 80  <span class="hljs-comment">#这里故意写错端口，为了验证探测失败后pod是否重启</span><br>      initialDelaySeconds: 15<br>      periodSeconds: 20<br></code></pre></td></tr></table></figure>
+
+<p>如下图所示：</p>
+<p>说明：查看pod的Events信息，通过探测，可以知道pod是不健康的，且tcp访问失败。它并不会重启，而是直接将pod设置为不可用的状态。</p>
+<h3 id="3-3、ReadinessProbe-LivenessProbe配合使用示例"><a href="#3-3、ReadinessProbe-LivenessProbe配合使用示例" class="headerlink" title="3.3、ReadinessProbe+LivenessProbe配合使用示例"></a>3.3、ReadinessProbe+LivenessProbe配合使用示例</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><code class="hljs bash">vim liveness-readiness.yaml<br><br>apiVersion: v1<br>kind: Service<br>metadata:<br>  name: rlprobe<br>  labels:<br>    app: rlprobe<br>spec:<br>  <span class="hljs-built_in">type</span>: NodePort<br>  ports:<br>  - name: server<br>    port: 8080<br>    targetPort: 8080<br>    nodePort: 32280<br>  - name: managerment<br>    port: 8081<br>    targetPort: 8081<br>    nodePort: 32281<br>    selector:<br>    app: rlprobe<br>---<br>apiVersion: apps/v1<br>kind: Deployment<br>metadata:<br>  name: rlprobe<br>  labels:<br>    app: rlprobe<br>spec:<br>  replicas: 1<br>  selector:<br>    matchLabels:<br>      app: rlprobe<br>  template:<br>    metadata:<br>      name: rlprobe<br>      labels:<br>        app: rlprobe<br>    spec:<br>      containers:<br>      - name: rl<br>        image: mydlqclub/springboot-helloworld:0.0.1<br>        imagePullPolicy: IfNotPresent<br>        ports:<br>        - name: server<br>          containerPort: 8080<br>        - name: managerment<br>          containerPort: 8081<br>        readinessProbe:<br>          httpGet:<br>            scheme: HTTP<br>            port: 8081<br>            path: /actuator/health<br>          initialDelaySeconds: 20<br>          periodSeconds: 5<br>          timeoutSeconds: 10<br>        livenessProbe:<br>          httpGet:<br>            scheme: HTTP<br>            port: 8081<br>            path: /actuator/health<br>          initialDelaySeconds: 20<br>          periodSeconds: 5<br>          timeoutSeconds: 10<br></code></pre></td></tr></table></figure>
+<p>如下图所示：</p>
+<p>说明：查看pod的Events信息，通过探测，可以知道pod是不健康的，且http访问失败。它会不断重启，而且会将pod设置为不可用的状态，直到重启之后探测成功会将pod状态设置为ready。</p>
+<p>总结：整理不易，如果对你有帮助，可否点赞关注一下？</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/python100day/" class="category-chain-item">python100day</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/python/">#python</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>https://liyupin.github.io/2022/08/27/Kubernetes知识篇：Kubernetes之pod健康检查机制》/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Cper Liu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年8月27日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/08/27/python100day-41/" title="python100day-41  NoSQL入门">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">python100day-41  NoSQL入门</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/08/27/kython100day-40-%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%92%8CHiveSQL/" title="python100day-40 大数据平台和HiveSQL">
+                        <span class="hidden-mobile">python100day-40 大数据平台和HiveSQL</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
