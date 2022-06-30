@@ -238,15 +238,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/07/12/docker%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E7%BC%96%E8%AF%91proto%E6%96%87%E4%BB%B6/" target="_self">
-          docker如何优雅地编译proto文件
+        <a href="/2022/07/01/%E4%BD%BF%E7%94%A8nexus%E6%90%AD%E5%BB%BAnpm%E7%A7%81%E6%9C%8D/" target="_self">
+          使用nexus搭建npm私服
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/12/docker%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E7%BC%96%E8%AF%91proto%E6%96%87%E4%BB%B6/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/01/%E4%BD%BF%E7%94%A8nexus%E6%90%AD%E5%BB%BAnpm%E7%A7%81%E6%9C%8D/" target="_self">
         <div>
-          docker如何优雅地编译proto文件背景grpc协议需要用到protobuf，和微服务开发人员约定好proto之后，需要自行编译，但是又不想装那么多扩展啊插件啊，可以装但是没必要，因为能用docker搞的尽量用docker搞，毕竟用完即走多爽。 文件目录1234myItem    - protos        - demo.proto    - php  demo.proto文件内容参考 1
+          第一步，下载nexus 下载链接： https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;1GOYi2M3nT4Wcy7JEYmnqdA 提取码: a9hf  第二步，解压缩 我下载的是nexus-3.16.1-02-win64.zip这个版本，解压缩后，进入\nexus-3.16.1-02\bin  再次目录下，用cmd命令行执行：nexus.exe &#x2F;run 启动之后默认地址为 localhost:
         </div>
       </a>
 
@@ -254,8 +254,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-12 08:16" pubdate>
-              2022-07-12
+            <time datetime="2022-07-01 02:05" pubdate>
+              2022-07-01
             </time>
           </div>
         
@@ -271,15 +271,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/07/12/docker-heketi/" target="_self">
-          docker-heketi
+        <a href="/2022/07/01/%E4%BD%BF%E7%94%A8docker%E6%90%AD%E5%BB%BAminio%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/" target="_self">
+          使用docker搭建minio集群搭建
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/12/docker-heketi/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/01/%E4%BD%BF%E7%94%A8docker%E6%90%AD%E5%BB%BAminio%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/" target="_self">
         <div>
-          0 wordsPreview  2022&#x2F;07&#x2F;12&#x2F;docker-heketi&#x2F;docker-heketi
+          工作中需要搭建单独的图像服务器，经过在fastDFS和Minio之间选型，最终选择了Minio，因为是Apache的开源项目，而且实现了Amazon S3协议。以下是搭建的过程，以及可能碰到的坑，做一个备忘： 第一步，当然是要在虚拟机上安装好docker以及docker-compose。1、安装docker比较简单，网络上资料太多，但在Yunos7上面还是会碰到selinux的坑——报错“Err
         </div>
       </a>
 
@@ -287,8 +287,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-12 08:13" pubdate>
-              2022-07-12
+            <time datetime="2022-07-01 02:05" pubdate>
+              2022-07-01
             </time>
           </div>
         
@@ -304,15 +304,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/07/12/heketi/" target="_self">
-          gluster-heketi centos7 安装
+        <a href="/2022/07/01/%E4%BD%BF%E7%94%A8docker-compose%E9%83%A8%E7%BD%B2confluence%EF%BC%8C%E8%87%AA%E5%B7%B1%E7%9A%84wiki/" target="_self">
+          使用docker-compose部署confluence，自己的wiki
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/12/heketi/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/01/%E4%BD%BF%E7%94%A8docker-compose%E9%83%A8%E7%BD%B2confluence%EF%BC%8C%E8%87%AA%E5%B7%B1%E7%9A%84wiki/" target="_self">
         <div>
-          gluster-heketi centos7 安装centos环境下gluste安装安装gluster源1yum install -y centos-release-gluster glusterfs-server的依赖1yum install -y epel-release 安装glusterfs-server123yum install -y glusterfs-server  设置glus
+          一、搭建过程1.1 基础准备1.1.1 拉取docker镜像，我们选择的版本是 6.15.1-alpine1234mkdir  .&#x2F;confluencecd .&#x2F;confluencedocker  pull  atlassian&#x2F;confluence-server:6.15.1-alpine123  1.1.2 准备好mysql的驱动，我们使用的mysql版本是5.71234wget  https
         </div>
       </a>
 
@@ -320,48 +320,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-12 08:09" pubdate>
-              2022-07-12
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/centos/">#centos</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/07/12/%E8%AE%B0%E5%BD%95%E5%8E%86%E5%8F%B2/" target="_self">
-          记录历史
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/12/%E8%AE%B0%E5%BD%95%E5%8E%86%E5%8F%B2/" target="_self">
-        <div>
-          2022.07.12天气炎热
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-12 06:11" pubdate>
-              2022-07-12
+            <time datetime="2022-07-01 02:05" pubdate>
+              2022-07-01
             </time>
           </div>
         
@@ -377,15 +337,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/07/11/mysql8-MGR%E6%90%AD%E5%BB%BA/" target="_self">
-          mysql8 MGR搭建
+        <a href="/2022/07/01/%E4%BD%BF%E7%94%A8apt-mirror%E6%90%AD%E5%BB%BAdebian%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93/" target="_self">
+          使用apt-mirror搭建debian本地仓库
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/11/mysql8-MGR%E6%90%AD%E5%BB%BA/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/01/%E4%BD%BF%E7%94%A8apt-mirror%E6%90%AD%E5%BB%BAdebian%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93/" target="_self">
         <div>
-          mysql8 MGR搭建见18.2 Getting Started 1、环境准备   IP 主机名 数据库 端口 server-id 操作系统 备注    192.168.0.22 master1 mysql-8.0.17 3306 1 centos7.6-1810 master   192.168.0.23 master2 mysql-8.0.17 3306 2 centos7.6-1810 s
+          apt-mirror能够将官方镜像下载到本地，并保证目录结构与其一致，但是不能对镜像仓库进行修改。如果想要修改镜像仓库，需要使用reprepro。 1、安装apt-mirror 12345678910111213141516171819202122232425262728# aptitude update# aptitude install -y apt-mirror# dpkg -L apt-m
         </div>
       </a>
 
@@ -393,48 +353,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-11 08:41" pubdate>
-              2022-07-11
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/mysql/">#mysql</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/07/11/git%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/" target="_self">
-          git代理配置
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/11/git%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/" target="_self">
-        <div>
-          git代理配置命令行模式下配置1234git config --global https.proxy http:&#x2F;&#x2F;192.168.25.40:8118git config --global http.proxy http:&#x2F;&#x2F;192.168.25.40:8118 示例： 假设某人在百度工作，公司代理服务器是(proxy.baidu.com)，端口是(8080)，代理配置如下 1、代理服务器需要鉴
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-11 03:52" pubdate>
-              2022-07-11
+            <time datetime="2022-07-01 02:05" pubdate>
+              2022-07-01
             </time>
           </div>
         
@@ -450,15 +370,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/07/11/%E8%BF%90%E7%BB%B4%E5%BF%85%E4%BC%9A%E7%9A%84-Linux-%E5%8E%8B%E7%BC%A9%E7%AE%A1%E7%90%86%E3%80%81%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86%E3%80%81%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/" target="_self">
-          运维必会的 Linux 压缩管理、进程管理、网络管理命令总结
+        <a href="/2022/07/01/%E7%94%9F%E4%BA%A7docker%20run%20%E5%8D%A1%E4%BD%8F%E6%B2%A1%E5%8F%8D%E5%BA%94%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5%E6%80%9D%E8%B7%AF/" target="_self">
+          生产docker run 卡住没反应故障排查思路
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/11/%E8%BF%90%E7%BB%B4%E5%BF%85%E4%BC%9A%E7%9A%84-Linux-%E5%8E%8B%E7%BC%A9%E7%AE%A1%E7%90%86%E3%80%81%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86%E3%80%81%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/01/%E7%94%9F%E4%BA%A7docker%20run%20%E5%8D%A1%E4%BD%8F%E6%B2%A1%E5%8F%8D%E5%BA%94%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5%E6%80%9D%E8%B7%AF/" target="_self">
         <div>
-          一、压缩管理1 bunzip21.1 功能说明.bz2 文件的解压缩程序。 1.2 语法bunzip2 [-fkLsvV][.bz2 压缩文件] 1.3 补充说明bunzip2 可解压缩.bz2 格式的压缩文件。bunzip2 实际上是 bzip2 的符号连接，执行 bunzip2 与 bzip2 -d 的效果相同。 1.4 参数-f 或–force 解压缩时，若输出的文件与现有文件同名时，预设不
+          参考文献：docker run hangs问题排查记录https:&#x2F;&#x2F;www.cnblogs.com&#x2F;edenlong&#x2F;p&#x2F;10972876.html阿里巴巴 Kubernetes 集群问题排查思路和方法https:&#x2F;&#x2F;www.infoq.cn&#x2F;article&#x2F;t_ZQeWjJLGWGT8BmmiU4 1.首先确认docker version一致2.查看&#x2F;var&#x2F;log&amp;#x2
         </div>
       </a>
 
@@ -466,8 +386,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-11 03:17" pubdate>
-              2022-07-11
+            <time datetime="2022-07-01 02:05" pubdate>
+              2022-07-01
             </time>
           </div>
         
@@ -483,15 +403,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/07/11/8511%E5%A4%96%E5%8D%8F%E9%83%A8%E7%BD%B2%E9%83%A8%E7%BD%B2%E4%BF%A1%E6%81%AF/" target="_self">
-          8511外协部署部署信息
+        <a href="/2022/07/01/%E4%BB%80%E4%B9%88%E6%98%AF%E5%BE%AE%E6%9C%8D%E5%8A%A1/" target="_self">
+          什么是微服务
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/11/8511%E5%A4%96%E5%8D%8F%E9%83%A8%E7%BD%B2%E9%83%A8%E7%BD%B2%E4%BF%A1%E6%81%AF/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/01/%E4%BB%80%E4%B9%88%E6%98%AF%E5%BE%AE%E6%9C%8D%E5%8A%A1/" target="_self">
         <div>
-          出差计划日期20220707-0709  行程成都至北京 北京至成都  工作计划1、ecos试用环境部署	   2、授权3个月试用期限 3、简单操作培训  工作内容1、协调用户服务器资源 2、服务器配置检查 3、用户服务器数据备份 4、操作系统部署 5、ecos部署 6、license授权 7、操作培训 8、资料整理
+          微服务是一种架构模式 微服务基本介绍DDD常用概念领域：领域是有范围界限的，也可以说是有边界的 核心域：核心域是业务系统的核心价值 通用子域：所有子域的消费者，提供着通用服务 支撑子域：专注于业务系统的某一重要的业务 ![](C:\Users\liyupi\AppData\Roaming\Typora\typora-user-images\image-20211025105816764.png 微
         </div>
       </a>
 
@@ -499,19 +419,12 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-11 02:35" pubdate>
-              2022-07-11
+            <time datetime="2022-07-01 02:04" pubdate>
+              2022-07-01
             </time>
           </div>
         
         
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/ecos-pro/">#ecos-pro</a>
-            
-          </div>
         
       </div>
     </article>
@@ -523,15 +436,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/07/10/%E6%89%B9%E9%87%8F%E4%BF%AE%E6%94%B9%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%97%B4/" target="_self">
-          批量修改系统时间
+        <a href="/2022/07/01/%E9%BA%92%E9%BA%9F%20kylin%20v10%20OOM%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA/" target="_self">
+          麒麟 kylin v10 OOM内存溢出
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/10/%E6%89%B9%E9%87%8F%E4%BF%AE%E6%94%B9%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%97%B4/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/01/%E9%BA%92%E9%BA%9F%20kylin%20v10%20OOM%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA/" target="_self">
         <div>
-          批量修改系统时间获取当前系统时间123now_time&#x3D;$(date +%F&quot; &quot;%H&quot;:&quot;%M&quot;:&quot;%S)echo $now_time 2022-07-11 00:12:54 修改节点当前系统时间123ansible all -m shell -a &quot;date -s $now_time&quot;
+          问题现象麒麟v10系统不停吃系统内存，最后导致宕机 系统日志还有bfree&#x3D;0 threshod_size&#x3D;75,fs_space_warning&#x3D;1打印 问题原因系统bug 解决方法方法1：升级auditd服务方法2：禁用auditd服务 sudo systemctl stop auditd &amp;&amp; sudo systemctl disable aud
         </div>
       </a>
 
@@ -539,19 +452,12 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-10 23:58" pubdate>
-              2022-07-10
+            <time datetime="2022-07-01 02:04" pubdate>
+              2022-07-01
             </time>
           </div>
         
         
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/linux/">#linux</a>
-            
-          </div>
         
       </div>
     </article>
@@ -563,15 +469,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/07/08/kompose%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/" target="_self">
-          kompose使用教程
+        <a href="/2022/07/01/%E5%91%BD%E4%BB%A4%E8%A1%A5%E5%85%A8/" target="_self">
+          命令补全
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/08/kompose%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/01/%E5%91%BD%E4%BB%A4%E8%A1%A5%E5%85%A8/" target="_self">
         <div>
-          kompose使用教程kompose是一个可以帮助用户把docker-compose的转移到Kubernetes上的工具。把Docker Compose文件并将其转换为Kubernetes资源。 kompose是个非常便利工具，可以从本地Docker开发到使用Kubernetes管理您的应用程序。将Docker Compose格式转换为Kubernetes资源可能并不准确，但在首次在Kuberne
+          source &lt;(kubectl completion bash) source &lt;(helm completion bash)
         </div>
       </a>
 
@@ -579,19 +485,78 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-08 04:00" pubdate>
-              2022-07-08
+            <time datetime="2022-07-01 02:04" pubdate>
+              2022-07-01
             </time>
           </div>
         
         
         
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/k8s/">#k8s</a>
-            
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/07/01/%E5%BC%80%E5%90%AF%E5%8C%BF%E5%90%8D%E7%99%BB%E5%BD%95/" target="_self">
+          修改grafana configmap的配置开启Grafana匿名登录
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/01/%E5%BC%80%E5%90%AF%E5%8C%BF%E5%90%8D%E7%99%BB%E5%BD%95/" target="_self">
+        <div>
+          1kubectl -n venus-plugin edit cm grafana-configmap-conf   12345678910111213141516171819要为匿名用户设置登录，需要在defult.ini &#x2F; grafana.ini文件（Grafana \ conf）中进行这些小配置。修改1. 如果要隐藏登录页面，请执行此配置 [auth] # Set to true to di
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-07-01 02:04" pubdate>
+              2022-07-01
+            </time>
           </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/07/01/%E8%AE%B0%E4%B8%80%E6%AC%A1centos7.2%20%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%BF%AE%E5%A4%8D/" target="_self">
+          记一次centos7.2 文件系统修复
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/01/%E8%AE%B0%E4%B8%80%E6%AC%A1centos7.2%20%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%BF%AE%E5%A4%8D/" target="_self">
+        <div>
+          centos 7 系统恢复 故障描述 启动之后操作系统只能进入到单用户模式 使用U盘进入救援模式进行恢复 选择Troubleshooting 选择Rescue a Centos system 选择1 continue但是选择这个之后就一直卡在这里不动，很奇怪不知道怎么回事 重启系统进入centos 7 单用户模式，于是修改启动项， 按e进入如下界面，原来是ro 编辑ro 为rw imit&amp;#x3D
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-07-01 02:03" pubdate>
+              2022-07-01
+            </time>
+          </div>
+        
+        
         
       </div>
     </article>

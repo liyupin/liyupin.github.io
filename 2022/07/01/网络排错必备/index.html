@@ -1,0 +1,723 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Cper Liu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="为什么还要必备条件？因为这里所讲的网络排错并不仅仅是停留在某一个小小命令的使用上，而是一套系统的方法，如果没有这些条件，难以在项目中灵活运用，所以还是先看看这些基础的条件吧。 1.了解网络通信的基础设备和其对应的OSI层次像交换机、三层交换机、路由器、防火墙这些最基本的网络设备应该要有些了解，尤其是它们对应的OSI层次以及作用，比如普通的二层交换机对应OSI七层模型中的数据链路层，它可以隔绝冲突域">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络排错必备">
+<meta property="og:url" content="https://liyupin.github.io/2022/07/01/%E7%BD%91%E7%BB%9C%E6%8E%92%E9%94%99%E5%BF%85%E5%A4%87/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="为什么还要必备条件？因为这里所讲的网络排错并不仅仅是停留在某一个小小命令的使用上，而是一套系统的方法，如果没有这些条件，难以在项目中灵活运用，所以还是先看看这些基础的条件吧。 1.了解网络通信的基础设备和其对应的OSI层次像交换机、三层交换机、路由器、防火墙这些最基本的网络设备应该要有些了解，尤其是它们对应的OSI层次以及作用，比如普通的二层交换机对应OSI七层模型中的数据链路层，它可以隔绝冲突域">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/ac7ee6298f64ebe35da524c22fc23e7d.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/b55e7f14cec1d0dc0d4268ff6d1fda14.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/905cc6c6ce12b936718c5f680ded6fb2.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/081dfbb5485f3030cebfc8746acfdb4b.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/cafe972bd525c1dc48e0bad272d8f7ae.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/6eeb0c4cea029fff978d861c579d8c12.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/a63d4e30dfa7207a97436528149a8922.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/cbcb01ff28e362d6fc5b31f7cb232760.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/ac1de1a3a022e01b14c066954c29fac8.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/7c28092f32a7e9341ad48d0d447b1583.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/487c32d74f8cf171eb4ce67474e71194.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/ae77d9dca5789c156bdb34616fef52fc.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/8b74ed818808b5c3063bb5ad6b7229fe.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/7ce6606ea145a7c218b7841cf8987e4f.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/3a060df02274c9061b7c0a8454f9cf8a.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/2a0cfafa7e7f3ab7a338e8b5588fa9d7.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/img_convert/096fd699c927ef0877b53b01f74c245e.png">
+<meta property="article:published_time" content="2022-06-30T18:05:43.570Z">
+<meta property="article:modified_time" content="2022-06-30T18:05:43.570Z">
+<meta property="article:author" content="Cper Liu">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/img_convert/ac7ee6298f64ebe35da524c22fc23e7d.png">
+  
+  
+  
+  <title>网络排错必备 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="网络排错必备"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-07-01 02:05" pubdate>
+          2022年7月1日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          29 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">网络排错必备</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>为什么还要必备条件？因为这里所讲的网络排错并不仅仅是停留在某一个小小命令的使用上，而是一套系统的方法，如果没有这些条件，难以在项目中灵活运用，所以还是先看看这些基础的条件吧。</p>
+<h4 id="1-了解网络通信的基础设备和其对应的OSI层次"><a href="#1-了解网络通信的基础设备和其对应的OSI层次" class="headerlink" title="1.了解网络通信的基础设备和其对应的OSI层次"></a>1.了解网络通信的基础设备和其对应的OSI层次</h4><p>像交换机、三层交换机、路由器、防火墙这些最基本的网络设备应该要有些了解，尤其是它们对应的OSI层次以及作用，比如普通的二层交换机对应OSI七层模型中的数据链路层，它可以隔绝冲突域，同时可能通过虚拟局域网技术(VLAN)来隔绝广播域，二层交换机通过二层地址即MAC地址来实现数据帧的转发；再比如路由器，它对应网络层，可以提供路由寻址的功能等等。</p>
+<h4 id="2-了解中小型企业网络的基本架构"><a href="#2-了解中小型企业网络的基本架构" class="headerlink" title="2.了解中小型企业网络的基本架构"></a>2.了解中小型企业网络的基本架构</h4><p>一般中小型企业网络的基本架构都是这样的：接入层–汇聚层–核心层–网络出口。</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/ac7ee6298f64ebe35da524c22fc23e7d.png" srcset="/img/loading.gif" lazyload alt="网络基本架构"></p>
+<p>如果网络环境比较庞大，汇聚层和核心层都会有，像这里的话，一般小型网络，就直接没有汇聚层，不过思想是一样的。</p>
+<p>下面讲的排错其实都是针对用户PC来说明的，事实上，数据中心中的网络排错也是类似的。不管网络环境多么复杂，其实简化下来跟这个都是差不多的。</p>
+<h4 id="3-知道常用的网络排错命令"><a href="#3-知道常用的网络排错命令" class="headerlink" title="3.知道常用的网络排错命令"></a>3.知道常用的网络排错命令</h4><p>如果用户使用的是Windows操作系统，那么下面的这些命令就很重要了：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" srcset="/img/loading.gif" lazyload alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/b55e7f14cec1d0dc0d4268ff6d1fda14.png" srcset="/img/loading.gif" lazyload alt="常见的命令合集"></p>
+<p>这些命令都是网络排错和检查过程中会用到的基础命令。</p>
+<h4 id="4-清楚知道网络排错的一个重要原则"><a href="#4-清楚知道网络排错的一个重要原则" class="headerlink" title="4. 清楚知道网络排错的一个重要原则"></a>4. 清楚知道网络排错的一个重要原则</h4><p>网络排错，不就是要判断网络哪里出了问题，因此，你就必须要知道数据的走向。</p>
+<p>所以这个重要的原则是：关注数据的走向。</p>
+<p>下面讲的网络排错思路其实就是通过追踪数据的走向来一步步缩小网络故障点的，因此，时刻记住这一点非常非常重要！这也是为什么上面需要让你了解中小型企业网络的基本架构了。</p>
+<h3 id="网络排错基本思路"><a href="#网络排错基本思路" class="headerlink" title="网络排错基本思路"></a>网络排错基本思路</h3><p>基本思路如下：</p>
+<p>步骤一：检查物理链路是否有问题</p>
+<p>步骤二：查看本机IP地址、路由、DNS的设置是否有问题</p>
+<p>步骤三：测试网关或路由器的通畅情况。先测网关然后再测路由器，一级一级地测试IP)</p>
+<p>步骤四：测试ping公网ip的通畅情况(平时要记几个外部公网ip）</p>
+<p>步骤五：测试DNS的通畅情况，可以直接ping网站地址</p>
+<h3 id="网络排错详细步骤"><a href="#网络排错详细步骤" class="headerlink" title="网络排错详细步骤"></a>网络排错详细步骤</h3><p>为了更好的讲述网络排错的过程和思路，假设我们有下面的一个网络环境：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" srcset="/img/loading.gif" lazyload alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/905cc6c6ce12b936718c5f680ded6fb2.png" srcset="/img/loading.gif" lazyload alt="网络环境"></p>
+<p>下面，我们就以上面这个网络环境为例子，详细介绍我们的网络排错思路，每一步要怎么做，每一步为什么要这样做以及这样做之后我们可以得到什么信息，都会做一个说明。</p>
+<h4 id="1-检查物理链路是否有问题"><a href="#1-检查物理链路是否有问题" class="headerlink" title="1. 检查物理链路是否有问题"></a>1. 检查物理链路是否有问题</h4><p>这一步是我个人认为在做网络排错时必须要做的第一步！经常会听朋友说，领导的电脑上不了网，需要过去排错，搞了老半天，还发现不了问题，最后在几经绝望之时，竟然发现网线都没接上电脑。这就真的是悲剧了，浪费了很多时间不说，这样的网络排错思路本来就是有错误的，所以清晰的思路很重要，避免走弯路。</p>
+<p>因为也许不是每个人都可以去机房查看交换机的接线情况，所以这一步，我们排查的重点范围就应该放在如下面图所示的地方：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" srcset="/img/loading.gif" lazyload alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/081dfbb5485f3030cebfc8746acfdb4b.png" srcset="/img/loading.gif" lazyload alt="检查物理链路"></p>
+<p>在这一步，下面几点是需要注意排查的：</p>
+<ul>
+<li>确认电脑本身的网卡有没有问题</li>
+<li>确认接的网线有没有问题(检查水晶头、网线的连接、网线的质量)</li>
+<li>本机所连接的交换机(如果可以去机房查看的话)</li>
+</ul>
+<p>如果上面这几点排查都没有问题了，那么就是该网络环境中的其他设备问题了。这一范围的排查相对比较简单，因为只涉及到物理链路的连接问题。</p>
+<h4 id="2-查看本机IP地址、路由、DNS的设置是否有问题"><a href="#2-查看本机IP地址、路由、DNS的设置是否有问题" class="headerlink" title="2. 查看本机IP地址、路由、DNS的设置是否有问题"></a>2. 查看本机IP地址、路由、DNS的设置是否有问题</h4><p>上面第一步，物理链路的排查没有问题了，也就是说，电脑接上网线之后，电脑有反应了，可以识别，但是网络还是不通，来到这一步，就应该先把注意的范围放在电脑的设置上面了。</p>
+<p>这一步，我们关注的重点是：</p>
+<p>(1) IP地址设置</p>
+<p>如果采用的是DHCP自动获取的方法，那么这时候只需要看自己本机的设置上有没有开启自动获取IP的设置以及有没有开启相关的服务;如果用的是静态IP，那么就必须要注意IP地址的填写有没有错(一般网络管理人员给的)、IP地址的子网掩码有没有问题(这很重要，对于静态IP，很多人在这里设置错误)。</p>
+<p>另外值得提的是，给电脑分配ip地址时，最好是绑定mac地址，避免用户私改ip地址，造成ip冲突。</p>
+<p>一般可以用下面的命令查看：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" srcset="/img/loading.gif" lazyload alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/cafe972bd525c1dc48e0bad272d8f7ae.png" srcset="/img/loading.gif" lazyload alt="查看IP配置"></p>
+<p>(2) 路由设置</p>
+<p>对于服务器、PC，一般是指默认网关的设置了;对于路由器本身或三层交换机，那就是静态路由或动态路由的设置问题了。</p>
+<p>(3) DNS设置</p>
+<p>主要是要确保所设置的DNS服务器地址到底有没有提供域名解析服务或者是否出现了故障，你得设置一个正确的DNS服务器地址或可以自动获取。</p>
+<p>在windows上面你可以通过下面的命令查看：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" srcset="/img/loading.gif" lazyload alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/6eeb0c4cea029fff978d861c579d8c12.png" srcset="/img/loading.gif" lazyload alt="查看dns配置"></p>
+<h4 id="3-测试网关或路由器的通畅情况"><a href="#3-测试网关或路由器的通畅情况" class="headerlink" title="3. 测试网关或路由器的通畅情况"></a>3. 测试网关或路由器的通畅情况</h4><p>先测网关然后再测路由器，一级一级地测试。</p>
+<p>在上面的网络环境中，在网络通的情况下，我们在电脑上使用命令tracert -d命令，会得到下面的结果：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" srcset="/img/loading.gif" lazyload alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/a63d4e30dfa7207a97436528149a8922.png" srcset="/img/loading.gif" lazyload alt="测试路由"></p>
+<p>通过这个测试结果，我们可以清楚地知道电脑在访问互联网时，数据的走向情况：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" srcset="/img/loading.gif" lazyload alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/cbcb01ff28e362d6fc5b31f7cb232760.png" srcset="/img/loading.gif" lazyload alt="数据走向"></p>
+<p>根据这个数据走向，我们就可以得到一个重要的思路，就是根据数据走向来检测网络的通畅情况!因此，我们可以分两步：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/ac1de1a3a022e01b14c066954c29fac8.png" srcset="/img/loading.gif" lazyload alt="测试网关"></p>
+<p>(1) 先测试电脑到网关192.168.2.254的通畅情况</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" srcset="/img/loading.gif" lazyload alt="图片"></p>
+<p>我们可以在自己的电脑上自己ping网关的地址，看是否有响应</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" srcset="/img/loading.gif" lazyload alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/7c28092f32a7e9341ad48d0d447b1583.png" srcset="/img/loading.gif" lazyload alt="ping网关"></p>
+<p>一般这样的判断方法是比较快的，但有时候，无论怎样都ping不通，那么则可能有以下的几种情况：</p>
+<ul>
+<li>网关设备做了禁止ping的设置</li>
+<li>网关接口或网关设备出现故障</li>
+</ul>
+<p>对于a，一般很少会在这些设备在做ping的限制操作，实在是没有太大的必要这样做，当然，网络安全等要求十分严格的除外。ping通192.168.2.254网关后，再ping一下172.16.13.1以确认电脑到整个网关设备都没有问题。</p>
+<p>对于ping不通的时候，我个人还建议在电脑上执行如下操作：arp -a ：网关地址和网关的mac地址。</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" srcset="/img/loading.gif" lazyload alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/487c32d74f8cf171eb4ce67474e71194.png" srcset="/img/loading.gif" lazyload alt="查看arp"></p>
+<p>即查看电脑本身有没有获取到网关的MAC的地址，显然，如果没有网关的MAC地址，那也是不可能ping通网关的，在排除了前面电脑设置的问题后，你可以猜测是网关设备出了问题，这时就可以联系网络工程师对网关设备进行测试了。</p>
+<p>(2) 测试到其它路由器的通畅情况</p>
+<p>前面一步没有问题了，也就是电脑到网关通信正常了，再测试网关到出口路由器的通畅情况：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" srcset="/img/loading.gif" lazyload alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/ae77d9dca5789c156bdb34616fef52fc.png" srcset="/img/loading.gif" lazyload alt="出口路由器"></p>
+<p>这里，我们使用tracert -d命令就可以了：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" srcset="/img/loading.gif" lazyload alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/8b74ed818808b5c3063bb5ad6b7229fe.png" srcset="/img/loading.gif" lazyload alt="tracert出口路由器"></p>
+<p>当然，如果发现不通，那么则可能是下面的情况：</p>
+<p>· 网关设备与路由器之间的物理链路问题</p>
+<p>· 网关设备与路由器之间的设置问题，比如路由协议、接口配置之类的</p>
+<p>出现上面的情况，那就是网络工程师的问题了，当然，如果你是网络工程师，应该要马上查看一下设备的状态，看是不是设备哪里出现问题了。</p>
+<p>上面的步骤完成了，假设你的出口路由器设置是没有问题的，比如NAT与默认路由等的设置没有问题，那么我们大致可以知道，内网的一个基本通信是正常的(至少你的电脑和出口路由器的通信没问题)，我们就要看看电脑到底能不能访问互联网了。</p>
+<h3 id="测试ping公网ip的通畅情况"><a href="#测试ping公网ip的通畅情况" class="headerlink" title="测试ping公网ip的通畅情况"></a>测试ping公网ip的通畅情况</h3><p>来到这一步的时候，就说明前面三步是没有问题的，也就是说，本地局域网络的通信是正常的，这时要做的就是判断本地局域网络与外网(公网)之间的通信有没有问题了：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" srcset="/img/loading.gif" lazyload alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/7ce6606ea145a7c218b7841cf8987e4f.png" srcset="/img/loading.gif" lazyload alt="测试公网"></p>
+<p>这里采取的是直接ping公网地址的方法，是为了排除DNS的影响(万一你的DNS设置又有问题)，至于要ping什么样的公网地址，个人建议是，可以ping一些没有禁止ping的公共DNS服务器地址，比如114.114.114.114和8.8.8.8的：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" srcset="/img/loading.gif" lazyload alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/3a060df02274c9061b7c0a8454f9cf8a.png" srcset="/img/loading.gif" lazyload alt="ping dns"></p>
+<p>这样之后，基本上就可以确定网络是没有问题的了。能ping通外网，说明网络是没有问题的，当然，这里并没有提到出口放置防火墙的情况，实际上，思路是一致的，但是，你需要考虑的是，你的访问数据有没有被防火墙给过滤掉，是数据出去的时候过滤了，还是数据回来的时候过滤了？由于还要涉及到防火墙的设置，这里就不再提及了，只是仍要注意这一点就是了。</p>
+<h3 id="测试DNS的通畅情况"><a href="#测试DNS的通畅情况" class="headerlink" title="测试DNS的通畅情况"></a>测试DNS的通畅情况</h3><p>如题，可以直接ping网站地址，看有没有回显IP地址，至于通不通是另外一回事，只要可以回显IP地址，那么DNS就没有问题了，不过这里仍然要说一下nslookup这个命令，这是一个非常好用的命令，我平常自己在网络排错时，基本上都会用到：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" srcset="/img/loading.gif" lazyload alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/2a0cfafa7e7f3ab7a338e8b5588fa9d7.png" srcset="/img/loading.gif" lazyload alt="dns排查命令"></p>
+<p>当然也可以像下面这样使用：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" srcset="/img/loading.gif" lazyload alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/096fd699c927ef0877b53b01f74c245e.png" srcset="/img/loading.gif" lazyload alt="dns排查命令"></p>
+<p>使用nslookup命令，作用有二：</p>
+<ul>
+<li>帮你测试你设置的DNS服务器有没有问题</li>
+<li>在不考虑DNS服务器是否智能的前提下，你可以根据回显IP地址速度的快慢来大致判断DNS服务器的优劣情况</li>
+</ul>
+<p>所以可以充分利用nslookup命令了。</p>
+<p>所以对于网络排错的思路和一些基本命令的掌握还是很重要的，虽然单个命令的使用的功能不是特别大，但组合起来使用却是可以解决很多问题。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>网络排错必备</div>
+      <div>https://liyupin.github.io/2022/07/01/网络排错必备/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Cper Liu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年7月1日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/07/01/%E5%B0%BE%E7%9B%98%E4%B8%8D%E8%83%BD%E4%B9%B0%E7%9A%84%E7%A5%A8%EF%BC%9A/" title="尾盘不能买的票：">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">尾盘不能买的票：</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/07/01/%E9%80%9A%E8%BF%87docker-compose%E5%AE%89%E8%A3%85wordpress/" title="通过docker-compose安装wordpress">
+                        <span class="hidden-mobile">通过docker-compose安装wordpress</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
