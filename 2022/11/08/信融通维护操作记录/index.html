@@ -16,22 +16,22 @@
   <meta name="author" content="Cper Liu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="信融通维护操作记录202206271、增加docker服务监控脚本watch.sh，配置为每小时执行，检查docker服务报错后刷新日志与重启docker服务 123456789cat watch.sh #!&#x2F;bin&#x2F;shfails&#x3D;$(tail -n 100 &#x2F;var&#x2F;log&#x2F;messages|grep &quot;rpc error&quot;|wc -l)echo $failsif (($">
+    <meta name="description" content="信融通维护操作记录202206271、增加docker服务监控脚本watch.sh，配置为每小时执行，检查docker服务报错后刷新日志与重启docker服务 123456789cat watch.sh #!&#x2F;bin&#x2F;shfails&#x3D;$(tail -n 100 &#x2F;var&#x2F;log&#x2F;messages|grep &quot;rpc error&quot;|wc -l)echo $failsif (($f">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo">
+<meta property="og:title" content="信融通维护操作记录">
 <meta property="og:url" content="https://liyupin.github.io/2022/11/08/%E4%BF%A1%E8%9E%8D%E9%80%9A%E7%BB%B4%E6%8A%A4%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="信融通维护操作记录202206271、增加docker服务监控脚本watch.sh，配置为每小时执行，检查docker服务报错后刷新日志与重启docker服务 123456789cat watch.sh #!&#x2F;bin&#x2F;shfails&#x3D;$(tail -n 100 &#x2F;var&#x2F;log&#x2F;messages|grep &quot;rpc error&quot;|wc -l)echo $failsif (($">
+<meta property="og:description" content="信融通维护操作记录202206271、增加docker服务监控脚本watch.sh，配置为每小时执行，检查docker服务报错后刷新日志与重启docker服务 123456789cat watch.sh #!&#x2F;bin&#x2F;shfails&#x3D;$(tail -n 100 &#x2F;var&#x2F;log&#x2F;messages|grep &quot;rpc error&quot;|wc -l)echo $failsif (($f">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-11-07T16:44:00.000Z">
-<meta property="article:modified_time" content="2022-06-30T18:06:10.332Z">
+<meta property="article:modified_time" content="2022-06-30T18:14:22.427Z">
 <meta property="article:author" content="Cper Liu">
 <meta property="article:tag" content="xrt">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Hexo</title>
+  <title>信融通维护操作记录 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -211,7 +211,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text=""></span>
+            <span id="subtitle" data-typed-text="信融通维护操作记录"></span>
           
         </div>
 
@@ -283,21 +283,18 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none"></h1>
+            <h1 style="display: none">信融通维护操作记录</h1>
             
             
               <div class="markdown-body">
                 
-                <hr>
-<h1 id="信融通维护操作记录"><a href="#信融通维护操作记录" class="headerlink" title="信融通维护操作记录"></a>信融通维护操作记录</h1><h2 id="20220627"><a href="#20220627" class="headerlink" title="20220627"></a>20220627</h2><p>1、增加docker服务监控脚本watch.sh，配置为每小时执行，检查docker服务报错后刷新日志与重启docker服务</p>
+                <h1 id="信融通维护操作记录"><a href="#信融通维护操作记录" class="headerlink" title="信融通维护操作记录"></a>信融通维护操作记录</h1><h2 id="20220627"><a href="#20220627" class="headerlink" title="20220627"></a>20220627</h2><p>1、增加docker服务监控脚本watch.sh，配置为每小时执行，检查docker服务报错后刷新日志与重启docker服务</p>
 <figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs arcade">cat watch.sh <br>#!<span class="hljs-regexp">/bin/</span>sh<br>fails=$(tail -n <span class="hljs-number">100</span> /<span class="hljs-keyword">var</span>/<span class="hljs-built_in">log</span>/messages|grep <span class="hljs-string">&quot;rpc error&quot;</span>|wc -l)<br>echo <span class="hljs-symbol">$fails</span><br><span class="hljs-keyword">if</span> ((<span class="hljs-symbol">$fails</span>&gt;<span class="hljs-number">1</span>));then<br>    mv /<span class="hljs-keyword">var</span>/<span class="hljs-built_in">log</span>/messages /<span class="hljs-keyword">var</span>/<span class="hljs-built_in">log</span>/messages-$(<span class="hljs-built_in">date</span> +%Y%m%d%H%M)<br>    systemctl restart  rsyslog<br>    systemctl restart docker<br>fi<br></code></pre></td></tr></table></figure>
 
 <p>2、屏蔽systemd_test_default.slice 日志写入messages文件</p>
 <figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs arcade">cat ignore-systemd-session-<span class="hljs-built_in">slice</span>.conf <br><span class="hljs-keyword">if</span> (<span class="hljs-symbol">$program</span>name == <span class="hljs-string">&quot;systemd&quot;</span>) and (<span class="hljs-symbol">$msg</span> <span class="hljs-built_in">contains</span> <span class="hljs-string">&quot;_systemd_test_default.slice&quot;</span> or <span class="hljs-symbol">$msg</span> <span class="hljs-built_in">contains</span> <span class="hljs-string">&quot;systemd-test-default-dependencies.scope&quot;</span>) then &#123; stop &#125;<br></code></pre></td></tr></table></figure>
 
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql">ansible <span class="hljs-keyword">all</span> <span class="hljs-operator">-</span>m <span class="hljs-keyword">copy</span> <span class="hljs-operator">-</span>a &quot;src=ignore-systemd-session-slice.conf dest=/etc/rsyslog.d/ignore-systemd-session-slice.conf mode=755&quot;<br>ansible <span class="hljs-keyword">all</span> <span class="hljs-operator">-</span>m <span class="hljs-keyword">copy</span> <span class="hljs-operator">-</span>a &quot;src=watch.sh dest=/etc/cron.hourly/ mode=755&quot;<br></code></pre></td></tr></table></figure>
-
-
                 
               </div>
             
@@ -342,7 +339,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div></div>
+      <div>信融通维护操作记录</div>
       <div>https://liyupin.github.io/2022/11/08/信融通维护操作记录/</div>
     </div>
     <div class="license-meta">
@@ -385,9 +382,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/11/08/%E4%BA%A4%E6%98%93%E4%BD%93%E7%B3%BB/" title="">
+                      <a href="/2022/11/08/%E4%BA%A4%E6%98%93%E4%BD%93%E7%B3%BB/" title="交易体系">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile"></span>
+                        <span class="hidden-mobile">交易体系</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -395,8 +392,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/11/08/%E5%9C%A8windows%E9%85%8D%E7%BD%AEApache%20httpd%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="">
-                        <span class="hidden-mobile"></span>
+                      <a href="/2022/11/08/%E5%9C%A8windows%E9%85%8D%E7%BD%AEApache%20httpd%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="在windows配置Apache httpd代理服务器">
+                        <span class="hidden-mobile">在windows配置Apache httpd代理服务器</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

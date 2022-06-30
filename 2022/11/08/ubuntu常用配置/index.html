@@ -18,19 +18,19 @@
   
     <meta name="description" content="ubuntu常用配置配置root远程登录12sudo sed -i &amp;#x27;s&#x2F;#PermitRootLogin prohibit-password&#x2F;PermitRootLogin yes&#x2F;g&amp;#x27; &#x2F;etc&#x2F;ssh&#x2F;sshd_configsudo service ssh restart  配置IP地址123456789101112131415161718192021222324cat">
 <meta property="og:type" content="article">
-<meta property="og:title" content="win10修改静态路由">
+<meta property="og:title" content="ubuntu常用配置">
 <meta property="og:url" content="https://liyupin.github.io/2022/11/08/ubuntu%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="ubuntu常用配置配置root远程登录12sudo sed -i &amp;#x27;s&#x2F;#PermitRootLogin prohibit-password&#x2F;PermitRootLogin yes&#x2F;g&amp;#x27; &#x2F;etc&#x2F;ssh&#x2F;sshd_configsudo service ssh restart  配置IP地址123456789101112131415161718192021222324cat">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-11-07T16:44:00.000Z">
-<meta property="article:modified_time" content="2022-06-30T16:05:37.907Z">
+<meta property="article:modified_time" content="2022-06-30T18:12:58.396Z">
 <meta property="article:author" content="Cper Liu">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>win10修改静态路由 - Hexo</title>
+  <title>ubuntu常用配置 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -210,7 +210,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="win10修改静态路由"></span>
+            <span id="subtitle" data-typed-text="ubuntu常用配置"></span>
           
         </div>
 
@@ -282,19 +282,16 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">win10修改静态路由</h1>
+            <h1 style="display: none">ubuntu常用配置</h1>
             
             
               <div class="markdown-body">
                 
-                <hr>
-<h1 id="ubuntu常用配置"><a href="#ubuntu常用配置" class="headerlink" title="ubuntu常用配置"></a>ubuntu常用配置</h1><h2 id="配置root远程登录"><a href="#配置root远程登录" class="headerlink" title="配置root远程登录"></a>配置root远程登录</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">sudo sed -i <span class="hljs-string">&#x27;s/#PermitRootLogin prohibit-password/PermitRootLogin yes/g&#x27;</span> <span class="hljs-regexp">/etc/</span>ssh/sshd_config<br>sudo service ssh restart<br></code></pre></td></tr></table></figure>
+                <h1 id="ubuntu常用配置"><a href="#ubuntu常用配置" class="headerlink" title="ubuntu常用配置"></a>ubuntu常用配置</h1><h2 id="配置root远程登录"><a href="#配置root远程登录" class="headerlink" title="配置root远程登录"></a>配置root远程登录</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">sudo sed -i <span class="hljs-string">&#x27;s/#PermitRootLogin prohibit-password/PermitRootLogin yes/g&#x27;</span> <span class="hljs-regexp">/etc/</span>ssh/sshd_config<br>sudo service ssh restart<br></code></pre></td></tr></table></figure>
 
 <h2 id="配置IP地址"><a href="#配置IP地址" class="headerlink" title="配置IP地址"></a>配置IP地址</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> /etc/netplan/01-network-manager-all.yaml <br><span class="hljs-comment"># Let NetworkManager manage all devices on this system</span><br>network:<br>  version: 2<br>  renderer: NetworkManager<br><br><br>dev=$(nmcli c s|awk NR==2<span class="hljs-string">&#x27;&#123;print $NF&#125;&#x27;</span>)<br>ip=$( ip a s <span class="hljs-variable">$dev</span> | sed -rn <span class="hljs-string">&#x27;3s#^.*net (.*)/24.*#\1#gp&#x27;</span>)<br><span class="hljs-built_in">cat</span>&lt;&lt;<span class="hljs-string">EOF&gt; /etc/netplan/01-network-manager-all.yaml </span><br><span class="hljs-string">network:</span><br><span class="hljs-string">  version: 2</span><br><span class="hljs-string">  ethernets:</span><br><span class="hljs-string">    $&#123;dev&#125;:</span><br><span class="hljs-string">      optional: true</span><br><span class="hljs-string">      addresses:</span><br><span class="hljs-string">        - $&#123;ip&#125;/24</span><br><span class="hljs-string">      gateway4: 192.168.0.1</span><br><span class="hljs-string">      nameservers:</span><br><span class="hljs-string">        addresses:</span><br><span class="hljs-string">          - 10.0.3.18</span><br><span class="hljs-string">EOF</span><br><span class="hljs-built_in">cat</span> /etc/netplan/01-network-manager-all.yaml<br>netplan apply<br></code></pre></td></tr></table></figure>
 
 <h2 id="ubuntu-配置代理"><a href="#ubuntu-配置代理" class="headerlink" title="ubuntu 配置代理"></a>ubuntu 配置代理</h2><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs routeros">cat&lt;&lt;EOF&gt; /etc/profile.d/proxy.sh <br><span class="hljs-attribute">PROXY_URL</span>=<span class="hljs-string">&quot;http://192.168.0.221:3128/&quot;</span><br><span class="hljs-attribute">NO_PROXY_ADDR</span>=<span class="hljs-string">&quot;127.0.0.1,localhost,.local,.cluster.local,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16&quot;</span><br><span class="hljs-built_in">export</span> <span class="hljs-attribute">http_proxy</span>=\$&#123;PROXY_URL&#125;<br><span class="hljs-built_in">export</span> <span class="hljs-attribute">https_proxy</span>=\$&#123;PROXY_URL&#125;<br><span class="hljs-built_in">export</span> <span class="hljs-attribute">no_proxy</span>=\$&#123;NO_PROXY_ADDR&#125;<br><span class="hljs-built_in">export</span> <span class="hljs-attribute">HTTP_PROXY</span>=\$&#123;PROXY_URL&#125;<br><span class="hljs-built_in">export</span> <span class="hljs-attribute">HTTPS_PROXY</span>=\$&#123;PROXY_URL&#125;<br><span class="hljs-built_in">export</span> <span class="hljs-attribute">NO_PROXY</span>=\$&#123;NO_PROXY_ADDR&#125;<br>EOF<br></code></pre></td></tr></table></figure>
-
-
                 
               </div>
             
@@ -332,7 +329,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>win10修改静态路由</div>
+      <div>ubuntu常用配置</div>
       <div>https://liyupin.github.io/2022/11/08/ubuntu常用配置/</div>
     </div>
     <div class="license-meta">
@@ -375,9 +372,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/11/08/redhat%20%E9%80%82%E9%85%8Dceph%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85/" title="">
+                      <a href="/2022/11/08/redhat%20%E9%80%82%E9%85%8Dceph%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85/" title="redhat 适配ceph离线安">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile"></span>
+                        <span class="hidden-mobile">redhat 适配ceph离线安</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -385,8 +382,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/11/08/%E4%B8%8B%E4%B8%80%E5%91%A8%E9%87%8D%E7%82%B9%E5%85%B3%E6%B3%A8/" title="">
-                        <span class="hidden-mobile"></span>
+                      <a href="/2022/11/08/%E4%B8%8B%E4%B8%80%E5%91%A8%E9%87%8D%E7%82%B9%E5%85%B3%E6%B3%A8/" title="下一周重点关注">
+                        <span class="hidden-mobile">下一周重点关注</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
