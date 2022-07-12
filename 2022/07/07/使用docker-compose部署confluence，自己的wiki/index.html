@@ -1,0 +1,628 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Cper Liu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一、搭建过程1.1 基础准备1.1.1 拉取docker镜像，我们选择的版本是 6.15.1-alpine1234mkdir  .&#x2F;confluencecd .&#x2F;confluencedocker  pull  atlassian&#x2F;confluence-server:6.15.1-alpine123  1.1.2 准备好mysql的驱动，我们使用的mysql版本是5.71234wget  https">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用docker-compose部署confluence，自己的wiki">
+<meta property="og:url" content="http://example.com/2022/07/07/%E4%BD%BF%E7%94%A8docker-compose%E9%83%A8%E7%BD%B2confluence%EF%BC%8C%E8%87%AA%E5%B7%B1%E7%9A%84wiki/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、搭建过程1.1 基础准备1.1.1 拉取docker镜像，我们选择的版本是 6.15.1-alpine1234mkdir  .&#x2F;confluencecd .&#x2F;confluencedocker  pull  atlassian&#x2F;confluence-server:6.15.1-alpine123  1.1.2 准备好mysql的驱动，我们使用的mysql版本是5.71234wget  https">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200918155809719.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDAzMjM4NA==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200922110228106.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDAzMjM4NA==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200922110319716.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDAzMjM4NA==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="article:published_time" content="2022-07-07T23:41:02.529Z">
+<meta property="article:modified_time" content="2022-07-07T23:41:02.529Z">
+<meta property="article:author" content="Cper Liu">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200918155809719.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDAzMjM4NA==,size_16,color_FFFFFF,t_70#pic_center">
+  
+  
+  
+  <title>使用docker-compose部署confluence，自己的wiki - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="使用docker-compose部署confluence，自己的wiki"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-07-08 07:41" pubdate>
+          2022年7月8日 早上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          27 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">使用docker-compose部署confluence，自己的wiki</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="一、搭建过程"><a href="#一、搭建过程" class="headerlink" title="一、搭建过程"></a>一、搭建过程</h1><h2 id="1-1-基础准备"><a href="#1-1-基础准备" class="headerlink" title="1.1 基础准备"></a>1.1 基础准备</h2><h3 id="1-1-1-拉取docker镜像，我们选择的版本是-6-15-1-alpine"><a href="#1-1-1-拉取docker镜像，我们选择的版本是-6-15-1-alpine" class="headerlink" title="1.1.1 拉取docker镜像，我们选择的版本是 6.15.1-alpine"></a>1.1.1 拉取docker镜像，我们选择的版本是 6.15.1-alpine</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-built_in">mkdir</span>  ./confluence<br><span class="hljs-built_in">cd</span> ./confluence<br>docker  pull  atlassian/confluence-server:6.15.1-alpine<br>123<br></code></pre></td></tr></table></figure>
+
+<h3 id="1-1-2-准备好mysql的驱动，我们使用的mysql版本是5-7"><a href="#1-1-2-准备好mysql的驱动，我们使用的mysql版本是5-7" class="headerlink" title="1.1.2 准备好mysql的驱动，我们使用的mysql版本是5.7"></a>1.1.2 准备好mysql的驱动，我们使用的mysql版本是5.7</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sh">wget  https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.47/mysql-connector-java-5.1.47.jar<br><br><span class="hljs-comment"># mysql8.0.20驱动： wget  https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.20/mysql-connector-java-8.0.20.jar</span><br>123<br></code></pre></td></tr></table></figure>
+
+<h3 id="1-1-3-准备好docker-compose-yml"><a href="#1-1-3-准备好docker-compose-yml" class="headerlink" title="1.1.3 准备好docker-compose.yml"></a>1.1.3 准备好docker-compose.yml</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3&#x27;</span><br><span class="hljs-attr">services:</span><br>  <span class="hljs-attr">confluence:</span><br>    <span class="hljs-attr">image:</span> <span class="hljs-string">atlassian/confluence-server:6.15.1-alpine</span><br>    <span class="hljs-attr">container_name:</span> <span class="hljs-string">confluence</span><br>    <span class="hljs-attr">restart:</span> <span class="hljs-string">always</span><br>    <span class="hljs-attr">ports:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-number">8090</span><span class="hljs-string">:8090</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-number">8091</span><span class="hljs-string">:8091</span><br>    <span class="hljs-attr">networks:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">traefik</span><br>    <span class="hljs-attr">volumes:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">./data:/var/atlassian/application-data/confluence</span>   <span class="hljs-comment"># 主目录</span><br>      <span class="hljs-comment"># - ./atlassian-extras-decoder-v2-3.4.1.jar:/opt/atlassian/confluence/confluence/WEB-INF/lib/atlassian-extras-decoder-v2-3.4.1.jar # 如果你有已经坡姐后的jar包，这里直接挂在进去即可启动</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">./mysql-connector-java-5.1.47.jar:/opt/atlassian/confluence/confluence/WEB-INF/lib/mysql-connector-java-5.1.47.jar</span><br>      <span class="hljs-comment"># - ./server.xml:/opt/atlassian/confluence/conf/server.xml</span><br><span class="hljs-attr">networks:</span><br>  <span class="hljs-attr">traefik:</span><br>    <span class="hljs-attr">external:</span> <span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="1-1-4-在准备好的-msyql-中创建数据库"><a href="#1-1-4-在准备好的-msyql-中创建数据库" class="headerlink" title="1.1.4 在准备好的 msyql 中创建数据库"></a>1.1.4 在准备好的 msyql 中创建数据库</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- drop database confluence;</span><br><span class="hljs-keyword">create</span> database confluence <span class="hljs-keyword">DEFAULT</span> <span class="hljs-type">CHARACTER</span> <span class="hljs-keyword">SET</span> utf8 <span class="hljs-keyword">COLLATE</span> utf8_bin;<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="1-1-5-下载好破解工具"><a href="#1-1-5-下载好破解工具" class="headerlink" title="1.1.5 下载好破解工具"></a>1.1.5 下载好破解工具</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># 下载链接： </span><br>http://image.baishapu.com/confluence破解工具.zip<br>12<br></code></pre></td></tr></table></figure>
+
+<h2 id="1-2-部署破解"><a href="#1-2-部署破解" class="headerlink" title="1.2 部署破解"></a>1.2 部署破解</h2><h3 id="1-2-1-启动"><a href="#1-2-1-启动" class="headerlink" title="1.2.1 启动"></a>1.2.1 启动</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># 创建网卡</span><br>docker network create traefik<br><span class="hljs-comment"># 启动</span><br>docker-compose  up  -d <br><span class="hljs-comment"># 查看日志</span><br>docker logs -tf --<span class="hljs-built_in">tail</span> 300 confluence<br><span class="hljs-comment"># 访问地址：  yourIp:8090</span><br>1234567<br></code></pre></td></tr></table></figure>
+
+<h3 id="1-2-2-复制出-atlassian-的-jar-包"><a href="#1-2-2-复制出-atlassian-的-jar-包" class="headerlink" title="1.2.2 复制出 atlassian 的 jar 包"></a>1.2.2 复制出 atlassian 的 jar 包</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sh">docker <span class="hljs-built_in">cp</span>  confluence:/opt/atlassian/confluence/confluence/WEB-INF/lib/atlassian-extras-decoder-v2-3.4.1.jar  ./atlassian-extras-2.4.jar<br>1<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>注意复制出来的文件名必须为 atlassian-extras-2.4.jar，因为破解工具中指定了此文件名；</li>
+</ul>
+<h3 id="1-2-3-运行工具，如图："><a href="#1-2-3-运行工具，如图：" class="headerlink" title="1.2.3 运行工具，如图："></a>1.2.3 运行工具，如图：</h3><p><img src="https://img-blog.csdnimg.cn/20200918155809719.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDAzMjM4NA==,size_16,color_FFFFFF,t_70#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<ul>
+<li>成功后，会在原目录下出现atlassian-extras-2.4.back 备份文件，并生成了一个新的破解后的 atlassian-extras-2.4.jar</li>
+</ul>
+<h3 id="1-2-4-复制破解后的jar包回容器中"><a href="#1-2-4-复制破解后的jar包回容器中" class="headerlink" title="1.2.4 复制破解后的jar包回容器中"></a>1.2.4 复制破解后的jar包回容器中</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sh">docker <span class="hljs-built_in">cp</span>   ./atlassian-extras-2.4.jar   confluence:/opt/atlassian/confluence/confluence/WEB-INF/lib/atlassian-extras-decoder-v2-3.4.1.jar<br><span class="hljs-comment"># 重启</span><br>docker restart confluence<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="1-2-5-剩下的按照页面提示一步一步设置即可"><a href="#1-2-5-剩下的按照页面提示一步一步设置即可" class="headerlink" title="1.2.5 剩下的按照页面提示一步一步设置即可"></a>1.2.5 剩下的按照页面提示一步一步设置即可</h3><p>注意：mysql连接时，需要设置事务隔离级别 READ-COMMITTED</p>
+<p>参考链接：<a target="_blank" rel="noopener" href="https://confluence.atlassian.com/confkb/confluence-fails-to-start-and-throws-mysql-session-isolation-level-repeatable-read-is-no-longer-supported-error-241568536.html">https://confluence.atlassian.com/confkb/confluence-fails-to-start-and-throws-mysql-session-isolation-level-repeatable-read-is-no-longer-supported-error-241568536.html</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># mysql 5</span><br>jdbc:mysql://172.16.244.49:3306/confluence?useSSL=<span class="hljs-literal">false</span>&amp;sessionVariables=tx_isolation=<span class="hljs-string">&#x27;READ-COMMITTED&#x27;</span><br>12<br></code></pre></td></tr></table></figure>
+
+<h1 id="二、数据备份与迁移"><a href="#二、数据备份与迁移" class="headerlink" title="二、数据备份与迁移"></a>二、数据备份与迁移</h1><h2 id="2-1-参考链接："><a href="#2-1-参考链接：" class="headerlink" title="2.1 参考链接："></a>2.1 参考链接：</h2><p><a target="_blank" rel="noopener" href="https://www.cwiki.us/display/CONF6EN/Migrating+Confluence+Between+Servers#space-menu-link-content">https://www.cwiki.us/display/CONF6EN/Migrating+Confluence+Between+Servers#space-menu-link-content</a></p>
+<p><a target="_blank" rel="noopener" href="https://confluence.atlassian.com/conf615/migrating-confluence-between-servers-967338806.html">https://confluence.atlassian.com/conf615/migrating-confluence-between-servers-967338806.html</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># 我的迁移过程</span><br>1、备份mysql数据库；<br>2、备份mysql驱动；<br>3、备份主目录（本文档安装的挂载目录 “- ./data:/var/atlassian/application-data/confluence”）<br>4、备份server.xml（容器目录： /opt/atlassian/confluence/conf/server.xml）<br>5、在新机器上准备好安装过程需要的东西，以及备份的东西拿过去准备覆盖；<br>6、如果需要迁移数据库，可以直接修改配置文件：&lt;confluence.home&gt;/confluence.cfg.xml <br>1234567<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>迁移后，日志显示启动成功，但页面任然无法访问，此过程大概需要几分钟左右</li>
+</ul>
+<h2 id="2-2-关闭confluence自带每日备份任务"><a href="#2-2-关闭confluence自带每日备份任务" class="headerlink" title="2.2 关闭confluence自带每日备份任务"></a>2.2 关闭confluence自带每日备份任务</h2><p><img src="https://img-blog.csdnimg.cn/20200922110228106.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDAzMjM4NA==,size_16,color_FFFFFF,t_70#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h2 id="2-3-手动备份脚本-crontab定时任务"><a href="#2-3-手动备份脚本-crontab定时任务" class="headerlink" title="2.3 手动备份脚本 + crontab定时任务"></a>2.3 手动备份脚本 + crontab定时任务</h2><p>备份数据库，主目录挂载出来即可；</p>
+<h1 id="三、导出PDF"><a href="#三、导出PDF" class="headerlink" title="三、导出PDF"></a>三、导出PDF</h1><p>注意：confluence导出PDF仅支持一种字体，且需要自己手动上传安装；（可以从系统目录C:\Windows\Fonts 中复制出来）</p>
+<p><img src="https://img-blog.csdnimg.cn/20200922110319716.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDAzMjM4NA==,size_16,color_FFFFFF,t_70#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h1 id="四、配置邮件服务器"><a href="#四、配置邮件服务器" class="headerlink" title="四、配置邮件服务器"></a>四、配置邮件服务器</h1><p>参考链接：<a target="_blank" rel="noopener" href="https://qinjiangbo.com/mail-server-configuration-of-confluence.html">https://qinjiangbo.com/mail-server-configuration-of-confluence.html</a></p>
+<p>说明：25、465端口不行，再试试587端口也是可以的</p>
+<h1 id="五、版本升级"><a href="#五、版本升级" class="headerlink" title="五、版本升级"></a>五、版本升级</h1><h2 id="Confluence7-Mysql8："><a href="#Confluence7-Mysql8：" class="headerlink" title="Confluence7 + Mysql8："></a>Confluence7 + Mysql8：</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> DATABASE xxxxxxConfluence <span class="hljs-type">CHARACTER</span> <span class="hljs-keyword">SET</span> utf8mb4 <span class="hljs-keyword">COLLATE</span> utf8mb4_bin;<br><br># 隔离级别的设置， mysql <span class="hljs-number">8</span> 的区别：<br>sessionVariables<span class="hljs-operator">=</span>transaction_isolation<span class="hljs-operator">=</span><span class="hljs-string">&#x27;READ-COMMITTED&#x27;</span><br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>使用docker-compose部署confluence，自己的wiki</div>
+      <div>http://example.com/2022/07/07/使用docker-compose部署confluence，自己的wiki/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Cper Liu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年7月8日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/07/07/%E4%BD%BF%E7%94%A8docker%E6%90%AD%E5%BB%BAminio%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/" title="使用docker搭建minio集群搭建">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">使用docker搭建minio集群搭建</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/07/07/%E7%94%9F%E4%BA%A7docker%20run%20%E5%8D%A1%E4%BD%8F%E6%B2%A1%E5%8F%8D%E5%BA%94%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5%E6%80%9D%E8%B7%AF/" title="生产docker run 卡住没反应故障排查思路">
+                        <span class="hidden-mobile">生产docker run 卡住没反应故障排查思路</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
