@@ -16,12 +16,12 @@
   <meta name="author" content="Cper Liu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Centos****离线搭建Ceph集群环境说明需要去客户现场部署centos7.6三节点newben和ceph，这里把整个部署方案都介绍了    主机名 配置 ip 操作系统 说明    node-5-40 4核8G 192.168.5.40 Centos7.6 newben主节点   node-5-41 4核8G 192.168.5.41 Centos7.6    node-5-42 4核8G">
+    <meta name="description" content="Centos****离线搭建Ceph集群环境说明需要去客户现场部署centos7.6三节点newben和ceph，这里把整个部署方案都介绍了    主机名 配置 ip 操作系统 说明    node-5-40 4核8G 192.168.5.40 Centos7.6 newben主节点   node-5-41 4核8G 192.168.5.41 Centos7.6    node-5-42 4核8">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo">
+<meta property="og:title" content="Centos离线搭建Ceph集群">
 <meta property="og:url" content="http://example.com/2022/07/12/Centos%E7%A6%BB%E7%BA%BF%E6%90%AD%E5%BB%BACeph%E9%9B%86%E7%BE%A4/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Centos****离线搭建Ceph集群环境说明需要去客户现场部署centos7.6三节点newben和ceph，这里把整个部署方案都介绍了    主机名 配置 ip 操作系统 说明    node-5-40 4核8G 192.168.5.40 Centos7.6 newben主节点   node-5-41 4核8G 192.168.5.41 Centos7.6    node-5-42 4核8G">
+<meta property="og:description" content="Centos****离线搭建Ceph集群环境说明需要去客户现场部署centos7.6三节点newben和ceph，这里把整个部署方案都介绍了    主机名 配置 ip 操作系统 说明    node-5-40 4核8G 192.168.5.40 Centos7.6 newben主节点   node-5-41 4核8G 192.168.5.41 Centos7.6    node-5-42 4核8">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image002.gif">
 <meta property="og:image" content="c:/Users/liyupi/AppData/Roaming/Typora/typora-user-images/1640250091654.png">
@@ -32,15 +32,15 @@
 <meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image010.gif">
 <meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image012.gif">
 <meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image014.gif">
-<meta property="article:published_time" content="2022-07-12T08:08:36.185Z">
-<meta property="article:modified_time" content="2022-07-12T08:08:36.185Z">
+<meta property="article:published_time" content="2022-07-12T00:29:48.000Z">
+<meta property="article:modified_time" content="2022-07-12T08:29:50.313Z">
 <meta property="article:author" content="Cper Liu">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image002.gif">
   
   
   
-  <title>Hexo</title>
+  <title>Centos离线搭建Ceph集群 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -205,7 +205,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text=""></span>
+            <span id="subtitle" data-typed-text="Centos离线搭建Ceph集群"></span>
           
         </div>
 
@@ -216,8 +216,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-07-12 16:08" pubdate>
-          2022年7月12日 下午
+        <time datetime="2022-07-12 08:29" pubdate>
+          2022年7月12日 早上
         </time>
       </span>
     
@@ -277,12 +277,13 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none"></h1>
+            <h1 style="display: none">Centos离线搭建Ceph集群</h1>
             
             
               <div class="markdown-body">
                 
-                <h3 id="Centos-离线搭建Ceph集群"><a href="#Centos-离线搭建Ceph集群" class="headerlink" title="Centos****离线搭建Ceph集群"></a><strong>Centos****离线搭建Ceph集群</strong></h3><h2 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a><strong>环境说明</strong></h2><p>需要去客户现场部署centos7.6三节点newben和ceph，这里把整个部署方案都介绍了</p>
+                <hr>
+<h3 id="Centos-离线搭建Ceph集群"><a href="#Centos-离线搭建Ceph集群" class="headerlink" title="Centos****离线搭建Ceph集群"></a><strong>Centos****离线搭建Ceph集群</strong></h3><h2 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a><strong>环境说明</strong></h2><p>需要去客户现场部署centos7.6三节点newben和ceph，这里把整个部署方案都介绍了</p>
 <table>
 <thead>
 <tr>
@@ -613,7 +614,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div></div>
+      <div>Centos离线搭建Ceph集群</div>
       <div>http://example.com/2022/07/12/Centos离线搭建Ceph集群/</div>
     </div>
     <div class="license-meta">
@@ -656,9 +657,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/07/12/CephFS%20%E4%BD%BF%E7%94%A8/" title="">
+                      <a href="/2022/07/12/ceph%20ansible%E9%83%A8%E7%BD%B2ceph%E9%9B%86%E7%BE%A4/" title="ceph ansible部署ceph集群">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile"></span>
+                        <span class="hidden-mobile">ceph ansible部署ceph集群</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -666,8 +667,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/07/12/ceph%20ansible%E9%83%A8%E7%BD%B2ceph%E9%9B%86%E7%BE%A4/" title="">
-                        <span class="hidden-mobile"></span>
+                      <a href="/2022/07/12/centos7%20%E5%AE%89%E8%A3%85docker/" title="centos7 安装docker">
+                        <span class="hidden-mobile">centos7 安装docker</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

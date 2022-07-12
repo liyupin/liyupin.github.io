@@ -16,23 +16,23 @@
   <meta name="author" content="Cper Liu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="CentOS 7之Systemd详解之服务单元设置system.service名称systemd.service - 服务单元配置 概要service.service 描述以 .service 结尾的单元文件，用于封装一个被 systemd 监视与控制的进程。 本手册只列出专用于此种单元的选项，它们全部位于”[Service]”小节之中(通用于所有单元的选项参见 systemd.unit(5) 手">
+    <meta name="description" content="CentOS 7之Systemd详解之服务单元设置system.service名称systemd.service - 服务单元配置 概要service.service 描述以 .service 结尾的单元文件，用于封装一个被 systemd 监视与控制的进程。 本手册只列出专用于此种单元的选项，它们全部位于”[Service]”小节之中(通用于所有单元的选项参见 systemd.unit(5)">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo">
+<meta property="og:title" content="CentOS 7之Systemd详解之服务单元设置system.service">
 <meta property="og:url" content="http://example.com/2022/07/12/CentOS%207%E4%B9%8BSystemd%E8%AF%A6%E8%A7%A3%E4%B9%8B%E6%9C%8D%E5%8A%A1%E5%8D%95%E5%85%83%E8%AE%BE%E7%BD%AEsystem.service/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="CentOS 7之Systemd详解之服务单元设置system.service名称systemd.service - 服务单元配置 概要service.service 描述以 .service 结尾的单元文件，用于封装一个被 systemd 监视与控制的进程。 本手册只列出专用于此种单元的选项，它们全部位于”[Service]”小节之中(通用于所有单元的选项参见 systemd.unit(5) 手">
+<meta property="og:description" content="CentOS 7之Systemd详解之服务单元设置system.service名称systemd.service - 服务单元配置 概要service.service 描述以 .service 结尾的单元文件，用于封装一个被 systemd 监视与控制的进程。 本手册只列出专用于此种单元的选项，它们全部位于”[Service]”小节之中(通用于所有单元的选项参见 systemd.unit(5)">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://img-blog.csdn.net/2018072116074438?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1ZXNpY2hpdQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
-<meta property="article:published_time" content="2022-07-12T08:08:24.196Z">
-<meta property="article:modified_time" content="2022-07-12T08:08:24.196Z">
+<meta property="article:published_time" content="2022-07-12T00:21:35.000Z">
+<meta property="article:modified_time" content="2022-07-12T08:21:35.790Z">
 <meta property="article:author" content="Cper Liu">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://img-blog.csdn.net/2018072116074438?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3l1ZXNpY2hpdQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
   
   
   
-  <title>Hexo</title>
+  <title>CentOS 7之Systemd详解之服务单元设置system.service - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -197,7 +197,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text=""></span>
+            <span id="subtitle" data-typed-text="CentOS 7之Systemd详解之服务单元设置system.service"></span>
           
         </div>
 
@@ -208,8 +208,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-07-12 16:08" pubdate>
-          2022年7月12日 下午
+        <time datetime="2022-07-12 08:21" pubdate>
+          2022年7月12日 早上
         </time>
       </span>
     
@@ -269,12 +269,13 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none"></h1>
+            <h1 style="display: none">CentOS 7之Systemd详解之服务单元设置system.service</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="CentOS-7之Systemd详解之服务单元设置system-service"><a href="#CentOS-7之Systemd详解之服务单元设置system-service" class="headerlink" title="CentOS 7之Systemd详解之服务单元设置system.service"></a>CentOS 7之Systemd详解之服务单元设置system.service</h1><h3 id="名称"><a href="#名称" class="headerlink" title="名称"></a>名称</h3><p>systemd.service - 服务单元配置</p>
+                <hr>
+<h1 id="CentOS-7之Systemd详解之服务单元设置system-service"><a href="#CentOS-7之Systemd详解之服务单元设置system-service" class="headerlink" title="CentOS 7之Systemd详解之服务单元设置system.service"></a>CentOS 7之Systemd详解之服务单元设置system.service</h1><h3 id="名称"><a href="#名称" class="headerlink" title="名称"></a>名称</h3><p>systemd.service - 服务单元配置</p>
 <h3 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h3><p><em>service</em>.service</p>
 <h3 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h3><p>以 .service 结尾的单元文件，用于封装一个被 systemd 监视与控制的进程。</p>
 <p>本手册只列出专用于此种单元的选项，它们全部位于”[Service]”小节之中(通用于所有单元的选项参见 systemd.unit(5) 手册)。</p>
@@ -495,7 +496,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div></div>
+      <div>CentOS 7之Systemd详解之服务单元设置system.service</div>
       <div>http://example.com/2022/07/12/CentOS 7之Systemd详解之服务单元设置system.service/</div>
     </div>
     <div class="license-meta">
@@ -538,9 +539,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/07/12/centos7%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AEDNS%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="">
+                      <a href="/2022/07/12/centos7%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AEDNS%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="centos7安装与配置DNS服务器">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile"></span>
+                        <span class="hidden-mobile">centos7安装与配置DNS服务器</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -548,8 +549,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/07/11/%E8%AE%B0%E5%BD%95%E5%8E%86%E5%8F%B2/" title="记录历史">
-                        <span class="hidden-mobile">记录历史</span>
+                      <a href="/2022/07/12/docker-heketi/" title="docker-heketi">
+                        <span class="hidden-mobile">docker-heketi</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
