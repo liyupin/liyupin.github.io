@@ -1,0 +1,908 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Cper Liu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Centos****离线搭建Ceph集群环境说明需要去客户现场部署centos7.6三节点newben和ceph，这里把整个部署方案都介绍了    主机名 配置 ip 操作系统 说明    node-5-40 4核8G 192.168.5.40 Centos7.6 newben主节点   node-5-41 4核8G 192.168.5.41 Centos7.6    node-5-42 4核8G">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/2022/07/12/Centos%E7%A6%BB%E7%BA%BF%E6%90%AD%E5%BB%BACeph%E9%9B%86%E7%BE%A4/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Centos****离线搭建Ceph集群环境说明需要去客户现场部署centos7.6三节点newben和ceph，这里把整个部署方案都介绍了    主机名 配置 ip 操作系统 说明    node-5-40 4核8G 192.168.5.40 Centos7.6 newben主节点   node-5-41 4核8G 192.168.5.41 Centos7.6    node-5-42 4核8G">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image002.gif">
+<meta property="og:image" content="c:/Users/liyupi/AppData/Roaming/Typora/typora-user-images/1640250091654.png">
+<meta property="og:image" content="c:/Users/liyupi/AppData/Roaming/Typora/typora-user-images/1640250370024.png">
+<meta property="og:image" content="c:/Users/liyupi/AppData/Roaming/Typora/typora-user-images/1640250117462.png">
+<meta property="og:image" content="c:/Users/liyupi/AppData/Roaming/Typora/typora-user-images/1640250209231.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image008.gif">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image010.gif">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image012.gif">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image014.gif">
+<meta property="article:published_time" content="2022-07-12T08:08:36.185Z">
+<meta property="article:modified_time" content="2022-07-12T08:08:36.185Z">
+<meta property="article:author" content="Cper Liu">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image002.gif">
+  
+  
+  
+  <title>Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-07-12 16:08" pubdate>
+          2022年7月12日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          80 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="Centos-离线搭建Ceph集群"><a href="#Centos-离线搭建Ceph集群" class="headerlink" title="Centos****离线搭建Ceph集群"></a><strong>Centos****离线搭建Ceph集群</strong></h3><h2 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a><strong>环境说明</strong></h2><p>需要去客户现场部署centos7.6三节点newben和ceph，这里把整个部署方案都介绍了</p>
+<table>
+<thead>
+<tr>
+<th>主机名</th>
+<th>配置</th>
+<th>ip</th>
+<th>操作系统</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>node-5-40</td>
+<td>4核8G</td>
+<td>192.168.5.40</td>
+<td>Centos7.6</td>
+<td>newben主节点</td>
+</tr>
+<tr>
+<td>node-5-41</td>
+<td>4核8G</td>
+<td>192.168.5.41</td>
+<td>Centos7.6</td>
+<td></td>
+</tr>
+<tr>
+<td>node-5-42</td>
+<td>4核8G</td>
+<td>192.168.5.42</td>
+<td>Centos7.6</td>
+<td>ceph引导节点</td>
+</tr>
+</tbody></table>
+<h3 id="newben-安装"><a href="#newben-安装" class="headerlink" title="newben****安装"></a><strong>newben****安装</strong></h3><h4 id="离线安装包"><a href="#离线安装包" class="headerlink" title="离线安装包"></a><strong>离线安装包</strong></h4><p>[root@node-5-40 newben]# ll</p>
+<p>total 4794132</p>
+<p>drwxr-xr-x. 2 root root    140 Dec 13 21:26 Centos_offline_install #docker离线安装包</p>
+<p>-rw-r–r–. 1 root root 4033014784 Sep 29 23:20 newben.tar</p>
+<p>-rw-r–r–. 1 root root 401772144 Dec 13 21:19 bootstrap.tgz # 替换的newben镜像</p>
+<p>-rw-r–r–. 1 root root 474402280 Sep 30 03:04 offline.tgz</p>
+<h4 id="离线装docker"><a href="#离线装docker" class="headerlink" title="离线装docker"></a><strong>离线装docker</strong></h4><p>注意：离线安装docker需要在所有主机上执行</p>
+<h4 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a><strong>安装docker</strong></h4><p>rpm -Uvh *.rpm –nodeps –force</p>
+<h4 id="启动docker"><a href="#启动docker" class="headerlink" title="启动docker"></a><strong>启动docker</strong></h4><p>#启动docker</p>
+<p>systemctl start docker</p>
+<p>#开机自启</p>
+<p>systemctl enable docker</p>
+<h4 id="检查docker"><a href="#检查docker" class="headerlink" title="检查docker"></a><strong>检查docker</strong></h4><p>[root@node-5-40 Centos_offline_install]# docker ps -a</p>
+<p>CONTAINER ID  IMAGE   COMMAND  CREATED  STATUS  PORTS   NAMES</p>
+<p>[root@node-5-40 Centos_offline_install]# docker -v</p>
+<p>Docker version 20.10.7, build f0df350</p>
+<p>[root@node-5-40 Centos_offline_install]#</p>
+<h4 id="离线安装newben"><a href="#离线安装newben" class="headerlink" title="离线安装newben"></a><strong>离线安装newben</strong></h4><h4 id="解压offline-tgz文件"><a href="#解压offline-tgz文件" class="headerlink" title="解压offline.tgz文件"></a><strong>解压offline.tgz文件</strong></h4><p>解压offline.tgz文件后多了一个install目录</p>
+<p>tar -zxvf offline.tgz</p>
+<h4 id="移动newben-tar文件进入install目录"><a href="#移动newben-tar文件进入install目录" class="headerlink" title="移动newben.tar文件进入install目录"></a><strong>移动newben.tar文件进入install目录</strong></h4><p>mv newben.tar install&#x2F;</p>
+<h4 id="修改config文件"><a href="#修改config文件" class="headerlink" title="修改config文件"></a><strong>修改config文件</strong></h4><p>进入install目录修改config文件，由于需要newben高可用，部署3个etcd节点和web节点</p>
+<p>imagePath: newben.tar #离线安装需要</p>
+<p>localIp: 192.168.5.40 #安装节点ip</p>
+<p>nodes:</p>
+<p> - address: 192.168.5.40 #节点ip</p>
+<p>  modules: #节点组件</p>
+<p>   - data</p>
+<p>   - log</p>
+<p>   - web</p>
+<p>   - etcd</p>
+<p>   - newben</p>
+<p>  password: password</p>
+<p>  port: “22”</p>
+<p>  user: root</p>
+<p> - address: 192.168.5.41 #节点ip</p>
+<p>  modules: #节点组件</p>
+<p>   - newben</p>
+<p>   - etcd</p>
+<p>   - web</p>
+<p>  password: password</p>
+<p>  port: “22”</p>
+<p>  user: root</p>
+<p> - address: 192.168.5.42 #节点ip</p>
+<p>  modules: #节点组件</p>
+<p>   - newben</p>
+<p>   - etcd</p>
+<p>   - web</p>
+<p>  password: password</p>
+<p>  port: “22”</p>
+<p>  user: root</p>
+<p>registryDomain: registry.cluster.local # registry使用的域名</p>
+<p>vmregistryDomain: vmregistry.cluster # vm registry使用的域名</p>
+<p>…</p>
+<h4 id="复制nbd文件到install目录"><a href="#复制nbd文件到install目录" class="headerlink" title="复制nbd文件到install目录"></a><strong>复制nbd文件到install目录</strong></h4><p>install目录执行以下命令复制安装二进制文件</p>
+<p>cp bin&#x2F;linux-amd64&#x2F;nbd .</p>
+<h4 id="关闭防火墙"><a href="#关闭防火墙" class="headerlink" title="关闭防火墙"></a><strong>关闭防火墙</strong></h4><p># 关闭防火墙 且 禁止防火墙开机自起</p>
+<p>systemctl stop firewalld &amp;&amp; systemctl disable firewalld</p>
+<h4 id="执行安装命令"><a href="#执行安装命令" class="headerlink" title="执行安装命令"></a><strong>执行安装命令</strong></h4><p>.&#x2F;nbd -c config.yaml install</p>
+<h4 id="修改daemon-json文件"><a href="#修改daemon-json文件" class="headerlink" title="修改daemon.json文件"></a><strong>修改daemon.json文件</strong></h4><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">echo</span> &lt;<span class="hljs-symbol">&lt;EOF&gt;</span>/etc/docker/daemon.json<br>&#123;<span class="hljs-string">&quot;cluster-store&quot;</span>:<span class="hljs-comment">&quot;etcd://192.168.5.40:2379,</span><br><span class="hljs-number">192.168</span>.<span class="hljs-number">5.41</span>:<span class="hljs-number">2379</span>,<br><span class="hljs-number">192.168</span>.<span class="hljs-number">5.41</span>:<span class="hljs-number">2379</span><span class="hljs-comment">&quot;,</span><br><span class="hljs-string">&quot;log-driver&quot;</span>:<span class="hljs-string">&quot;json-file&quot;</span>,<br><span class="hljs-string">&quot;log-opts&quot;</span>:&#123;<br><span class="hljs-string">&quot;max-file&quot;</span>:<span class="hljs-string">&quot;3&quot;</span>,<span class="hljs-string">&quot;max-size&quot;</span>:<span class="hljs-string">&quot;10m&quot;</span><br>&#125;<br>&#125;<br>EOF<br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">echo</span> &gt;/etc/docker/daemon.json&lt;&lt;EOF<br>&#123;<br><span class="hljs-string">&quot;cluster-store&quot;</span>:<br><span class="hljs-comment">&quot;etcd://192.168.5.50:2379,</span><br><span class="hljs-number">192.168</span>.<span class="hljs-number">5.51</span>:<span class="hljs-number">2379</span>,<br><span class="hljs-number">192.168</span>.<span class="hljs-number">5.52</span>:<span class="hljs-number">2379</span><span class="hljs-comment">&quot;,</span><br><span class="hljs-string">&quot;log-driver&quot;</span>:<span class="hljs-string">&quot;json-file&quot;</span>,<br><span class="hljs-string">&quot;log-opts&quot;</span>:&#123;<br><span class="hljs-string">&quot;max-file&quot;</span>:<span class="hljs-string">&quot;3&quot;</span>,<span class="hljs-string">&quot;max-size&quot;</span>:<span class="hljs-string">&quot;10m&quot;</span><br>&#125;<br>&#125;<br>EOF<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="重启docker服务"><a href="#重启docker服务" class="headerlink" title="重启docker服务"></a><strong>重启docker服务</strong></h4><p>systemctl restart docker</p>
+<h4 id="替换newben镜像"><a href="#替换newben镜像" class="headerlink" title="替换newben镜像"></a><strong>替换newben镜像</strong></h4><p><strong>load****镜像</strong></p>
+<p>docker load -i bootstrap.tgz</p>
+<p><strong>push****到newben镜像仓库</strong></p>
+<p>docker push registry.cluster.local&#x2F;newben&#x2F;newben:cbc0f1e5</p>
+<h4 id="更新config文件"><a href="#更新config文件" class="headerlink" title="更新config文件"></a><strong>更新config文件</strong></h4><p>moduleImages: #各个组件使用到的镜像</p>
+<p> chrony: registry.cluster.local&#x2F;newben&#x2F;chrony:v3.5-local</p>
+<p> etcd: registry.cluster.local&#x2F;newben&#x2F;etcd:v3.4.12</p>
+<p> log: registry.cluster.local&#x2F;newben&#x2F;log:v0.0.2</p>
+<p> newben: registry.cluster.local&#x2F;newben&#x2F;newben:cbc0f1e5  # 更新为导入的newben的镜像</p>
+<p> ui: registry.cluster.local&#x2F;newben&#x2F;newben-ui:v3.3.9.3</p>
+<p> registry: registry.cluster.local&#x2F;newben&#x2F;registry:2.7.1</p>
+<p> rqlite: registry.cluster.local&#x2F;newben&#x2F;rqlite:5.4.0</p>
+<p> web: registry.cluster.local&#x2F;newben&#x2F;newben-web:v3.3.9.3</p>
+<p> webBinfmt: registry.cluster.local&#x2F;newben&#x2F;binfmt:latest</p>
+<p> webBuildkit: registry.cluster.local&#x2F;newben&#x2F;buildkit:buildx-stable-1</p>
+<h4 id="更新newben组件"><a href="#更新newben组件" class="headerlink" title="更新newben组件"></a><strong>更新newben组件</strong></h4><p>进入install目录执行更新newben命令</p>
+<p>.&#x2F;nbd -c config.yaml update newben</p>
+<p><strong>newben****检查</strong></p>
+<p>创建一个nginx应用，能正常调度和访问即可</p>
+<h3 id="ceph-安装"><a href="#ceph-安装" class="headerlink" title="ceph****安装"></a><strong>ceph****安装</strong></h3><h4 id="离线安装包-1"><a href="#离线安装包-1" class="headerlink" title="离线安装包"></a><strong>离线安装包</strong></h4><p>[root@node-5-40 ceph]# ll</p>
+<p>total 2009832</p>
+<p>-rw-r–r–. 1 root root   313987 Dec 13 21:26 cephadm（修改后的）</p>
+<p>-rw-r–r–. 1 root root 1817395712 Dec 13 21:29 ceph.tgz</p>
+<p>-rw-r–r–. 1 root root 240351292 Dec 13 21:27 local-repo.tgz</p>
+<p>[root@node-5-40 ceph]#</p>
+<p>cephadm从官网下载后由于需要离线安装，进行了代码修改：</p>
+<p>1、把默认镜像和版本修改准备的离线安装包镜像和版本</p>
+<p>DEFAULT_IMAGE &#x3D; ‘quay.io&#x2F;ceph&#x2F;ceph:v15’</p>
+<p>DEFAULT_IMAGE_RELEASE &#x3D; ‘octopus’</p>
+<p>2、注释掉部分拉镜像的代码，避免去官网拉去镜像</p>
+<p>def _pull_image(ctx, image, insecure&#x3D;False)不要全部屏蔽了，屏蔽部分即可</p>
+<p>def _pull_image(ctx, image, insecure&#x3D;False):</p>
+<p>  # type: (CephadmContext, str, bool) -&gt; None</p>
+<p>  logger.info(‘Pulling container image %s…’ % image)</p>
+<p>  ignorelist &#x3D; [</p>
+<p>​    ‘error creating read-write layer with ID’,</p>
+<p>​    ‘net&#x2F;http: TLS handshake timeout’,</p>
+<p>​    ‘Digest did not match, expected’,</p>
+<p>  ]</p>
+<p>#  cmd &#x3D; [ctx.container_engine.path, ‘images’, image]</p>
+<p>#  if isinstance(ctx.container_engine, Podman):</p>
+<p>#    if insecure:</p>
+<p>#      cmd.append(‘–tls-verify&#x3D;false’)</p>
+<p>#    if os.path.exists(‘&#x2F;etc&#x2F;ceph&#x2F;podman-auth.json’):</p>
+<p>#      cmd.append(‘–authfile&#x3D;&#x2F;etc&#x2F;ceph&#x2F;podman-auth.json’)</p>
+<p>#  cmd_str &#x3D; ‘ ‘.join(cmd)</p>
+<p>#  for sleep_secs in [1, 4, 25]:</p>
+<p>#    out, err, ret &#x3D; call(ctx, cmd)</p>
+<p>#    if not ret:</p>
+<p>#      return</p>
+<p>#    if not any(pattern in err for pattern in ignorelist):</p>
+<p>#      raise Error(‘Failed command: %s’ % cmd_str)</p>
+<p>#    logger.info(‘<code>%s</code> failed transiently. Retrying. waiting %s seconds…’ % (cmd_str, sleep_secs))</p>
+<p>#    time.sleep(sleep_secs)</p>
+<p>#  raise Error(‘Failed command: %s: maximum retries reached’ % cmd_str)</p>
+<p>ceph.tgz是离线镜像包，镜像列表如下：</p>
+<p>quay.io&#x2F;ceph&#x2F;ceph:v15 </p>
+<p>quay.io&#x2F;ceph&#x2F;ceph-grafana:6.7.4 </p>
+<p>quay.io&#x2F;prometheus&#x2F;prometheus:v2.18.1 </p>
+<p>quay.io&#x2F;prometheus&#x2F;alertmanager:v0.20.0 </p>
+<p>quay.io&#x2F;prometheus&#x2F;node-exporter:v0.18.1</p>
+<p>local-repo.tgz为离线镜像源，主要有python3和ceph-common的离线镜像</p>
+<h4 id="配置域名解析"><a href="#配置域名解析" class="headerlink" title="配置域名解析"></a><strong>配置域名解析</strong></h4><p>先在三台机器上，修改 &#x2F;etc&#x2F;hosts 文件，添加下面内容：</p>
+<p># ceph 集群节点主机名对应的 ip，每个节点都需要添加</p>
+<p>192.168.5.40 node-5-40</p>
+<p>192.168.5.41 node-5-41 </p>
+<p>192.168.5.42 node-5-42</p>
+<h4 id="关闭防火墙-1"><a href="#关闭防火墙-1" class="headerlink" title="关闭防火墙"></a><strong>关闭防火墙</strong></h4><p># 关闭防火墙 且 禁止防火墙开机自起</p>
+<p>systemctl stop firewalld &amp;&amp; systemctl disable firewalld</p>
+<h4 id="安装导入镜像"><a href="#安装导入镜像" class="headerlink" title="安装导入镜像"></a><strong>安装导入镜像</strong></h4><p>说明：所有节点需要执行</p>
+<p>docker load -i ceph.tgz</p>
+<h4 id="安装python3和ceph-common"><a href="#安装python3和ceph-common" class="headerlink" title="安装python3和ceph-common"></a><strong>安装python3和ceph-common</strong></h4><p>说明：所有节点需要执行</p>
+<h4 id="解压local-repo-tgz文件"><a href="#解压local-repo-tgz文件" class="headerlink" title="解压local-repo.tgz文件"></a><strong>解压local-repo.tgz文件</strong></h4><p>tar -zxvf local-repo.tgz</p>
+<h4 id="配置本地离线源"><a href="#配置本地离线源" class="headerlink" title="配置本地离线源"></a><strong>配置本地离线源</strong></h4><p># 备份源</p>
+<p>mv &#x2F;etc&#x2F;yum.repos.d &#x2F;etc&#x2F;yum.repos.d.bk</p>
+<p>mkdir -p &#x2F;etc&#x2F;yum.repos.d</p>
+<p># 新建源</p>
+<p>touch &#x2F;etc&#x2F;yum.repos.d&#x2F;local.repo</p>
+<p># 编辑local.repo内容为:</p>
+<p>[local]</p>
+<p>name&#x3D;CentOS-$releasever-local</p>
+<p>baseurl&#x3D;file:&#x2F;&#x2F;&#x2F;chj&#x2F;ceph&#x2F;7</p>
+<p>#baseurl&#x3D;<a target="_blank" rel="noopener" href="http://mirror.centos.org/centos/$releasever/os/$basearch/">http://mirror.centos.org/centos/$releasever/os/$basearch/</a></p>
+<p>gpgcheck&#x3D;0</p>
+<p>gpgkey&#x3D;file:&#x2F;&#x2F;&#x2F;etc&#x2F;pki&#x2F;rpm-gpg&#x2F;RPM-GPG-KEY-CentOS-7</p>
+<p># 更新源</p>
+<p>yum clean all &amp;&amp; yum makecache</p>
+<h4 id="安装python3和ceph-common-1"><a href="#安装python3和ceph-common-1" class="headerlink" title="安装python3和ceph-common"></a><strong>安装python3和ceph-common</strong></h4><p>yum install -y python3 ceph-common</p>
+<h4 id="开机加载rbd和ceph命令"><a href="#开机加载rbd和ceph命令" class="headerlink" title="开机加载rbd和ceph命令"></a><strong>开机加载rbd和ceph命令</strong></h4><p>在&#x2F;etc&#x2F;profile.d&#x2F;目录下新建modprobe.sh文件，文件内容为：</p>
+<p>#!&#x2F;bin&#x2F;sh</p>
+<p>modprobe rbd</p>
+<p>modprobe ceph</p>
+<h4 id="安装cephadm"><a href="#安装cephadm" class="headerlink" title="安装cephadm"></a><strong>安装cephadm</strong></h4><p>说明：只需要在引导节点执行</p>
+<p>cp cephadm &#x2F;usr&#x2F;local&#x2F;bin&#x2F;</p>
+<p>chmod +x &#x2F;usr&#x2F;local&#x2F;bin&#x2F;cephadm</p>
+<h4 id="引导集群"><a href="#引导集群" class="headerlink" title="引导集群"></a><strong>引导集群</strong></h4><p>cephadm bootstrap –mon-ip 192.168.5.40</p>
+<p># UI登录密码</p>
+<p>Creating initial admin user…</p>
+<p>Fetching dashboard port number…</p>
+<p>Ceph Dashboard is now available at:</p>
+<p>​       URL: <a target="_blank" rel="noopener" href="https://node-5-42:8443/">https://node-5-42:8443/</a></p>
+<p>​      User: admin</p>
+<p>​    Password: nhvep2vucg</p>
+<h4 id="登录到UI管理界面"><a href="#登录到UI管理界面" class="headerlink" title="登录到UI管理界面"></a><strong>登录到UI管理界面</strong></h4><p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image002.gif" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h4 id="配置节点免密"><a href="#配置节点免密" class="headerlink" title="配置节点免密"></a><strong>配置节点免密</strong></h4><p>说明：只需要在引导节点执行</p>
+<p>ssh-copy-id -f -i &#x2F;etc&#x2F;ceph&#x2F;ceph.pub root@node-5-41</p>
+<p>ssh-copy-id -f -i &#x2F;etc&#x2F;ceph&#x2F;ceph.pub root@node-5-40</p>
+<h4 id="加入节点"><a href="#加入节点" class="headerlink" title="加入节点"></a><strong>加入节点</strong></h4><p>说明：只需要在引导节点执行</p>
+<p>添加成功后需要等待一段时间，待其它主机上的容器起来</p>
+<p>[root@node-5-42 &#x2F;]# ceph orch host add node-5-41 192.168.5.41</p>
+<p>Added host ‘node-5-41’</p>
+<p>[root@node-5-42 &#x2F;]# ceph orch host add node-5-40 192.168.5.40</p>
+<p>Added host ‘node-5-40’</p>
+<p>[root@node-5-42 &#x2F;]#</p>
+<h4 id="部署OSD"><a href="#部署OSD" class="headerlink" title="部署OSD"></a><strong>部署OSD</strong></h4><p>说明：在引导节点执行</p>
+<p>ceph-volume 会不时扫描集群中的每个主机，以确定存在哪些设备以及这些设备是否可用做 OSD。要查看 cephadm 发现的设备列表，可运行以下命令：</p>
+<p># ceph orch device ls [–hostname&#x3D;…] [–wide] [–refresh]</p>
+<p>ceph orch device ls</p>
+<p>输出类似如下：</p>
+<p>[root@node-5-50 ~]# ceph orch device ls</p>
+<p>Hostname  Path   Type Serial Size  Health  Ident Fault Available</p>
+<p>node-5-50 &#x2F;dev&#x2F;sdb hdd      214G Unknown N&#x2F;A  N&#x2F;A  Yes</p>
+<p>node-5-51 &#x2F;dev&#x2F;sdb hdd      214G Unknown N&#x2F;A  N&#x2F;A  Yes</p>
+<p>node-5-52 &#x2F;dev&#x2F;sdb hdd      214G Unknown N&#x2F;A  N&#x2F;A  Yes</p>
+<p>说明：使用 –wide 选项提供与设备相关的所有详细信息，包括设备可能不适合用作 OSD 的任何原因</p>
+<p>如果满足以下所有条件，则认为存储设备可用：</p>
+<p>1）设备必须没有分区</p>
+<p>2）设备不得具有任何 LVM 状态</p>
+<p>3）设备必须没有被挂载</p>
+<p>4）设备必须没有包含任何文件系统</p>
+<p>5）设备不得包含 Ceph BlueStore OSD</p>
+<p>6）设备必须大于 5GB</p>
+<p>注意：Ceph的数据盘必须满足以上的6个条件才能在ceph orch device ls执行后显示出来，虚拟机可以直接使用vcenter给各个节点加一块磁盘即可，加盘后需要一定时间才能识别</p>
+<p>指定主机指定设备创建OSD</p>
+<p># ceph orch daemon add osd <em><host></em>:<em><device-path></em></p>
+<p>ceph orch daemon add osd node-5-50:&#x2F;dev&#x2F;sdb</p>
+<p>ceph orch daemon add osd node-5-51:&#x2F;dev&#x2F;sdb</p>
+<p>ceph orch daemon add osd node-5-52:&#x2F;dev&#x2F;sdb</p>
+<p>检查OSD的状态，up即为正常</p>
+<p><img src="C:\Users\liyupi\AppData\Roaming\Typora\typora-user-images\1640250091654.png" srcset="/img/loading.gif" lazyload alt="1640250091654"></p>
+<h2 id="使用Ceph提供对象存储"><a href="#使用Ceph提供对象存储" class="headerlink" title="使用Ceph提供对象存储"></a><strong>使用Ceph提供对象存储</strong></h2><h4 id="创建pool"><a href="#创建pool" class="headerlink" title="创建pool"></a><strong>创建pool</strong></h4><p><img src="C:\Users\liyupi\AppData\Roaming\Typora\typora-user-images\1640250370024.png" srcset="/img/loading.gif" lazyload alt="1640250370024"></p>
+<p><img src="C:\Users\liyupi\AppData\Roaming\Typora\typora-user-images\1640250117462.png" srcset="/img/loading.gif" lazyload alt="1640250117462"></p>
+<p>备注：建议使用命令创建，上面页面创建会存在告警</p>
+<p># ceph osd pool create <poolname> <pg_num> <pgp_num></p>
+<p>ceph osd pool create chj-new 32 32</p>
+<p># ceph osd pool application enable <poolname> <appname></p>
+<p># <app-name> is ‘cephfs’, ‘rbd’, ‘rgw’, or freeform for custom applications</p>
+<p>ceph osd pool application enable chj-new rbd</p>
+<p><img src="C:\Users\liyupi\AppData\Roaming\Typora\typora-user-images\1640250209231.png" srcset="/img/loading.gif" lazyload alt="1640250209231"></p>
+<h3 id="newben-使用CephRBD"><a href="#newben-使用CephRBD" class="headerlink" title="newben****使用CephRBD"></a><strong>newben****使用CephRBD</strong></h3><p>1、创建CephRBD存储池</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image008.gif" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>参数填写信息可以在ceph集群后台通过命令查看</p>
+<p>[root@node-5-50 ceph]# pwd</p>
+<p>&#x2F;etc&#x2F;ceph</p>
+<p>[root@node-5-50 ceph]# ll</p>
+<p>total 16</p>
+<p>-rw——- 1 root root 63 Dec 7 15:53 ceph.client.admin.keyring</p>
+<p>-rw-r–r– 1 root root 175 Dec 7 15:53 ceph.conf</p>
+<p>-rw-r–r– 1 root root 595 Dec 7 15:53 ceph.pub</p>
+<p>-rw-r–r– 1 root root 92 Oct 20 22:50 rbdmap</p>
+<p>[root@node-5-50 ceph]# cat ceph.client.admin.keyring</p>
+<p>[client.admin]</p>
+<p>​    key &#x3D; AQDhEq9hgPHtARAAZTCsINCYiqBdFD4E5HnPQA&#x3D;&#x3D;</p>
+<p>[root@node-5-50 ceph]# cat ceph.conf</p>
+<p># minimal ceph.conf for 7b9103f0-5732-11ec-8377-0050568823ff</p>
+<p>[global]</p>
+<p>​    fsid &#x3D; 7b9103f0-5732-11ec-8377-0050568823ff</p>
+<p>​    mon_host &#x3D; [v2:192.168.5.50:3300&#x2F;0,v1:192.168.5.50:6789&#x2F;0]</p>
+<p>[root@node-5-50 ceph]#</p>
+<p>2、创建CephRBD存储卷</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image010.gif" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>3、newben集群节点安装和Ceph集群同版本的ceph-common</p>
+<p>使用yum install ceph-commom安装的版本为10版本，和实际不匹配，可以直接使用cephadm进行安装</p>
+<p>具体参考安装“安装Cephadm”和“添加Ceph命令”章节，安装出来如下或者为16版本即可：</p>
+<p>ceph version 15.2.15 (2dfb18841cfecc2f7eb7eb2afd65986ca4d95985) octopus (stable)</p>
+<p>4、节点加载ceph和rbd模块：modprobe ceph和modprobe rbd</p>
+<p>[root@node-5-50 ~]# lsmod | grep ceph</p>
+<p>[root@node-5-50 ~]# lsmod | grep rbd</p>
+<p>[root@node-5-50 ~]# modprobe ceph</p>
+<p>[root@node-5-50 ~]# lsmod | grep ceph</p>
+<p>ceph         358802 0</p>
+<p>libceph        306625 1 ceph</p>
+<p>dns_resolver      13140 1 libceph</p>
+<p>libcrc32c       12644 2 xfs,libceph</p>
+<p>[root@node-5-50 ~]# modprobe rbd</p>
+<p>[root@node-5-50 ~]# lsmod | grep rbd</p>
+<p>rbd          83640 0</p>
+<p>libceph        306625 2 rbd,ceph</p>
+<p>5、创建应用使用Cephrbd存储卷</p>
+<h3 id="使用Ceph提供文件存储"><a href="#使用Ceph提供文件存储" class="headerlink" title="使用Ceph提供文件存储"></a><strong>使用Ceph提供文件存储</strong></h3><p>说明：操作在引导节点执行</p>
+<h4 id="创建文件系统"><a href="#创建文件系统" class="headerlink" title="创建文件系统"></a><strong>创建文件系统</strong></h4><p>1、使用 CEPHFS 文件系统需要一个或多个 MDS 守护进程</p>
+<p>2、创建两个存储池，cephfs_metadata 用于存文件系统元数据，cephfs_data 用于存文件系统数据</p>
+<p># ceph osd pool create <poolname> <pg_num> <pgp_num></p>
+<p>ceph osd pool create cephfs_metadata 32 32</p>
+<p>ceph osd pool create cephfs_data 32 32</p>
+<p># ceph osd pool application enable <poolname> <appname></p>
+<p># <app-name> is ‘cephfs’, ‘rbd’, ‘rgw’, or freeform for custom applications</p>
+<p>ceph osd pool application enable cephfs_metadata cephfs</p>
+<p>ceph osd pool application enable cephfs_data cephfs</p>
+<p>3、创建文件系统</p>
+<p>ceph fs new chjfs cephfs_metadata cephfs_data</p>
+<p>4、部署MDS</p>
+<p>ceph orch apply mds chjfs –placement&#x3D;”3 node-5-50 node-5-51 node-5-52”</p>
+<p>5、查看文件系统和MDS状态</p>
+<p>[root@node-5-50 ceph]# ceph fs ls</p>
+<p>name: koenlifs, metadata pool: cephfs_metadata, data pools: [cephfs_data ]</p>
+<p>[root@node-5-50 ceph]# ceph mds stat</p>
+<p>koenlifs:1 {0&#x3D;koenlifs.node-5-51.pmmwla&#x3D;up:active} 2 up:standby</p>
+<p>[root@node-5-50 ceph]#</p>
+<h4 id="newben-使用CephFS"><a href="#newben-使用CephFS" class="headerlink" title="newben****使用CephFS"></a><strong>newben****使用CephFS</strong></h4><p>1、创建CephFS存储池</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image012.gif" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>2、创建cephFS存储卷</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image014.gif" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>3、其它步骤CephRBD的使用差不多，这里不再介绍。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2022/07/12/Centos离线搭建Ceph集群/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Cper Liu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年7月12日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/07/12/CephFS%20%E4%BD%BF%E7%94%A8/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/07/12/ceph%20ansible%E9%83%A8%E7%BD%B2ceph%E9%9B%86%E7%BE%A4/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
