@@ -1,0 +1,676 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Cper Liu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="docker 网络1. Docker 网络理论容器网络实质上是由 Dokcer 为应用程序所创造的虚拟环境的一部分，它能让应用从宿主机操作系统的网络环境中独立出来，形成容器自有的网络设备、IP 协议栈、端口套接字、IP 路由表、防火墙等等与网络相关的模块。 Docker 为实现容器网络，主要采用的架构由三部分组成：CNM、Libnetwork 和驱动。 1.1. CNMDocker 网络架构采用的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker 网络">
+<meta property="og:url" content="http://example.com/2022/07/13/docker%20%E7%BD%91%E7%BB%9C/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="docker 网络1. Docker 网络理论容器网络实质上是由 Dokcer 为应用程序所创造的虚拟环境的一部分，它能让应用从宿主机操作系统的网络环境中独立出来，形成容器自有的网络设备、IP 协议栈、端口套接字、IP 路由表、防火墙等等与网络相关的模块。 Docker 为实现容器网络，主要采用的架构由三部分组成：CNM、Libnetwork 和驱动。 1.1. CNMDocker 网络架构采用的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/kD0fSwqpCGz8CTmzyfWy1Ex9Rhqr2UD1Uia2LzE5mkHMzMcwq4W6fmEeKiblibI7fQzYGexyiaBNNV1UGz6fMSgJHA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/kD0fSwqpCGz8CTmzyfWy1Ex9Rhqr2UD1q1iaF2AlkKQgZRB8Y4lianCpa6saBReoNIaTEWf4UibgWux7Ufff6mZmw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/kD0fSwqpCGz8CTmzyfWy1Ex9Rhqr2UD15GtLiaXMZWEu60JYDuZmqd15btLUckgrVicgZLt61cOktRtehWqka3tw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/kD0fSwqpCGz8CTmzyfWy1Ex9Rhqr2UD1Tj8g9LlLWYqpEHQ6VT0Kic5Wibb9CmlNcQhFs10QzicuvSorlricwabVqw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/kD0fSwqpCGz8CTmzyfWy1Ex9Rhqr2UD1kibRNkBgKAaKKNqNxiaicOtaAibq1mfgJOQg3lfp6JENzezfLic1uOJVzpw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/kD0fSwqpCGz8CTmzyfWy1Ex9Rhqr2UD1Ums1L1iazOgDejovjFI62TnzSHJibiaaKuZU5sGJ9iaCd6jsvJU6QR4e8w/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/kD0fSwqpCGz8CTmzyfWy1Ex9Rhqr2UD1L8FOkxbCuViaRa3iaWd9libMiarrqdh1Og65iaicsdTwoe93PkXiabSnNZnhQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/kD0fSwqpCGz8CTmzyfWy1Ex9Rhqr2UD1Y566BbSfWV9ENR5RXR31LzRwxtLtNYEPECJx0oKicjjdgKT2tqSkv5Q/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/kD0fSwqpCGz8CTmzyfWy1Ex9Rhqr2UD1aqcTZEZCeHbKicuuSjJD1SPEP9S1RKrM3DAicYsTwhDB7xZOjrE5EUMQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="article:published_time" content="2022-07-13T06:34:16.338Z">
+<meta property="article:modified_time" content="2022-07-12T08:25:42.516Z">
+<meta property="article:author" content="Cper Liu">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://mmbiz.qpic.cn/mmbiz_jpg/kD0fSwqpCGz8CTmzyfWy1Ex9Rhqr2UD1Uia2LzE5mkHMzMcwq4W6fmEeKiblibI7fQzYGexyiaBNNV1UGz6fMSgJHA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+  
+  
+  
+  <title>docker 网络 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="docker 网络"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-07-13 14:34" pubdate>
+          2022年7月13日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          56 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">docker 网络</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="docker-网络"><a href="#docker-网络" class="headerlink" title="docker 网络"></a>docker 网络</h1><h2 id="1-Docker-网络理论"><a href="#1-Docker-网络理论" class="headerlink" title="1. Docker 网络理论"></a><strong>1. Docker 网络理论</strong></h2><p>容器网络实质上是由 Dokcer 为应用程序所创造的虚拟环境的一部分，它能让应用从宿主机操作系统的网络环境中独立出来，形成容器自有的网络设备、IP 协议栈、端口套接字、IP 路由表、防火墙等等与网络相关的模块。</p>
+<p>Docker 为实现容器网络，主要采用的架构由三部分组成：CNM、Libnetwork 和驱动。</p>
+<h3 id="1-1-CNM"><a href="#1-1-CNM" class="headerlink" title="1.1. CNM"></a>1.1. CNM</h3><p>Docker 网络架构采用的设计规范是 CNM（Container Network Model）：CNM 中规定了 Docker 网络的基础组成要素：Sandbox、Endpoint、Network。如图所示，</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/kD0fSwqpCGz8CTmzyfWy1Ex9Rhqr2UD1Uia2LzE5mkHMzMcwq4W6fmEeKiblibI7fQzYGexyiaBNNV1UGz6fMSgJHA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" srcset="/img/loading.gif" lazyload alt="图片"></p>
+<ul>
+<li>Sandbox，提供了容器的虚拟网络栈，也即端口套接字、IP 路由表、防火墙、DNS 配置等内容。主要用于隔离容器网络与宿主机网络，形成了完全独立的容器网络环境。</li>
+<li>Network，Docker 内部的虚拟子网，网络内的参与者相互可见并能够进行通讯。Docker 的虚拟网路和宿主机网络是存在隔离关系的，其目的主要是形成容器间的安全通讯环境。</li>
+<li>Endpoint，就是虚拟网络的接口，就像普通网络接口一样，Endpoint 的主要职责是负责创建连接。在 CNM 中，终端负责将沙盒连接到网络。个人理解：Endpoint 与常见的网络适配器类似，也就意味着 Endpoint 只能接入某一个网络。因此，如果容器需要接入到多个网络，就需要多个 Endpoint。</li>
+</ul>
+<blockquote>
+<p>★</p>
+<p>如上图所示（我们将图中的三个容器从左到右依次标记为 1、2、3），那么容器 2 有两个 endpoint 并且分别接入 NetworkdA 和 NetworkB。那么容器 1 和容器 2 是可以实现通信的，因为都接入了 NetworkA。但是容器 3 和容器 1，以及容器 2 的两个 Endpoint 之间是不能通信的，除非有三层路由器的支持。</p>
+<p>”</p>
+</blockquote>
+<h3 id="1-2-Libnetwork"><a href="#1-2-Libnetwork" class="headerlink" title="1.2. Libnetwork"></a>1.2. Libnetwork</h3><p>Libnetwork 是 CNM 的标准实现。Libnetwork 是开源库，采用 Go 语言编写（跨平台的），也是 Docker 所使用的库，Docker 网络架构的核心代码都在这个库中。Libnetwork 实现了 CNM 中定义的全部三个组件，此外它还实现了本地服务发现、基于 Ingress 的容器负载均衡，以及网络控制层和管理层功能。</p>
+<h3 id="1-3-驱动"><a href="#1-3-驱动" class="headerlink" title="1.3. 驱动"></a>1.3. 驱动</h3><p>如果说 Libnetwork 实现了控制层和管理层功能，那么驱动就负责实现数据层。比如网络的连通性和隔离性是由驱动来处理的。驱动通过实现特定网络类型的方式扩展了 Docker 网络栈，例如桥接网络和覆盖网络。</p>
+<p>Docker 内置了若干驱动，通常被称作原生驱动或者本地驱动。比如 <strong>Bridge Driver</strong>、<strong>Host Driver</strong>、<strong>Overlay Driver</strong>、<strong>MacLan Driver</strong>、<strong>None Driver</strong> 等等。第三方也可以编写 Docker 网络驱动，这些驱动被叫做远程驱动，例如 Calico、Contiv、Kuryr 以及 Weave 等。每个驱动负责创建其上所有网络资源的创建和管理。</p>
+<p>其中 Bridge 和 Overlay 在开发过程中使用频率较高。</p>
+<ul>
+<li>Bridge，Docker 容器的默认网络驱动，通过网桥来实现网络通讯。</li>
+<li>Overlay，借助 Docker 集群模块 Docker Swarm 搭建的跨 Docker Daemon 网络。通过它可以搭建跨物理网络主机的虚拟网络，进而让不同物理机中运行的容器感知不到多个物理机的存在。</li>
+</ul>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/kD0fSwqpCGz8CTmzyfWy1Ex9Rhqr2UD1q1iaF2AlkKQgZRB8Y4lianCpa6saBReoNIaTEWf4UibgWux7Ufff6mZmw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" srcset="/img/loading.gif" lazyload alt="图片"></p>
+<p>在 Docker 安装时，会自动安装一块 Docker 网卡称为 docker0，用于 Docker 各容器及宿主机的网络通信。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">docker0</span>   Link encap:Ethernet  HWaddr <span class="hljs-number">02</span>:<span class="hljs-number">42</span>:be:<span class="hljs-number">6</span>b:<span class="hljs-number">61</span>:dc<br>          <span class="hljs-attribute">inet</span> addr:<span class="hljs-number">172.17.0.1</span>  Bcast:<span class="hljs-number">172.17.255.255</span>  Mask:<span class="hljs-number">255.255.0.0</span><br>          <span class="hljs-attribute">inet6</span> addr: fe80::<span class="hljs-number">42</span>:beff:fe6b:<span class="hljs-number">61</span>dc/<span class="hljs-number">64</span> Scope:Link<br>          <span class="hljs-attribute">UP</span> BROADCAST RUNNING MULTICAST  MTU:<span class="hljs-number">1500</span>  Metric:<span class="hljs-number">1</span><br>          <span class="hljs-attribute">RX</span> packets:<span class="hljs-number">0</span> errors:<span class="hljs-number">0</span> dropped:<span class="hljs-number">0</span> overruns:<span class="hljs-number">0</span> frame:<span class="hljs-number">0</span><br>          <span class="hljs-attribute">TX</span> packets:<span class="hljs-number">332</span> errors:<span class="hljs-number">0</span> dropped:<span class="hljs-number">0</span> overruns:<span class="hljs-number">0</span> carrier:<span class="hljs-number">0</span><br>          <span class="hljs-attribute">collisions</span>:<span class="hljs-number">0</span> txqueuelen:<span class="hljs-number">0</span><br>          <span class="hljs-attribute">RX</span> bytes:<span class="hljs-number">0</span> (<span class="hljs-number">0</span>.<span class="hljs-number">0</span> B)  TX bytes:<span class="hljs-number">30787</span> (<span class="hljs-number">30</span>.<span class="hljs-number">7</span> KB)<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>★</p>
+<p>个人理解：CNM 就是一个设计文档，指导你怎么去实现容器网络，而 Libnetwork 和驱动则是其具体实现，从而确保容器网络的通信。</p>
+<p>”</p>
+</blockquote>
+<h2 id="2-桥接网络"><a href="#2-桥接网络" class="headerlink" title="2. 桥接网络"></a><strong>2. 桥接网络</strong></h2><p><strong>Docker 的 bridge 网络采用内置的 bridge 驱动，而 bridge 的底层采用的是 Linux 内核中 Linux bridge 技术</strong>（这意味着 bridge 是高性能并且是非常稳定的）。</p>
+<p>那么 Linux 内核中 Linux bridge 应用于容器的话，到底是一个什么样的拓扑图呢？如图所示（这个拓扑关系不清楚接下去的很多东西难以理解，所以先贴出采用 bridge 之后的一个拓扑图），由于容器运行在自己单独的 network namespace 中，所以有单独的协议栈。容器中配置网关为 172.17.0.1，发出去的数据包先到达 br0，然后交给主机的协议栈，由于目的 IP 是外网 IP，且主机会开启 IP forward 功能，于是数据包通过主机的 eth0 发出去。由于 172.17.0.1 是内网 IP ，所以一般发出去之前会做 NAT 转换。由于要进过主机的协议栈并且要做 NAT 转换，所以性能上可能会差点，但是优点就是容器处于内网中，安全性相对要高点。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/kD0fSwqpCGz8CTmzyfWy1Ex9Rhqr2UD15GtLiaXMZWEu60JYDuZmqd15btLUckgrVicgZLt61cOktRtehWqka3tw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" srcset="/img/loading.gif" lazyload alt="图片"></p>
+<p>默认情况下，创建的容器在没有使用 –network 参数指定要加入的 docker 网络时，默认都是加入 Docker 默认的单机桥接网络，也就是下面的 name 为 bridge 的网络。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs routeros">$ docker<span class="hljs-built_in"> network </span>ls<span class="hljs-built_in"></span><br><span class="hljs-built_in">NETWORK </span>ID          NAME                DRIVER              SCOPE<br>0dda6f303b8b       <span class="hljs-built_in"> bridge </span>            <span class="hljs-built_in"> bridge </span>             local<br></code></pre></td></tr></table></figure>
+
+<p>而默认的 bridge 网络是被映射到内核中为 docker0 的网桥上。</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs pf">$ ip link show docker0<br><span class="hljs-number">4</span>: docker0: <span class="hljs-variable">&lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt;</span> mtu <span class="hljs-number">1500</span> qdisc noqueue <span class="hljs-keyword">state</span> DOWN mode DEFAULT <span class="hljs-keyword">group</span> <span class="hljs-keyword">default</span><br>    link/ether <span class="hljs-number">02</span>:**:**:**:**:** brd ff:ff:ff:ff:ff:ff<br><br>$ docker network inspect bridge | grep bridge.name<br>            <span class="hljs-string">&quot;com.docker.network.bridge.name&quot;</span>: <span class="hljs-string">&quot;docker0&quot;</span>,<br></code></pre></td></tr></table></figure>
+
+<p>Docker 默认的 bridge 网络和 Linux 内核中的 “docker0” 网桥是一个对应关系，如图所示。bridge 是 Docker 中对网络的命名，而 docker0 是内核中网桥的名字。（个人理解：你就可以把 bridge 和 docker0 当成 Linux 网桥的两个名字，两个都是代表同一个东西。docker 为了管理网络，又给 docker0 这个网桥取名为 bridge）。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/kD0fSwqpCGz8CTmzyfWy1Ex9Rhqr2UD1Tj8g9LlLWYqpEHQ6VT0Kic5Wibb9CmlNcQhFs10QzicuvSorlricwabVqw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" srcset="/img/loading.gif" lazyload alt="图片"></p>
+<p>那么，容器在没有指定要加入的网络情况下，都是加入这个网络的，假如之后的拓扑图跟前面的一样。另外，单机桥接网络中的容器想要对外发布服务的话，需要依赖于端口映射，这也是为啥我们在启动容器的时候需要指定端口映射关系 的原因。</p>
+<p>下面我们通过创建一个新的 Docker 桥接网络来阐述容器内部的通信、端口映射等情况。</p>
+<h3 id="2-1-创建新的单机桥接网络"><a href="#2-1-创建新的单机桥接网络" class="headerlink" title="2.1. 创建新的单机桥接网络"></a>2.1. 创建新的单机桥接网络</h3><p>使用 <code>docker network create</code> 命令，我们可创建一个名为 “localnet” 的单机桥接网络，并且在内核中还会多出一个新的 Linux 网桥。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs routeros">$ docker<span class="hljs-built_in"> network </span>create -d<span class="hljs-built_in"> bridge </span>localnet<br><br>$ docker<span class="hljs-built_in"> network </span>ls<span class="hljs-built_in"></span><br><span class="hljs-built_in">NETWORK </span>ID          NAME                DRIVER              SCOPE<br>			<span class="hljs-built_in">..</span><span class="hljs-built_in">..</span><span class="hljs-built_in">..</span><br>f55943e20201        localnet           <span class="hljs-built_in"> bridge </span>             local<br></code></pre></td></tr></table></figure>
+
+<p>在创建完之后，我们可以通过 brctl 工具来查看系统中的 Linux 网桥。可以看到，输出的内容中包含了两个网桥，docker0 是默认的 Docker bridge 网络所使用的网桥，br-f55943e20201 是 Docker localnet 网络所使用的网桥。这两个网桥目前都没有任何设备接入（看 interface 列）。这两个网桥所处的网段是不同的，一个是 172.18.0.1，另一个则是 172.17.0.1。</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">$ <span class="hljs-keyword">brctl </span><span class="hljs-keyword">show</span><br><span class="hljs-keyword"></span><span class="hljs-keyword">bridge </span>name     <span class="hljs-keyword">bridge </span>id               STP enabled     interfaces<br><span class="hljs-keyword">br-f55943e20201 </span><span class="hljs-number">8000</span>.<span class="hljs-number">02421</span>d9aa3e1       no<br>docker0         <span class="hljs-number">8000</span>.<span class="hljs-number">0242</span>be<span class="hljs-symbol">6b</span>61dc       no<br><br>$ ifconfig<br><span class="hljs-keyword">br-f55943e20201 </span>Link encap:Ethernet  HWaddr <span class="hljs-number">02</span>:<span class="hljs-number">42</span>:<span class="hljs-number">1</span>d:<span class="hljs-number">9</span>a:<span class="hljs-built_in">a3</span>:e1<br>          inet <span class="hljs-keyword">addr:172.18.0.1 </span> <span class="hljs-keyword">Bcast:172.18.255.255 </span> Mask:<span class="hljs-number">255</span>.<span class="hljs-number">255</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span><br>			......<br>docker0   Link encap:Ethernet  HWaddr <span class="hljs-number">02</span>:<span class="hljs-number">42</span>:<span class="hljs-keyword">be:6b:61:dc</span><br><span class="hljs-keyword"></span>          inet <span class="hljs-keyword">addr:172.17.0.1 </span> <span class="hljs-keyword">Bcast:172.17.255.255 </span> Mask:<span class="hljs-number">255</span>.<span class="hljs-number">255</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span><br>			......<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/kD0fSwqpCGz8CTmzyfWy1Ex9Rhqr2UD1kibRNkBgKAaKKNqNxiaicOtaAibq1mfgJOQg3lfp6JENzezfLic1uOJVzpw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" srcset="/img/loading.gif" lazyload alt="图片"></p>
+<h3 id="2-2-同个网络中的容器间通信"><a href="#2-2-同个网络中的容器间通信" class="headerlink" title="2.2. 同个网络中的容器间通信"></a>2.2. 同个网络中的容器间通信</h3><p>使用下面这条命令即可运行一个新的容器，并且让这个新容器加入到 localnet 这个网络中的。</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript">$ docker container <span class="hljs-built_in">run</span> -d <span class="hljs-comment">--name demo1 --network localnet alpine sleep 3600</span><br></code></pre></td></tr></table></figure>
+
+<p>我们查看网桥的情况，demo1 的网络接口连接到了网桥 br-f55943e20201 上，如图所示。</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">$ <span class="hljs-keyword">brctl </span><span class="hljs-keyword">show</span><br><span class="hljs-keyword"></span><span class="hljs-keyword">bridge </span>name     <span class="hljs-keyword">bridge </span>id               STP enabled     interfaces<br><span class="hljs-keyword">br-f55943e20201 </span><span class="hljs-number">8000</span>.<span class="hljs-number">02421</span>d9aa3e1       no              vethf6a<span class="hljs-symbol">3f</span>ba<br>docker0         <span class="hljs-number">8000</span>.<span class="hljs-number">0242</span>be<span class="hljs-symbol">6b</span>61dc       no<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/kD0fSwqpCGz8CTmzyfWy1Ex9Rhqr2UD1Ums1L1iazOgDejovjFI62TnzSHJibiaaKuZU5sGJ9iaCd6jsvJU6QR4e8w/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" srcset="/img/loading.gif" lazyload alt="图片"></p>
+<p>如果在相同的网络中继续接入新的容器，那么新接入的容器是可以通过 demo1 这个名称来 ping 通的。如下所示，我们创建了一个新的容器（demo2），并且在这个容器中直接 ping demo1 发现可以的 ping 通的。这是因为，demo2 运行了一个本地 DNS 解析器，该解析器会将该请求转发到 Docker 内部 DNS 服务器中。DNS 服务器中记录了容器启动时通过 –name 或者 –net-alias 参数指定的名称和容器之间的和映射关系。</p>
+<p>之外，我们可以看到 demo1 的 IP 地址是 172.18.0.2，这个与网桥 br-f55943e20201 是处于同一个网段内的。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs routeros">/ # ls<br>bin    dev    etc    home   lib    media  mnt    opt    proc   root   <span class="hljs-built_in">run</span>    sbin   srv    sys    tmp    usr    var<br>/ #<span class="hljs-built_in"> ping </span>demo1<span class="hljs-built_in"></span><br><span class="hljs-built_in">PING </span>demo1 (172.18.0.2): 56 data bytes<br>64 bytes <span class="hljs-keyword">from</span> 172.18.0.2: <span class="hljs-attribute">seq</span>=0 <span class="hljs-attribute">ttl</span>=64 <span class="hljs-attribute">time</span>=0.230 ms<br>64 bytes <span class="hljs-keyword">from</span> 172.18.0.2: <span class="hljs-attribute">seq</span>=1 <span class="hljs-attribute">ttl</span>=64 <span class="hljs-attribute">time</span>=0.161 ms<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/kD0fSwqpCGz8CTmzyfWy1Ex9Rhqr2UD1L8FOkxbCuViaRa3iaWd9libMiarrqdh1Og65iaicsdTwoe93PkXiabSnNZnhQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" srcset="/img/loading.gif" lazyload alt="图片"></p>
+<blockquote>
+<p>★</p>
+<p>Docker 默认的 bridge 网络是不支持通过 Docker DNS 服务进行域名解析的，自定义桥接网络是可以的。</p>
+<p>”</p>
+</blockquote>
+<h3 id="2-3-暴露端口"><a href="#2-3-暴露端口" class="headerlink" title="2.3. 暴露端口"></a>2.3. 暴露端口</h3><p>同一个网络中的容器之间虽然可以互相 ping 通，但是并不意味着可以任意访问容器中的任何服务。Docker 为容器增加了一套安全机制，只有容器自身允许的端口，才能被其他容器所访问。如下所示，我们可以通过 <code>docker container ls</code> 命令可以看到容器暴露给其他容器访问的端口是 80，那么我们只能容器的 80 端口进行访问，而不能对没有开放的 22 端口进行访问。</p>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs lasso">$ docker container ls<br>CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES<br><span class="hljs-number">5</span>a8dece3841d        nginx               <span class="hljs-string">&quot;/docker-entrypoint.…&quot;</span>   <span class="hljs-number">3</span> minutes ago       Up <span class="hljs-number">3</span> minutes        <span class="hljs-number">80</span>/tcp              web<br><br>$ telnet <span class="hljs-number">172.18</span><span class="hljs-number">.0</span><span class="hljs-number">.2</span> <span class="hljs-number">80</span><br>Trying <span class="hljs-number">172.18</span><span class="hljs-number">.0</span><span class="hljs-number">.2</span><span class="hljs-params">...</span><br>Connected <span class="hljs-keyword">to</span> <span class="hljs-number">172.18</span><span class="hljs-number">.0</span><span class="hljs-number">.2</span>.<br>Escape character is <span class="hljs-string">&#x27;^]&#x27;</span>.<br><br>$ telnet <span class="hljs-number">172.18</span><span class="hljs-number">.0</span><span class="hljs-number">.2</span> <span class="hljs-number">20</span><br>Trying <span class="hljs-number">172.18</span><span class="hljs-number">.0</span><span class="hljs-number">.2</span><span class="hljs-params">...</span><br>telnet: Unable <span class="hljs-keyword">to</span> connect <span class="hljs-keyword">to</span> remote host: Connection refused<br></code></pre></td></tr></table></figure>
+
+<p>我们可以在镜像创建的时候定义要暴露的端口，也可以在容器创建时定义要暴露的端口，使用 –expose。如下所示，就额外暴露了 20、22 这两个端口。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ docker container run -d --name web --expose 22 --expose 20 nginx<br><br>$ docker container <span class="hljs-built_in">ls</span><br>CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES<br>4749dac32711        nginx               <span class="hljs-string">&quot;/docker-entrypoint.…&quot;</span>   12 seconds ago      Up 10 seconds       20/tcp, 22/tcp, 80/tcp   web<br></code></pre></td></tr></table></figure>
+
+<p>容器的端口暴露类似于打开了容器的防火墙，具体能不能通过这个端口访问容器中的服务，还得看容器中有无应用监听并处理来自这个端口的请求。</p>
+<h3 id="2-4-端口映射"><a href="#2-4-端口映射" class="headerlink" title="2.4. 端口映射"></a>2.4. 端口映射</h3><p>上面提到的桥接网络中的容器只能与位于相同网络中的容器进行通信，假如一个容器想对外提供服务的话，需要进行端口映射。端口映射将容器的某个端口映射到 Docker 主机端口上。那么任何发送到该端口的流量，都会被转发到容器中。如图所示，容器内部开放端口为 80，该端口被映射到了 Docker 主机的 10.0.0.15 的 5000 端口上。最终访问 10.0.0.15:5000 的所有流量都会被转发到容器的 80 端口。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/kD0fSwqpCGz8CTmzyfWy1Ex9Rhqr2UD1Y566BbSfWV9ENR5RXR31LzRwxtLtNYEPECJx0oKicjjdgKT2tqSkv5Q/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" srcset="/img/loading.gif" lazyload alt="图片"></p>
+<p>如下图所示，假设我们运行了一个新的 web 服务容器，并且将容器 80 端口映射到 Dokcer 主机的 5000 端口。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">$ docker container run -d <span class="hljs-attr">--name</span> web <span class="hljs-attr">--network</span> localnet -<span class="hljs-selector-tag">p</span> <span class="hljs-number">5000</span>:<span class="hljs-number">80</span> nginx<br></code></pre></td></tr></table></figure>
+
+<p>那么，当我们通过 web 浏览器访问 Docker 主机的 5000 端口时，会得到如图所示的结果。外部系统可以通过访问 Docker 主机的 TCP 端口 5000，来访问运行在桥接网络上的 Nginx 容器了。</p>
+<p>端口映射之后，假如主机的 5000 端口被占用了，那么其他容器就不能再使用这个端口了。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/kD0fSwqpCGz8CTmzyfWy1Ex9Rhqr2UD1aqcTZEZCeHbKicuuSjJD1SPEP9S1RKrM3DAicYsTwhDB7xZOjrE5EUMQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" srcset="/img/loading.gif" lazyload alt="图片"></p>
+<h2 id="3-相关命令"><a href="#3-相关命令" class="headerlink" title="3. 相关命令"></a><strong>3. 相关命令</strong></h2><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment"># 列出运行在本地 docker 主机上的全部网络</span><br>docker<span class="hljs-built_in"> network </span>ls<br><br><span class="hljs-comment"># 提供 Docker 网络的详细配置信息</span><br>docker<span class="hljs-built_in"> network </span>inspect &lt;NETWORK_NAME&gt;<br><br><span class="hljs-comment"># 创建新的单机桥接网络，名为 localnet，其中 -d 不指定的话，默认是 bridge 驱动。并且主机内核中也会创建一个新的网桥。</span><br>docker<span class="hljs-built_in"> network </span>create -d<span class="hljs-built_in"> bridge </span>localnet<br><br><span class="hljs-comment"># 删除 Docker 主机上指定的网络</span><br>docker<span class="hljs-built_in"> network </span>rm<br><br><span class="hljs-comment"># 删除主机上全部未使用的网络</span><br>docker<span class="hljs-built_in"> network </span>prune<br><br><span class="hljs-comment"># 运行一个新的容器，并且让这个容器加入 Docker 的 localnet 这个网络中</span><br>docker container <span class="hljs-built_in">run</span> -d --name demo1 --network localnet alpine sleep 3600<br><br><span class="hljs-comment"># 运行一个新的容器，并且让这个容器暴露 22、20 两个端口</span><br>docker container <span class="hljs-built_in">run</span> -d --name web --expose 22 --expose 20 nginx<br><br><span class="hljs-comment"># 运行一个新的容器，并且将这个容器的 80 端口映射到主机的 5000 端口</span><br>docker container <span class="hljs-built_in">run</span> -d --name web --network localnet -p 5000:80 nginx<br><br><span class="hljs-comment"># 查看系统中的网桥</span><br>brctl show<br></code></pre></td></tr></table></figure>
+
+<h2 id="4-巨人的肩膀"><a href="#4-巨人的肩膀" class="headerlink" title="4. 巨人的肩膀"></a><strong>4. 巨人的肩膀</strong></h2><p>\1. <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/57203485">https://zhuanlan.zhihu.com/p/57203485</a></p>
+<p>\2. <a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000009491002">https://segmentfault.com/a/1190000009491002</a></p>
+<p>\3. <a target="_blank" rel="noopener" href="http://blog.nsfocus.net/linux-bridge/">http://blog.nsfocus.net/linux-bridge/</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>docker 网络</div>
+      <div>http://example.com/2022/07/13/docker 网络/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Cper Liu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年7月13日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/07/13/%E9%BA%92%E9%BA%9F%20kylin%20v10%20OOM%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA/" title="麒麟 kylin v10 OOM内存溢出">
+                        <span class="hidden-mobile">麒麟 kylin v10 OOM内存溢出</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

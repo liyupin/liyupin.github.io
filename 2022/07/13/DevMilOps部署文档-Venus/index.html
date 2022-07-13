@@ -1,0 +1,781 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Cper Liu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="准备工作工具版本   工具 版本 venus****应用版本    nginx     mysql 5.7.14 可使用应用市场部署   jenkins 2.170 可使用应用市场部署   gitlab 9.5.1~13.2.1 11.8.6-ce.0   devops后端 最新稳定版本    devops前端 最新稳定版本     下载&#x2F;准备所需镜像（gitlab9.5.1~13.2.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DevMilOps部署文档-Venus">
+<meta property="og:url" content="http://example.com/2022/07/13/DevMilOps%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3-Venus/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="准备工作工具版本   工具 版本 venus****应用版本    nginx     mysql 5.7.14 可使用应用市场部署   jenkins 2.170 可使用应用市场部署   gitlab 9.5.1~13.2.1 11.8.6-ce.0   devops后端 最新稳定版本    devops前端 最新稳定版本     下载&#x2F;准备所需镜像（gitlab9.5.1~13.2.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image002.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image004.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image006.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image008.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image010.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image012.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image014.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image016.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image018.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image020.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image022.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image024.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image026.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image028.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image030.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image032.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image034.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image036.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image038.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image040.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image042.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image044.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image045.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image045.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image045.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image045.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image045.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image046.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image047.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image048.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image049.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image051.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image053.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image055.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image057.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image059.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image061.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image063.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image065.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image067.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image069.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image071.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image073.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image075.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image077.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image079.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image081.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image083.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image085.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image087.png">
+<meta property="article:published_time" content="2022-07-13T06:34:16.275Z">
+<meta property="article:modified_time" content="2022-07-07T23:45:30.795Z">
+<meta property="article:author" content="Cper Liu">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image002.png">
+  
+  
+  
+  <title>DevMilOps部署文档-Venus - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="DevMilOps部署文档-Venus"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-07-13 14:34" pubdate>
+          2022年7月13日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          22 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">DevMilOps部署文档-Venus</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a><strong>准备工作</strong></h1><h2 id="工具版本"><a href="#工具版本" class="headerlink" title="工具版本"></a><strong>工具版本</strong></h2><table>
+<thead>
+<tr>
+<th><strong>工具</strong></th>
+<th><strong>版本</strong></th>
+<th><strong>venus****应用版本</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>nginx</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>mysql</td>
+<td>5.7.14</td>
+<td>可使用应用市场部署</td>
+</tr>
+<tr>
+<td>jenkins</td>
+<td>2.170</td>
+<td>可使用应用市场部署</td>
+</tr>
+<tr>
+<td>gitlab</td>
+<td>9.5.1~13.2.1</td>
+<td>11.8.6-ce.0</td>
+</tr>
+<tr>
+<td>devops后端</td>
+<td>最新稳定版本</td>
+<td></td>
+</tr>
+<tr>
+<td>devops前端</td>
+<td>最新稳定版本</td>
+<td></td>
+</tr>
+</tbody></table>
+<p> 下载&#x2F;准备所需镜像（gitlab9.5.1~13.2.1、devops前后端稳定版本）</p>
+<h2 id="上传所需镜像tar-x2F-tgz格式"><a href="#上传所需镜像tar-x2F-tgz格式" class="headerlink" title="上传所需镜像tar&#x2F;tgz格式"></a><strong>上传所需镜像tar&#x2F;tgz格式</strong></h2><p>将镜像上传至venus：<br> 方法1：<br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image002.png" srcset="/img/loading.gif" lazyload alt="img"><br> 方法2：<br> 使用scp命令将包含所需镜像的压缩包传输至venus服务器：</p>
+<ol>
+<li>scp [压缩包文件路径] root@[服务器ip]:* *[路径]</li>
+<li>解压缩：tar     –(z)xvf [压缩包]</li>
+<li>docker     push [所需镜像] 到venus镜像仓库</li>
+</ol>
+<p>其他可能需要的docker命令:</p>
+<ul>
+<li>登录：docker     login <a target="_blank" rel="noopener" href="http://xxxxx.com/">http://xxxxx.com</a></li>
+<li>登录私有hub创建项目，例如项目叫：abc-dev</li>
+<li>给镜像打tag：docker tag [已有镜像id] [新镜像名:tag] </li>
+<li>推送镜像到仓库：docker     push [镜像名称]   注：镜像名应包含正确的镜像仓库地址</li>
+<li>将镜像保存到文件：docker     save -o(输出到文件): docker save -o [文件名].tar 镜像名:tag*</li>
+</ul>
+<h2 id="在venus创建devops命名空间："><a href="#在venus创建devops命名空间：" class="headerlink" title="在venus创建devops命名空间："></a><strong>在venus创建devops命名空间：</strong></h2><p><img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image004.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h1 id="部署jenkins"><a href="#部署jenkins" class="headerlink" title="部署jenkins"></a><strong>部署jenkins</strong></h1><h2 id="创建持久化存储卷"><a href="#创建持久化存储卷" class="headerlink" title="创建持久化存储卷"></a><strong>创建持久化存储卷</strong></h2><p>\1. 连接venus服务器，选择节点：ssh [masterX、nodeX…\</p>
+<p>\2. 创建存储卷目录：mkdir -p &#x2F;data&#x2F;[存储卷目录:如devops-jenkins] （目录名应注意区分命名空间）</p>
+<ol>
+<li>进入venus界面：存储管理-存储类，若没有”local”类型的存储类，则新增local存储类：</li>
+</ol>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image006.png" srcset="/img/loading.gif" lazyload alt="img"><br> 若已存在存储类，则创建持久化存储卷：<br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image008.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h2 id="进入venus应用市场，部署jenkins"><a href="#进入venus应用市场，部署jenkins" class="headerlink" title="进入venus应用市场，部署jenkins"></a><strong>进入venus应用市场，部署jenkins</strong></h2><p><img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image010.png" srcset="/img/loading.gif" lazyload alt="img"><br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image012.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h2 id="替换jenkins插件："><a href="#替换jenkins插件：" class="headerlink" title="替换jenkins插件："></a><strong>替换jenkins插件：</strong></h2><ol>
+<li>在venus中将jenkins应用的副本设为0</li>
+<li>将plugins.tar上传到jenkins持久化存储卷目录：&#x2F;data&#x2F;devops-jenkins；<br> 或将本地plugins.tar传输到持久化存储卷所在节点：scp plugins.tar root@[节点名称]:&#x2F;data&#x2F;devops-jenkins</li>
+<li>连接venus服务器，ssh [节点名称] 切换到持久化存储卷目录：<br> cd &#x2F;data&#x2F;devops-jenkins<br> mv plugins plugins_backup</li>
+<li>解压plugins.tar包：tar -xvf plugins.tar</li>
+<li>在veunus中将jenkins应用的副本设为1</li>
+</ol>
+<h2 id="修改jenkins配置"><a href="#修改jenkins配置" class="headerlink" title="修改jenkins配置"></a><strong>修改jenkins配置</strong></h2><ol>
+<li>登录jenkins：任意venus节点ip+jenkins暴露端口:</li>
+</ol>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image014.png" srcset="/img/loading.gif" lazyload alt="img"><br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image016.png" srcset="/img/loading.gif" lazyload alt="img"><br> 如:192.168.2.8:31496 即可访问jenkins</p>
+<ol>
+<li>修改jenkins配置：</li>
+</ol>
+<p>进入系统管理-系统设置<br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image018.png" srcset="/img/loading.gif" lazyload alt="img"><br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image020.png" srcset="/img/loading.gif" lazyload alt="img"><br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image022.png" srcset="/img/loading.gif" lazyload alt="img"><br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image024.png" srcset="/img/loading.gif" lazyload alt="img"><br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image026.png" srcset="/img/loading.gif" lazyload alt="img"><br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image028.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h1 id="部署gitlab"><a href="#部署gitlab" class="headerlink" title="部署gitlab"></a><strong>部署gitlab</strong></h1><h2 id="创建gitlab持久化存储卷"><a href="#创建gitlab持久化存储卷" class="headerlink" title="创建gitlab持久化存储卷"></a><strong>创建gitlab持久化存储卷</strong></h2><p>\1. 连接venus服务器，选择节点：ssh [masterX、nodeX…]</p>
+<p>\2. 创建存储卷目录：mkdir -p &#x2F;data&#x2F;[存储卷目录:如devops-gitlab]（目录名应注意区分命名空间）</p>
+<ol>
+<li>进入venus界面创建持久化存储卷</li>
+</ol>
+<h2 id="进入venus应用市场，部署gitlab-ce"><a href="#进入venus应用市场，部署gitlab-ce" class="headerlink" title="进入venus应用市场，部署gitlab-ce"></a><strong>进入venus应用市场，部署gitlab-ce</strong></h2><p><img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image030.png" srcset="/img/loading.gif" lazyload alt="img"><br> <strong>等待gitlab完全启动…</strong></p>
+<ol>
+<li>进入venus配置管理，编辑gitlab配置文件，删除alertmanager、letsencrypt项</li>
+</ol>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image032.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<ol>
+<li>将devops命名空间的gitlab应用副本设为0</li>
+</ol>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image034.png" srcset="/img/loading.gif" lazyload alt="img"><br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image036.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<ol>
+<li>连接venus服务器，删除gitlab的存储卷目录内容：</li>
+</ol>
+<p><strong>cd &#x2F;data&#x2F;</strong><br> <strong>rm -rf devops-gitlab</strong><br> <strong>mkdir devops-gitlab</strong></p>
+<ol>
+<li>重新发布gitlab应用，选择9.5.1的tag号，将应用副本重新修改为1</li>
+</ol>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image038.png" srcset="/img/loading.gif" lazyload alt="img"><br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image040.png" srcset="/img/loading.gif" lazyload alt="img"><br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image042.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h1 id="部署mysql"><a href="#部署mysql" class="headerlink" title="部署mysql"></a><strong>部署mysql</strong></h1><h2 id="创建持久化存储卷-1"><a href="#创建持久化存储卷-1" class="headerlink" title="创建持久化存储卷"></a><strong>创建持久化存储卷</strong></h2><p>\1. 连接venus服务器，选择节点：ssh [masterX、nodeX…]</p>
+<p>\2. 创建存储卷目录：mkdir -p &#x2F;data&#x2F;[存储卷目录:如devops-mysql] （目录名应注意区分命名空间）</p>
+<ol>
+<li>进入venus界面创建持久化存储卷</li>
+</ol>
+<h2 id="进入venus应用市场，部署mysql"><a href="#进入venus应用市场，部署mysql" class="headerlink" title="进入venus应用市场，部署mysql"></a><strong>进入venus应用市场，部署mysql</strong></h2><p><img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image044.png" srcset="/img/loading.gif" lazyload alt="img"><br> <strong>请保存设置的数据库密码</strong></p>
+<h2 id="初始化数据库"><a href="#初始化数据库" class="headerlink" title="初始化数据库"></a><strong>初始化数据库</strong></h2><ol>
+<li><p>暴露mysql：在     应用管理-我的应用 中，对mysql应用进行暴露<br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image045.png" srcset="/img/loading.gif" lazyload alt="img"><br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image045.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+</li>
+<li><p>使用任意节点ip和暴露的外部端口连接数据库（工具或命令均可，只要能连接数据库，此处使用Navicat）<br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image045.png" srcset="/img/loading.gif" lazyload alt="img"><br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image045.png" srcset="/img/loading.gif" lazyload alt="img"><br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image045.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+</li>
+<li><p>创建devops数据库（使用命令创建一定要指定字符集为utf-8：CREATE     DATABASE devops DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;）</p>
+</li>
+</ol>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image046.png" srcset="/img/loading.gif" lazyload alt="img"><br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image047.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<ol>
+<li>初始化数据库</li>
+</ol>
+<p>执行devops.sql文件<br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image048.png" srcset="/img/loading.gif" lazyload alt="img"><br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image049.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h1 id="部署devops后端"><a href="#部署devops后端" class="headerlink" title="部署devops后端"></a><strong>部署devops后端</strong></h1><ol>
+<li>进入venus我的应用，点击自定义创建，输入应用信息，点击提交</li>
+</ol>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image051.png" srcset="/img/loading.gif" lazyload alt="img"><br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image053.png" srcset="/img/loading.gif" lazyload alt="img"><br> 启动命令：<br> java<br> -agentlib:jdwp&#x3D;transport&#x3D;dt_socket,server&#x3D;y,suspend&#x3D;n,address&#x3D;5005<br> -Dspring.profiles.active&#x3D;sit<br> -XX:MetaspaceSize&#x3D;256m<br> -XX:MaxMetaspaceSize&#x3D;256m<br> -Xms2048m<br> -Xmx2048m<br> -jar<br> devops-platform.jar</p>
+<ol>
+<li>进入venus配置管理，创建配置文件</li>
+</ol>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image055.png" srcset="/img/loading.gif" lazyload alt="img"><br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image057.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<ol>
+<li>更改devops-platform应用的yaml文件，添加配置文件挂载信息</li>
+</ol>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image059.png" srcset="/img/loading.gif" lazyload alt="img"><br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image061.png" srcset="/img/loading.gif" lazyload alt="img"><br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image063.png" srcset="/img/loading.gif" lazyload alt="img"><br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image065.png" srcset="/img/loading.gif" lazyload alt="img"><br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image067.png" srcset="/img/loading.gif" lazyload alt="img"><br> 增加内容见：应用yaml文件.txt</p>
+<h1 id="部署devops前端"><a href="#部署devops前端" class="headerlink" title="部署devops前端"></a><strong>部署devops前端</strong></h1><ol>
+<li>进入venus我的应用，点击自定义创建，输入应用信息，点击提交</li>
+</ol>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image069.png" srcset="/img/loading.gif" lazyload alt="img"><br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image071.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<ol>
+<li>更改devops-ui应用的Yaml信息</li>
+</ol>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image073.png" srcset="/img/loading.gif" lazyload alt="img"><br> 点击重新部署</p>
+<h1 id="暴露应用"><a href="#暴露应用" class="headerlink" title="暴露应用"></a><strong>暴露应用</strong></h1><h2 id="暴露后端："><a href="#暴露后端：" class="headerlink" title="暴露后端："></a><strong>暴露后端：</strong></h2><p><img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image075.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h2 id="暴露前端："><a href="#暴露前端：" class="headerlink" title="暴露前端："></a><strong>暴露前端</strong>：</h2><p><img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image077.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h1 id="设置入口转发"><a href="#设置入口转发" class="headerlink" title="设置入口转发"></a><strong>设置入口转发</strong></h1><h2 id="后端："><a href="#后端：" class="headerlink" title="后端："></a>后端：</h2><p><img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image079.png" srcset="/img/loading.gif" lazyload alt="img"><br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image081.png" srcset="/img/loading.gif" lazyload alt="img"><br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image083.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h2 id="前端："><a href="#前端：" class="headerlink" title="前端："></a>前端：</h2><p><img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image085.png" srcset="/img/loading.gif" lazyload alt="img"><br> <img src="file:///C:/Users/liyupi/AppData/Local/Packages/oice_16_974fa576_32c1d314_1658/AC/Temp/msohtmlclip1/01/clip_image087.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><strong>入口管理设置后，服务管理会出现ingress服务：</strong></p>
+<p><strong>为ingress设置虚拟ip，使用 [ingress 虚拟ip]&#x2F;devops-front&#x2F;  访问Devops</strong></p>
+<p><strong>或使用 [任意节点ip]:[ingress外部端口号]&#x2F;devops-front&#x2F; 访问Devops</strong></p>
+<p><strong>使用admin &#x2F; adminP@ssw0rd 登录</strong></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>DevMilOps部署文档-Venus</div>
+      <div>http://example.com/2022/07/13/DevMilOps部署文档-Venus/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Cper Liu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年7月13日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/07/13/Git%20%E5%A6%82%E4%BD%95%E6%8A%8Amaster%E7%9A%84%E5%86%85%E5%AE%B9%E6%9B%B4%E6%96%B0%E5%88%B0%E5%88%86%E6%94%AF/" title="git update master branch">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">git update master branch</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/07/13/DK%20%E5%AE%89%E8%A3%85%E4%B8%8E%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E9%85%8D%E7%BD%AE(Win10%E8%AF%A6%E7%BB%86%E7%89%88)/" title="JDK for windows install">
+                        <span class="hidden-mobile">JDK for windows install</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
