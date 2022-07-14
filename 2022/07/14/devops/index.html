@@ -1,0 +1,1048 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Cper Liu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1  准备工作镜像：    工具 版本 备注    Elasticsearch 7.10.2    Grafana 7.4.2v10    Gitea 1.14.2    Jenkins 2.170    Mysql 5.7.14    Minio RELEASE.2021-05-26T00-22-46Z    Devops后端 最新稳定版本    Analysis-tool后端 最新稳定版本">
+<meta property="og:type" content="article">
+<meta property="og:title" content="devop deploy">
+<meta property="og:url" content="https://liyupin.github.io/2022/07/14/devops/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1  准备工作镜像：    工具 版本 备注    Elasticsearch 7.10.2    Grafana 7.4.2v10    Gitea 1.14.2    Jenkins 2.170    Mysql 5.7.14    Minio RELEASE.2021-05-26T00-22-46Z    Devops后端 最新稳定版本    Analysis-tool后端 最新稳定版本">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image002.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image004.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image006.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image008.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image010.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image012.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image014.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image016.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image018.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image020.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image022.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image024.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image026.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image028.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image030.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image032.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image034.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image036.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image038.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image040.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image042.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image044.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image046.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image048.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image050.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image052.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image054.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image056.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image058.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image060.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image062.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image064.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image066.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image068.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image070.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image072.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image074.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image075.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image077.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image079.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image081.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image083.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image085.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image087.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image089.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image091.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image093.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image095.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image097.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image099.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image101.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image103.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image105.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image107.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image109.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image111.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image113.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image115.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image117.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image119.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image121.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image123.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image125.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image127.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image129.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image131.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image133.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image135.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image137.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image139.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image141.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image143.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image145.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image147.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image149.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image151.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image153.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image155.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image157.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image159.png">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image161.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image163.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image165.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image167.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image169.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image171.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image173.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image175.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image177.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image179.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image181.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image183.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image185.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image187.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image189.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image191.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image193.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image195.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image197.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image199.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image201.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image203.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image205.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image207.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image209.jpg">
+<meta property="og:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image211.jpg">
+<meta property="article:published_time" content="2022-07-14T03:35:31.050Z">
+<meta property="article:modified_time" content="2022-07-14T03:35:31.050Z">
+<meta property="article:author" content="Cper Liu">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image002.jpg">
+  
+  
+  
+  <title>devop deploy - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="devop deploy"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-07-14 11:35" pubdate>
+          2022年7月14日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          43 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">devop deploy</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1  准备工作"></a>1  准备工作</h1><p>镜像：</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>版本</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Elasticsearch</td>
+<td>7.10.2</td>
+<td></td>
+</tr>
+<tr>
+<td>Grafana</td>
+<td>7.4.2v10</td>
+<td></td>
+</tr>
+<tr>
+<td>Gitea</td>
+<td>1.14.2</td>
+<td></td>
+</tr>
+<tr>
+<td>Jenkins</td>
+<td>2.170</td>
+<td></td>
+</tr>
+<tr>
+<td>Mysql</td>
+<td>5.7.14</td>
+<td></td>
+</tr>
+<tr>
+<td>Minio</td>
+<td>RELEASE.2021-05-26T00-22-46Z</td>
+<td></td>
+</tr>
+<tr>
+<td>Devops后端</td>
+<td>最新稳定版本</td>
+<td></td>
+</tr>
+<tr>
+<td>Analysis-tool后端</td>
+<td>最新稳定版本</td>
+<td></td>
+</tr>
+<tr>
+<td>Devops前端</td>
+<td>最新稳定版本</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>文件：</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>文件名</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Analysis-tool后端</td>
+<td>analysis-application.yaml</td>
+<td></td>
+</tr>
+<tr>
+<td>Devops后端</td>
+<td>devops-application.yml</td>
+<td></td>
+</tr>
+<tr>
+<td>Grafana</td>
+<td>grafana-defaults.ini</td>
+<td></td>
+</tr>
+<tr>
+<td>Mysql</td>
+<td>mysql.cnf</td>
+<td></td>
+</tr>
+<tr>
+<td>Jenkins</td>
+<td>Plugin.tar</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>将所有的镜像文件都上传到venus平台上</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image002.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>按照图中的步骤将准备好的镜像tar依次上传即可。</p>
+<p>在venus上创建devops空间</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image004.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h1 id="2-部署mysql"><a href="#2-部署mysql" class="headerlink" title="2  部署mysql"></a>2  部署mysql</h1><p>在配置管理中增加一个devops-mysql的配置，配置好mysql的root密码环境变量MYSQL_ROOT_PASSWORD</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image006.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>；增加mysql的配置文件mysql-cnf，内容为安装包中的mysql.cnf同名文件内容</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image008.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>在应用管理中我的应用点击自定义创建</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image010.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>在创建窗口中按照下图中的内容进行填写，创建MySQL应用。</p>
+<p>l 挂在卷设置中添加的挂载卷设置为主机上的存储位置，需要在venus安装完成后先创建存储类，此处默认存储类已经创建完成；</p>
+<p>l 容器配置中需要填写镜像的名称和tag号以及准备分配的资源和启动命令；</p>
+<p>l 容器配置中的挂载卷左侧填写上方创建的挂载卷名称，右侧填写容器内需要挂载出来的路径&#x2F;var&#x2F;lib&#x2F;mysql；</p>
+<p>l 环境变量处填写之前创建的配置。</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image012.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>在创建好的MySQL应用中修改yaml文件</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image014.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image016.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>在yaml文件中找到spec.spec的位置，加上mysql配置文件的挂载</p>
+<p>​    - name: conf</p>
+<p>​     configMap:</p>
+<p>​      name: mysql-conf</p>
+<p>​      items:</p>
+<p>​       - key: mysql.cnf</p>
+<p>​        path: mysql.cnf</p>
+<p>​      defaultMode: 420</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image018.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>在之前的位置下方再加入一下配置</p>
+<p>​      - name: conf</p>
+<p>​       mountPath: &#x2F;etc&#x2F;mysql&#x2F;mysql.cnf</p>
+<p>​       subPath: mysql.cnf</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image020.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>点击页面上方的重新部署，等待应用重启</p>
+<p>在我的应用中点击mysql的暴露应用暴露mysql的端口</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image022.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>再次点击mysql的暴露应用查看暴露出来的外部端口</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image024.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image026.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>使用navicat连接工具（该工具在包中附带，依次执行navicat*.exe、PatchNavicat.exe）建立与数据库的连接，ip和端口改为venus访问的ip和上面查看到的暴露出来的端口，密码使用之前配置中设置的环境变量的值</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image028.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>连接数据库只有右键选择运行sql文件，将安装包中的两个初始化文件分别执行。</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image030.jpg" srcset="/img/loading.gif" lazyload alt="img"><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image032.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h1 id="3-部署gitea"><a href="#3-部署gitea" class="headerlink" title="3  部署gitea"></a>3  部署gitea</h1><p>点击自定义创建，创建一个gitea应用，按照下图填写配置</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image034.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>用容器内端口3000进行暴露，并获取暴露后的外部端口：</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image036.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>使用ip:暴露的外部端口，访问gitea：</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image038.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>按照下面的图进行gitea的配置</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image040.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image042.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image044.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>配置完成后点击下方的立即安装，完成gitea的安装。</p>
+<h1 id="4-部署minio"><a href="#4-部署minio" class="headerlink" title="4  部署minio"></a>4  部署minio</h1><p>在配置管理中新建devops-minio的配置，内容为：</p>
+<p>   MINIO_ACCESS_KEY: minioadmin</p>
+<p>   MINIO_SECRET_KEY: minioadmin</p>
+<p>   MINIO_BUCKET: devops </p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image046.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>然后在我的应用中点击自定义创建，创建一个minio应用，按照下图进行配置：</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image048.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>在minio应用的配置文件中将command修改为args：</p>
+<p>参照下面两张图进行修改。</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image050.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image052.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>完成修改后，重新部署minio应用；使用容器端口9000暴露应用并获取外部端口：</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image054.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>使用ip+外部端口访问minio</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image056.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>登录之后创建一个devops的文件桶：</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image058.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image060.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image062.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image064.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h1 id="5-部署jenkins"><a href="#5-部署jenkins" class="headerlink" title="5  部署jenkins"></a>5  部署jenkins</h1><p>首先还是在配置管理中新增一个devops-jenkins的配置，在可视化中增加两个环境变量</p>
+<p>TZ ：  Asia&#x2F;Shanghai</p>
+<p>JAVA_OPTS ：  -Xms4096m -Xmx4096m -XX:MaxNewSize&#x3D;512m -Dorg.jenkinsci.plugins.gitclient.Git.timeOut&#x3D;60</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image066.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>然后在我的应用中自定义创建jenkins应用，和创建mysql应用一样按照图中的内容进行选择和填写即可。</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image068.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>暴露jenkins的应用</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image070.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>查看再次点击暴露应用查看暴露的端口，或者在服务管理中查看暴露出来的端口</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image072.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>远程连接venus的后台，找到挂载的目录，</p>
+<p>l 使用kubectl -n devops get pvc找到空间下的pvc，devops为部署的工作空间</p>
+<p>l 使用kubectl -n devops get po -o wide找到空间下应用在的节点</p>
+<p>l 在对应的节点找到对应的目录</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image074.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>l 将本地plugins.tar传输到持久化存储卷所在节点：scp plugins.tar root@[节点名称]:找到的目录</p>
+<p>l 在venus中将jenkins应用的副本设为0</p>
+<p>l ssh到对应的节点上，进入jenkins的目录</p>
+<p>l mv plugins plugins_backup,将之前的plugin目录进行备份</p>
+<p>l 解压plugins.tar包：tar -xvf plugins.tar</p>
+<p>l 在veunus中将jenkins应用的副本设为1</p>
+<p>l 使用venus的ip加上暴露的端口访问jenkins</p>
+<p>l 在服务器上的查看jenkins初始密码</p>
+<p>l <img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image075.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>使用密码登录jenkins，按照下面的图进行jenkins安装和设置</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image077.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image079.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image081.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image083.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image085.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image087.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image089.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image091.png" srcset="/img/loading.gif" lazyload alt="img"><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image093.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h1 id="6-部署elasticsearch"><a href="#6-部署elasticsearch" class="headerlink" title="6  部署elasticsearch"></a>6  部署elasticsearch</h1><p>在配置管理中创建一个devops-es的配置，然后填上环境变量</p>
+<p>discovery.type ： single-node</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image095.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>在配置管理中创建一个es-conf的配置，然后写上加上配置信息</p>
+<p>sysctl.conf         vm.max_map_count&#x3D;262144</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image097.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>自定义创建elasticsearch应用</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image099.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>容器内部挂载目录：&#x2F;usr&#x2F;share&#x2F;elasticsearch&#x2F;data</p>
+<p>和mysql一样，在应用的yaml文件中的对应位置加上配置</p>
+<p>​    - name: conf</p>
+<p>​     configMap:</p>
+<p>​      name: es-conf</p>
+<p>​      items:</p>
+<p>​       - key: sysctl.conf</p>
+<p>​        path: sysctl.conf</p>
+<p>​      defaultMode: 420</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image101.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>​      - name: conf</p>
+<p>​       mountPath: &#x2F;etc&#x2F;sysctl.conf</p>
+<p>​       subPath: sysctl.conf</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image103.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>点击重新部署，完成修改</p>
+<p>然后在应用列表使用容器端口9200暴露应用并获取暴露后端口</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image105.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h1 id="7-部署grafana"><a href="#7-部署grafana" class="headerlink" title="7  部署grafana"></a>7  部署grafana</h1><p>在配置管理中创建一个grafana-conf的配置，内容为defaluts.ini（安装包同名文件）</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image107.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>点击自定义创建，创建grafana应用</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image109.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>同样在yaml文件中修改对应位置的配置</p>
+<p>​    - name: conf</p>
+<p>​     configMap:</p>
+<p>​      name: grafana-conf</p>
+<p>​      items:</p>
+<p>​       - key: defaults.ini</p>
+<p>​        path: defaults.ini</p>
+<p>​      defaultMode: 420</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image111.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>​      - name: conf</p>
+<p>​       mountPath: &#x2F;usr&#x2F;share&#x2F;grafana&#x2F;conf&#x2F;defaults.ini</p>
+<p>​       subPath: defaults.ini</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image113.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>点击重新部署，完成修改</p>
+<p>使用容器端口号3000完成应用暴露</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image115.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h1 id="8-部署analysis后端应用"><a href="#8-部署analysis后端应用" class="headerlink" title="8  部署analysis后端应用"></a>8  部署analysis后端应用</h1><p>在配置管理中创建一个analysis-conf的配置文件，内容为analysis的application.yaml文件（安装包中可以找到）</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image117.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>点击自定义创建，创建analysis应用，如下图填写配置</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image119.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>在应用内的YAML文件中增加配置文件挂载内容：</p>
+<p>​    - name: conf</p>
+<p>​     configMap:</p>
+<p>​      name: analysis-conf</p>
+<p>​      items:</p>
+<p>​       - key: application.yaml</p>
+<p>​        path: application.yaml</p>
+<p>​      defaultMode: 420</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image121.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>​      - name: conf</p>
+<p>​       mountPath: &#x2F;root&#x2F;application.yaml</p>
+<p>​       subPath: application.yaml</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image123.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>点击暴露应用，使用容器内端口8080进行暴露，并获取暴露后的端口号。</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image125.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h1 id="9-部署devops后端应用"><a href="#9-部署devops后端应用" class="headerlink" title="9  部署devops后端应用"></a>9  部署devops后端应用</h1><p>在配置管理中创建一个devops-conf的文件，内容为devops后端的application.yaml（安装包中），按下图中的内容进行修改。</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image127.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image129.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image131.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image133.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image135.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>点击自定义创建，创建一个devops-platform应用，按下图填入配置</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image137.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>在devops-platform应用中的YAML文件增加以下内容：</p>
+<p>   volumes:</p>
+<p>​    - name: conf</p>
+<p>​     configMap:</p>
+<p>​      name: devops-conf</p>
+<p>​      items:</p>
+<p>​       - key: application.yml</p>
+<p>​        path: application.yml</p>
+<p>​      defaultMode: 420</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image139.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>​     volumeMounts:</p>
+<p>​      - name: conf</p>
+<p>​       mountPath: &#x2F;application.yml</p>
+<p>​       subPath: application.yml</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image141.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>点击重新部署更新应用。</p>
+<p>使用容器内端口8080暴露应用并获取暴露后的端口：</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image143.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h1 id="10-部署devops前端应用"><a href="#10-部署devops前端应用" class="headerlink" title="10  部署devops前端应用"></a>10  部署devops前端应用</h1><p>点击自定义创建，创建一个devops-ui应用，按下图填写配置：</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image145.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>使用容器内部端口80暴露应用，并获取暴露后端口：</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image147.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h1 id="11-设置入口转发"><a href="#11-设置入口转发" class="headerlink" title="11  设置入口转发"></a>11  设置入口转发</h1><p>在入口管理中新增一个devops-platform的ingress</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image149.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>编辑转发规则：</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image151.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>新增devops-platform和static-analysis-back的转发规则：</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image153.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image155.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>新增一个devops-ui的ingress</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image157.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>添加转发规则：</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image159.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>新增devops-ui和grafana的转发规则：</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image161.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image163.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>入口管理设置后，我的应用会出现ingress应用：</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image165.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>暴露ingress应用，直接将默认的80和443端口暴露并获取外部端口：</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image167.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>使用 [任意节点ip]:[ingress外部端口号]&#x2F;devops-front&#x2F; 访问Devops</p>
+<p>使用admin &#x2F; adminP@ssw0rd 登录</p>
+<p>获取到igress的ip之后，需要将之前devops的应用配置文件做对应的修改，接着修改下面的grafana的配置，然后重启devops-platform应用。</p>
+<p>使用[任意节点ip]:[ingress外部端口号]&#x2F;grafana&#x2F;访问grafana页面，获取api-key</p>
+<p>使用账号admin、密码admin登录</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image169.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image171.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>点击生成一个新的api-key，填入devops的信息，赋予管理员权限</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image173.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>复制token内容，更新到devops的配置文件中</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image175.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image177.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>更新图中内容</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image179.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>更新配置文件之后，重启devops-platform应用</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image181.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>然后接着在grafana的页面增加数据源：</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image183.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image185.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image187.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>按照下图中的数据源配置，依次创建grafana数据源：</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image189.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>Elasticsearch-all  *   devopsCollectTime</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image191.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image193.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>Elasticsearch-issuestatus  issue_status_snapshot  devopsCollectTime</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image195.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>Elasticsearch-pipeline  pipeline  create_time</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image197.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>Elasticsearch-project  project   create_time</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image199.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>Elasticsearch-spte  spte   create_time</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image201.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>Elasticsearch-static-analysis  static_analysis  createTime</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image203.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>Elasticsearch-static-analysis-rule  static_analysis_rule  createTime</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image205.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>Elasticsearch-cpptest   cpptest    create_time</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image207.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>Elasticsearch-issue  Default  issue  create_time</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image209.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>Elasticsearch-issue_status_current  issue_status_current  devopsCollectTime</p>
+<p>进入jenkins页面，在系统设置中将环境变量更新为ingress地址：</p>
+<p><img src="file:///C:/Users/liyupi/AppData/Local/Temp/msohtmlclip1/01/clip_image211.jpg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>完成后可以使用 [任意节点ip]:[ingress外部端口号]&#x2F;devops-front&#x2F; 访问Devops</p>
+<p>使用admin &#x2F; adminP@ssw0rd 登录</p>
+<p>此时devops功能已可正常使用</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>devop deploy</div>
+      <div>https://liyupin.github.io/2022/07/14/devops/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Cper Liu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年7月14日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/07/14/dfs/" title="dfs">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">dfs</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/07/14/DevMilOps%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3-Venus/" title="DevMilOps部署文档-Venus">
+                        <span class="hidden-mobile">DevMilOps部署文档-Venus</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

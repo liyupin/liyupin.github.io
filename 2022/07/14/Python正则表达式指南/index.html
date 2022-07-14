@@ -1,0 +1,661 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Cper Liu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Python正则表达式指南本文介绍了Python对于正则表达式的支持，包括正则表达式基础以及Python正则表达式标准库的完整介绍及使用示例。本文的内容不包括如何编写高效的正则表达式、如何优化正则表达式，这些主题请查看其他教程。 目录本文介绍了Python对于正则表达式的支持，包括正则表达式基础以及Python正则表达式标准库的完整介绍及使用示例。本文的内容不包括如何编写高效的正则表达式、如何优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python正则表达式指南">
+<meta property="og:url" content="https://liyupin.github.io/2022/07/14/Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Python正则表达式指南本文介绍了Python对于正则表达式的支持，包括正则表达式基础以及Python正则表达式标准库的完整介绍及使用示例。本文的内容不包括如何编写高效的正则表达式、如何优化正则表达式，这些主题请查看其他教程。 目录本文介绍了Python对于正则表达式的支持，包括正则表达式基础以及Python正则表达式标准库的完整介绍及使用示例。本文的内容不包括如何编写高效的正则表达式、如何优化">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.jbzj.com/file_images/article/201810/201810090837111.png">
+<meta property="og:image" content="https://img.jbzj.com/file_images/article/201810/201810090837112.png">
+<meta property="article:published_time" content="2022-07-14T03:37:02.703Z">
+<meta property="article:modified_time" content="2022-07-14T03:37:02.703Z">
+<meta property="article:author" content="Cper Liu">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://img.jbzj.com/file_images/article/201810/201810090837111.png">
+  
+  
+  
+  <title>Python正则表达式指南 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Python正则表达式指南"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-07-14 11:37" pubdate>
+          2022年7月14日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          70 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Python正则表达式指南</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Python正则表达式指南"><a href="#Python正则表达式指南" class="headerlink" title="Python正则表达式指南"></a>Python正则表达式指南</h1><p>本文介绍了Python对于正则表达式的支持，包括正则表达式基础以及Python正则表达式标准库的完整介绍及使用示例。本文的内容不包括如何编写高效的正则表达式、如何优化正则表达式，这些主题请查看其他教程。</p>
+<h5 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h5><p>本文介绍了Python对于正则表达式的支持，包括正则表达式基础以及Python正则表达式标准库的完整介绍及使用示例。本文的内容不包括如何编写高效的正则表达式、如何优化正则表达式，这些主题请查看其他教程。</p>
+<p>注意：本文基于Python2.4完成；如果看到不明白的词汇请记得百度谷歌或维基，whatever。</p>
+<h2 id="1-正则表达式基础"><a href="#1-正则表达式基础" class="headerlink" title="1. 正则表达式基础"></a>1. 正则表达式基础</h2><h3 id="1-1-简单介绍"><a href="#1-1-简单介绍" class="headerlink" title="1.1. 简单介绍"></a>1.1. 简单介绍</h3><p>正则表达式并不是Python的一部分。正则表达式是用于处理字符串的强大工具，拥有自己独特的语法以及一个独立的处理引擎，效率上可能不如str自带的方法，但功能十分强大。得益于这一点，在提供了正则表达式的语言里，正则表达式的语法都是一样的，区别只在于不同的编程语言实现支持的语法数量不同；但不用担心，不被支持的语法通常是不常用的部分。如果已经在其他语言里使用过正则表达式，只需要简单看一看就可以上手了。</p>
+<p>下图展示了使用正则表达式进行匹配的流程：<br><img src="https://img.jbzj.com/file_images/article/201810/201810090837111.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>正则表达式的大致匹配过程是：依次拿出表达式和文本中的字符比较，如果每一个字符都能匹配，则匹配成功；一旦有匹配不成功的字符则匹配失败。如果表达式中有量词或边界，这个过程会稍微有一些不同，但也是很好理解的，看下图中的示例以及自己多使用几次就能明白。</p>
+<p>下图列出了Python支持的正则表达式元字符和语法： </p>
+<p><img src="https://img.jbzj.com/file_images/article/201810/201810090837112.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h3 id="1-2-数量词的贪婪模式与非贪婪模式"><a href="#1-2-数量词的贪婪模式与非贪婪模式" class="headerlink" title="1.2. 数量词的贪婪模式与非贪婪模式"></a>1.2. 数量词的贪婪模式与非贪婪模式</h3><p>正则表达式通常用于在文本中查找匹配的字符串。Python里数量词默认是贪婪的（在少数语言里也可能是默认非贪婪），总是尝试匹配尽可能多的字符；非贪婪的则相反，总是尝试匹配尽可能少的字符。例如：正则表达式”ab*”如果用于查找”abbbc”，将找到”abbb”。而如果使用非贪婪的数量词”ab*?”，将找到”a”。</p>
+<h3 id="1-3-反斜杠的困扰"><a href="#1-3-反斜杠的困扰" class="headerlink" title="1.3. 反斜杠的困扰"></a>1.3. 反斜杠的困扰</h3><p>与大多数编程语言相同，正则表达式里使用”&quot;作为转义字符，这就可能造成反斜杠困扰。假如你需要匹配文本中的字符”&quot;，那么使用编程语言表示的正则表达式里将需要4个反斜杠”\\“：前两个和后两个分别用于在编程语言里转义成反斜杠，转换成两个反斜杠后再在正则表达式里转义成一个反斜杠。Python里的原生字符串很好地解决了这个问题，这个例子中的正则表达式可以使用r”\“表示。同样，匹配一个数字的”\d”可以写成r”\d”。有了原生字符串，你再也不用担心是不是漏写了反斜杠，写出来的表达式也更直观。</p>
+<h3 id="1-4-匹配模式"><a href="#1-4-匹配模式" class="headerlink" title="1.4. 匹配模式"></a>1.4. 匹配模式</h3><p>正则表达式提供了一些可用的匹配模式，比如忽略大小写、多行匹配等，这部分内容将在Pattern类的工厂方法re.compile(pattern[, flags])中一起介绍。</p>
+<h2 id="2-re模块"><a href="#2-re模块" class="headerlink" title="2. re模块"></a>2. re模块</h2><h3 id="2-1-开始使用re"><a href="#2-1-开始使用re" class="headerlink" title="2.1. 开始使用re"></a>2.1. 开始使用re</h3><p>Python通过re模块提供对正则表达式的支持。使用re的一般步骤是先将正则表达式的字符串形式编译为Pattern实例，然后使用Pattern实例处理文本并获得匹配结果（一个Match实例），最后使用Match实例获得信息，进行其他的操作。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">`<span class="hljs-comment"># encoding: UTF-8``import` `re` `# 将正则表达式编译成Pattern对象``pattern ``=` `re.``compile``(r``&#x27;hello&#x27;``)` `# 使用Pattern匹配文本，获得匹配结果，无法匹配时将返回None``match ``=` `pattern.match(``&#x27;hello world!&#x27;``)` `if` `match:`` ``# 使用Match获得分组信息`` ``print` `match.group()` `### 输出 ###``# hello`</span><br></code></pre></td></tr></table></figure>
+
+<p>re.compile(strPattern[, flag]):</p>
+<p>这个方法是Pattern类的工厂方法，用于将字符串形式的正则表达式编译为Pattern对象。 第二个参数flag是匹配模式，取值可以使用按位或运算符’|’表示同时生效，比如re.I | re.M。另外，你也可以在regex字符串中指定模式，比如re.compile(‘pattern’, re.I | re.M)与re.compile(‘(?im)pattern’)是等价的。<br>可选值有：</p>
+<p>re.I(re.IGNORECASE): 忽略大小写（括号内是完整写法，下同） M(MULTILINE): 多行模式，改变’^’和’$’的行为（参见上图） S(DOTALL): 点任意匹配模式，改变’.’的行为 L(LOCALE): 使预定字符类 \w \W \b \B \s \S 取决于当前区域设定 U(UNICODE): 使预定字符类 \w \W \b \B \s \S \d \D 取决于unicode定义的字符属性 X(VERBOSE): 详细模式。这个模式下正则表达式可以是多行，忽略空白字符，并可以加入注释。以下两个正则表达式是等价的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">`a ``=` `re.``<span class="hljs-built_in">compile</span>``(r``<span class="hljs-string">&quot;&quot;&quot;\d + # the integral part`` ``\. # the decimal point`` ``\d * # some fractional digits&quot;&quot;&quot;</span>``, re.X)``b ``=` `re.``<span class="hljs-built_in">compile</span>``(r``<span class="hljs-string">&quot;\d+\.\d*&quot;</span>``)`<br></code></pre></td></tr></table></figure>
+
+<p>re提供了众多模块方法用于完成正则表达式的功能。这些方法可以使用Pattern实例的相应方法替代，唯一的好处是少写一行re.compile()代码，但同时也无法复用编译后的Pattern对象。这些方法将在Pattern类的实例方法部分一起介绍。如上面这个例子可以简写为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">`m ``=` `re.match(r``<span class="hljs-string">&#x27;hello&#x27;</span>``, ``<span class="hljs-string">&#x27;hello world!&#x27;</span>``)``<span class="hljs-built_in">print</span>` `m.group()`<br></code></pre></td></tr></table></figure>
+
+<p>re模块还提供了一个方法escape(string)，用于将string中的正则表达式元字符如*&#x2F;+&#x2F;?等之前加上转义符再返回，在需要大量匹配元字符时有那么一点用。</p>
+<h3 id="2-2-Match"><a href="#2-2-Match" class="headerlink" title="2.2. Match"></a>2.2. Match</h3><p>Match对象是一次匹配的结果，包含了很多关于此次匹配的信息，可以使用Match提供的可读属性或方法来获取这些信息。</p>
+<p>属性：</p>
+<p>string: 匹配时使用的文本。 re: 匹配时使用的Pattern对象。 pos: 文本中正则表达式开始搜索的索引。值与Pattern.match()和Pattern.seach()方法的同名参数相同。 endpos: 文本中正则表达式结束搜索的索引。值与Pattern.match()和Pattern.seach()方法的同名参数相同。 lastindex: 最后一个被捕获的分组在文本中的索引。如果没有被捕获的分组，将为None。 lastgroup: 最后一个被捕获的分组的别名。如果这个分组没有别名或者没有被捕获的分组，将为None。</p>
+<p>方法：</p>
+<p>group([group1, …]):</p>
+<p>获得一个或多个分组截获的字符串；指定多个参数时将以元组形式返回。group1可以使用编号也可以使用别名；编号0代表整个匹配的子串；不填写参数时，返回group(0)；没有截获字符串的组返回None；截获了多次的组返回最后一次截获的子串。 groups([default]):</p>
+<p>以元组形式返回全部分组截获的字符串。相当于调用group(1,2,…last)。default表示没有截获字符串的组以这个值替代，默认为None。 groupdict([default]):<br>返回以有别名的组的别名为键、以该组截获的子串为值的字典，没有别名的组不包含在内。default含义同上。 start([group]):<br>返回指定的组截获的子串在string中的起始索引（子串第一个字符的索引）。group默认值为0。 end([group]):<br>返回指定的组截获的子串在string中的结束索引（子串最后一个字符的索引+1）。group默认值为0。 span([group]):<br>返回(start(group), end(group))。 expand(template):<br>将匹配到的分组代入template中然后返回。template中可以使用\id或\g<id>、\g<name>引用分组，但不能使用编号0。\id与\g<id>是等价的；但\10将被认为是第10个分组，如果你想表达\1之后是字符’0’，只能使用\g&lt;1&gt;0。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">`<span class="hljs-keyword">import</span>` `re``m ``=` `re.match(r``<span class="hljs-string">&#x27;(\w+) (\w+)(?P.*)&#x27;</span>``, ``<span class="hljs-string">&#x27;hello world!&#x27;</span>``)` `<span class="hljs-built_in">print</span>` `<span class="hljs-string">&quot;m.string:&quot;</span>``, m.string``<span class="hljs-built_in">print</span>` `<span class="hljs-string">&quot;m.re:&quot;</span>``, m.re``<span class="hljs-built_in">print</span>` `<span class="hljs-string">&quot;m.pos:&quot;</span>``, m.pos``<span class="hljs-built_in">print</span>` `<span class="hljs-string">&quot;m.endpos:&quot;</span>``, m.endpos``<span class="hljs-built_in">print</span>` `<span class="hljs-string">&quot;m.lastindex:&quot;</span>``, m.lastindex``<span class="hljs-built_in">print</span>` `<span class="hljs-string">&quot;m.lastgroup:&quot;</span>``, m.lastgroup` `<span class="hljs-built_in">print</span>` `<span class="hljs-string">&quot;m.group(1,2):&quot;</span>``, m.group(``<span class="hljs-number">1</span>``, ``<span class="hljs-number">2</span>``)``<span class="hljs-built_in">print</span>` `<span class="hljs-string">&quot;m.groups():&quot;</span>``, m.groups()``<span class="hljs-built_in">print</span>` `<span class="hljs-string">&quot;m.groupdict():&quot;</span>``, m.groupdict()``<span class="hljs-built_in">print</span>` `<span class="hljs-string">&quot;m.start(2):&quot;</span>``, m.start(``<span class="hljs-number">2</span>``)``<span class="hljs-built_in">print</span>` `<span class="hljs-string">&quot;m.end(2):&quot;</span>``, m.end(``<span class="hljs-number">2</span>``)``<span class="hljs-built_in">print</span>` `<span class="hljs-string">&quot;m.span(2):&quot;</span>``, m.span(``<span class="hljs-number">2</span>``)``<span class="hljs-built_in">print</span>` `r``<span class="hljs-string">&quot;m.expand(r&#x27;\2 \1\3&#x27;):&quot;</span>``, m.expand(r``<span class="hljs-string">&#x27;\2 \1\3&#x27;</span>``)` `<span class="hljs-comment">### output ###``# m.string: hello world!``# m.re: &lt;_sre.SRE_Pattern object at 0x016E1A38&gt;``# m.pos: 0``# m.endpos: 12``# m.lastindex: 3``# m.lastgroup: sign``# m.group(1,2): (&#x27;hello&#x27;, &#x27;world&#x27;)``# m.groups(): (&#x27;hello&#x27;, &#x27;world&#x27;, &#x27;!&#x27;)``# m.groupdict(): &#123;&#x27;sign&#x27;: &#x27;!&#x27;&#125;``# m.start(2): 6``# m.end(2): 11``# m.span(2): (6, 11)``# m.expand(r&#x27;\2 \1\3&#x27;): world hello!`</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="2-3-Pattern"><a href="#2-3-Pattern" class="headerlink" title="2.3. Pattern"></a>2.3. Pattern</h3><p>Pattern对象是一个编译好的正则表达式，通过Pattern提供的一系列方法可以对文本进行匹配查找。</p>
+<p>Pattern不能直接实例化，必须使用re.compile()进行构造。</p>
+<p>Pattern提供了几个可读属性用于获取表达式的相关信息：</p>
+<p>pattern: 编译时用的表达式字符串。 flags: 编译时用的匹配模式。数字形式。 groups: 表达式中分组的数量。 groupindex: 以表达式中有别名的组的别名为键、以该组对应的编号为值的字典，没有别名的组不包含在内。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">`<span class="hljs-keyword">import</span>` `re``p ``=` `re.``<span class="hljs-built_in">compile</span>``(r``<span class="hljs-string">&#x27;(\w+) (\w+)(?P.*)&#x27;</span>``, re.DOTALL)` `<span class="hljs-built_in">print</span>` `<span class="hljs-string">&quot;p.pattern:&quot;</span>``, p.pattern``<span class="hljs-built_in">print</span>` `<span class="hljs-string">&quot;p.flags:&quot;</span>``, p.flags``<span class="hljs-built_in">print</span>` `<span class="hljs-string">&quot;p.groups:&quot;</span>``, p.groups``<span class="hljs-built_in">print</span>` `<span class="hljs-string">&quot;p.groupindex:&quot;</span>``, p.groupindex` `<span class="hljs-comment">### output ###``# p.pattern: (\w+) (\w+)(?P.*)``# p.flags: 16``# p.groups: 3``# p.groupindex: &#123;&#x27;sign&#x27;: 3&#125;`</span><br></code></pre></td></tr></table></figure>
+
+<p>实例方法[ | re模块方法]：</p>
+<p>match(string[, pos[, endpos]]) | re.match(pattern, string[, flags]):<br>这个方法将从string的pos下标处起尝试匹配pattern；如果pattern结束时仍可匹配，则返回一个Match对象；如果匹配过程中pattern无法匹配，或者匹配未结束就已到达endpos，则返回None。<br>pos和endpos的默认值分别为0和len(string)；re.match()无法指定这两个参数，参数flags用于编译pattern时指定匹配模式。</p>
+<p>注意：这个方法并不是完全匹配。当pattern结束时若string还有剩余字符，仍然视为成功。想要完全匹配，可以在表达式末尾加上边界匹配符’$’。<br>示例参见2.1小节。 search(string[, pos[, endpos]]) | re.search(pattern, string[, flags]):<br>这个方法用于查找字符串中可以匹配成功的子串。从string的pos下标处起尝试匹配pattern，如果pattern结束时仍可匹配，则返回一个Match对象；若无法匹配，则将pos加1后重新尝试匹配；直到pos&#x3D;endpos时仍无法匹配则返回None。<br>pos和endpos的默认值分别为0和len(string))；re.search()无法指定这两个参数，参数flags用于编译pattern时指定匹配模式。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">`<span class="hljs-comment"># encoding: UTF-8 ``import` `re ` `# 将正则表达式编译成Pattern对象 ``pattern ``=` `re.``compile``(r``&#x27;world&#x27;``) ` `# 使用search()查找匹配的子串，不存在能匹配的子串时将返回None ``# 这个例子中使用match()无法成功匹配 ``match ``=` `pattern.search(``&#x27;hello world!&#x27;``) ` `if` `match: `` ``# 使用Match获得分组信息 `` ``print` `match.group() ` `### 输出 ### ``# world `</span><br></code></pre></td></tr></table></figure>
+
+<p>split(string[, maxsplit]) | re.split(pattern, string[, maxsplit]):<br>按照能够匹配的子串将string分割后返回列表。maxsplit用于指定最大分割次数，不指定将全部分割。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">`<span class="hljs-keyword">import</span>` `re` `p ``=` `re.``<span class="hljs-built_in">compile</span>``(r``<span class="hljs-string">&#x27;\d+&#x27;</span>``)``<span class="hljs-built_in">print</span>` `p.split(``<span class="hljs-string">&#x27;one1two2three3four4&#x27;</span>``)` `<span class="hljs-comment">### output ###``# [&#x27;one&#x27;, &#x27;two&#x27;, &#x27;three&#x27;, &#x27;four&#x27;, &#x27;&#x27;]`</span><br></code></pre></td></tr></table></figure>
+
+<p>findall(string[, pos[, endpos]]) | re.findall(pattern, string[, flags]):<br>搜索string，以列表形式返回全部能匹配的子串。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">`<span class="hljs-keyword">import</span>` `re` `p ``=` `re.``<span class="hljs-built_in">compile</span>``(r``<span class="hljs-string">&#x27;\d+&#x27;</span>``)``<span class="hljs-built_in">print</span>` `p.findall(``<span class="hljs-string">&#x27;one1two2three3four4&#x27;</span>``)` `<span class="hljs-comment">### output ###``# [&#x27;1&#x27;, &#x27;2&#x27;, &#x27;3&#x27;, &#x27;4&#x27;]`</span><br></code></pre></td></tr></table></figure>
+
+<p>finditer(string[, pos[, endpos]]) | re.finditer(pattern, string[, flags]):<br>搜索string，返回一个顺序访问每一个匹配结果（Match对象）的迭代器。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">`<span class="hljs-keyword">import</span>` `re` `p ``=` `re.``<span class="hljs-built_in">compile</span>``(r``<span class="hljs-string">&#x27;\d+&#x27;</span>``)``<span class="hljs-keyword">for</span>` `m ``<span class="hljs-keyword">in</span>` `p.finditer(``<span class="hljs-string">&#x27;one1two2three3four4&#x27;</span>``):`` ``<span class="hljs-built_in">print</span>` `m.group(),` `<span class="hljs-comment">### output ###``# 1 2 3 4`</span><br></code></pre></td></tr></table></figure>
+
+<p>sub(repl, string[, count]) | re.sub(pattern, repl, string[, count]):<br>使用repl替换string中每一个匹配的子串后返回替换后的字符串。<br>当repl是一个字符串时，可以使用\id或\g<id>、\g<name>引用分组，但不能使用编号0。<br>当repl是一个方法时，这个方法应当只接受一个参数（Match对象），并返回一个字符串用于替换（返回的字符串中不能再引用分组）。<br>count用于指定最多替换次数，不指定时全部替换。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">`<span class="hljs-keyword">import</span>` `re` `p ``=` `re.``<span class="hljs-built_in">compile</span>``(r``<span class="hljs-string">&#x27;(\w+) (\w+)&#x27;</span>``)``s ``=` `<span class="hljs-string">&#x27;i say, hello world!&#x27;</span>` `<span class="hljs-built_in">print</span>` `p.sub(r``<span class="hljs-string">&#x27;\2 \1&#x27;</span>``, s)` `<span class="hljs-keyword">def</span>` `func(m):`` ``<span class="hljs-keyword">return</span>` `m.group(``<span class="hljs-number">1</span>``).title() ``+` `<span class="hljs-string">&#x27; &#x27;</span>` `+` `m.group(``<span class="hljs-number">2</span>``).title()` `<span class="hljs-built_in">print</span>` `p.sub(func, s)` `<span class="hljs-comment">### output ###``# say i, world hello!``# I Say, Hello World!`</span><br></code></pre></td></tr></table></figure>
+
+<p>subn(repl, string[, count]) |re.sub(pattern, repl, string[, count]):<br>返回 (sub(repl, string[, count]), 替换次数)。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">`<span class="hljs-keyword">import</span>` `re` `p ``=` `re.``<span class="hljs-built_in">compile</span>``(r``<span class="hljs-string">&#x27;(\w+) (\w+)&#x27;</span>``)``s ``=` `<span class="hljs-string">&#x27;i say, hello world!&#x27;</span>` `<span class="hljs-built_in">print</span>` `p.subn(r``<span class="hljs-string">&#x27;\2 \1&#x27;</span>``, s)` `<span class="hljs-keyword">def</span>` `func(m):`` ``<span class="hljs-keyword">return</span>` `m.group(``<span class="hljs-number">1</span>``).title() ``+` `<span class="hljs-string">&#x27; &#x27;</span>` `+` `m.group(``<span class="hljs-number">2</span>``).title()` `<span class="hljs-built_in">print</span>` `p.subn(func, s)` `<span class="hljs-comment">### output ###``# (&#x27;say i, world hello!&#x27;, 2)``# (&#x27;I Say, Hello World!&#x27;, 2)`</span><br></code></pre></td></tr></table></figure>
+
+<p>以上就是Python对于正则表达式的支持。熟练掌握正则表达式是每一个程序员必须具备的技能，这年头没有不与字符串打交道的程序了。笔者也处于初级阶段，与君共勉，^_^</p>
+<p>另外，图中的特殊构造部分没有举出例子，用到这些的正则表达式是具有一定难度的。有兴趣可以思考一下，如何匹配不是以abc开头的单词，^_^</p>
+<p>您可能感兴趣的文章:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.jb51.net/article/134936.htm">python的staticmethod与classmethod实现实例代码</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jb51.net/article/126598.htm">基于python中staticmethod和classmethod的区别(详解)</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jb51.net/article/138609.htm">对Python中的@classmethod用法详解</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jb51.net/article/148606.htm">10 行 Python 代码教你自动发送短信(不想回复工作邮件妙招)</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jb51.net/article/148528.htm">Python 变量类型详解</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jb51.net/article/148526.htm">Python中几种属性访问的区别与用法详解</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jb51.net/article/148494.htm">不知道这5种下划线的含义,你就不算真的会Python！</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jb51.net/article/148474.htm">python如何发布自已pip项目的方法步骤</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jb51.net/article/148615.htm">Python中staticmethod和classmethod的作用与区别</a></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Python正则表达式指南</div>
+      <div>https://liyupin.github.io/2022/07/14/Python正则表达式指南/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Cper Liu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年7月14日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/07/14/Redis%20Cluster%E6%97%A5%E5%B8%B8%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4%E6%A2%B3%E7%90%86/" title="Redis 日常操作命令">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Redis 日常操作命令</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/07/14/Python%20pip%20%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/" title="Python pip 安装与使用">
+                        <span class="hidden-mobile">Python pip 安装与使用</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

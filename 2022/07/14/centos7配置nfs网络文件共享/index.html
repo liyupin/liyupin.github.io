@@ -1,0 +1,700 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Cper Liu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="centos7配置nfs网络文件共享NFS(NetworkFileSystem)即网络文件系统,是Linux&#x2F;Unix支持的文件系统中的一种,它允许网络中的计算机之间通过TCP&#x2F;IP网络共享资源。在NFS的应用中,本地NFS的客户端应用可以透明地读写位于远端NFS服务器上的文件,就像访问本地文件一样。 NFS 的基本原则是“容许不同的客户端及服务端通过一组RPC分享相同的文件系">
+<meta property="og:type" content="article">
+<meta property="og:title" content="centos7配置nfs网络文件共享">
+<meta property="og:url" content="https://liyupin.github.io/2022/07/14/centos7%E9%85%8D%E7%BD%AEnfs%E7%BD%91%E7%BB%9C%E6%96%87%E4%BB%B6%E5%85%B1%E4%BA%AB/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="centos7配置nfs网络文件共享NFS(NetworkFileSystem)即网络文件系统,是Linux&#x2F;Unix支持的文件系统中的一种,它允许网络中的计算机之间通过TCP&#x2F;IP网络共享资源。在NFS的应用中,本地NFS的客户端应用可以透明地读写位于远端NFS服务器上的文件,就像访问本地文件一样。 NFS 的基本原则是“容许不同的客户端及服务端通过一组RPC分享相同的文件系">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-15.png">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-16.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190718102620114.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190718102957799.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1ZGluYW5peWE=,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190718102455425.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1ZGluYW5peWE=,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180716185108176?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1ZGluYW5peWE=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="article:published_time" content="2022-07-14T06:01:06.000Z">
+<meta property="article:modified_time" content="2022-07-14T06:01:30.187Z">
+<meta property="article:author" content="Cper Liu">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://liyupin.github.io/images/pasted-15.png">
+  
+  
+  
+  <title>centos7配置nfs网络文件共享 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="centos7配置nfs网络文件共享"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-07-14 14:01" pubdate>
+          2022年7月14日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          46 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">centos7配置nfs网络文件共享</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="centos7配置nfs网络文件共享"><a href="#centos7配置nfs网络文件共享" class="headerlink" title="centos7配置nfs网络文件共享"></a>centos7配置nfs网络文件共享</h1><p>NFS(NetworkFileSystem)即网络文件系统,是Linux&#x2F;Unix支持的文件系统中的一种,它允许网络中的计算机之间通过TCP&#x2F;IP网络共享资源。在NFS的应用中,本地NFS的客户端应用可以透明地读写位于远端NFS服务器上的文件,就像访问本地文件一样。</p>
+<p>NFS 的基本原则是“容许不同的客户端及服务端通过一组RPC分享相同的文件系统”，它是独立于操作系统，容许不同硬件及操作系统的系统共同进行文件的分享。</p>
+<p>NFS在文件传送或信息传送过程中依赖于RPC协议。RPC，远程过程调用 (Remote Procedure Call) 是能使客户端执行其他系统中程序的一种机制。NFS本身是没有提供信息传输的协议和功能的，但NFS却能让我们通过网络进行资料的分享，这是因为NFS使用了一些其它的传输协议。而这些传输协议用到这个RPC功能的。可以说NFS本身就是使用RPC的一个程序。或者说NFS也是一个RPC SERVER。所以只要用到NFS的地方都要启动RPC服务，不论是NFS SERVER或者NFS CLIENT。这样SERVER和CLIENT才能通过RPC来实现PROGRAM PORT（centos5之前，之后是rpcbind）的对应。可以这么理解RPC和NFS的关系：NFS是一个文件系统，而RPC是负责信息的传输。</p>
+<h1 id="NFS服务端-示例ip-192-168-0-240"><a href="#NFS服务端-示例ip-192-168-0-240" class="headerlink" title="NFS服务端(示例ip:192.168.0.240)"></a>NFS服务端(示例ip:192.168.0.240)</h1><p>1 安装nfs</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">[root<span class="hljs-meta">@nfs_server</span> ~]# yum -y install nfs-utils rpcbind<br></code></pre></td></tr></table></figure>
+
+<p>（小提示：在安装完nfs-utils后，rpcbind默认是启动了的。）</p>
+<p>2 enable services。设置开机启动nfs相关服务。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java">[root<span class="hljs-meta">@nfs_server</span> ~]# systemctl enable rpcbind<br><br><br><br>[root<span class="hljs-meta">@nfs_server</span> ~]# systemctl enable nfs-server<br><br><br><br>Created symlink from /etc/systemd/system/multi-user.target.wants/nfs-server.service to /usr/lib/systemd/system/nfs-server.service.<br><br><br><br>[root<span class="hljs-meta">@nfs_server</span> ~]# systemctl enable nfs-lock<br><br><br><br>[root<span class="hljs-meta">@nfs_server</span> ~]# systemctl enable nfs-idmap<br></code></pre></td></tr></table></figure>
+
+<p>3 启动nfs service</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java">[root<span class="hljs-meta">@nfs_server</span> ~]# systemctl start rpcbind<br><br><br><br>[root<span class="hljs-meta">@nfs_server</span> ~]# systemctl start nfs-server<br><br><br><br>[root<span class="hljs-meta">@nfs_server</span> ~]# systemctl start nfs-lock<br><br><br><br>[root<span class="hljs-meta">@nfs_server</span> ~]# systemctl start nfs-idmap<br></code></pre></td></tr></table></figure>
+
+<p>4 创建需要共享的目录</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java">[root<span class="hljs-meta">@nfs_server</span> ~]# mkdir -p /application/share                    -p 级联创建<br><br><br><br>[root<span class="hljs-meta">@nfs_server</span> ~]# chmod -R <span class="hljs-number">777</span> /application/share       更改share文件夹及其子文件夹权限为<span class="hljs-number">777</span><br></code></pre></td></tr></table></figure>
+
+<p>5 配置需要共享的目录到 &#x2F;etc&#x2F;exports下，xxx.xxx.xxx.xxx为需要共享的对象ip地址。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java">[root<span class="hljs-meta">@nfs_server</span> ~]# echo <span class="hljs-string">&quot;/application/share 192.168.0.*(rw,sync,no_root_squash)&quot;</span> &gt;&gt; /etc/<span class="hljs-keyword">exports</span><br><br><br><br>[root<span class="hljs-meta">@nfs_server</span> ~]# exportfs -a          使<span class="hljs-keyword">exports</span>的修改生效<br></code></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java">[root<span class="hljs-meta">@nfs_server</span> ~]# echo <span class="hljs-string">&quot;/application/share 192.168.0.0/24(rw,sync,no_root_squash)&quot;</span> &gt;&gt; /etc/<span class="hljs-keyword">exports</span><br><br><br><br>[root<span class="hljs-meta">@nfs_server</span> ~]# exportfs -a          使<span class="hljs-keyword">exports</span>的修改生效<br></code></pre></td></tr></table></figure>
+
+<p>[root@nfs_server ~]# echo “&#x2F;application&#x2F;share 192.168.0.<em>(rw,sync,no_root_squash)” &gt;&gt; &#x2F;etc&#x2F;exports<br>[root@nfs_server ~]# exportfs -a<br>[root@nfs_server ~]# more &#x2F;etc&#x2F;exports<br>&#x2F;application&#x2F;share 192.168.0.</em>(rw,sync,no_root_squash)</p>
+<p>6 检查共享目录是否设置正确</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java">[root<span class="hljs-meta">@nfs_server</span> /]# showmount -e<br><br><br><br>Export list <span class="hljs-keyword">for</span> nfs_server:<br><br><br><br>/application/share <span class="hljs-number">192.168</span><span class="hljs-number">.0</span>.*<br></code></pre></td></tr></table></figure>
+
+<p>7 调整防火墙配置</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs java">[root<span class="hljs-meta">@nfs_server</span> ~]# firewall-cmd --add-service=nfs --permanent --zone=<span class="hljs-keyword">public</span><br><br><br><br>success<br><br><br><br>[root<span class="hljs-meta">@nfs_server</span> ~]# firewall-cmd --add-service=mountd --permanent --zone=<span class="hljs-keyword">public</span><br><br><br><br>success<br><br><br><br>[root<span class="hljs-meta">@nfs_server</span> ~]# firewall-cmd --add-service=rpc-bind --permanent --zone=<span class="hljs-keyword">public</span><br><br><br><br>success<br><br><br><br>[root<span class="hljs-meta">@nfs_server</span> ~]# firewall-cmd --reload   重新载入配置，使其生效<br><br><br><br>success<br></code></pre></td></tr></table></figure>
+
+<p>可使用 命令 iptables -L -n 查看开放的端口</p>
+<p>在修改防火墙配置前，nfs_server这台机器上开放的端口信息</p>
+<p><img src="/images/pasted-15.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
+<p>修改防火墙配置后，nfs_server这台机器上开放的端口信息</p>
+<p><img src="/images/pasted-16.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
+<h1 id="NFS客户端"><a href="#NFS客户端" class="headerlink" title="NFS客户端"></a>NFS客户端</h1><p>注意：客户端不需要启动nfs服务</p>
+<p>1 安装nfs</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">[root<span class="hljs-meta">@nfs_client</span> ~]# yum -y install nfs-utils<br></code></pre></td></tr></table></figure>
+
+<p>2 检查共享目录是否设置正确，xxx.xxx.xxx.xxx 为共享服务器地址</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java">[root<span class="hljs-meta">@nfs_client</span> ~]# showmount -e <span class="hljs-number">192.168</span><span class="hljs-number">.0</span><span class="hljs-number">.240</span><br><br><br><br>Export list <span class="hljs-keyword">for</span> <span class="hljs-number">192.168</span><span class="hljs-number">.0</span><span class="hljs-number">.240</span>:<br><br><br><br>/application/share <span class="hljs-number">192.168</span><span class="hljs-number">.0</span>.*<br></code></pre></td></tr></table></figure>
+
+<p>3 挂载远程服务器NFS分区到本地挂载点</p>
+<p># make mount points</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">[root<span class="hljs-meta">@nfs_client</span> ~]# mkdir -p /application/share<br></code></pre></td></tr></table></figure>
+
+<p># mount nfs</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">[root<span class="hljs-meta">@nfs_client</span> ~]# mount -t nfs <span class="hljs-number">192.168</span><span class="hljs-number">.0</span><span class="hljs-number">.240</span>:/application/share /application/share<br></code></pre></td></tr></table></figure>
+
+<p>挂载格式解读：</p>
+<p>mount -t nfs -o nolock,vers&#x3D;2 10.0.0.147:&#x2F;work&#x2F;nfs &#x2F;mnt</p>
+<p>解释一下：<br>mount :挂载命令<br>nfs :使用的协议<br>nolock :不阻塞<br>vers : 使用的NFS版本号<br>IP : NFS服务器的IP（NFS服务器运行在哪个系统上，就是哪个系统的IP）<br>&#x2F;work&#x2F;nfs: 要挂载的目录（Ubuntu的目录）<br>&#x2F;mnt : 要挂载到的目录（开发板上的目录，注意挂载成功后，&#x2F;mnt下原有数据将会被隐藏，无法找到）</p>
+<p>取消挂载(先df -h 查看分区挂载情况)<br>[root@localhost local]# umount 192.168.0.240:&#x2F;application&#x2F;share</p>
+<p>取消挂载示例2：</p>
+<p><img src="https://img-blog.csdnimg.cn/20190718102620114.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>取消挂载方式1</p>
+<blockquote>
+<p>#挂载<br>mount -t nfs 192.168.222.38:&#x2F;share&#x2F;api&#x2F;images &#x2F;home&#x2F;work&#x2F;images</p>
+</blockquote>
+<p>#取消挂载<br>umount 192.168.222.38:&#x2F;share&#x2F;api&#x2F;images</p>
+<p><img src="https://img-blog.csdnimg.cn/20190718102957799.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1ZGluYW5peWE=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>取消挂载方式2：</p>
+<blockquote>
+<p>#挂载<br>mount -t nfs 192.168.222.38:&#x2F;share&#x2F;api&#x2F;images &#x2F;home&#x2F;work&#x2F;images</p>
+</blockquote>
+<p>#取消挂载<br>umount &#x2F;home&#x2F;work&#x2F;images</p>
+<p><img src="https://img-blog.csdnimg.cn/20190718102455425.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1ZGluYW5peWE=,size_16,color_FFFFFF,t_70" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h1 id="验证nfs网络文件共享是否成功："><a href="#验证nfs网络文件共享是否成功：" class="headerlink" title="验证nfs网络文件共享是否成功："></a>验证nfs网络文件共享是否成功：</h1><p>切换到nfs_server端：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java">[root<span class="hljs-meta">@nfs_server</span> ~]# cd /application/share/<br><br><br><br>[root<span class="hljs-meta">@nfs_server</span> share]# ls<br><br><br><br>[root<span class="hljs-meta">@nfs_server</span> share]# touch a.txt<br></code></pre></td></tr></table></figure>
+
+<p>切换到nfs_client端：</p>
+<p>查看挂载是否成功，即查看是否在被挂载目录下，同步生成了 a.txt文件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java">[root<span class="hljs-meta">@nfs_client</span> ~]# mkdir -p /application/share<br><br><br><br>[root<span class="hljs-meta">@nfs_client</span> ~]# mount -t nfs <span class="hljs-number">192.168</span><span class="hljs-number">.0</span><span class="hljs-number">.240</span>:/application/share /application/share<br><br><br><br>[root<span class="hljs-meta">@nfs_client</span> ~]# cd /application/share/<br><br><br><br>[root<span class="hljs-meta">@nfs_client</span> share]# ls<br><br><br><br>a.txt               可看到在nfs客户端同步生成了a.txt<br></code></pre></td></tr></table></figure>
+
+<p>**在客户端使用命令df查看整个的挂载情况\</p>
+<blockquote>
+<p>[root@nfs_client etc]# df<br>Filesystem            1K-blocks   Used Available Use% Mounted on<br>&#x2F;dev&#x2F;mapper&#x2F;centos-root      49250820 2996840  46253980  7% &#x2F;<br>devtmpfs               920376    0   920376  0% &#x2F;dev<br>tmpfs                932652    0   932652  0% &#x2F;dev&#x2F;shm<br>tmpfs                932652   9748   922904  2% &#x2F;run<br>tmpfs                932652    0   932652  0% &#x2F;sys&#x2F;fs&#x2F;cgroup<br>&#x2F;dev&#x2F;sda1              1038336  147844   890492  15% &#x2F;boot<br>tmpfs                186532    0   186532  0% &#x2F;run&#x2F;user&#x2F;0<br>192.168.0.240:&#x2F;application&#x2F;share  49251072 1796096  47454976  4% &#x2F;application&#x2F;share</p>
+</blockquote>
+<h1 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h1><ul>
+<li>若服务端挂了，则客户端将无法使用</li>
+<li>服务端若设置了开机启动，则每次重启后，服务仍然活着</li>
+</ul>
+<p>​    客户端重启后，需要重新挂载</p>
+<p>重启服务器后，查看服务端状态如下：</p>
+<p><img src="https://img-blog.csdn.net/20180716185108176?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d1ZGluYW5peWE=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" srcset="/img/loading.gif" lazyload alt="img"></p>
+<hr>
+<hr>
+<p>配置客户端开机自动挂载nfs共享目录</p>
+<p>vi &#x2F;etc&#x2F;fstab</p>
+<p>添加  192.168.0.240:&#x2F;application&#x2F;share &#x2F;application&#x2F;share nfs defaults 0 0</p>
+<p>&#x2F;etc&#x2F;fstab 里面的挂载配置立即生效的命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo mount -a<br></code></pre></td></tr></table></figure>
+<hr>
+<hr>
+<p>以下内容与nfs无关：</p>
+<p>chmod +x  和 chmod -x 的区别：</p>
+<blockquote>
+<p>-rw-r–r–.  1 root root  474 Jul 19 13:23 rc.local</p>
+<p>[root@nfs_client rc.d]# chmod +x &#x2F;etc&#x2F;rc.d&#x2F;rc.local   # 给rc.local 增加运行权限</p>
+<p>-rwxr-xr-x.  1 root root  474 Jul 19 13:23 rc.local</p>
+<p>[root@nfs_client rc.d]# chmod -x &#x2F;etc&#x2F;rc.d&#x2F;rc.local    # 除去rc.local 的运行权限</p>
+<p>-rw-r–r–.  1 root root  474 Jul 19 13:23 rc.local</p>
+</blockquote>
+<h3 id="如果使用nginx-nfs-tomcat报403解决方案"><a href="#如果使用nginx-nfs-tomcat报403解决方案" class="headerlink" title="如果使用nginx+nfs+tomcat报403解决方案"></a>如果使用nginx+nfs+tomcat报403解决方案</h3><p>step 1: 将nfs共享目录的用户和组设为root</p>
+<p>由于上传的文件对不同组用户没有读权限，所以只能更改nfs所属的用户和组，即配置nfs时，追加参数 no_root_squash</p>
+<p>&#x2F;usr&#x2F;local&#x2F;static 192.168.0.*(rw,sync,no_root_squash)</p>
+<p>no_root_squash：NFS客户端连接服务端时如果使用的是root的话，那么对服务端分享的目录来说，也拥有root权限。</p>
+<p>step 2: 修改nginx访问者的用户和组为root（nginx.conf中配置）</p>
+<p>nginx修改用户和组：</p>
+<p>user root root;   # 或者  user root;</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>centos7配置nfs网络文件共享</div>
+      <div>https://liyupin.github.io/2022/07/14/centos7配置nfs网络文件共享/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Cper Liu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年7月14日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/07/14/%E5%B8%B8%E7%94%A8shell/" title="常用shell脚本">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">常用shell脚本</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/07/14/%E4%BD%BF%E7%94%A8apt-mirror%E6%90%AD%E5%BB%BAdebian%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93/" title="使用apt-mirror搭建debian本地仓库">
+                        <span class="hidden-mobile">使用apt-mirror搭建debian本地仓库</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
