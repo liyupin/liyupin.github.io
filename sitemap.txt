@@ -108,8 +108,9 @@ http://example.com/tags/newben/
 http://example.com/tags/hexo/
 http://example.com/tags/centos/
 http://example.com/tags/k8s/
-http://example.com/tags/mysql/
 http://example.com/tags/linux/
 http://example.com/tags/windows/
+http://example.com/tags/mysql/
 http://example.com/categories/docker/
+http://example.com/categories/hexo/
 http://example.com/categories/windows/
