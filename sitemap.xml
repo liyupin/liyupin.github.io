@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://liyupin.github.io/2022/07/14/ansible-%E6%A8%A1%E5%9D%97/</loc>
+    
+    <lastmod>2022-07-14</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://liyupin.github.io/2022/07/14/%E5%B8%B8%E7%94%A8shell/</loc>
     
     <lastmod>2022-07-14</lastmod>
@@ -1061,6 +1070,13 @@
     <priority>0.2</priority>
   </url>
   
+  <url>
+    <loc>https://liyupin.github.io/tags/python/</loc>
+    <lastmod>2022-07-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
 
   
   <url>
@@ -1086,6 +1102,13 @@
   
   <url>
     <loc>https://liyupin.github.io/categories/linux/</loc>
+    <lastmod>2022-07-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/categories/ansible/</loc>
     <lastmod>2022-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

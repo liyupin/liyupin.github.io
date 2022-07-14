@@ -10815,4 +10815,91 @@
 <h3 id="正确编译完成之后的目录结构"><a href="#正确编译完成之后的目录结构" class="headerlink" title="正确编译完成之后的目录结构"></a>正确编译完成之后的目录结构</h3><p>php目录下面多了两个文件夹</p>
 <figure class="highlight css"><table><tr><td class="code"><pre><code class="hljs css">myItem<br>    - protos<br>        -demo<span class="hljs-selector-class">.proto</span><br>    - php<br>        - GPBMetadata<br>              - ...<br>        - Protobuf<br>              - ...<br></code></pre></td></tr></table></figure>]]></content>
   </entry>
+  <entry>
+    <title>ansible 模块</title>
+    <url>/2022/07/14/ansible-%E6%A8%A1%E5%9D%97/</url>
+    <content><![CDATA[<h1 id="ansible-模块"><a href="#ansible-模块" class="headerlink" title="ansible 模块"></a>ansible 模块</h1><h2 id="linefile"><a href="#linefile" class="headerlink" title="linefile"></a>linefile</h2><p>EXAMPLES:</p>
+<p>NOTE: Before 2.3, option ‘dest’, ‘destfile’ or ‘name’ was used instead of ‘path’</p>
+<ul>
+<li>&#96;&#96;&#96;<ul>
+<li><p>name: Ensure SELinux is set to enforcing mode<br>lineinfile:<br>  path: &#x2F;etc&#x2F;selinux&#x2F;config<br>  regexp: ‘^SELINUX&#x3D;’<br>line: SELINUX&#x3D;enforcing</p>
+</li>
+<li><p>name: Make sure group wheel is not in the sudoers configuration<br>lineinfile:<br>  path: &#x2F;etc&#x2F;sudoers<br>  state: absent<br>  regexp: ‘^%wheel’</p>
+</li>
+<li><p>name: Replace a localhost entry with our own<br>lineinfile:<br>  path: &#x2F;etc&#x2F;hosts<br>  regexp: ‘^127.0.0.1’<br>  line: 127.0.0.1 localhost<br>  owner: root<br>  group: root<br>  mode: ‘0644’</p>
+</li>
+<li><p>name: Ensure the default Apache port is 8080<br>lineinfile:<br>  path: &#x2F;etc&#x2F;httpd&#x2F;conf&#x2F;httpd.conf<br>  regexp: ‘^Listen ‘<br>  insertafter: ‘^#Listen ‘<br>  line: Listen 8080</p>
+</li>
+<li><p>name: Ensure we have our own comment added to &#x2F;etc&#x2F;services<br>lineinfile:<br>  path: &#x2F;etc&#x2F;services<br>  regexp: ‘^# port for http’<br>  insertbefore: ‘^www.*80&#x2F;tcp’<br>  line: ‘# port for http by default’</p>
+</li>
+<li><p>name: Add a line to a file if the file does not exist, without passing regexp<br>lineinfile:<br>  path: &#x2F;tmp&#x2F;testfile<br>  line: 192.168.1.99 foo.lab.net foo<br>  create: yes</p>
+<figure class="highlight asciidoc"><table><tr><td class="code"><pre><code class="hljs asciidoc"><br><span class="hljs-code">  </span><br><br><span class="hljs-symbol">NOTE: </span>Yaml requires escaping backslashes in double quotes but not in single quotes<br><br><span class="hljs-bullet">- </span><span class="hljs-code">```</span><br><span class="hljs-code">  name: Ensure the JBoss memory settings are exactly as needed</span><br><span class="hljs-code">  lineinfile:</span><br><span class="hljs-code">    path: /opt/jboss-as/bin/standalone.conf</span><br><span class="hljs-code">    regexp: &#x27;^(.*)Xms(\\d+)m(.*)$&#x27;</span><br><span class="hljs-code">    line: &#x27;\1Xms$&#123;xms&#125;m\3&#x27;</span><br><span class="hljs-code">    backrefs: yes</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<p>NOTE: Fully quoted because of the ‘: ‘ on the line. See the Gotchas in the YAML docs.</p>
+<ul>
+<li><pre><code class="hljs">    name: Validate the sudoers file before saving
+   lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: &#39;^%ADMIN ALL=&#39;
+    line: &#39;%ADMIN ALL=(ALL) NOPASSWD: ALL&#39;
+    validate: /usr/sbin/visudo -cf %s
+<figure class="highlight avrasm"><table><tr><td class="code"><pre><code class="hljs avrasm"><br><span class="hljs-meta">## synchronize</span><br><br><span class="hljs-symbol">EXAMPLES:</span><br></code></pre></td></tr></table></figure>
+</code></pre>
+</li>
+<li><p>name: Synchronization of src on the control machine to dest on the remote hosts<br>synchronize:<br>  src: some&#x2F;relative&#x2F;path<br>  dest: &#x2F;some&#x2F;absolute&#x2F;path</p>
+</li>
+<li><p>name: Synchronization using rsync protocol (push)<br>synchronize:<br>  src: some&#x2F;relative&#x2F;path&#x2F;<br>  dest: rsync:&#x2F;&#x2F;somehost.com&#x2F;path&#x2F;</p>
+</li>
+<li><p>name: Synchronization using rsync protocol (pull)<br>synchronize:<br>  mode: pull<br>  src: rsync:&#x2F;&#x2F;somehost.com&#x2F;path&#x2F;<br>  dest: &#x2F;some&#x2F;absolute&#x2F;path&#x2F;</p>
+</li>
+<li><p>name:  Synchronization using rsync protocol on delegate host (push)<br>synchronize:<br>  src: &#x2F;some&#x2F;absolute&#x2F;path&#x2F;<br>  dest: rsync:&#x2F;&#x2F;somehost.com&#x2F;path&#x2F;<br>delegate_to: delegate.host</p>
+</li>
+<li><p>name: Synchronization using rsync protocol on delegate host (pull)<br>synchronize:<br>  mode: pull<br>  src: rsync:&#x2F;&#x2F;somehost.com&#x2F;path&#x2F;<br>  dest: &#x2F;some&#x2F;absolute&#x2F;path&#x2F;<br>delegate_to: delegate.host</p>
+</li>
+<li><p>name: Synchronization without any –archive options enabled<br>synchronize:<br>  src: some&#x2F;relative&#x2F;path<br>  dest: &#x2F;some&#x2F;absolute&#x2F;path<br>  archive: no</p>
+</li>
+<li><p>name: Synchronization with –archive options enabled except for –recursive<br>synchronize:<br>  src: some&#x2F;relative&#x2F;path<br>  dest: &#x2F;some&#x2F;absolute&#x2F;path<br>  recursive: no</p>
+</li>
+<li><p>name: Synchronization with –archive options enabled except for –times, with –checksum option enabled<br>synchronize:<br>  src: some&#x2F;relative&#x2F;path<br>  dest: &#x2F;some&#x2F;absolute&#x2F;path<br>  checksum: yes<br>  times: no</p>
+</li>
+<li><p>name: Synchronization without –archive options enabled except use –links<br>synchronize:<br>  src: some&#x2F;relative&#x2F;path<br>  dest: &#x2F;some&#x2F;absolute&#x2F;path<br>  archive: no<br>  links: yes</p>
+</li>
+<li><p>name: Synchronization of two paths both on the control machine<br>synchronize:<br>  src: some&#x2F;relative&#x2F;path<br>  dest: &#x2F;some&#x2F;absolute&#x2F;path<br>delegate_to: localhost</p>
+</li>
+<li><p>name: Synchronization of src on the inventory host to the dest on the localhost in pull mode<br>synchronize:<br>  mode: pull<br>  src: some&#x2F;relative&#x2F;path<br>  dest: &#x2F;some&#x2F;absolute&#x2F;path</p>
+</li>
+<li><p>name: Synchronization of src on delegate host to dest on the current inventory host.<br>synchronize:<br>  src: &#x2F;first&#x2F;absolute&#x2F;path<br>  dest: &#x2F;second&#x2F;absolute&#x2F;path<br>delegate_to: delegate.host</p>
+</li>
+<li><p>name: Synchronize two directories on one remote host.<br>synchronize:<br>  src: &#x2F;first&#x2F;absolute&#x2F;path<br>  dest: &#x2F;second&#x2F;absolute&#x2F;path<br>delegate_to: ““</p>
+</li>
+<li><p>name: Synchronize and delete files in dest on the remote host that are not found in src of localhost.<br>synchronize:<br>  src: some&#x2F;relative&#x2F;path<br>  dest: &#x2F;some&#x2F;absolute&#x2F;path<br>  delete: yes<br>  recursive: yes</p>
+</li>
+</ul>
+<h1 id="This-specific-command-is-granted-su-privileges-on-the-destination"><a href="#This-specific-command-is-granted-su-privileges-on-the-destination" class="headerlink" title="This specific command is granted su privileges on the destination"></a>This specific command is granted su privileges on the destination</h1><ul>
+<li>name: Synchronize using an alternate rsync command<br>synchronize:<br>  src: some&#x2F;relative&#x2F;path<br>  dest: &#x2F;some&#x2F;absolute&#x2F;path<br>  rsync_path: su -c rsync</li>
+</ul>
+<h1 id="Example-rsync-filter-file-in-the-source-directory"><a href="#Example-rsync-filter-file-in-the-source-directory" class="headerlink" title="Example .rsync-filter file in the source directory"></a>Example .rsync-filter file in the source directory</h1><h1 id="var-exclude-any-path-whose-last-part-is-‘var’"><a href="#var-exclude-any-path-whose-last-part-is-‘var’" class="headerlink" title="- var       # exclude any path whose last part is ‘var’"></a>- var       # exclude any path whose last part is ‘var’</h1><h1 id="x2F-var-exclude-any-path-starting-with-‘var’-starting-at-the-source-directory"><a href="#x2F-var-exclude-any-path-starting-with-‘var’-starting-at-the-source-directory" class="headerlink" title="- &#x2F;var      # exclude any path starting with ‘var’ starting at the source directory"></a>- &#x2F;var      # exclude any path starting with ‘var’ starting at the source directory</h1><h1 id="x2F-var-x2F-conf-include-x2F-var-x2F-conf-even-though-it-was-previously-excluded"><a href="#x2F-var-x2F-conf-include-x2F-var-x2F-conf-even-though-it-was-previously-excluded" class="headerlink" title="+ &#x2F;var&#x2F;conf # include &#x2F;var&#x2F;conf even though it was previously excluded"></a>+ &#x2F;var&#x2F;conf # include &#x2F;var&#x2F;conf even though it was previously excluded</h1><ul>
+<li>name: Synchronize passing in extra rsync options<br>synchronize:<br>  src: &#x2F;tmp&#x2F;helloworld<br>  dest: &#x2F;var&#x2F;www&#x2F;helloworld<br>  rsync_opts:<br>- “–no-motd”<br>- “–exclude&#x3D;.git”</li>
+</ul>
+<h1 id="Hardlink-files-if-they-didn’t-change"><a href="#Hardlink-files-if-they-didn’t-change" class="headerlink" title="Hardlink files if they didn’t change"></a>Hardlink files if they didn’t change</h1><ul>
+<li>name: Use hardlinks when synchronizing filesystems<br>synchronize:<br>  src: &#x2F;tmp&#x2F;path_a&#x2F;foo.txt<br>  dest: &#x2F;tmp&#x2F;path_b&#x2F;foo.txt<br>  link_dest: &#x2F;tmp&#x2F;path_a&#x2F;</li>
+</ul>
+<h1 id="Specify-the-rsync-binary-to-use-on-remote-host-and-on-local-host"><a href="#Specify-the-rsync-binary-to-use-on-remote-host-and-on-local-host" class="headerlink" title="Specify the rsync binary to use on remote host and on local host"></a>Specify the rsync binary to use on remote host and on local host</h1><ul>
+<li>hosts: groupofhosts<br>vars:<br>  ansible_rsync_path: &#x2F;usr&#x2F;gnu&#x2F;bin&#x2F;rsync<br>tasks:<ul>
+<li>name: copy &#x2F;tmp&#x2F;localpath&#x2F; to remote location &#x2F;tmp&#x2F;remotepath<br>synchronize:<br>  src: &#x2F;tmp&#x2F;localpath&#x2F;<br>  dest: &#x2F;tmp&#x2F;remotepath<br>  rsync_path: &#x2F;usr&#x2F;gnu&#x2F;bin&#x2F;rsync</li>
+</ul>
+</li>
+</ul>
+<p>&#96;&#96;&#96;</p>
+]]></content>
+      <categories>
+        <category>ansible</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
 </search>
