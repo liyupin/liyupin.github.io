@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://liyupin.github.io/2022/07/15/Untitled/</loc>
+    
+    <lastmod>2022-07-15</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/07/14/openebs%20%E5%AE%89%E8%A3%85/</loc>
+    
+    <lastmod>2022-07-14</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://liyupin.github.io/2022/07/14/ansible-%E6%A8%A1%E5%9D%97/</loc>
     
     <lastmod>2022-07-14</lastmod>
@@ -731,15 +749,6 @@
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/2022/07/13/openebs%20%E5%AE%89%E8%A3%85/</loc>
-    
-    <lastmod>2022-07-08</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://liyupin.github.io/2022/07/13/python%20%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/</loc>
     
     <lastmod>2022-07-08</lastmod>
@@ -994,7 +1003,7 @@
 
   <url>
     <loc>https://liyupin.github.io/</loc>
-    <lastmod>2022-07-14</lastmod>
+    <lastmod>2022-07-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -1002,77 +1011,77 @@
   
   <url>
     <loc>https://liyupin.github.io/tags/docker/</loc>
-    <lastmod>2022-07-14</lastmod>
+    <lastmod>2022-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/ecos-pro/</loc>
-    <lastmod>2022-07-14</lastmod>
+    <lastmod>2022-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/kvm/</loc>
-    <lastmod>2022-07-14</lastmod>
+    <lastmod>2022-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/newben/</loc>
-    <lastmod>2022-07-14</lastmod>
+    <lastmod>2022-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/centos/</loc>
-    <lastmod>2022-07-14</lastmod>
+    <lastmod>2022-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/k8s/</loc>
-    <lastmod>2022-07-14</lastmod>
+    <lastmod>2022-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/mysql/</loc>
-    <lastmod>2022-07-14</lastmod>
+    <lastmod>2022-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/linux/</loc>
-    <lastmod>2022-07-14</lastmod>
+    <lastmod>2022-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/windows/</loc>
-    <lastmod>2022-07-14</lastmod>
+    <lastmod>2022-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/shell/</loc>
-    <lastmod>2022-07-14</lastmod>
+    <lastmod>2022-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/python/</loc>
-    <lastmod>2022-07-14</lastmod>
+    <lastmod>2022-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -1081,35 +1090,35 @@
   
   <url>
     <loc>https://liyupin.github.io/categories/docker/</loc>
-    <lastmod>2022-07-14</lastmod>
+    <lastmod>2022-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/categories/k8s/</loc>
-    <lastmod>2022-07-14</lastmod>
+    <lastmod>2022-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/categories/windows/</loc>
-    <lastmod>2022-07-14</lastmod>
+    <lastmod>2022-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/categories/linux/</loc>
-    <lastmod>2022-07-14</lastmod>
+    <lastmod>2022-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/categories/ansible/</loc>
-    <lastmod>2022-07-14</lastmod>
+    <lastmod>2022-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
