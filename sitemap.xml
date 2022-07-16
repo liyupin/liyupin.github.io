@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://liyupin.github.io/2022/07/16/Untitled/</loc>
+    
+    <lastmod>2022-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://liyupin.github.io/2022/07/13/docker-%E9%83%A8%E7%BD%B2%E7%9B%91%E6%8E%A7/</loc>
     
     <lastmod>2022-07-16</lastmod>
@@ -14,15 +23,6 @@
     <loc>https://liyupin.github.io/2022/07/13/systemd%20%E7%AE%A1%E7%90%86node-exporter/</loc>
     
     <lastmod>2022-07-16</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://liyupin.github.io/2022/07/15/Untitled/</loc>
-    
-    <lastmod>2022-07-15</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -1104,6 +1104,13 @@
     <priority>0.2</priority>
   </url>
   
+  <url>
+    <loc>https://liyupin.github.io/tags/web/</loc>
+    <lastmod>2022-07-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
 
   
   <url>
@@ -1136,6 +1143,13 @@
   
   <url>
     <loc>https://liyupin.github.io/categories/ansible/</loc>
+    <lastmod>2022-07-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/categories/web/</loc>
     <lastmod>2022-07-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
