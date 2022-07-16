@@ -1,0 +1,672 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Cper Liu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="grafana+prometheus 监控服务器资源环境介绍Prometheus 是一套开源的监控 + 预警 + 时间序列数据库的组合，现在越来越多的公司或组织开始采用 Prometheus，现在常见的 kubernetes 容器管理系统，也会搭配 Prometheus 来进行监控。Prometheus 本身不具备收集监控数据功能，需要使用 http 接口来获取不同的 export 收集的数据，存">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker 部署监控grafana+prometheus 监控服务器资源">
+<meta property="og:url" content="https://liyupin.github.io/2022/07/13/docker-%E9%83%A8%E7%BD%B2%E7%9B%91%E6%8E%A7/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="grafana+prometheus 监控服务器资源环境介绍Prometheus 是一套开源的监控 + 预警 + 时间序列数据库的组合，现在越来越多的公司或组织开始采用 Prometheus，现在常见的 kubernetes 容器管理系统，也会搭配 Prometheus 来进行监控。Prometheus 本身不具备收集监控数据功能，需要使用 http 接口来获取不同的 export 收集的数据，存">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-7.png">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-3.png">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-4.png">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-5.png">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-6.png">
+<meta property="article:published_time" content="2022-07-13T01:37:00.000Z">
+<meta property="article:modified_time" content="2022-07-16T05:37:25.741Z">
+<meta property="article:author" content="Cper Liu">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://liyupin.github.io/images/pasted-7.png">
+  
+  
+  
+  <title>docker 部署监控grafana+prometheus 监控服务器资源 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="docker 部署监控grafana+prometheus 监控服务器资源"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-07-13 09:37" pubdate>
+          2022年7月13日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          45 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">docker 部署监控grafana+prometheus 监控服务器资源</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="grafana-prometheus-监控服务器资源"><a href="#grafana-prometheus-监控服务器资源" class="headerlink" title="grafana+prometheus 监控服务器资源"></a>grafana+prometheus 监控服务器资源</h1><h2 id="环境介绍"><a href="#环境介绍" class="headerlink" title="环境介绍"></a>环境介绍</h2><p>Prometheus 是一套开源的监控 + 预警 + 时间序列数据库的组合，现在越来越多的公司或组织开始采用 Prometheus，现在常见的 kubernetes 容器管理系统，也会搭配 Prometheus 来进行监控。<br>Prometheus 本身不具备收集监控数据功能，需要使用 http 接口来获取不同的 export 收集的数据，存储到时序数据库中。<br>————————————————————————————————<br>环境搭建简介：<br>Prometheus： 普罗米修斯的主服务器,端口号9090<br>NodeExporter：负责收集Host硬件信息和操作系统信息，端口号9100<br>MySqld_Exporter：负责收集mysql数据信息收集，端口号9104<br>cAdvisor：负责收集Host上运行的docker容器信息,端口号占用8080<br>Grafana：负责展示普罗米修斯监控界面，端口号3000<br>altermanager：等待接收prometheus发过来的告警信息，altermanager再发送给定义的收件人<br>————————————————————————————————</p>
+<p>容器的基本操作方法<br>1.查看docker下所有镜像<br>    docker images</p>
+<p>2.docker下查看容器<br>    docker ps 	# 已启动的容器<br>    docker ps -a # 所有容器</p>
+<p>3.停止运行的容器<br>      docker stop 容器id&amp;容器名称</p>
+<p>4.启动停止的容器<br>      docker start 容器id&amp;容器名称</p>
+<p>5.重启容器<br>    docker restart 容器id&amp;容器名称</p>
+<p>6.删除容器<br>    docker rm -f 容器id&amp;容器名称</p>
+<p>7.进入容器内部<br>    docker exec -itu root 容器id&amp;容器名称 &#x2F;bin&#x2F;sh</p>
+<p>8.容器中解压文件<br>    unzip xxx文件名</p>
+<p>9.从宿主机拷贝文件到容器当中<br>    docker cp &#x2F;Users&#x2F;songpeilun&#x2F;PycharmProjects&#x2F;zh-cnProject.zip hungry_wu:&#x2F;zh_work<br>说明：<br>    &#x2F;Users&#x2F;songpeilun&#x2F;PycharmProjects&#x2F;zh-cnProject.zip	# 宿主机文件全路径<br>    hungry_wu:&#x2F;zh_work  # 容器名称:容器的目录</p>
+<p>10.查看容器内jenkins登录密码<br>    cat &#x2F;var&#x2F;jenkins_home&#x2F;secrets&#x2F;initialAdminPassword<br>说明：<br>      &#x2F;var&#x2F;jenkins_home		# 容器目录地址</p>
+<p>11.查看映射本地jenkins密码<br>    cat &#x2F;Users&#x2F;songpeilun&#x2F;jenkins_home&#x2F;secrets&#x2F;initialAdminPassword<br>说明：<br>      &#x2F;Users&#x2F;songpeilun&#x2F;jenkins_home		# 本地目录地址</p>
+<p>12.上传文件<br>    rz 		# 上传本地文件到linux服务器<br> docker  ps -a |grep jenkins</p>
+<p>!! 启动镜像时 如果本地自动生成的文件夹没有权限需要收到给文件夹赋予权限	chmod 777 xxx目录名称</p>
+<h2 id="Docker下安装Prometheus"><a href="#Docker下安装Prometheus" class="headerlink" title="Docker下安装Prometheus"></a>Docker下安装Prometheus</h2><h3 id="1-1-docker下查看prometheus镜像"><a href="#1-1-docker下查看prometheus镜像" class="headerlink" title="1.1 docker下查看prometheus镜像"></a>1.1 docker下查看prometheus镜像</h3><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">docker search prometheus</span><br></code></pre></td></tr></table></figure>
+
+
+<h3 id="1-2-docker下拉取prometheus"><a href="#1-2-docker下拉取prometheus" class="headerlink" title="1.2 docker下拉取prometheus"></a>1.2 docker下拉取prometheus</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker pull prom/prometheus<br></code></pre></td></tr></table></figure>
+
+<h3 id="查看已经docker下已经拉取的镜像"><a href="#查看已经docker下已经拉取的镜像" class="headerlink" title="查看已经docker下已经拉取的镜像"></a>查看已经docker下已经拉取的镜像</h3><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">docker images</span><br></code></pre></td></tr></table></figure>
+
+
+<h3 id="1-3-启动prometheus容器"><a href="#1-3-启动prometheus容器" class="headerlink" title="1.3 启动prometheus容器"></a>1.3 启动prometheus容器</h3><p>使用下面方法修改宿主机文件，直接同步到&#x2F;etc&#x2F;prometheus&#x2F;目录下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 1.启动容器</span><br>docker run -itd --name docker_prometheus prom/prometheus<br><br><span class="hljs-comment"># 2.复制容器内部的配置文件到宿主机，不用事先创建$PWD/prometheus目录</span><br>docker <span class="hljs-built_in">cp</span> -a docker_prometheus:/etc/prometheus/ <span class="hljs-variable">$PWD</span>/prometheus<br><br><span class="hljs-comment"># 3.删除容器</span><br>docker <span class="hljs-built_in">rm</span> -f docker_prometheus<br><br><span class="hljs-comment"># 4.启动容器 设置端口</span><br>docker run -itd --name=docker_prometheus --restart=always -p 9090:9090 prom/prometheus<br><br><span class="hljs-comment"># docker run	运行</span><br><span class="hljs-comment"># --name 容器的名称</span><br><span class="hljs-comment"># -p 指定容器的端口映射</span><br><span class="hljs-comment"># --restart  容器重启策略 no不重启，always 退出时总是重启</span><br><span class="hljs-comment"># prom/prometheus  选择镜像名称启动容器（默认镜像后面会加latest  如果拉取自己创建的镜像后面要加自己的版本号）</span><br><br>查看容器是否启动成功<br><br>docker ps<br><br></code></pre></td></tr></table></figure>
+<p>浏览器输入<a target="_blank" rel="noopener" href="http://132.16.10.241:9090/targets%E8%BF%9B%E5%85%A5%E9%A1%B5%E9%9D%A2">http://132.16.10.241:9090/targets进入页面</a></p>
+<p><img src="/images/pasted-7.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
+<h2 id="Docker下安装Grafana"><a href="#Docker下安装Grafana" class="headerlink" title="Docker下安装Grafana"></a>Docker下安装Grafana</h2><h3 id="2-1-docker下查看grafana"><a href="#2-1-docker下查看grafana" class="headerlink" title="2.1 docker下查看grafana"></a>2.1 docker下查看grafana</h3><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">docker search grafana</span><br></code></pre></td></tr></table></figure>
+<h3 id="2-2-docker下拉取grafana"><a href="#2-2-docker下拉取grafana" class="headerlink" title="2.2 docker下拉取grafana"></a>2.2 docker下拉取grafana</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#拉取grafana</span><br>docker pull grafana/grafana<br></code></pre></td></tr></table></figure>
+<h3 id="2-3启动grafana"><a href="#2-3启动grafana" class="headerlink" title="2.3启动grafana"></a>2.3启动grafana</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs routeros">docker <span class="hljs-built_in">run</span> -d --name grafana -p 3000:3000 grafana/grafana grafana<br><br>docker <span class="hljs-built_in">run</span> -itd <span class="hljs-attribute">--name</span>=grafana <span class="hljs-attribute">--restart</span>=always -p 3000:3000 -v <span class="hljs-variable">$PWD</span>/grafana-storage:/var/lib/grafana grafana/grafana<br><br><span class="hljs-comment"># docker run	运行</span><br><span class="hljs-comment"># --name 容器的名称</span><br><span class="hljs-comment"># -p 指定容器的端口映射</span><br><span class="hljs-comment"># -v：挂载宿主机目录和 docker容器中的目录 $PWD/grafana-storage 本地宿主机绝对目录;/var/lib/grafana 容器目录（将容器目录挂载到本地）</span><br><span class="hljs-comment"># --restart  容器重启策略 no不重启，always 退出时总是重启</span><br><span class="hljs-comment"># grafana/grafana  选择镜像名称启动容器（默认镜像后面会加latest  如果拉取自己创建的镜像后面要加自己的版本号）</span><br></code></pre></td></tr></table></figure>
+<p>浏览器输入http:&#x2F;&#x2F;<ip>:3000进入页面</p>
+<h2 id="安装node-export"><a href="#安装node-export" class="headerlink" title="安装node_export"></a>安装node_export</h2><p>node_export 是 Prometheus 的一个 export，主要是用来收集服务器硬件资源使用情况的。所以这个往往会部署再被监控的服务器上。即：grafana、Prometheus 会独立部署在一台机器上，node_export 则被部署在被监控的服务器上，收集被监控的服务器资源数据，给 Prometheus，然后再通过 grafana 展示出来。</p>
+<p>node_export 部署在被监控的服务器上，可以根据服务器的实际情况，选择直接安装，还是用 docker 安装。</p>
+<p>服务器上安装node_export</p>
+<h3 id="方法一：服务器上直接安装（解压包安装）"><a href="#方法一：服务器上直接安装（解压包安装）" class="headerlink" title="方法一：服务器上直接安装（解压包安装）"></a>方法一：服务器上直接安装（解压包安装）</h3><p>首先，用浏览器访问：node_export下载 这里能获得 node_export 所有的发布版本，可以根据自己服务器的实际情况，选择要下载的包。<br>下载包后，上传到被监控的服务器上，解压<br>进入解压文件夹，启动.&#x2F;node_exporter</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 新建文件夹 </span><br><span class="hljs-built_in">mkdir</span> node_exporter<br><span class="hljs-comment"># 进入目录</span><br><span class="hljs-built_in">cd</span> node_exporter/<br><span class="hljs-comment"># 将本地下载到解压包上传到服务器</span><br>rz<br><span class="hljs-comment"># 解压文件</span><br>unzip xxx.zip<br><span class="hljs-comment"># 启动 node_exporter</span><br>./node_exporter<br><br><span class="hljs-built_in">nohup</span> ./node_exporter --web.listen-address=<span class="hljs-string">&quot;:9100&quot;</span>&amp;<br><br><span class="hljs-comment"># 查看服务9100 服务是否开启</span><br>netstat -ntlp	<br></code></pre></td></tr></table></figure>
+<p>问题： 在服务器当中直接使用 .&#x2F;node_exporter 启动的话，关闭终端后采集器就不会上报数据！<br>建议使用以下命令启动服务 nohup .&#x2F;node_exporter –web.listen-address&#x3D;”:9100”&amp;</p>
+<h3 id="方法二：服务器上用-docker-安装-node-export（推荐）"><a href="#方法二：服务器上用-docker-安装-node-export（推荐）" class="headerlink" title="方法二：服务器上用 docker 安装 node_export（推荐）"></a>方法二：服务器上用 docker 安装 node_export（推荐）</h3><h4 id="下载镜像"><a href="#下载镜像" class="headerlink" title="下载镜像"></a>下载镜像</h4><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">docker pull prom/<span class="hljs-keyword">node</span><span class="hljs-title">-exporter</span><br></code></pre></td></tr></table></figure>
+<h4 id="启动node-exporter"><a href="#启动node-exporter" class="headerlink" title="启动node-exporter"></a>启动node-exporter</h4><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">docker run -d --name <span class="hljs-keyword">node</span><span class="hljs-title">-exporter</span> --<span class="hljs-attr">restart=</span>always -p <span class="hljs-number">9100</span>:<span class="hljs-number">9100</span> -v <span class="hljs-string">&quot;/proc:/host/proc:ro&quot;</span> -v <span class="hljs-string">&quot;/sys:/host/sys:ro&quot;</span> -v <span class="hljs-string">&quot;/:/rootfs:ro&quot;</span> prom/<span class="hljs-keyword">node</span><span class="hljs-title">-exporter</span><br></code></pre></td></tr></table></figure>
+<p>查看服务器端口是否开放</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">netstat -ntlp</span><br></code></pre></td></tr></table></figure>
+
+
+<p>访问页面浏览器输入http:&#x2F;&#x2F;<ip>:9100&#x2F;metrics查看服务器是否有数据收集</p>
+<h2 id="配置-Prometheus-node-exporter数据收集"><a href="#配置-Prometheus-node-exporter数据收集" class="headerlink" title="配置 Prometheus+node_exporter数据收集"></a>配置 Prometheus+node_exporter数据收集</h2><p>说明：prometheus 本身没有数据收集功能，需要用 node_exporter 收集，他们俩之间如何连接在一起呢？要修改 Prometheus 的配置文件，这个文件在 Prometheus 容器的&#x2F;etc&#x2F;prometheus&#x2F;prometheus.yml</p>
+<p>配置 vi prometheus&#x2F;prometheus.yml文件（本地的文件）</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># my global config</span><br><span class="hljs-attr">global:</span><br>  <span class="hljs-attr">scrape_interval:</span> <span class="hljs-string">15s</span> <span class="hljs-comment"># Set the scrape interval to every 15 seconds. Default is every 1 minute.</span><br>  <span class="hljs-attr">evaluation_interval:</span> <span class="hljs-string">15s</span> <span class="hljs-comment"># Evaluate rules every 15 seconds. The default is every 1 minute.</span><br>  <span class="hljs-comment"># scrape_timeout is set to the global default (10s).</span><br><br><span class="hljs-comment"># Alertmanager configuration</span><br><span class="hljs-attr">alerting:</span><br>  <span class="hljs-attr">alertmanagers:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">static_configs:</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-attr">targets:</span><br>          <span class="hljs-comment"># - alertmanager:9093</span><br><br><span class="hljs-comment"># Load rules once and periodically evaluate them according to the global &#x27;evaluation_interval&#x27;.</span><br><span class="hljs-attr">rule_files:</span><br>  <span class="hljs-comment"># - &quot;first_rules.yml&quot;</span><br>  <span class="hljs-comment"># - &quot;second_rules.yml&quot;</span><br><br><span class="hljs-comment"># A scrape configuration containing exactly one endpoint to scrape:</span><br><span class="hljs-comment"># Here it&#x27;s Prometheus itself.</span><br><span class="hljs-attr">scrape_configs:</span><br>  <span class="hljs-comment"># The job name is added as a label `job=&lt;job_name&gt;` to any timeseries scraped from this config.</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">job_name:</span> <span class="hljs-string">&quot;prometheus&quot;</span><br><br>    <span class="hljs-comment"># metrics_path defaults to &#x27;/metrics&#x27;</span><br>    <span class="hljs-comment"># scheme defaults to &#x27;http&#x27;.</span><br><br>    <span class="hljs-attr">static_configs:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">targets:</span> [<span class="hljs-string">&quot;localhost:9090&quot;</span>]	<span class="hljs-comment"># 本机地址</span><br><br>  <span class="hljs-bullet">-</span> <span class="hljs-attr">job_name:</span> <span class="hljs-string">linux</span><br>    <span class="hljs-attr">static_configs:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-attr">targets:</span> [<span class="hljs-string">&#x27;47.99.99.251:9100&#x27;</span>] <span class="hljs-comment">#服务器ip地址，可添加多台服务器以,分割（node_exporter就放在该服务器当中运行）</span><br>        <span class="hljs-attr">labels:</span><br>          <span class="hljs-attr">instance:</span> <span class="hljs-string">localhost</span><br></code></pre></td></tr></table></figure>
+<p>重启Prometheus 容器后 修改后的文件直接同步到容器&#x2F;etc&#x2F;prometheus&#x2F;中<br>docker restart docker_prometheus</p>
+<p>重启后可在docker中查看文件是否同步到容器当中<br>（1）进入容器 docker exec -it docker_prometheus &#x2F;bin&#x2F;sh<br>（2）查看配置文件信息 cat &#x2F;etc&#x2F;prometheus&#x2F;prometheus.yml</p>
+<p>完成后在http:&#x2F;&#x2F;<ip>:9090&#x2F;targets中查看是否有刚刚配置的job_name: linux信息出现</p>
+<h2 id="配置Granfana数据面板展示"><a href="#配置Granfana数据面板展示" class="headerlink" title="配置Granfana数据面板展示"></a>配置Granfana数据面板展示</h2><h3 id="5-1-登录granfana-用户名密码默认为admin"><a href="#5-1-登录granfana-用户名密码默认为admin" class="headerlink" title="5.1 登录granfana 用户名密码默认为admin"></a>5.1 登录granfana 用户名密码默认为admin</h3><p><img src="/images/pasted-3.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
+<h3 id="5-2-设置–数据源–添加数据源"><a href="#5-2-设置–数据源–添加数据源" class="headerlink" title="5.2 设置–数据源–添加数据源"></a>5.2 设置–数据源–添加数据源</h3><p><img src="/images/pasted-4.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
+<p><img src="/images/pasted-5.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
+<h3 id="5-3-选择Prometheus并添加http-x2F-x2F-9090"><a href="#5-3-选择Prometheus并添加http-x2F-x2F-9090" class="headerlink" title="5.3 选择Prometheus并添加http:&#x2F;&#x2F;:9090"></a>5.3 选择Prometheus并添加http:&#x2F;&#x2F;<ip>:9090</h3><p><img src="/images/pasted-6.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
+<h3 id="5-4-选择数据展示模版，添加模版"><a href="#5-4-选择数据展示模版，添加模版" class="headerlink" title="5.4 选择数据展示模版，添加模版"></a>5.4 选择数据展示模版，添加模版</h3>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/linux/" class="category-chain-item">linux</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/docker/">#docker</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>docker 部署监控grafana+prometheus 监控服务器资源</div>
+      <div>https://liyupin.github.io/2022/07/13/docker-部署监控/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Cper Liu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年7月13日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/07/13/prometheus%E7%9B%91%E6%8E%A7VShereClient7.0_EXSi7.0%E4%B8%BB%E6%9C%BA%E7%8A%B6%E6%80%81/" title="prometheus监控VShereClient7.0_EXSi7.0主机状态">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">prometheus监控VShereClient7.0_EXSi7.0主机状态</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/07/12/conflunce/" title="conflunce">
+                        <span class="hidden-mobile">conflunce</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

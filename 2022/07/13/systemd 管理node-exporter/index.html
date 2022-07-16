@@ -16,22 +16,22 @@
   <meta name="author" content="Cper Liu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="win10修改静态路由添加静态路由1234route ADD 160.180.0.0 MASK 255.255.0.0  172.168.1.254route ADD 160.180.0.0 MASK 255.255.0.0  160.180.3.254 METRIC 5 route ADD 160.181.0.0 MASK 255.255.0.0  160.180.3.254 METRIC 5">
+    <meta name="description" content="systemd 管理node-exporter下载安装包12345wget https:&#x2F;&#x2F;github.com&#x2F;prometheus&#x2F;node_exporter&#x2F;releases&#x2F;download&#x2F;v1.3.1&#x2F;node_exporter-1.3.1.linux-amd64.tar.gztar xzvf node_exporter-1.3.1.linux-amd64.tar.gz -C &#x2F;usr">
 <meta property="og:type" content="article">
-<meta property="og:title" content="win10修改静态路由">
-<meta property="og:url" content="https://liyupin.github.io/2022/07/14/win10%E4%BF%AE%E6%94%B9%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1/index.html">
+<meta property="og:title" content="systemd 管理node-exporter">
+<meta property="og:url" content="https://liyupin.github.io/2022/07/13/systemd%20%E7%AE%A1%E7%90%86node-exporter/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="win10修改静态路由添加静态路由1234route ADD 160.180.0.0 MASK 255.255.0.0  172.168.1.254route ADD 160.180.0.0 MASK 255.255.0.0  160.180.3.254 METRIC 5 route ADD 160.181.0.0 MASK 255.255.0.0  160.180.3.254 METRIC 5">
+<meta property="og:description" content="systemd 管理node-exporter下载安装包12345wget https:&#x2F;&#x2F;github.com&#x2F;prometheus&#x2F;node_exporter&#x2F;releases&#x2F;download&#x2F;v1.3.1&#x2F;node_exporter-1.3.1.linux-amd64.tar.gztar xzvf node_exporter-1.3.1.linux-amd64.tar.gz -C &#x2F;usr">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-07-14T01:24:00.000Z">
-<meta property="article:modified_time" content="2022-07-14T01:26:46.163Z">
+<meta property="article:published_time" content="2022-07-13T07:52:00.000Z">
+<meta property="article:modified_time" content="2022-07-16T05:36:53.284Z">
 <meta property="article:author" content="Cper Liu">
-<meta property="article:tag" content="windows">
+<meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>win10修改静态路由 - Hexo</title>
+  <title>systemd 管理node-exporter - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -196,7 +196,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="win10修改静态路由"></span>
+            <span id="subtitle" data-typed-text="systemd 管理node-exporter"></span>
           
         </div>
 
@@ -207,8 +207,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-07-14 09:24" pubdate>
-          2022年7月14日 上午
+        <time datetime="2022-07-13 15:52" pubdate>
+          2022年7月13日 下午
         </time>
       </span>
     
@@ -219,7 +219,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          446 字
+          706 字
         
       </span>
     
@@ -230,7 +230,7 @@
         
         
         
-          4 分钟
+          6 分钟
         
       </span>
     
@@ -268,14 +268,16 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">win10修改静态路由</h1>
+            <h1 style="display: none">systemd 管理node-exporter</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="win10修改静态路由"><a href="#win10修改静态路由" class="headerlink" title="win10修改静态路由"></a>win10修改静态路由</h1><h2 id="添加静态路由"><a href="#添加静态路由" class="headerlink" title="添加静态路由"></a>添加静态路由</h2><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bat">route ADD <span class="hljs-number">160</span>.<span class="hljs-number">180</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span> MASK <span class="hljs-number">255</span>.<span class="hljs-number">255</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>  <span class="hljs-number">172</span>.<span class="hljs-number">168</span>.<span class="hljs-number">1</span>.<span class="hljs-number">254</span><br><br>route ADD <span class="hljs-number">160</span>.<span class="hljs-number">180</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span> MASK <span class="hljs-number">255</span>.<span class="hljs-number">255</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>  <span class="hljs-number">160</span>.<span class="hljs-number">180</span>.<span class="hljs-number">3</span>.<span class="hljs-number">254</span> METRIC <span class="hljs-number">5</span> <br>route ADD <span class="hljs-number">160</span>.<span class="hljs-number">181</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span> MASK <span class="hljs-number">255</span>.<span class="hljs-number">255</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>  <span class="hljs-number">160</span>.<span class="hljs-number">180</span>.<span class="hljs-number">3</span>.<span class="hljs-number">254</span> METRIC <span class="hljs-number">5</span> <br></code></pre></td></tr></table></figure>
-<h2 id="删除默认路由"><a href="#删除默认路由" class="headerlink" title="删除默认路由"></a>删除默认路由</h2><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bat">route delete <span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
-<h2 id="永久路由添加-P参数"><a href="#永久路由添加-P参数" class="headerlink" title="永久路由添加 -P参数"></a>永久路由添加 -P参数</h2><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bat">route ADD  -p  <span class="hljs-number">160</span>.<span class="hljs-number">180</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span> MASK <span class="hljs-number">255</span>.<span class="hljs-number">255</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>  <span class="hljs-number">172</span>.<span class="hljs-number">168</span>.<span class="hljs-number">1</span>.<span class="hljs-number">254</span><br>route ADD  -p  <span class="hljs-number">192</span>.<span class="hljs-number">168</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span> MASK <span class="hljs-number">255</span>.<span class="hljs-number">255</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>  <span class="hljs-number">172</span>.<span class="hljs-number">16</span>.<span class="hljs-number">9</span>.<span class="hljs-number">254</span><br>route ADD  -p  <span class="hljs-number">10</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span> MASK <span class="hljs-number">255</span>.<span class="hljs-number">255</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>  <span class="hljs-number">172</span>.<span class="hljs-number">16</span>.<span class="hljs-number">9</span>.<span class="hljs-number">254</span><br>route ADD  -p  <span class="hljs-number">192</span>.<span class="hljs-number">168</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span> MASK <span class="hljs-number">255</span>.<span class="hljs-number">255</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>  <span class="hljs-number">172</span>.<span class="hljs-number">16</span>.<span class="hljs-number">9</span>.<span class="hljs-number">254</span><br>route ADD  -p  <span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span> MASK <span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>  <span class="hljs-number">172</span>.<span class="hljs-number">16</span>.<span class="hljs-number">1</span>.<span class="hljs-number">254</span><br></code></pre></td></tr></table></figure>
+                <h1 id="systemd-管理node-exporter"><a href="#systemd-管理node-exporter" class="headerlink" title="systemd 管理node-exporter"></a>systemd 管理node-exporter</h1><h2 id="下载安装包"><a href="#下载安装包" class="headerlink" title="下载安装包"></a>下载安装包</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">wget https://github.com/prometheus/node_exporter/releases/download/v1.3.1/node_exporter-1.3.1.linux-amd64.tar.gz<br><br>tar xzvf node_exporter-1.3.1.linux-amd64.tar.gz -C /usr/local/services/<br><span class="hljs-built_in">cd</span> /usr/local/services/node_exporter-1.3.1.linux-amd64<br><span class="hljs-built_in">cp</span> node_exporter /usr/local/bin/<br></code></pre></td></tr></table></figure>
+
+<h1 id="node-exporter-service"><a href="#node-exporter-service" class="headerlink" title="node-exporter.service"></a>node-exporter.service</h1><p>&#x2F;etc&#x2F;systemd&#x2F;system&#x2F;node-exporter.service</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-section">[Unit]</span><br><span class="hljs-attr">Description</span>=node_exporter<br><span class="hljs-attr">Documentation</span>=https://prometheus.io/<br><span class="hljs-attr">After</span>=network.target<br><br><span class="hljs-section">[Service]</span><br><span class="hljs-attr">ExecStart</span>=/usr/local/bin/node_exporter<br><span class="hljs-attr">Restart</span>=<span class="hljs-literal">on</span>-failure<br><span class="hljs-attr">RestartSec</span>=<span class="hljs-number">20</span><br><br><span class="hljs-section">[Install]</span><br><span class="hljs-attr">WantedBy</span>=multi-user.target<br></code></pre></td></tr></table></figure>
+<h1 id="配置服务"><a href="#配置服务" class="headerlink" title="配置服务"></a>配置服务</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">systemctl daemon-reload<br>systemctl restart node-exporter<br>systemctl status node-exporter<br>systemctl <span class="hljs-built_in">enable</span> node-exporter<br><br></code></pre></td></tr></table></figure>
                 
               </div>
             
@@ -293,7 +295,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/windows/" class="category-chain-item">windows</a>
+  <a href="/categories/linux/" class="category-chain-item">linux</a>
   
   
 
@@ -308,7 +310,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/windows/">#windows</a>
+        <a href="/tags/linux/">#linux</a>
       
     </div>
   
@@ -320,8 +322,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>win10修改静态路由</div>
-      <div>https://liyupin.github.io/2022/07/14/win10修改静态路由/</div>
+      <div>systemd 管理node-exporter</div>
+      <div>https://liyupin.github.io/2022/07/13/systemd 管理node-exporter/</div>
     </div>
     <div class="license-meta">
       
@@ -333,7 +335,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年7月14日</div>
+          <div>2022年7月13日</div>
         </div>
       
       
@@ -363,9 +365,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/07/14/docker%20%E7%BD%91%E7%BB%9C/" title="docker 网络">
+                      <a href="/2022/07/14/win10%E4%BF%AE%E6%94%B9%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1/" title="win10修改静态路由">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">docker 网络</span>
+                        <span class="hidden-mobile">win10修改静态路由</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -373,8 +375,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/07/13/systemd%20%E7%AE%A1%E7%90%86node-exporter/" title="systemd 管理node-exporter">
-                        <span class="hidden-mobile">systemd 管理node-exporter</span>
+                      <a href="/2022/07/13/%E9%BA%92%E9%BA%9F%20kylin%20v10%20OOM%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA/" title="麒麟 kylin v10 OOM内存溢出">
+                        <span class="hidden-mobile">麒麟 kylin v10 OOM内存溢出</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
