@@ -1,8 +1,8 @@
+https://liyupin.github.io/2022/07/14/ansible-%E6%A8%A1%E5%9D%97/
 https://liyupin.github.io/2022/07/16/Untitled/
 https://liyupin.github.io/2022/07/13/docker-%E9%83%A8%E7%BD%B2%E7%9B%91%E6%8E%A7/
 https://liyupin.github.io/2022/07/13/systemd%20%E7%AE%A1%E7%90%86node-exporter/
 https://liyupin.github.io/2022/07/14/openebs%20%E5%AE%89%E8%A3%85/
-https://liyupin.github.io/2022/07/14/ansible-%E6%A8%A1%E5%9D%97/
 https://liyupin.github.io/2022/07/14/%E5%B8%B8%E7%94%A8shell/
 https://liyupin.github.io/2022/07/12/docker%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E7%BC%96%E8%AF%91proto%E6%96%87%E4%BB%B6/
 https://liyupin.github.io/2022/07/14/centos7%E9%85%8D%E7%BD%AEnfs%E7%BD%91%E7%BB%9C%E6%96%87%E4%BB%B6%E5%85%B1%E4%BA%AB/

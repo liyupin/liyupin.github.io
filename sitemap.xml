@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://liyupin.github.io/2022/07/14/ansible-%E6%A8%A1%E5%9D%97/</loc>
+    
+    <lastmod>2022-07-16</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://liyupin.github.io/2022/07/16/Untitled/</loc>
     
     <lastmod>2022-07-16</lastmod>
@@ -30,15 +39,6 @@
   
   <url>
     <loc>https://liyupin.github.io/2022/07/14/openebs%20%E5%AE%89%E8%A3%85/</loc>
-    
-    <lastmod>2022-07-14</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://liyupin.github.io/2022/07/14/ansible-%E6%A8%A1%E5%9D%97/</loc>
     
     <lastmod>2022-07-14</lastmod>
     
