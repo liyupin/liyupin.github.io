@@ -16,12 +16,12 @@
   <meta name="author" content="Cper Liu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="GitLab基础：新版本下使用gitlab-rake进行备份和恢复gitlab管理员账号&amp;#x61;&amp;#x64;&amp;#x6d;&amp;#105;&amp;#x6e;&amp;#x40;&amp;#101;&amp;#x78;&amp;#97;&amp;#109;&amp;#112;&amp;#x6c;&amp;#101;&amp;#x2e;&amp;#99;&amp;#111;&amp;#x6d;  从GitLab12.1开始，可以直接使用rake进行备份，如果之前的项目中使用的gitlab-rake进行备">
+    <meta name="description" content="GitLab基础：新版本下使用gitlab-rake进行备份和恢复gitlab管理员账号&amp;#97;&amp;#x64;&amp;#109;&amp;#105;&amp;#110;&amp;#64;&amp;#x65;&amp;#120;&amp;#x61;&amp;#x6d;&amp;#x70;&amp;#108;&amp;#101;&amp;#46;&amp;#99;&amp;#111;&amp;#x6d;  从GitLab12.1开始，可以直接使用rake进行备份，如果之前的项目中使用的gitlab-rake进行备份和">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GitLab基础：新版本下使用gitlab-rake进行备份和恢复">
 <meta property="og:url" content="https://liyupin.github.io/2022/07/13/GitLab%20%E6%95%B0%E6%8D%AE%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="GitLab基础：新版本下使用gitlab-rake进行备份和恢复gitlab管理员账号&amp;#x61;&amp;#x64;&amp;#x6d;&amp;#105;&amp;#x6e;&amp;#x40;&amp;#101;&amp;#x78;&amp;#97;&amp;#109;&amp;#112;&amp;#x6c;&amp;#101;&amp;#x2e;&amp;#99;&amp;#111;&amp;#x6d;  从GitLab12.1开始，可以直接使用rake进行备份，如果之前的项目中使用的gitlab-rake进行备">
+<meta property="og:description" content="GitLab基础：新版本下使用gitlab-rake进行备份和恢复gitlab管理员账号&amp;#97;&amp;#x64;&amp;#109;&amp;#105;&amp;#110;&amp;#64;&amp;#x65;&amp;#120;&amp;#x61;&amp;#x6d;&amp;#x70;&amp;#108;&amp;#101;&amp;#46;&amp;#99;&amp;#111;&amp;#x6d;  从GitLab12.1开始，可以直接使用rake进行备份，如果之前的项目中使用的gitlab-rake进行备份和">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20200719101629711.jpeg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdW1pYW9jbg==,size_16,color_FFFFFF,t_70#pic_center#pic_center">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20200812093346161.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdW1pYW9jbg==,size_16,color_FFFFFF,t_70#pic_center">
@@ -74,7 +74,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -84,6 +84,21 @@
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
   
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
 
 
   
@@ -278,7 +293,7 @@
             
               <div class="markdown-body">
                 
-                <h1 id="GitLab基础：新版本下使用gitlab-rake进行备份和恢复"><a href="#GitLab基础：新版本下使用gitlab-rake进行备份和恢复" class="headerlink" title="GitLab基础：新版本下使用gitlab-rake进行备份和恢复"></a>GitLab基础：新版本下使用gitlab-rake进行备份和恢复</h1><h1 id="gitlab管理员账号"><a href="#gitlab管理员账号" class="headerlink" title="gitlab管理员账号"></a>gitlab管理员账号</h1><p><a href="mailto:&#x61;&#x64;&#x6d;&#105;&#x6e;&#x40;&#101;&#x78;&#97;&#109;&#112;&#x6c;&#101;&#x2e;&#99;&#111;&#x6d;">&#x61;&#x64;&#x6d;&#105;&#x6e;&#x40;&#101;&#x78;&#97;&#109;&#112;&#x6c;&#101;&#x2e;&#99;&#111;&#x6d;</a></p>
+                <h1 id="GitLab基础：新版本下使用gitlab-rake进行备份和恢复"><a href="#GitLab基础：新版本下使用gitlab-rake进行备份和恢复" class="headerlink" title="GitLab基础：新版本下使用gitlab-rake进行备份和恢复"></a>GitLab基础：新版本下使用gitlab-rake进行备份和恢复</h1><h1 id="gitlab管理员账号"><a href="#gitlab管理员账号" class="headerlink" title="gitlab管理员账号"></a>gitlab管理员账号</h1><p><a href="mailto:&#97;&#x64;&#109;&#105;&#110;&#64;&#x65;&#120;&#x61;&#x6d;&#x70;&#108;&#101;&#46;&#99;&#111;&#x6d;">&#97;&#x64;&#109;&#105;&#110;&#64;&#x65;&#120;&#x61;&#x6d;&#x70;&#108;&#101;&#46;&#99;&#111;&#x6d;</a></p>
 <p><img src="https://img-blog.csdnimg.cn/20200719101629711.jpeg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdW1pYW9jbg==,size_16,color_FFFFFF,t_70#pic_center#pic_center" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
 <p>从GitLab12.1开始，可以直接使用rake进行备份，如果之前的项目中使用的gitlab-rake进行备份和恢复的方式是否可用这个观点进行了如下实验，通过本文进行简单记录。</p>
 <h1 id="备份源环境准备"><a href="#备份源环境准备" class="headerlink" title="备份源环境准备"></a>备份源环境准备</h1><p>容器化方式，直接使用docker-compose，启动如下服务</p>
