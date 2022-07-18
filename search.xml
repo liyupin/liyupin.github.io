@@ -11493,7 +11493,7 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">source</span> .bash_profile<br></code></pre></td></tr></table></figure>
 
 <h3 id="macOS环境"><a href="#macOS环境" class="headerlink" title="macOS环境"></a>macOS环境</h3><p>macOS也自带了Python 2.x版本，可以通过Python的官方网站提供的安装文件（pkg文件）安装Python 3.x的版本。默认安装完成后，可以通过在终端执行python命令来启动2.x版本的Python解释器，启动3.x版本的Python解释器需要执行python3命令。</p>
-<p>运行Python程序<br>确认Python的版本<br>可以Windows的命令行提示符中键入下面的命令。</p>
+<h2 id="运行Python程序"><a href="#运行Python程序" class="headerlink" title="运行Python程序"></a>运行Python程序</h2><p>确认Python的版本<br>可以Windows的命令行提示符中键入下面的命令。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">python --version<br></code></pre></td></tr></table></figure>
 
 <p>在Linux或macOS系统的终端中键入下面的命令。</p>
@@ -11502,19 +11502,21 @@
 <p>当然也可以先输入python或python3进入交互式环境，再执行以下的代码检查Python的版本。</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> sys<br><br><span class="hljs-built_in">print</span>(sys.version_info)<br><span class="hljs-built_in">print</span>(sys.version)<br></code></pre></td></tr></table></figure>
 
-<p>编写Python源代码<br>可以用文本编辑工具（推荐使用Sublime、Visual Studio Code等高级文本编辑工具）编写Python源代码并用py作为后缀名保存该文件，代码内容如下所示。</p>
-<p>print(‘hello, world!’)<br>运行程序<br>切换到源代码所在的目录并执行下面的命令，看看屏幕上是否输出了”hello, world!”。</p>
+<h2 id="编写Python源代码"><a href="#编写Python源代码" class="headerlink" title="编写Python源代码"></a>编写Python源代码</h2><p>可以用文本编辑工具（推荐使用Sublime、Visual Studio Code等高级文本编辑工具）编写Python源代码并用py作为后缀名保存该文件，代码内容如下所示。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;hello, world!&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<h3 id="运行程序"><a href="#运行程序" class="headerlink" title="运行程序"></a>运行程序</h3><p>切换到源代码所在的目录并执行下面的命令，看看屏幕上是否输出了”hello, world!”。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">python hello.py<br></code></pre></td></tr></table></figure>
 
 <p>或</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">python3 hello.py<br></code></pre></td></tr></table></figure>
 
-<p>代码中的注释<br>注释是编程语言的一个重要组成部分，用于在源代码中解释代码的作用从而增强程序的可读性和可维护性，当然也可以将源代码中不需要参与运行的代码段通过注释来去掉，这一点在调试程序的时候经常用到。注释在随源代码进入预处理器或编译时会被移除，不会在目标代码中保留也不会影响程序的执行结果。</p>
+<h3 id="代码中的注释"><a href="#代码中的注释" class="headerlink" title="代码中的注释"></a>代码中的注释</h3><p>注释是编程语言的一个重要组成部分，用于在源代码中解释代码的作用从而增强程序的可读性和可维护性，当然也可以将源代码中不需要参与运行的代码段通过注释来去掉，这一点在调试程序的时候经常用到。注释在随源代码进入预处理器或编译时会被移除，不会在目标代码中保留也不会影响程序的执行结果。</p>
 <p>单行注释 - 以#和空格开头的部分<br>多行注释 - 三个引号开头，三个引号结尾<br>“””<br>第一个Python程序 - hello, world!<br>向伟大的Dennis M. Ritchie先生致敬</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">Version: <span class="hljs-number">0.1</span><br>Author: 骆昊<br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">print(&#x27;hello, world!&#x27;)</span><br><span class="hljs-string"># print(&quot;你好, 世界！&quot;)</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">Version: <span class="hljs-number">0.1</span><br>Author: Cper Liu<br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">print(&#x27;hello, world!&#x27;)</span><br><span class="hljs-string"># print(&quot;你好, 世界！&quot;)</span><br></code></pre></td></tr></table></figure>
 
-<p>Python开发工具<br>IDLE - 自带的集成开发工具<br>IDLE是安装Python环境时自带的集成开发工具，如下图所示。但是由于IDLE的用户体验并不是那么好所以很少在实际开发中被采用。</p>
-<p>IPython - 更好的交互式编程工具<br>IPython是一种基于Python的交互式解释器。相较于原生的Python交互式环境，IPython提供了更为强大的编辑和交互功能。可以通过Python的包管理工具pip安装IPython，具体的操作如下所示。</p>
+<h2 id="Python开发工具"><a href="#Python开发工具" class="headerlink" title="Python开发工具"></a>Python开发工具</h2><h3 id="IDLE-自带的集成开发工具"><a href="#IDLE-自带的集成开发工具" class="headerlink" title="IDLE - 自带的集成开发工具"></a>IDLE - 自带的集成开发工具</h3><p>IDLE是安装Python环境时自带的集成开发工具，如下图所示。但是由于IDLE的用户体验并不是那么好所以很少在实际开发中被采用。</p>
+<h3 id="IPython-更好的交互式编程工具"><a href="#IPython-更好的交互式编程工具" class="headerlink" title="IPython - 更好的交互式编程工具"></a>IPython - 更好的交互式编程工具</h3><p>IPython是一种基于Python的交互式解释器。相较于原生的Python交互式环境，IPython提供了更为强大的编辑和交互功能。可以通过Python的包管理工具pip安装IPython，具体的操作如下所示。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">pip install ipython<br></code></pre></td></tr></table></figure>
 
 <p>或</p>
@@ -11523,8 +11525,7 @@
 <p>安装成功后，可以通过下面的ipython命令启动IPython，如下图所示。</p>
 <p>Sublime Text - 高级文本编辑器</p>
 <p>首先可以通过<a href="https://www.sublimetext.com/">官方网站</a>下载安装程序安装Sublime Text 3或Sublime Text 2。</p>
-<p>安装包管理工具。</p>
-<p>通过快捷键Ctrl+&#96;或者在View菜单中选择Show Console打开控制台，输入下面的代码。<br>Sublime 3</p>
+<h3 id="安装包管理工具"><a href="#安装包管理工具" class="headerlink" title="安装包管理工具"></a>安装包管理工具</h3><p>通过快捷键Ctrl+&#96;或者在View菜单中选择Show Console打开控制台，输入下面的代码。<br>Sublime 3</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span>  urllib.request,os;pf=<span class="hljs-string">&#x27;Package Control.sublime-package&#x27;</span>;ipp=sublime.installed_packages_path();urllib.request.install_opener(urllib.request.build_opener(urllib.request.ProxyHandler()));<span class="hljs-built_in">open</span>(os.path.join(ipp,pf),<span class="hljs-string">&#x27;wb&#x27;</span>).write(urllib.request.urlopen(<span class="hljs-string">&#x27;http://sublime.wbond.net/&#x27;</span>+pf.replace(<span class="hljs-string">&#x27; &#x27;</span>,<span class="hljs-string">&#x27;%20&#x27;</span>)).read())<br></code></pre></td></tr></table></figure>
 
 <p>Sublime 2</p>
@@ -11533,7 +11534,7 @@
 <p>在浏览器中输入 <a href="https://sublime.wbond.net/Package%20Control.sublime-package">https://sublime.wbond.net/Package%20Control.sublime-package</a> 下载包管理工具的安装包，并找到安装Sublime目录下名为”Installed Packages”的目录，把刚才下载的文件放到这个文件加下，然后重启Sublime Text就搞定了。<br>安装插件。通过Preference菜单的Package Control或快捷键Ctrl+Shift+P打开命令面板，在面板中输入Install Package就可以找到安装插件的工具，然后再查找需要的插件。我们推荐大家安装以下几个插件：</p>
 <p>SublimeCodeIntel - 代码自动补全工具插件。<br>Emmet - 前端开发代码模板插件。<br>Git - 版本控制工具插件。<br>Python PEP8 Autoformat - PEP8规范自动格式化插件。<br>ConvertToUTF8 - 将本地编码转换为UTF-8。<br>说明：事实上Visual Studio Code可能是更好的选择，它不用花钱并提供了更为完整和强大的功能，有兴趣的读者可以自行研究。</p>
 <p>PyCharm - Python开发神器<br>PyCharm的安装、配置和使用在《玩转PyCharm》进行了介绍，有兴趣的读者可以选择阅读。</p>
-<p>练习<br>在Python交互式环境中输入下面的代码并查看结果，请尝试将看到的内容翻译成中文。</p>
+<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><p>在Python交互式环境中输入下面的代码并查看结果，请尝试将看到的内容翻译成中文。</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> this<br></code></pre></td></tr></table></figure>
 
 <p>说明：输入上面的代码，在Python的交互式环境中可以看到Tim Peter撰写的“Python之禅”，里面讲述的道理不仅仅适用于Python，也适用于其他编程语言。</p>
