@@ -132,4 +132,3 @@ https://liyupin.github.io/categories/linux/
 https://liyupin.github.io/categories/k8s/
 https://liyupin.github.io/categories/windows/
 https://liyupin.github.io/categories/docker/
-https://liyupin.github.io/categories/linux/
