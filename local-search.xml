@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>欧拉操作系统安装docker-ce</title>
+    <link href="/2022/07/18/%E6%AC%A7%E6%8B%89%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85docker-ce/"/>
+    <url>/2022/07/18/%E6%AC%A7%E6%8B%89%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85docker-ce/</url>
+    
+    <content type="html"><![CDATA[<h1 id="欧拉操作系统安装docker-ce"><a href="#欧拉操作系统安装docker-ce" class="headerlink" title="欧拉操作系统安装docker-ce"></a>欧拉操作系统安装docker-ce</h1><h2 id="增加docker-ce-repo"><a href="#增加docker-ce-repo" class="headerlink" title="增加docker-ce repo"></a>增加docker-ce repo</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">dnf config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo<br><br></code></pre></td></tr></table></figure><h2 id="增加centos8-repo"><a href="#增加centos8-repo" class="headerlink" title="增加centos8 repo"></a>增加centos8 repo</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">wget -O /etc/yum.repos.d/CentOS-Base.repo https://repo.huaweicloud.com/repository/conf/CentOS-8-reg.repo<br></code></pre></td></tr></table></figure><h2 id="刷新缓存"><a href="#刷新缓存" class="headerlink" title="刷新缓存"></a>刷新缓存</h2><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">yum macache <span class="hljs-attribute">--release</span>=8<br></code></pre></td></tr></table></figure><h2 id="安装docker-ce"><a href="#安装docker-ce" class="headerlink" title="安装docker-ce"></a>安装docker-ce</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">yum install docker-ce --release=8<br><br></code></pre></td></tr></table></figure><p><img src="/images/pasted-65.png" alt="upload successful"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>linux </category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>openEuler</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title> openEuler 22.03-LTS网络管理</title>
     <link href="/2022/07/18/%20openEuler22.03-LTS%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/"/>
     <url>/2022/07/18/%20openEuler22.03-LTS%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/</url>
