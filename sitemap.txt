@@ -1,6 +1,7 @@
+https://liyupin.github.io/2022/07/18/taskfile%20%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/
+https://liyupin.github.io/2022/07/14/Centos7%20%E4%B8%8B%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/
 https://liyupin.github.io/2022/07/16/%E4%BD%BF%E7%94%A8lsof%E6%81%A2%E5%A4%8Drm%20-rf%E5%88%A0%E9%99%A4%E5%90%8E%E7%9A%84%E6%96%87%E4%BB%B6/
 https://liyupin.github.io/2022/07/14/ansible-%E6%A8%A1%E5%9D%97/
-https://liyupin.github.io/2022/07/16/Untitled/
 https://liyupin.github.io/2022/07/13/docker-%E9%83%A8%E7%BD%B2%E7%9B%91%E6%8E%A7/
 https://liyupin.github.io/2022/07/13/systemd%20%E7%AE%A1%E7%90%86node-exporter/
 https://liyupin.github.io/2022/07/14/openebs%20%E5%AE%89%E8%A3%85/
@@ -12,7 +13,6 @@ https://liyupin.github.io/2022/07/14/%E4%BD%BF%E7%94%A8nexus%E6%90%AD%E5%BB%BAnp
 https://liyupin.github.io/2022/07/14/%E5%9C%A8Vim%E4%B8%AD%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%BC%96%E7%A0%81/
 https://liyupin.github.io/2022/07/14/%E6%90%AD%E5%BB%BANginx%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1/
 https://liyupin.github.io/2022/07/14/kubectl/
-https://liyupin.github.io/2022/07/14/Centos7%20%E4%B8%8B%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/
 https://liyupin.github.io/2022/07/12/CentOS%207%E4%B9%8BSystemd%E8%AF%A6%E8%A7%A3%E4%B9%8B%E6%9C%8D%E5%8A%A1%E5%8D%95%E5%85%83%E8%AE%BE%E7%BD%AEsystem.service/
 https://liyupin.github.io/2022/07/14/%E7%BD%91%E7%BB%9C%E6%8E%92%E9%94%99%E5%BF%85%E5%A4%87/
 https://liyupin.github.io/2022/07/14/%E9%80%9A%E8%BF%87docker-compose%E5%AE%89%E8%A3%85wordpress/
@@ -115,7 +115,6 @@ https://liyupin.github.io/
 https://liyupin.github.io/tags/ecos-pro/
 https://liyupin.github.io/tags/kvm/
 https://liyupin.github.io/tags/newben/
-https://liyupin.github.io/tags/web/
 https://liyupin.github.io/tags/python/
 https://liyupin.github.io/tags/docker/
 https://liyupin.github.io/tags/centos/
@@ -124,7 +123,6 @@ https://liyupin.github.io/tags/mysql/
 https://liyupin.github.io/tags/linux/
 https://liyupin.github.io/tags/windows/
 https://liyupin.github.io/tags/shell/
-https://liyupin.github.io/categories/web/
 https://liyupin.github.io/categories/ansible/
 https://liyupin.github.io/categories/linux/
 https://liyupin.github.io/categories/k8s/
