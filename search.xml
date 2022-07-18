@@ -11056,4 +11056,326 @@
         <tag>linux</tag>
       </tags>
   </entry>
+  <entry>
+    <title> openEuler 22.03-LTS网络管理</title>
+    <url>/2022/07/18/%20openEuler22.03-LTS%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[<h1 id="openEuler-22-03-LTS-网络管理"><a href="#openEuler-22-03-LTS-网络管理" class="headerlink" title="openEuler 22.03-LTS 网络管理"></a>openEuler 22.03-LTS 网络管理</h1><h2 id="配置-IP"><a href="#配置-IP" class="headerlink" title="配置 IP"></a>配置 IP</h2><p>使用nmcli命令<br> 说明：<br>使用nmcli命令配置的网络配置可以立即生效且系统重启后配置也不会丢失。</p>
+<p>nmcli介绍<br>nmcli是NetworkManager的一个命令行工具，它提供了使用命令行配置由NetworkManager管理网络连接的方法。nmcli命令的基本格式为：</p>
+<figure class="highlight less"><table><tr><td class="code"><pre><code class="hljs less"><span class="hljs-selector-tag">nmcli</span> <span class="hljs-selector-attr">[OPTIONS]</span> <span class="hljs-selector-tag">OBJECT</span> &#123; <span class="hljs-selector-tag">COMMAND</span> | <span class="hljs-selector-tag">help</span> &#125;<br></code></pre></td></tr></table></figure>
+
+<p>其中，OBJECT选项可以是general、networking、radio、connection或device等。在日常使用中，最常使用的是-t, –terse（用于脚本）、-p, –pretty选项（用于用户）及-h, –help选项，用户可以使用“ nmcli help”获取更多参数及使用信息。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">nmcli <span class="hljs-built_in">help</span><br></code></pre></td></tr></table></figure>
+
+<p>常用命令使用举例如下：</p>
+<p>显示NetworkManager状态：</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">nmcli general status</span><br></code></pre></td></tr></table></figure>
+
+<p>显示所有连接：</p>
+<figure class="highlight pgsql"><table><tr><td class="code"><pre><code class="hljs pgsql">nmcli <span class="hljs-keyword">connection</span> <span class="hljs-keyword">show</span><br></code></pre></td></tr></table></figure>
+
+<p>只显示当前活动连接，如下所示添加 -a, –active：</p>
+<figure class="highlight pgsql"><table><tr><td class="code"><pre><code class="hljs pgsql">nmcli <span class="hljs-keyword">connection</span> <span class="hljs-keyword">show</span> <span class="hljs-comment">--active</span><br></code></pre></td></tr></table></figure>
+
+<p>显示由NetworkManager识别到设备及其状态：</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">nmcli device status</span><br></code></pre></td></tr></table></figure>
+
+<p>使用nmcli工具启动和停止网络接口，在root权限下执行如下命令：</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-comment"># nmcli connection up id enp3s0</span><br><span class="hljs-comment"># nmcli device disconnect enp3s0</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="设备管理"><a href="#设备管理" class="headerlink" title="设备管理"></a>设备管理</h2><p>连接到设备<br>使用如下命令，NetworkManager将连接到对应网络设备，尝试找到合适的连接配置，并激活配置。</p>
+<figure class="highlight perl"><table><tr><td class="code"><pre><code class="hljs perl">$nmcli device <span class="hljs-keyword">connect</span> <span class="hljs-string">&quot;$IFNAME&quot;</span>  <br></code></pre></td></tr></table></figure>
+
+<p>如果不存在相应的配置连接，NetworkManager将创建并激活具有默认设置的新配置文件。</p>
+<p>断开设备连接<br>使用如下命令，NetworkManager将断开设备连接，并防止设备自动激活。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-variable">$nmcli</span> device disconnect <span class="hljs-string">&quot;<span class="hljs-variable">$IFNAME</span>&quot;</span>  <br></code></pre></td></tr></table></figure>
+
+<h2 id="设置网络连接"><a href="#设置网络连接" class="headerlink" title="设置网络连接"></a>设置网络连接</h2><h3 id="列出目前可用的网络连接"><a href="#列出目前可用的网络连接" class="headerlink" title="列出目前可用的网络连接"></a>列出目前可用的网络连接</h3><figure class="highlight subunit"><table><tr><td class="code"><pre><code class="hljs subunit">$ nmcli con show<br><br><br>NAME    UUID                                  TYPE      DEVICE<br>enp4s0  5afce939<span class="hljs-string">-400</span>e<span class="hljs-string">-42</span>fd<span class="hljs-string">-91</span>ee<span class="hljs-string">-55</span>ff5b65deab  ethernet  enp4s0<br>enp3s0  c88d7b69-f529<span class="hljs-string">-35</span>ca<span class="hljs-string">-81</span>ab-aa729ac542fd  ethernet  enp3s0<br>virbr0  ba552da6-f014<span class="hljs-string">-49</span>e3<span class="hljs-string">-91</span>fa-ec9c388864fa  bridge    virbr0<br></code></pre></td></tr></table></figure>
+
+<p> 说明：<br>输出结果中的NAME字段代表连接ID（名称）。</p>
+<p>添加一个网络连接会生成相应的配置文件，并与相应的设备关联。检查可用的设备，方法如下：</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><code class="hljs routeros">$ nmcli dev status<br><br>DEVICE     <span class="hljs-built_in"> TYPE </span>     STATE     <span class="hljs-built_in"> CONNECTION</span><br><span class="hljs-built_in"></span>enp3s0     <span class="hljs-built_in"> ethernet </span> connected  enp3s0<br>enp4s0     <span class="hljs-built_in"> ethernet </span> connected  enp4s0<br>virbr0     <span class="hljs-built_in"> bridge </span>   connected  virbr0<br>lo          loopback  unmanaged  --<br>virbr0-nic  tun       unmanaged  --<br></code></pre></td></tr></table></figure>
+
+<h3 id="配置动态IP连接"><a href="#配置动态IP连接" class="headerlink" title="配置动态IP连接"></a>配置动态IP连接</h3><p>配置IP<br>要使用 DHCP 分配网络时，可以使用动态IP配置添加网络配置文件，命令格式如下：</p>
+<figure class="highlight pgsql"><table><tr><td class="code"><pre><code class="hljs pgsql">nmcli <span class="hljs-keyword">connection</span> <span class="hljs-keyword">add</span> <span class="hljs-keyword">type</span> ethernet con-<span class="hljs-type">name</span> <span class="hljs-keyword">connection</span>-<span class="hljs-type">name</span> ifname interface-<span class="hljs-type">name</span><br></code></pre></td></tr></table></figure>
+
+<p>例如创建名为net-test的动态连接配置文件，在root权限下使用以下命令：</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-comment"># nmcli connection add type ethernet con-name net-test ifname enp3s0</span><br><span class="hljs-attribute">Connection</span> &#x27;net-test&#x27; (a771baa0-<span class="hljs-number">5064</span>-<span class="hljs-number">4296</span>-ac40-<span class="hljs-number">5</span>dc8973967ab) successfully added.<br></code></pre></td></tr></table></figure>
+
+<p>NetworkManager 会将参数 connection.autoconnect 设定为 yes，并将设置保存到 “&#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;ifcfg-net-test”文件中，在该文件中会将 ONBOOT 设置为 yes。</p>
+<p>激活连接并检查状态<br>在root权限下使用以下命令激活网络连接：</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><code class="hljs awk"><span class="hljs-comment"># nmcli con up net-test </span><br><br>Connection successfully activated (D-Bus active path:<span class="hljs-regexp">/org/</span>freedesktop<span class="hljs-regexp">/NetworkManager/</span>ActiveConnection/<span class="hljs-number">5</span>)<br></code></pre></td></tr></table></figure>
+
+<p>检查这些设备及连接的状态，使用以下命令：</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><code class="hljs routeros">$ nmcli device status<br><br>DEVICE     <span class="hljs-built_in"> TYPE </span>     STATE     <span class="hljs-built_in"> CONNECTION</span><br><span class="hljs-built_in"></span>enp4s0     <span class="hljs-built_in"> ethernet </span> connected  enp4s0<br>enp3s0     <span class="hljs-built_in"> ethernet </span> connected  net-test<br>virbr0     <span class="hljs-built_in"> bridge </span>   connected  virbr0<br>lo          loopback  unmanaged  --<br>virbr0-nic  tun       unmanaged  --<br></code></pre></td></tr></table></figure>
+
+<h3 id="配置静态IP连接"><a href="#配置静态IP连接" class="headerlink" title="配置静态IP连接"></a>配置静态IP连接</h3><p>配置IP<br>添加静态 IPv4 配置的网络连接，可使用以下命令：</p>
+<p>nmcli connection add type ethernet con-name connection-name ifname interface-name ip4 address gw4 address<br> 说明：<br>如果要添加 IPv6 地址和网关信息，使用 ip6 和 gw6 选项。</p>
+<p>例如创建名为 net-static的静态连接配置文件，在root权限下使用以下命令：</p>
+<figure class="highlight dos"><table><tr><td class="code"><pre><code class="hljs dos"># nmcli <span class="hljs-built_in">con</span> add <span class="hljs-built_in">type</span> ethernet <span class="hljs-built_in">con</span>-name <span class="hljs-built_in">net</span>-static ifname enp3s0 ip4 <span class="hljs-number">192</span>.<span class="hljs-number">168</span>.<span class="hljs-number">0</span>.<span class="hljs-number">10</span>/<span class="hljs-number">24</span> gw4 <span class="hljs-number">192</span>.<span class="hljs-number">168</span>.<span class="hljs-number">0</span>.<span class="hljs-number">254</span><br></code></pre></td></tr></table></figure>
+
+<p>还可为该设备同时指定 IPv6 地址和网关，示例如下：</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-comment"># nmcli con add type ethernet con-name test-lab ifname enp3s0 ip4 192.168.0.10/24 gw4 192.168.0.254 ip6 abbe::**** gw6 2001:***::*</span><br><span class="hljs-attribute">Connection</span> &#x27;net-static&#x27; (<span class="hljs-number">63</span>aa2036-<span class="hljs-number">8665</span>-f54d-<span class="hljs-number">9</span>a92-c3035bad03f7) successfully added.<br></code></pre></td></tr></table></figure>
+
+<p>NetworkManager 会将其内部参数 ipv4.method 设定为 manual，将 connection.autoconnect 设定为yes，并将设置写入 &#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;ifcfg-my-office 文件，其中会将对应 BOOTPROTO 设定为 none，将 ONBOOT 设定为 yes。</p>
+<p>设定两个 IPv4 DNS 服务器地址，在root权限下使用以下命令：</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown"><span class="hljs-section"># nmcli con mod net-static ipv4.dns &quot;<span class="hljs-emphasis">*.*</span>.<span class="hljs-emphasis">*.*</span> <span class="hljs-emphasis">*.*</span>.<span class="hljs-emphasis">*.*</span>&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>设置两个 IPv6 DNS 服务器地址，在root权限下使用以下命令：</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><code class="hljs markdown"><span class="hljs-section"># nmcli con mod net-static ipv6.dns &quot;2001:4860:4860::<span class="hljs-strong">****</span> 2001:4860:4860::<span class="hljs-strong">****</span>&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="激活连接并检查状态"><a href="#激活连接并检查状态" class="headerlink" title="激活连接并检查状态"></a>激活连接并检查状态</h3><p>激活新的网络连接，在root权限下使用以下命令：</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><code class="hljs awk"><span class="hljs-comment"># nmcli con up net-static ifname enp3s0</span><br>Connection successfully activated (D-Bus active path: <span class="hljs-regexp">/org/</span>freedesktop<span class="hljs-regexp">/NetworkManager/</span>ActiveConnection/<span class="hljs-number">6</span>)<br></code></pre></td></tr></table></figure>
+
+<p>检查这些设备及连接的状态，使用以下命令：</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><code class="hljs routeros">$ nmcli device status<br><br>DEVICE     <span class="hljs-built_in"> TYPE </span>     STATE     <span class="hljs-built_in"> CONNECTION</span><br><span class="hljs-built_in"></span>enp4s0     <span class="hljs-built_in"> ethernet </span> connected  enp4s0<br>enp3s0     <span class="hljs-built_in"> ethernet </span> connected  net-static<br>virbr0     <span class="hljs-built_in"> bridge </span>   connected  virbr0<br>lo          loopback  unmanaged  --<br>virbr0-nic  tun       unmanaged  --<br></code></pre></td></tr></table></figure>
+
+<p>查看配置的连接详情，使用以下命令（使用 -p, –pretty 选项在输出结果中添加标题和分段）：</p>
+<figure class="highlight pgsql"><table><tr><td class="code"><pre><code class="hljs pgsql">$ nmcli -p con <span class="hljs-keyword">show</span> net-static <br>===============================================================================<br><span class="hljs-keyword">Connection</span> profile details (net-static )<br>===============================================================================<br><span class="hljs-keyword">connection</span>.id:                          net-static<br><span class="hljs-keyword">connection</span>.uuid:                        b9f18801<span class="hljs-number">-6084</span><span class="hljs-number">-4</span>aee-af28-c8f0598ff5e1<br><span class="hljs-keyword">connection</span>.<span class="hljs-keyword">stable</span>-id:                   <span class="hljs-comment">--</span><br><span class="hljs-keyword">connection</span>.<span class="hljs-keyword">type</span>:                        <span class="hljs-number">802</span><span class="hljs-number">-3</span>-ethernet<br><span class="hljs-keyword">connection</span>.interface-<span class="hljs-type">name</span>:              enp3s0<br><span class="hljs-keyword">connection</span>.autoconnect:                 yes<br><span class="hljs-keyword">connection</span>.autoconnect-priority:        <span class="hljs-number">0</span><br><span class="hljs-keyword">connection</span>.autoconnect-retries:         <span class="hljs-number">-1</span> (<span class="hljs-keyword">default</span>)<br><span class="hljs-keyword">connection</span>.multi-<span class="hljs-keyword">connect</span>:               <span class="hljs-number">0</span> (<span class="hljs-keyword">default</span>)<br><span class="hljs-keyword">connection</span>.auth-retries:                <span class="hljs-number">-1</span><br><span class="hljs-keyword">connection</span>.timestamp:                   <span class="hljs-number">1578988781</span><br><span class="hljs-keyword">connection</span>.<span class="hljs-keyword">read</span>-<span class="hljs-keyword">only</span>:                   <span class="hljs-keyword">no</span><br><span class="hljs-keyword">connection</span>.permissions:                 <span class="hljs-comment">--</span><br><span class="hljs-keyword">connection</span>.zone:                        <span class="hljs-comment">--</span><br><span class="hljs-keyword">connection</span>.master:                      <span class="hljs-comment">--</span><br><span class="hljs-keyword">connection</span>.slave-<span class="hljs-keyword">type</span>:                  <span class="hljs-comment">--</span><br><span class="hljs-keyword">connection</span>.autoconnect-slaves:          <span class="hljs-number">-1</span> (<span class="hljs-keyword">default</span>)<br><span class="hljs-keyword">connection</span>.secondaries:                 <span class="hljs-comment">--</span><br><span class="hljs-keyword">connection</span>.gateway-ping-timeout:        <span class="hljs-number">0</span><br><span class="hljs-keyword">connection</span>.metered:                     <span class="hljs-type">unknown</span><br><span class="hljs-keyword">connection</span>.lldp:                        <span class="hljs-keyword">default</span><br><span class="hljs-keyword">connection</span>.mdns:                        <span class="hljs-number">-1</span> (<span class="hljs-keyword">default</span>)<br><span class="hljs-keyword">connection</span>.llmnr:                       <span class="hljs-number">-1</span> (<span class="hljs-keyword">default</span>)<br></code></pre></td></tr></table></figure>
+
+<h3 id="添加-Wi-Fi-连接"><a href="#添加-Wi-Fi-连接" class="headerlink" title="添加 Wi-Fi 连接"></a>添加 Wi-Fi 连接</h3><p>有两种方式添加Wi-Fi 连接。</p>
+<h4 id="方法1，通过网络接口连接wifi"><a href="#方法1，通过网络接口连接wifi" class="headerlink" title="方法1，通过网络接口连接wifi"></a>方法1，通过网络接口连接wifi</h4><p>连接到由SSID或BSSID指定的wifi网络。命令如下，该命令找到匹配的连接或创建一个连接，然后在设备上激活它。</p>
+<figure class="highlight perl"><table><tr><td class="code"><pre><code class="hljs perl">nmcli device wifi <span class="hljs-keyword">connect</span> <span class="hljs-string">&quot;$SSID&quot;</span> password <span class="hljs-string">&quot;$PASSWORD&quot;</span> ifname <span class="hljs-string">&quot;$IFNAME&quot;</span>  <br>nmcli --ask device wifi <span class="hljs-keyword">connect</span> <span class="hljs-string">&quot;$SSID&quot;</span> <br></code></pre></td></tr></table></figure>
+
+<h4 id="方法2，通过配置文件连接Wi-Fi"><a href="#方法2，通过配置文件连接Wi-Fi" class="headerlink" title="方法2，通过配置文件连接Wi-Fi"></a>方法2，通过配置文件连接Wi-Fi</h4><p>1，使用以下命令查看可用 Wi-Fi 访问点：</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">nmcli dev wifi list</span><br></code></pre></td></tr></table></figure>
+
+<p>2，使用以下命令生成使用的静态 IP 配置，但允许自动 DNS 地址分配的 Wi-Fi 连接：</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><code class="hljs vim">$ nmcli <span class="hljs-keyword">con</span> <span class="hljs-built_in">add</span> <span class="hljs-keyword">con</span>-name Wifi ifname wlan0 <span class="hljs-built_in">type</span> wifi ssid MyWifi ip4 <span class="hljs-number">192.168</span>.<span class="hljs-number">100.101</span>/<span class="hljs-number">24</span> gw4 <span class="hljs-number">192.168</span>.<span class="hljs-number">100.1</span><br></code></pre></td></tr></table></figure>
+<p>3，请使用以下命令设定 WPA2 密码，例如 “answer”：</p>
+<figure class="highlight maxima"><table><tr><td class="code"><pre><code class="hljs maxima">nmcli con modify Wifi wifi-<span class="hljs-built_in">sec</span>.<span class="hljs-built_in">key</span>-mgmt wpa-psk<br>nmcli con modify Wifi wifi-<span class="hljs-built_in">sec</span>.psk answer<br></code></pre></td></tr></table></figure>
+
+<p>4，使用以下命令更改 Wi-Fi 状态：</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">nmcli</span> radio wifi [ <span class="hljs-literal">on</span> | <span class="hljs-literal">off</span> ]<br></code></pre></td></tr></table></figure>
+
+<p>更改属性<br>请使用以下命令检查具体属性，比如 mtu：</p>
+<figure class="highlight nsis"><table><tr><td class="code"><pre><code class="hljs nsis">$ nmcli connection <span class="hljs-literal">show</span> id <span class="hljs-string">&#x27;Wifi &#x27;</span> | grep mtu<br><span class="hljs-number">802</span>-<span class="hljs-number">11</span>-wireless.mtu: <span class="hljs-literal">auto</span><br></code></pre></td></tr></table></figure>
+
+<p>使用如下命令更改设置的属性：</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">nmcli</span> connection modify id &#x27;Wifi &#x27; <span class="hljs-number">802</span>-<span class="hljs-number">11</span>-wireless.mtu <span class="hljs-number">1350</span><br></code></pre></td></tr></table></figure>
+
+<p>使用如下命令确认更改：</p>
+<figure class="highlight pgsql"><table><tr><td class="code"><pre><code class="hljs pgsql">$ nmcli <span class="hljs-keyword">connection</span> <span class="hljs-keyword">show</span> id <span class="hljs-string">&#x27;Wifi &#x27;</span> | grep mtu<br><span class="hljs-number">802</span><span class="hljs-number">-11</span>-wireless.mtu: <span class="hljs-number">1350</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="配置静态路由"><a href="#配置静态路由" class="headerlink" title="配置静态路由"></a>配置静态路由</h3><p>使用nmcli命令为网络连接配置静态路由，使用命令如下：</p>
+<figure class="highlight dns"><table><tr><td class="code"><pre><code class="hljs dns">nmcli connection modify enp3s0 +ipv4.routes &quot;<span class="hljs-number">192.168.122.0</span>/<span class="hljs-number">24 10.10.10</span>.<span class="hljs-number">1</span>&quot;<br></code></pre></td></tr></table></figure>
+
+<p>使用编辑器配置静态路由，使用如下命令：</p>
+<figure class="highlight pgsql"><table><tr><td class="code"><pre><code class="hljs pgsql">$ nmcli con edit <span class="hljs-keyword">type</span> ethernet con-<span class="hljs-type">name</span> enp3s0<br>===| nmcli interactive <span class="hljs-keyword">connection</span> editor |===<br>Adding a <span class="hljs-built_in">new</span> <span class="hljs-string">&#x27;802-3-ethernet&#x27;</span> <span class="hljs-keyword">connection</span><br><span class="hljs-keyword">Type</span> <span class="hljs-string">&#x27;help&#x27;</span> <span class="hljs-keyword">or</span> <span class="hljs-string">&#x27;?&#x27;</span> <span class="hljs-keyword">for</span> available commands.<br><span class="hljs-keyword">Type</span> <span class="hljs-string">&#x27;describe [&lt;setting&gt;.&lt;prop&gt;]&#x27;</span> <span class="hljs-keyword">for</span> detailed property description.<br>You may edit the <span class="hljs-keyword">following</span> settings: <span class="hljs-keyword">connection</span>, <span class="hljs-number">802</span><span class="hljs-number">-3</span>-ethernet (ethernet), <span class="hljs-number">802</span><span class="hljs-number">-1</span>x, ipv4, ipv6, dcb<br>nmcli&gt; <span class="hljs-keyword">set</span> ipv4.routes <span class="hljs-number">192.168</span><span class="hljs-number">.122</span><span class="hljs-number">.0</span>/<span class="hljs-number">24</span> <span class="hljs-number">10.10</span><span class="hljs-number">.10</span><span class="hljs-number">.1</span><br>nmcli&gt;<br>nmcli&gt; save persistent<br>Saving the <span class="hljs-keyword">connection</span> <span class="hljs-keyword">with</span> <span class="hljs-string">&#x27;autoconnect=yes&#x27;</span>. That might result <span class="hljs-keyword">in</span> an <span class="hljs-keyword">immediate</span> activation <span class="hljs-keyword">of</span> the <span class="hljs-keyword">connection</span>.<br><span class="hljs-keyword">Do</span> you still want <span class="hljs-keyword">to</span> save? [yes] yes<br><span class="hljs-keyword">Connection</span> <span class="hljs-string">&#x27;enp3s0&#x27;</span> (<span class="hljs-number">1464</span>ddb4<span class="hljs-number">-102</span>a<span class="hljs-number">-4e79</span><span class="hljs-number">-874</span>a<span class="hljs-number">-0</span>a42e15cc3c0) successfully saved.<br>nmcli&gt; quit<br></code></pre></td></tr></table></figure>
+
+<h2 id="使用ip命令"><a href="#使用ip命令" class="headerlink" title="使用ip命令"></a>使用ip命令</h2><p> 说明：<br>使用ip命令配置的网络配置可以立即生效但系统重启后配置会丢失。</p>
+<p>配置IP地址<br>使用ip命令为接口配置地址，命令格式如下，其中 interface-name 为网卡名称。</p>
+<p>ip addr [ add | del ] address dev interface-name</p>
+<h3 id="配置静态地址"><a href="#配置静态地址" class="headerlink" title="配置静态地址"></a>配置静态地址</h3><p>在root权限下，配置设置IP地址，使用示例如下：</p>
+<figure class="highlight gcode"><table><tr><td class="code"><pre><code class="hljs gcode"><span class="hljs-attr"># ip address add 192</span><span class="hljs-number">.168</span><span class="hljs-number">.0</span><span class="hljs-number">.10</span>/<span class="hljs-number">24</span> dev e<span class="hljs-symbol">np3</span>s<span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
+<p>查看配置结果，在root权限使用如下命令：</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-comment"># ip addr show dev enp3s0</span><br><br><span class="hljs-attribute">2</span>: enp3s0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="hljs-number">1500</span> qdisc fq_codel state UP group default qlen <span class="hljs-number">1000</span><br>    <span class="hljs-attribute">link</span>/ether <span class="hljs-number">52</span>:<span class="hljs-number">54</span>:<span class="hljs-number">00</span>:aa:ad:<span class="hljs-number">4</span>a brd ff:ff:ff:ff:ff:ff<br>    <span class="hljs-attribute">inet</span> <span class="hljs-number">192.168.202.248</span>/<span class="hljs-number">16</span> brd <span class="hljs-number">192.168.255.255</span> scope global dynamic noprefixroute enp3s0<br>       <span class="hljs-attribute">valid_lft</span> <span class="hljs-number">9547</span>sec preferred_lft <span class="hljs-number">9547</span>sec<br>    <span class="hljs-attribute">inet</span> <span class="hljs-number">192.168.0.10</span>/<span class="hljs-number">24</span> scope global enp3s0<br>       <span class="hljs-attribute">valid_lft</span> forever preferred_lft forever<br>    <span class="hljs-attribute">inet6</span> fe80::<span class="hljs-number">32</span>e8:cc22:<span class="hljs-number">9</span>db2:f4d4/<span class="hljs-number">64</span> scope link noprefixroute<br>       <span class="hljs-attribute">valid_lft</span> forever preferred_lft forever<br></code></pre></td></tr></table></figure>
+<h3 id="配置多个地址"><a href="#配置多个地址" class="headerlink" title="配置多个地址"></a>配置多个地址</h3><p>ip 命令支持为同一接口分配多个地址，可在root权限下重复多次使用 ip 命令实现分配多个地址。使用示例如下：</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-comment"># ip address add 192.168.2.223/24 dev enp4s0</span><br><br><span class="hljs-comment"># ip address add 192.168.4.223/24 dev enp4s0</span><br><br><span class="hljs-comment"># ip addr</span><br><br><span class="hljs-attribute">3</span>: enp4s0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="hljs-number">1500</span> qdisc fq_codel state UP group default qlen <span class="hljs-number">1000</span><br>    <span class="hljs-attribute">link</span>/ether <span class="hljs-number">52</span>:<span class="hljs-number">54</span>:<span class="hljs-number">00</span>:aa:da:e2 brd ff:ff:ff:ff:ff:ff<br>    <span class="hljs-attribute">inet</span> <span class="hljs-number">192.168.203.12</span>/<span class="hljs-number">16</span> brd <span class="hljs-number">192.168.255.255</span> scope global dynamic noprefixroute enp4s0<br>       <span class="hljs-attribute">valid_lft</span> <span class="hljs-number">8389</span>sec preferred_lft <span class="hljs-number">8389</span>sec<br>    <span class="hljs-attribute">inet</span> <span class="hljs-number">192.168.2.223</span>/<span class="hljs-number">24</span> scope global enp4s0<br>       <span class="hljs-attribute">valid_lft</span> forever preferred_lft forever<br>    <span class="hljs-attribute">inet</span> <span class="hljs-number">192.168.4.223</span>/<span class="hljs-number">24</span> scope global enp4s0<br>       <span class="hljs-attribute">valid_lft</span> forever preferred_lft forever<br>    <span class="hljs-attribute">inet6</span> fe80::<span class="hljs-number">1</span>eef:<span class="hljs-number">5</span>e24:<span class="hljs-number">4</span>b67:f07f/<span class="hljs-number">64</span> scope link noprefixroute<br>       <span class="hljs-attribute">valid_lft</span> forever preferred_lft forever<br></code></pre></td></tr></table></figure>
+<h3 id="配置静态路由-1"><a href="#配置静态路由-1" class="headerlink" title="配置静态路由"></a>配置静态路由</h3><p>如果需要静态路由，可使用 ip route add 命令在路由表中添加，使用 ip route del 命令删除。最常使用的 ip route 命令格式如下：</p>
+<p>ip route [ add | del | change | append | replace ] destination-address<br>在root权限下使用 ip route 命令显示当前的 IP 路由表。示例如下：</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-comment"># ip route</span><br><br><span class="hljs-attribute">default</span> via <span class="hljs-number">192.168.0.1</span> dev enp3s0 proto dhcp metric <span class="hljs-number">100</span><br><span class="hljs-attribute">default</span> via <span class="hljs-number">192.168.0.1</span> dev enp4s0 proto dhcp metric <span class="hljs-number">101</span><br><span class="hljs-attribute">192</span>.<span class="hljs-number">168</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>/<span class="hljs-number">16</span> dev enp3s0 proto kernel scope link src <span class="hljs-number">192.168.202.248</span> metric <span class="hljs-number">100</span><br><span class="hljs-attribute">192</span>.<span class="hljs-number">168</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>/<span class="hljs-number">16</span> dev enp4s0 proto kernel scope link src <span class="hljs-number">192.168.203.12</span> metric <span class="hljs-number">101</span><br><span class="hljs-attribute">192</span>.<span class="hljs-number">168</span>.<span class="hljs-number">122</span>.<span class="hljs-number">0</span>/<span class="hljs-number">24</span> dev virbr0 proto kernel scope link src <span class="hljs-number">192.168.122.1</span> linkdown<br></code></pre></td></tr></table></figure>
+<p>在主机地址中添加一个静态路由，在 root 权限下，使用以下命令格式：</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">ip</span> route add <span class="hljs-number">192.168.2.1</span> via <span class="hljs-number">10.0.0.1</span><span class="hljs-meta"> [dev interface-name]</span><br></code></pre></td></tr></table></figure>
+<p>其中 192.168.2.1 是用点分隔的十进制符号中的 IP 地址，10.0.0.1 是下一个跃点，interface-name 是进入下一个跃点的退出接口。</p>
+<p>要在网络中添加一个静态路由，即代表 IP 地址范围的 IP 地址，请在root权限下运行以下命令格式：</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">ip</span> route add <span class="hljs-number">192.168.2.0</span>/<span class="hljs-number">24</span> via <span class="hljs-number">10.0.0.1</span><span class="hljs-meta"> [dev interface-name]</span><br></code></pre></td></tr></table></figure>
+<p>其中 192.168.2.1 是目标网络的 IP 地址，10.0.0.1 是网络前缀，interface-name 为网卡名称。</p>
+<h3 id="通过ifcfg文件配置网络"><a href="#通过ifcfg文件配置网络" class="headerlink" title="通过ifcfg文件配置网络"></a>通过ifcfg文件配置网络</h3><p> 说明：<br>通过ifcfg文件配置的网络配置不会立即生效，需要在root权限下执行systemctl reload NetworkManager命令以重启网络服务后才生效。</p>
+<h4 id="配置静态网络"><a href="#配置静态网络" class="headerlink" title="配置静态网络"></a>配置静态网络</h4><p>以enp4s0网络接口进行静态网络设置为例，通过在root权限下修改ifcfg文件实现，在&#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;目录中生成名为ifcfg-enp4s0的文件中，修改参数配置，示例如下：</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">TYPE</span>=Ethernet<br><span class="hljs-attr">PROXY_METHOD</span>=none<br><span class="hljs-attr">BROWSER_ONLY</span>=<span class="hljs-literal">no</span><br><span class="hljs-attr">BOOTPROTO</span>=none<br><span class="hljs-attr">IPADDR</span>=<span class="hljs-number">192.168</span>.<span class="hljs-number">0.10</span><br><span class="hljs-attr">PREFIX</span>=<span class="hljs-number">24</span><br><span class="hljs-attr">DEFROUTE</span>=<span class="hljs-literal">yes</span><br><span class="hljs-attr">IPV4_FAILURE_FATAL</span>=<span class="hljs-literal">no</span><br><span class="hljs-attr">IPV6INIT</span>=<span class="hljs-literal">yes</span><br><span class="hljs-attr">IPV6_AUTOCONF</span>=<span class="hljs-literal">yes</span><br><span class="hljs-attr">IPV6_DEFROUTE</span>=<span class="hljs-literal">yes</span><br><span class="hljs-attr">IPV6_FAILURE_FATAL</span>=<span class="hljs-literal">no</span><br><span class="hljs-attr">IPV6_ADDR_GEN_MODE</span>=stable-privacy<br><span class="hljs-attr">NAME</span>=enp4s0static<br><span class="hljs-attr">UUID</span>=<span class="hljs-number">08</span>c3a30e-c5e2-<span class="hljs-number">4</span>d7b-<span class="hljs-number">831</span>f-<span class="hljs-number">26</span>c3cdc29293<br><span class="hljs-attr">DEVICE</span>=enp4s0<br><span class="hljs-attr">ONBOOT</span>=<span class="hljs-literal">yes</span><br></code></pre></td></tr></table></figure>
+<h4 id="配置动态网络"><a href="#配置动态网络" class="headerlink" title="配置动态网络"></a>配置动态网络</h4><p>要通过ifcfg文件为em1接口配置动态网络，请按照如下操作在&#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;目录中生成名为 ifcfg-em1 的文件，示例如下：</p>
+<p>DEVICE&#x3D;em1<br>BOOTPROTO&#x3D;dhcp<br>ONBOOT&#x3D;yes<br>要配置一个向DHCP服务器发送不同的主机名的接口，请在ifcfg文件中新增一行内容，如下所示：</p>
+<p>DHCP_HOSTNAME&#x3D;hostname<br>要配置忽略由DHCP服务器发送的路由，防止网络服务使用从DHCP服务器接收的DNS服务器更新&#x2F;etc&#x2F;resolv.conf。请在ifcfg文件中新增一行内容，如下所示：</p>
+<p>PEERDNS&#x3D;no<br>要配置一个接口使用具体DNS服务器，请将参数PEERDNS&#x3D;no，并在ifcfg文件中添加以下行：</p>
+<p>DNS1&#x3D;ip-address<br>DNS2&#x3D;ip-address<br>其中ip-address是DNS服务器的地址。这样就会让网络服务使用指定的DNS服务器更新&#x2F;etc&#x2F;resolv.conf。</p>
+<h4 id="配置默认网关"><a href="#配置默认网关" class="headerlink" title="配置默认网关"></a>配置默认网关</h4><p>在确定默认网关时，首先解析 &#x2F;etc&#x2F;sysconfig&#x2F;network 文件，然后解析 ifcfg 文件 ，将最后读取的 GATEWAY 的取值作为路由表中的默认路由。</p>
+<p>在动态网络环境中，使用 NetworkManager 管理主机时，建议设置为由 DHCP 来分配。</p>
+<h4 id="配置主机名"><a href="#配置主机名" class="headerlink" title="配置主机名"></a>配置主机名</h4><p>简介<br>hostname有三种类型：static、transient和pretty。</p>
+<p>static：静态主机名，可由用户自行设置，并保存在&#x2F;etc&#x2F;hostname 文件中。<br>transient：动态主机名，由内核维护，初始是 static 主机名，默认值为“localhost”。可由DHCP或mDNS在运行时更改。<br>pretty：灵活主机名，允许使用自由形式（包括特殊&#x2F;空白字符）进行设置。静态&#x2F;动态主机名遵从域名的通用限制。<br> 说明：<br>static和transient主机名只能包含a-z、A-Z、0-9、“-”、“_”和“.”，不能在开头或结尾处使用句点，不允许使用两个相连的句点，大小限制为 64 个字符。</p>
+<p>使用hostnamectl配置主机名<br>查看所有主机名<br>查看当前的主机名，使用如下命令：</p>
+<p>$ hostnamectl status<br> 说明：<br>如果命令未指定任何选项，则默认使用status选项。</p>
+<p>设定所有主机名<br>在root权限下，设定系统中的所有主机名，使用如下命令：</p>
+<h1 id="hostnamectl-set-hostname-name"><a href="#hostnamectl-set-hostname-name" class="headerlink" title="hostnamectl set-hostname name"></a>hostnamectl set-hostname name</h1><p>设定特定主机名<br>在root权限下，通过不同的参数来设定特定主机名，使用如下命令：</p>
+<h1 id="hostnamectl-set-hostname-name-option…"><a href="#hostnamectl-set-hostname-name-option…" class="headerlink" title="hostnamectl set-hostname name [option…]"></a>hostnamectl set-hostname name [option…]</h1><p>其中option可以是–pretty、–static、–transient中的一个或多个选项。</p>
+<p>如果–static或–transient与–pretty选项一同使用时，则会将static和transient主机名简化为pretty主机名格式，使用“-”替换空格，并删除特殊字符。</p>
+<p>当设定pretty主机名时，如果主机名中包含空格或单引号，需要使用引号。命令示例如下：</p>
+<h1 id="hostnamectl-set-hostname-“Stephen’s-notebook”-–pretty"><a href="#hostnamectl-set-hostname-“Stephen’s-notebook”-–pretty" class="headerlink" title="hostnamectl set-hostname “Stephen’s notebook” –pretty"></a>hostnamectl set-hostname “Stephen’s notebook” –pretty</h1><p>清除特定主机名<br>要清除特定主机名，并将其还原为默认形式，在root权限下，使用如下命令：</p>
+<h1 id="hostnamectl-set-hostname-“”-option…"><a href="#hostnamectl-set-hostname-“”-option…" class="headerlink" title="hostnamectl set-hostname “” [option…]"></a>hostnamectl set-hostname “” [option…]</h1><p>其中 “” 是空白字符串，option是–pretty、–static和–transient中的一个或多个选项。</p>
+<p>远程更改主机名<br>在远程系统中运行hostnamectl命令时，要使用-H，–host 选项，在root权限下使用如下命令：</p>
+<h1 id="hostnamectl-set-hostname-H-username-hostname-new-hostname"><a href="#hostnamectl-set-hostname-H-username-hostname-new-hostname" class="headerlink" title="hostnamectl set-hostname -H [username]@hostname new_hostname"></a>hostnamectl set-hostname -H [username]@hostname new_hostname</h1><p>其中hostname是要配置的远程主机，username为自选项，new_hostname为新主机名。hostnamectl会通过SSH连接到远程系统。</p>
+<p>使用nmcli配置主机名<br>查询static主机名，使用如下命令：</p>
+<p>$ nmcli general hostname<br>在root权限下，将static主机名设定为host-server，使用如下命令：</p>
+<h1 id="nmcli-general-hostname-host-server"><a href="#nmcli-general-hostname-host-server" class="headerlink" title="nmcli general hostname host-server"></a>nmcli general hostname host-server</h1><p>要让系统hostnamectl感知到static主机名的更改，在root权限下，重启hostnamed服务，使用如下命令：</p>
+<h1 id="systemctl-restart-systemd-hostnamed"><a href="#systemctl-restart-systemd-hostnamed" class="headerlink" title="systemctl restart systemd-hostnamed"></a>systemctl restart systemd-hostnamed</h1><p>配置网络绑定<br>使用nmcli<br>创建名为mybond0的绑定，使用示例如下：</p>
+<p>$ nmcli con add type bond con-name mybond0 ifname mybond0 mode active-backup<br>添加从属接口，使用示例如下：</p>
+<p>$ nmcli con add type bond-slave ifname enp3s0 master mybond0<br>要添加其他从属接口，重复上一个命令，并在命令中使用新的接口，使用示例如下：</p>
+<p>$ nmcli con add type bond-slave ifname enp4s0 master mybond0<br>Connection ‘bond-slave-enp4s0’ (05e56afc-b953-41a9-b3f9-0791eb49f7d3) successfully added.<br>要启动绑定，则必须首先启动从属接口，使用示例如下：</p>
+<p>$ nmcli con up bond-slave-enp3s0<br>Connection successfully activated (D-Bus active path: &#x2F;org&#x2F;freedesktop&#x2F;NetworkManager&#x2F;ActiveConnection&#x2F;14)<br>$ nmcli con up bond-slave-enp4s0<br>Connection successfully activated (D-Bus active path: &#x2F;org&#x2F;freedesktop&#x2F;NetworkManager&#x2F;ActiveConnection&#x2F;15)<br>现在可以启动绑定，使用示例如下：</p>
+<p>$ nmcli con up mybond0<br>Connection successfully activated (D-Bus active path: &#x2F;org&#x2F;freedesktop&#x2F;NetworkManager&#x2F;ActiveConnection&#x2F;16)<br>使用命令行<br>检查是否已安装Bonding内核模块<br>在系统中默认已加载相应模块。要载入绑定模块，可在root权限下使用如下命令：</p>
+<h1 id="modprobe-–first-time-bonding"><a href="#modprobe-–first-time-bonding" class="headerlink" title="modprobe –first-time bonding"></a>modprobe –first-time bonding</h1><p>显示该模块的信息，可在root权限下使用如下命令：</p>
+<h1 id="modinfo-bonding"><a href="#modinfo-bonding" class="headerlink" title="modinfo bonding"></a>modinfo bonding</h1><p>更多命令请在root权限下使用modprobe –help查看。</p>
+<p>创建频道绑定接口<br>要创建绑定接口，可在root权限下通过在 &#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F; 目录中创建名为 ifcfg-bondN 的文件（使用接口号码替换 N，比如 0）。</p>
+<p>根据要绑定接口类型的配置文件来编写相应的内容，比如网络接口。接口配置文件示例如下：</p>
+<p>DEVICE&#x3D;bond0<br>NAME&#x3D;bond0<br>TYPE&#x3D;Bond<br>BONDING_MASTER&#x3D;yes<br>IPADDR&#x3D;192.168.1.1<br>PREFIX&#x3D;24<br>ONBOOT&#x3D;yes<br>BOOTPROTO&#x3D;none<br>BONDING_OPTS&#x3D;”bonding parameters separated by spaces”<br>创建从属接口<br>创建频道绑定接口后，必须在从属接口的配置文件中添加 MASTER 和 SLAVE 指令。</p>
+<p>例如将两个网络接口enp3s0 和 enp4s0 以频道方式绑定，其配置文件示例分别如下：</p>
+<p>TYPE&#x3D;Ethernet<br>NAME&#x3D;bond-slave-enp3s0<br>UUID&#x3D;3b7601d1-b373-4fdf-a996-9d267d1cac40<br>DEVICE&#x3D;enp3s0<br>ONBOOT&#x3D;yes<br>MASTER&#x3D;bond0<br>SLAVE&#x3D;yes<br>TYPE&#x3D;Ethernet<br>NAME&#x3D;bond-slave-enp4s0<br>UUID&#x3D;00f0482c-824f-478f-9479-abf947f01c4a<br>DEVICE&#x3D;enp4s0<br>ONBOOT&#x3D;yes<br>MASTER&#x3D;bond0<br>SLAVE&#x3D;yes<br>激活频道绑定<br>要激活绑定，则需要启动所有从属接口。请在root权限下，运行以下命令：</p>
+<h1 id="ifup-enp3s0"><a href="#ifup-enp3s0" class="headerlink" title="ifup enp3s0"></a>ifup enp3s0</h1><p>Connection successfully activated (D-Bus active path: &#x2F;org&#x2F;freedesktop&#x2F;NetworkManager&#x2F;ActiveConnection&#x2F;7)</p>
+<h1 id="ifup-enp4s0"><a href="#ifup-enp4s0" class="headerlink" title="ifup enp4s0"></a>ifup enp4s0</h1><p>Connection successfully activated (D-Bus active path: &#x2F;org&#x2F;freedesktop&#x2F;NetworkManager&#x2F;ActiveConnection&#x2F;8)<br> 说明：<br>对于已经处于“up”状态的接口，请首先使用“ifdown enp3s0 ”命令修改状态为down，其中 enp3s0 为实际网卡名称。</p>
+<p>完成后，启动所有从属接口以便启动绑定（不将其设定为 “down”）。</p>
+<p>要让 NetworkManager 感知到系统所做的修改，在每次修改后，请在root权限下，运行以下命令：</p>
+<h1 id="nmcli-con-load-x2F-etc-x2F-sysconfig-x2F-network-scripts-x2F-ifcfg-device"><a href="#nmcli-con-load-x2F-etc-x2F-sysconfig-x2F-network-scripts-x2F-ifcfg-device" class="headerlink" title="nmcli con load &#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;ifcfg-device"></a>nmcli con load &#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;ifcfg-device</h1><p>查看绑定接口的状态，请在root权限下运行以下命令：</p>
+<figure class="highlight pf"><table><tr><td class="code"><pre><code class="hljs pf"><span class="hljs-comment"># ip link show</span><br><br><span class="hljs-number">1</span>: lo: <span class="hljs-variable">&lt;LOOPBACK,UP,LOWER_UP&gt;</span> mtu <span class="hljs-number">65536</span> qdisc noqueue <span class="hljs-keyword">state</span> UNKNOWN mode DEFAULT <span class="hljs-keyword">group</span> <span class="hljs-keyword">default</span> qlen <span class="hljs-number">1000</span><br>    link/loopback <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span> brd <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span><br><span class="hljs-number">2</span>: enp3s0: <span class="hljs-variable">&lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt;</span> mtu <span class="hljs-number">1500</span> qdisc fq_codel <span class="hljs-keyword">state</span> UP mode DEFAULT <span class="hljs-keyword">group</span> <span class="hljs-keyword">default</span> qlen <span class="hljs-number">1000</span><br>    link/ether <span class="hljs-number">52</span>:<span class="hljs-number">54</span>:<span class="hljs-number">00</span>:aa:ad:<span class="hljs-number">4</span>a brd ff:ff:ff:ff:ff:ff<br><span class="hljs-number">3</span>: enp4s0: <span class="hljs-variable">&lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt;</span> mtu <span class="hljs-number">1500</span> qdisc fq_codel <span class="hljs-keyword">state</span> UP mode DEFAULT <span class="hljs-keyword">group</span> <span class="hljs-keyword">default</span> qlen <span class="hljs-number">1000</span><br>    link/ether <span class="hljs-number">52</span>:<span class="hljs-number">54</span>:<span class="hljs-number">00</span>:aa:da:e2 brd ff:ff:ff:ff:ff:ff<br><span class="hljs-number">4</span>: virbr0: <span class="hljs-variable">&lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt;</span> mtu <span class="hljs-number">1500</span> qdisc noqueue <span class="hljs-keyword">state</span> DOWN mode DEFAULT <span class="hljs-keyword">group</span> <span class="hljs-keyword">default</span> qlen <span class="hljs-number">1000</span><br>    link/ether <span class="hljs-number">86</span>:a1:<span class="hljs-number">10</span>:fb:ef:<span class="hljs-number">07</span> brd ff:ff:ff:ff:ff:ff<br><span class="hljs-number">5</span>: virbr0-nic: <span class="hljs-variable">&lt;BROADCAST,MULTICAST&gt;</span> mtu <span class="hljs-number">1500</span> qdisc fq_codel master virbr0 <span class="hljs-keyword">state</span> DOWN mode DEFAULT <span class="hljs-keyword">group</span> <span class="hljs-keyword">default</span> qlen <span class="hljs-number">1000</span><br>    link/ether <span class="hljs-number">52</span>:<span class="hljs-number">54</span>:<span class="hljs-number">00</span>:<span class="hljs-number">29</span>:<span class="hljs-number">35</span>:<span class="hljs-number">4</span>c brd ff:ff:ff:ff:ff:ff<br></code></pre></td></tr></table></figure>
+<p>创建多个绑定<br>系统会为每个绑定创建一个频道绑定接口，包括 BONDING_OPTS 指令。使用这个配置方法可让多个绑定设备使用不同的配置。请按照以下操作创建多个频道绑定接口：</p>
+<p>创建多个 ifcfg-bondN 文件，文件中包含 BONDING_OPTS 指令，让网络脚本根据需要创建绑定接口。<br>创建或编辑要绑定的现有接口配置文件，添加 SLAVE 指令。<br>使用 MASTER 指令工具在频道绑定接口中分配要绑定的接口，即从属接口。<br>以下是频道绑定接口配置文件示例：</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">DEVICE</span>=bondN<br><span class="hljs-attr">NAME</span>=bondN<br><span class="hljs-attr">TYPE</span>=Bond<br><span class="hljs-attr">BONDING_MASTER</span>=<span class="hljs-literal">yes</span><br><span class="hljs-attr">IPADDR</span>=<span class="hljs-number">192.168</span>.<span class="hljs-number">1.1</span><br><span class="hljs-attr">PREFIX</span>=<span class="hljs-number">24</span><br><span class="hljs-attr">ONBOOT</span>=<span class="hljs-literal">yes</span><br><span class="hljs-attr">BOOTPROTO</span>=none<br><span class="hljs-attr">BONDING_OPTS</span>=<span class="hljs-string">&quot;bonding parameters separated by spaces&quot;</span><br></code></pre></td></tr></table></figure>
+<p>在这个示例中，使用绑定接口的号码替换 N。例如要创建两个接口，则需要使用正确的 IP 地址创建两个配置文件 ifcfg-bond0 和 ifcfg-bond1。</p>
+<p>IPv6使用差异说明（vs IPv4）<br>约束限制<br>chrony支持全局地址（global address），不支持链路本地地址（link-local address）。<br>Firefox支持通过http&#x2F;https协议访问全局地址（global address），不支持链路本地地址（link-local address）。<br>配置说明<br>设置接口设备MTU值<br>概述<br>IPv6场景中会发现整个路由路径中的最小mtu的值作为当前链接的PMTU的值，源端根据PMTU的值确定是否进行分片发送，而在整个路径中的其它设备将不再需要进行分片处理，从而可以降低中间路由设备的负载大小。其中IPv6 PMTU设置的最小值为1280。</p>
+<p>设置接口设备的mtu<br>如果在配置了IPv6地址的接口上设置mtu的值小于1280（IPv6 PMTU设置的最小值），则会导致该接口的IPv6地址被删除。并且无法再次添加IPv6地址。所以在IPv6场景中，对接口设备的mtu的配置一定要大于等于1280。 请在root权限下运行如下命令查看具体现象：</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-comment"># ip addr show enp3s0</span><br><br><span class="hljs-attribute">3</span>: enp3s0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="hljs-number">1500</span> qdisc pfifo_fast state UP group default qlen <span class="hljs-number">1000</span><br>    <span class="hljs-attribute">link</span>/ether <span class="hljs-number">52</span>:<span class="hljs-number">54</span>:<span class="hljs-number">00</span>:<span class="hljs-number">62</span>:xx:xx brd ff:ff:ff:ff:xx:xx<br>    <span class="hljs-attribute">inet</span> <span class="hljs-number">10.41.125.236</span>/<span class="hljs-number">16</span> brd <span class="hljs-number">10.41.255.255</span> scope global noprefixroute dynamic enp3s0<br>       <span class="hljs-attribute">valid_lft</span> <span class="hljs-number">38663</span>sec preferred_lft <span class="hljs-number">38663</span>sec<br>    <span class="hljs-attribute">inet6</span> <span class="hljs-number">2001</span>:<span class="hljs-number">222</span>::<span class="hljs-number">2</span>/<span class="hljs-number">64</span> scope global<br>       <span class="hljs-attribute">valid_lft</span> forever preferred_lft forever<br><br><span class="hljs-comment"># ip link set dev enp3s0 mtu 1200</span><br><br><span class="hljs-comment"># ip addr show enp3s0</span><br><br><span class="hljs-attribute">3</span>: enp3s0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="hljs-number">1200</span> qdisc pfifo_fast state UP group default qlen <span class="hljs-number">1000</span><br>    <span class="hljs-attribute">link</span>/ether <span class="hljs-number">52</span>:<span class="hljs-number">54</span>:<span class="hljs-number">00</span>:<span class="hljs-number">62</span>:xx:xx brd ff:ff:ff:ff:xx:xx<br>    <span class="hljs-attribute">inet</span> <span class="hljs-number">10.41.125.236</span>/<span class="hljs-number">16</span> brd <span class="hljs-number">10.41.255.255</span> scope global noprefixroute dynamic enp3s0<br>       <span class="hljs-attribute">valid_lft</span> <span class="hljs-number">38642</span>sec preferred_lft <span class="hljs-number">38642</span>sec<br><br><span class="hljs-comment"># ip addr add 2001:222::2/64 dev enp3s0</span><br><br><span class="hljs-attribute">RTNETLINK</span> answers: No buffer space available<br><br><span class="hljs-comment"># ip link set dev enp3s0 mtu 1500</span><br><br><span class="hljs-comment"># ip addr show enp3s0</span><br><br><span class="hljs-attribute">3</span>: enp3s0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="hljs-number">1500</span> qdisc pfifo_fast state UP group default qlen <span class="hljs-number">1000</span><br>    <span class="hljs-attribute">link</span>/ether <span class="hljs-number">52</span>:<span class="hljs-number">54</span>:<span class="hljs-number">00</span>:<span class="hljs-number">62</span>:xx:xx brd ff:ff:ff:ff:xx:xx<br>    <span class="hljs-attribute">inet</span> <span class="hljs-number">10.41.125.236</span>/<span class="hljs-number">16</span> brd <span class="hljs-number">10.41.255.255</span> scope global noprefixroute dynamic enp3s0<br>       <span class="hljs-attribute">valid_lft</span> <span class="hljs-number">38538</span>sec preferred_lft <span class="hljs-number">38538</span>sec<br><br><span class="hljs-comment"># ip addr add 2001:222::2/64 dev enp3s0</span><br><br><span class="hljs-comment"># ip addr show enp3s0</span><br><br><span class="hljs-attribute">3</span>: enp3s0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="hljs-number">1500</span> qdisc pfifo_fast state UP group default qlen <span class="hljs-number">1000</span><br>    <span class="hljs-attribute">link</span>/ether <span class="hljs-number">52</span>:<span class="hljs-number">54</span>:<span class="hljs-number">00</span>:<span class="hljs-number">62</span>:xx:xx brd ff:ff:ff:ff:xx:xx<br>    <span class="hljs-attribute">inet</span> <span class="hljs-number">10.41.125.236</span>/<span class="hljs-number">16</span> brd <span class="hljs-number">10.41.255.255</span> scope global noprefixroute dynamic enp3s0<br>       <span class="hljs-attribute">valid_lft</span> <span class="hljs-number">38531</span>sec preferred_lft <span class="hljs-number">38531</span>sec<br>    <span class="hljs-attribute">inet6</span> <span class="hljs-number">2001</span>:<span class="hljs-number">222</span>::<span class="hljs-number">2</span>/<span class="hljs-number">64</span> scope global<br>       <span class="hljs-attribute">valid_lft</span> forever preferred_lft forever<br></code></pre></td></tr></table></figure>
+<p>有状态自动配置IPv6地址<br>概述<br>IPv6与IPv4都可以在root权限下通过DHCP的方式获得IP地址。IPv6地址有两种配置方式：无状态自动配置和有状态自动配置。</p>
+<p>无状态自动配置</p>
+<p>不需要DHCP服务进行管理，设备根据网络RA（路由公告）获得网络前缀，或者link-local地址为固定fe80::。而接口ID则根据ifcfg配置IPV6_ADDR_GEN_MODE的具体设置来进行自动获得：</p>
+<p>IPv6_ADDR_GEN_MODE&#x3D;“stable-privacy” 则根据设备及网络环境来确定一个随机接口ID。<br>IPv6_ADDR_GEN_MODE&#x3D;“EUI64” 则根据设备MAC地址来确定接口ID。<br>有状态自动配置：需要DHCP服务器进行管理分配，服从DHCPv6协议来从DHCPv6服务器端租赁IPv6地址。</p>
+<p>在有状态自动配置IPv6地址时，DHCPv6服务端可以通过客户端设置的vendor class将客户端进行分类，不同类别分配不同地址段的IPv6地址。在IPv4场景中，客户端可以直接用dhclient的-V选项来设置vendor-class-identifier，DHCP服务端在配置文件中根据vendor-class-identifier来对客户端进行分类处理。而IPv6场景中，如果使用同样的方法对客户端分类，则分类并不会生效。</p>
+<p>dhclient -6 <interface> -V <vendor-class-identifier string> <interface><br>这是由于DHCPv6和DHCP协议存在较大差异，DHCPv6的可选项中使用vendor-class-option替代了DHCP中的vendor-class-identifier。而dhclient的-V选项并不能设置vendor-class-option。</p>
+<p>有状态自动配置IPv6地址时dhclient设置vendor class方法<br>在客户端使用配置文件方式添加对vendor class的设置，使用方法如下：</p>
+<p>客户端配置文件（&#x2F;etc&#x2F;dhcp&#x2F;dhclient6.conf），文件位置可以自定义，在使用时需要通过dhclient -cf选项来指定配置文件：</p>
+<p>option dhcp6.vendor-class code 16 &#x3D; {integer 32, integer 16, string};<br>interface “enp3s0” {<br>        send dhcp6.vendor-class <Enterprise-ID number> <vendor class string length> <vendor class string>;<br>}<br> 说明：</p>
+<p><Enterprise-ID number>，32位整型数字，企业标识号，企业通过IANA注册。<br><vendor class string length>，16位整型数字，vendor class字符串长度。<br><vendor class string>，要设置的vendor class字符串，例如：“HWHW”。<br>客户端使用方法：</p>
+<p>dhclient -6 <interface> -cf &#x2F;etc&#x2F;dhcp&#x2F;dhclient6.conf<br>DHCPv6服务端配置文件（&#x2F;etc&#x2F;dhcp&#x2F;dhcpd6.conf），需要dhcpd -cf选项来指定该配置文件：</p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><code class="hljs ruby">option dhcp6.vendor-<span class="hljs-keyword">class</span> code <span class="hljs-number">16</span> = &#123;integer <span class="hljs-number">32</span>, integer <span class="hljs-number">16</span>, string&#125;;<br>subnet6 <span class="hljs-symbol">fc00:</span><span class="hljs-number">4</span><span class="hljs-symbol">:</span><span class="hljs-number">12</span><span class="hljs-symbol">:ffff</span><span class="hljs-symbol">:</span><span class="hljs-symbol">:/</span><span class="hljs-number">64</span> &#123;<br>        <span class="hljs-keyword">class</span> <span class="hljs-string">&quot;hw&quot;</span> &#123;<br>                match <span class="hljs-keyword">if</span> substring ( option dhcp6.vendor-<span class="hljs-keyword">class</span>, <span class="hljs-number">6</span>, <span class="hljs-number">10</span> ) = <span class="hljs-string">&quot;HWHW&quot;</span>;<br>        &#125;<br>        pool6 &#123;<br>                allow members of <span class="hljs-string">&quot;hw&quot;</span>;<br>                range6 <span class="hljs-symbol">fc00:</span><span class="hljs-number">4</span><span class="hljs-symbol">:</span><span class="hljs-number">12</span><span class="hljs-symbol">:ffff</span><span class="hljs-symbol">:</span><span class="hljs-symbol">:ff10</span> <span class="hljs-symbol">fc00:</span><span class="hljs-number">4</span><span class="hljs-symbol">:</span><span class="hljs-number">12</span><span class="hljs-symbol">:ffff</span><span class="hljs-symbol">:</span><span class="hljs-symbol">:ff20</span>;<br>        &#125;<br>        pool6 &#123;<br>                allow unknown clients;<br>                range6 <span class="hljs-symbol">fc00:</span><span class="hljs-number">4</span><span class="hljs-symbol">:</span><span class="hljs-number">12</span><span class="hljs-symbol">:ffff</span><span class="hljs-symbol">:</span><span class="hljs-symbol">:</span><span class="hljs-number">100</span> <span class="hljs-symbol">fc00:</span><span class="hljs-number">4</span><span class="hljs-symbol">:</span><span class="hljs-number">12</span><span class="hljs-symbol">:ffff</span><span class="hljs-symbol">:</span><span class="hljs-symbol">:</span><span class="hljs-number">120</span>;<br>        &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p> 说明：<br>substring ( option dhcp6.vendor-class, 6, 10 ) 其中子字符串的开始位置为6，因为前面包含4个字节的<Enterprise-ID number>和2个字节的<string length>。而子字符串的结束位置位：6+<vendor class string length>。这里vendor class string为“HWHW”，字符串的长度为4，所以子字符串的结束位置为6+4&#x3D;10。用户可以根据实际需要来确定<vendor class string>及相应的<vendor class string length>。</p>
+<p>服务端使用方法：</p>
+<p>dhcpd -6 -cf &#x2F;etc&#x2F;dhcp&#x2F;dhcpd6.conf <interface><br>内核支持socket相关系统调用<br>概述<br>IPv6地址长度扩展到128比特，所以有足够的IPv6地址可供分配使用。同时IPv6头相比IPv4头进行了简化，并增强了IPv6的自动配置功能。IPv6地址分为单播地址，组播地址和任意播地址。常用的单播地址又包含：链路本地地址（link-local address），唯一本地地址（Unique local address）和全局地址（global address）。由于IPv6的全局地址十分充足，唯一本地地址一般不被使用（其前身为站点本地地址（site-local address），已于2004年被废弃）。当前主要使用的单播地址为：链路本地地址（link-local address）和全局地址（global address）。当前内核支持socket系统调用，在使用单播地址的链路本地地址和全局地址时存在差异。</p>
+<p>link-local地址和global地址在socket调用时的差异<br>RFC 2553： Basic Socket Interface Extensions for IPv6 定义sockaddr_in6的数据结构如下；</p>
+<p>struct sockaddr_in6 {<br>    uint8_t         sin6_len;       &#x2F;<em>length of this struct</em>&#x2F;<br>    sa_family_t     sin6_family;    &#x2F;<em>AF_INET6</em>&#x2F;<br>    in_port_t       sin6_port;      &#x2F;<em>transport layer port #</em>&#x2F;<br>    uint32_t        sin6_flowinfo;  &#x2F;<em>IPv6 flow information</em>&#x2F;<br>    struct in6_addr sin6_addr;      &#x2F;<em>IPv6 address</em>&#x2F;<br>    uint32_t        sin6_scope_id;  &#x2F;<em>set of interfaces for a scope</em>&#x2F;<br>};<br> 说明：<br>sin6_scope_id： 32位整型，对于链路本地地址（link-local address），对于链路范围的sin6_addr，它可以用来标识指定的接口索引号。如果是站点范围的sin6_addr，则用来作为站点的标识符（站点本地地址已被抛弃）。</p>
+<p>在使用link-local地址进行socket通信时，在构造目的地址时，需要制定该地址所对应的接口索引号。一般可以通过if_nametoindex函数将接口名转化为接口索引号。具体方式如下，</p>
+<p>int port &#x3D; 1234;<br>int sk_fd;<br>int iff_index &#x3D; 0;<br>char iff_name[100] &#x3D; “enp3s0”;<br>char * ll_addr[100] &#x3D; “fe80::123:456:789”;<br>struct sockaddr_in6 server_addr;</p>
+<p>memset(&amp;server_addr,0,sizeof(structsockaddr_in6));<br>iff_index&#x3D;if_nametoindex(iff_name);</p>
+<p>server_addr.sin6_family&#x3D;AF_INET6;<br>server_addr.sin6_port&#x3D;htons(port);<br>server_addr.sin6_scope_id&#x3D;iff_index;<br>inet_pton(AF_INET6, ll_addr, &amp;(server_addr.sin6_addr));</p>
+<p>sk_fd&#x3D;socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);<br>connect(sk_fd, (struct sockaddr *)&amp;server_addr, sizeof(struct sockaddr_in6));<br>IPv4的dhclient守护进程持久化配置<br>概述<br>通过NetworkManager服务来管理网络服务时，如果接口ifcfg-<interface-name>配置文件中配置了DHCP方式获得IP地址，则相应地NetworkManager服务会拉起dhclient守护进程来通过DHCP协议方式来从DHCP服务器获取IP地址。</p>
+<p>dhclient提供了”-1”选项来决定dhclient进程在未获得DHCP服务响应时，是会不断持久化尝试请求地址还是会尝试时间超时后退出。针对IPv4的dhclient守护进程，可以在ifcfg-<interface-name>配置文件中设置PERSISTENT_DHCLIENT来决定是否设置IPv4的dhclient进程的持久化。</p>
+<p>约束限制<br>当dhclient进程在运行中被杀死，network服务无法自动将其拉起，可靠性需要用户自己保障。<br>配置了持久化选项PERSISTENT_DHCLIENT，需要确保有相应的DHCP服务器。如果在拉起network时无可用DHCP服务器，dhclient进程不断尝试发送请求包但无回应，则会导致network服务卡死直到network服务超时失败。由于network服务在拉起多个网卡的IPv4 dhclient进程时，是通过串行的方式来拉起的。如果有网卡配置了持久化而DHCP服务器没有准备好，则会导致network服务在给该网卡获取IPv4地址超时卡死，进而导致后续网卡无法获得IPv4&#x2F;IPv6地址。<br>以上两种约束限制是特殊的应用场景，需要用户自己进行可靠性保障。</p>
+<p>IPv4 DHCP和IPv6 DHCPv6方式获取地址的配置差异<br>可以通过配置接口ifcfg-<interface-name>参数来分别实现IPv4和IPv6通过DHCP&#x2F;DHCPv6协议来动态获取IP地址，具体配置说明如下；</p>
+<p>BOOTPROTO&#x3D;none|bootp|dhcp<br>DHCPV6C&#x3D;yes|no<br>PERSISTENT_DHCLIENT&#x3D;yes|no|1|0<br>BOOTPROTO： none表示静态配置IPv4地址，bootp|dhcp则会拉起DHCP dhclient来动态获取IPv4地址。</p>
+<p>DHCPV6C： no表示静态配置IPv6地址，yes则会拉起DHCPv6 dhclient来动态获取IPv6地址。</p>
+<p>PERSISTENT_DHCLIENT：no|0表示IPv4的dhclient进程配置为“非持久化”，当dhclient向DHCP服务器发送一次请求报文而无响应，则会间隔一段时间后退出，退出值为2。yes|1则表示IPv4的dhclient进程配置为“持久化”，dhclient会向DHCP服务器反复发送请求报文。如果没有配置PERSISTENT_DHCLIENT项，则IPv4的dhclient会默认设置为“持久化”。</p>
+<p> 说明：<br>PERSISTENT_DHCLIENT配置只针对IPv4生效，对IPv6相关dhclient -6进程不生效，IPv6默认不进行持久化配置。</p>
+<p>iproute相关命令配置IPv4与IPv6时的差异说明<br>概述<br>由于IPv4和IPv6是两个不同的协议标准，iproute相关命令在使用方法上存在一定的差异。本章节主要梳理iproute包中用户经常使用到命令在IPv4和IPv6使用方面的差异，从而可以更好地指导用户使用iproute包中相关命令。</p>
+<p>iproute相关命令均需要在root权限下运行。</p>
+<p>IPv6地址的生命周期</p>
+<p>IPv6状态</p>
+<p>解释</p>
+<p>tentative</p>
+<p>临时状态：刚添加地址还处于地址重复检测DAD过程</p>
+<p>preferred</p>
+<p>首选状态：完成DAD过程，没有收到相应的NA报文，表示该地址没有冲突。</p>
+<p>deprecated</p>
+<p>弃用状态：地址有一定的使用时限（valid_lft和preferred_lft），preferred_lft到期后地址会变化deprecated状态。</p>
+<p>该状态下的地址不能用于创建新的连接，但是原有的连接可以继续使用。</p>
+<p>invalid</p>
+<p>无效状态：使用时限超过preferred_lft一段时间后仍然没有成功进行租约续约，则valid_lft时间到后地址状态会被设置为invalid，表示该地址不可以再被使用。</p>
+<p>其它说明：</p>
+<p>preferred_lft：preferred lifetime，地址为首选状态的寿命，preferred_lft没有到期的地址可以用于正常通信使用，若有多个preferred地址则按照内核具体机制选择地址。<br>valid_lft： valid lifetime，地址有效的寿命，在[preferred_lft, valid_lft]时间段内该地址不能被用于新建连接，已经创建的连接继续有效。<br>ip link 命令<br>命令：</p>
+<p>ip link set IFNAME mtu MTU<br>IPv6中PMTU的最小值为1280，如果mtu值设置小于1280则会导致IPv6地址丢失。其它设备无法ping通该IPv6地址。</p>
+<p>ip addr命令<br>命令：</p>
+<p>ip [-6] addr add IFADDR dev IFNAME<br>添加IPv6地址可以选择添加-6选项也可以不添加，ip addr命令会根据具体地址类型来判断是ipv4地址还是IPv6地址。</p>
+<p>如果指定“-6”选项，但是IFADDR 是ipv4地址则会有错误返回。</p>
+<p>命令：</p>
+<p>ip [-6] addr add IFADDR  dev IFNAME [home|nodad]<br>[home|nodad] 选项只针对IPv6地址有效。</p>
+<p>home：将该地址指定为RFC 6275中定义的家庭地址。（这是移动节点从家庭链路获取的地址， 是移动节点的永久地址，如果移动节点保持在相同的归属链路中，则各种实体之间的通信照常进行。）<br>nodad：配置该项（仅限IPv6）添加此地址时不执行重复地址检测DAD（RFC 4862）。如果一台设备上多个接口通过nodad配置了多个相同的IPv6地址，则会按照接口顺序使用该IPv6地址。同一个接口上不能添加一个nodad一个非nodad的相同IPv6地址。因为两个地址是一样的，所以会报“RTNETLINK answers: File exists”。<br>命令：</p>
+<p>ip [-6] addr del IFADDR dev IFNAME<br>删除IPv6地址可以选择添加-6选项也可以不添加，ip addr del命令会根据具体地址类型来判断是ipv4地址还是IPv6地址。</p>
+<p>命令：</p>
+<p>ip [-6] addr show dev IFNAME [tentative|-tentative|deprecated|-deprecated|dadfailed|-dadfailed|temporary]<br>不指定-6选项，则会同时打印IPv4和IPv6地址。指定-6选项则只打印IPv6地址。<br>[tentative|-tentative|deprecated|-deprecated|dadfailed|-dadfailed|temporary]，这些选项只针对IPv6，可以根据IPv6地址状态对地址进行筛选查看。<br>tentative：（仅限IPv6）仅列出尚未通过重复地址检测的地址。<br>-tentative：（仅限IPv6）仅列出当前未处于重复地址检测过程中的地址。<br>deprecated：（仅限IPv6）仅列出已弃用的地址。<br>-deprecated：（仅限IPv6）仅列出未弃用的地址。<br>dadfailed：（仅限IPv6）仅列出重复地址检测失败的地址。<br>-dadfailed：（仅限IPv6）仅列出未重复地址检测失败的地址。<br>temporary：（仅限IPv6）仅列出临时地址<br>ip route命令<br>命令：</p>
+<p>ip [-6] route add ROUTE [mtu lock MTU]<br>-6选项：添加IPv6路由可以选择添加-6选项也可以不添加，ip route命令会根据具体地址类型来判断是IPv4地址还是IPv6地址。</p>
+<p>mtu lock MTU：锁定路由的MTU值。如果不锁定MTU，则MTU的值则可能在PMTUD过程中被内核改变。如果锁定MTU，则不会尝试PMTUD，所有IPv4包都将不设置DF位发出，IPv6包则会按照MTU进行分段处理。</p>
+<p>命令：</p>
+<p>ip [-6] route del ROUTE<br>删除IPv6路由可以选择添加-6选项也可以不添加，ip route命令会根据具体地址类型来判断是IPv4地址还是IPv6地址。</p>
+<p>ip rule命令<br>命令：</p>
+<p>ip [-6] rule list<br>-6选项：设置-6选项打印IPv6的策略路由，不设置-6选项打印IPv4的策略路由。所以需要根据具体协议类型来配置-6选项。</p>
+<p>命令：</p>
+<p>ip [-6] rule [add|del] [from|to] ADDR table TABLE pref PREF<br>-6选项：IPv6相关的策略路由表项需要设置-6选项，否则会报错：“Error: Invalid source address.”。相应地，IPv4相关的策略路由表项不可以设置-6选项，否则会报错：“Error: Invalid source address.”。</p>
+<p>NetworkManager服务配置差异说明<br>概述<br>NetworkManager服务使用ifup&#x2F;ifdown的逻辑接口定义进行高级网络设置。其参数大多数都是在&#x2F;etc&#x2F;sysconfig&#x2F;network和&#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;ifcfg-<interface-name>两个配置文件设置。前者为全局设置，后者为指定网卡的设置，当两者有冲突时，后者生效。</p>
+<p>配置差异说明<br>其中在&#x2F;etc&#x2F;sysconfig&#x2F;network下的配置差异有：</p>
+<p>IPv4</p>
+<p>IPv6</p>
+<p>含义说明</p>
+<p>NA</p>
+<p>IPV6FORWARDING&#x3D;yes|no</p>
+<p>IPv6转发，默认不转发。</p>
+<p>NA</p>
+<p>IPV6_AUTOCONF&#x3D;yes|no</p>
+<p>IPv6转发打开是no，否则是yes。</p>
+<p>NA</p>
+<p>IPV6_ROUTER&#x3D;yes|no</p>
+<p>IPv6转发打开是yes，否则是no。</p>
+<p>NA</p>
+<p>IPV6_AUTOTUNNEL&#x3D;yes|no</p>
+<p>指定Tunnel为自动隧道模式，默认是no。</p>
+<p>GATEWAY</p>
+<p>IPV6_DEFAULTGW&#x3D;&lt;IPv6 address[%interface]&gt; (optional)</p>
+<p>在IPv6中设置默认网关。</p>
+<p>NA</p>
+<p>IPV6_DEFAULTDEV&#x3D;<interface> (optional)</p>
+<p>指定默认转发的网卡。</p>
+<p>NA</p>
+<p>IPV6_RADVD_PIDFILE&#x3D;<pid-file> (optional)</p>
+<p>默认ipv6_radvd_pid路径：&#x2F;var&#x2F;run&#x2F;radvd&#x2F;radvd.pid。</p>
+<p>NA</p>
+<p>IPV6_RADVD_TRIGGER_ACTION&#x3D;startstop|reload|restart|SIGHUP (optional)</p>
+<p>radvd默认触发动作。</p>
+<p>而在&#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;ifcfg-<interface-name>下的差异主要有：</p>
+<p>IPv4</p>
+<p>IPv6</p>
+<p>含义说明</p>
+<p>IPADDRn</p>
+<p>IPV6ADDR&#x3D;<IPv6 address>[&#x2F;<prefix length>]</p>
+<p>ip地址。</p>
+<p>PREFIXn</p>
+<p>NA</p>
+<p>网络前缀，网络别名和ppp无效，优先级高于NETMASK。</p>
+<p>NETMASKn</p>
+<p>NA</p>
+<p>子网掩码，仅用于别名和ppp。</p>
+<p>GATEWAY</p>
+<p>IPV6_DEFAULTGW&#x3D;&lt;IPv6 address[%interface]&gt; (optional)</p>
+<p>默认网关。</p>
+<p>MTU</p>
+<p>IPV6_MTU&#x3D;<MTU of link> (optional)</p>
+<p>默认MTU。</p>
+<p>IPV4_FAILURE_FATAL&#x3D;yes|no</p>
+<p>IPV6_FAILURE_FATAL</p>
+<p>默认值是no。若设置为yes，dhclient失败ifup-eth会直接退出。</p>
+<p>NA</p>
+<p>IPV6_PRIVACY&#x3D;rfc3041</p>
+<p>默认禁用。</p>
+<p>NA</p>
+<p>IPV6INIT&#x3D;yes|no</p>
+<p>默认开启IPv6。</p>
+<p>NA</p>
+<p>IPV6FORWARDING&#x3D;yes|no</p>
+<p>默认关闭，已废弃。</p>
+<p>FAQ<br>iscsi-initiator-utils不支持登录fe80 IPv6地址<br>问题现象<br>客户端通过IPv6登录iscsi服务端时，使用如“iscsiadm -m node -p ipv6address -l”的命令格式登录，如果是全局地址（global address），直接替换将命令范例中的“ipv6address”替换为全局地址即可；但如果是链路本地地址（link-local address，fe80开头的IPv6地址）则无法使用，因为iscsi-initiator-utils目前机制还不支持用链路本地地址（link-local address）地址登录iscsi服务端。</p>
+<p>原因分析<br>如果使用格式如“iscsiadm -m node -p fe80::xxxx -l”登录，会登录超时返回，这是因为使用链路本地地址必须指定接口，否则使用iscsi_io_tcp_connect函数调用connect函数会失败，并且产生标准错误码22。</p>
+<p>如果使用格式如“iscsiadm -m node -p fe80::xxxx%enp3s0 -l”登录时，iscsi_addr_match函数会将地址“fe80::xxxx%enp3s0”与服务端返回的node信息中的地址“fe80::xxxx”对比，对比结果不匹配，导致登录失败。</p>
+<p>因此，iscsi-initiator-utils目前机制还不支持用链路本地地址（link-local address）登录iscsi服务端。</p>
+<p>网卡down掉之后，IPv6地址丢失<br>问题现象<br>通过ip link down+up网卡或ifconfig down+up网卡命令，将网卡down掉之后再上线，查看网卡上配置的ip地址，发现ipv4地址不丢失，而配置的IPv6地址丢失。</p>
+<p>原因分析<br>内核中的处理逻辑为如果网卡设置为down状态，会清空所有IPv4及IPv6地址，将网卡重新up之后，ipv4地址自动恢复，网卡上自动配置的IPv6链路本地地址也会恢复，但是其他IPv6地址默认会丢失。如果需要保留这些IPv6地址，可以通过“sysctl -w net.ipv6.conf.&lt;网卡名&gt;.keep_addr_on_down&#x3D;1”来实现。</p>
+<p>bond口已具有多个IPv6地址时，添加或删除IPv6地址耗时过久<br>问题现象<br>下列方式配置或删除（包括flush）IPv6地址方式，X为动态变化的低16位，并且配置在bond口时，耗时会随已配置的IPv6地址数量成数倍增加。例如由4个物理网卡组成的bond口添加IPv6地址时，单线程添加删除3000 IPv6地址均需大概5分钟，而普通物理网卡耗时在10秒内。</p>
+<p>ip a add&#x2F;del 192:168::18:X&#x2F;64 dev DEVICE<br>原因分析<br>bond口在添加IPv6地址时，会生成IPv6组播地址，并进行同步到所有的物理网卡上，此耗时会随IPv6数量增加而增加，导致耗时过长。</p>
+<p>解决方法<br>IPv6的组播地址是由IPv6地址的低24位与33-33-ff组合生成，组播地址过多会导致添加删除耗时增加，如果生成的组播地址为少量，耗时不会受此影响。</p>
+<p>建议添加IPv6地址时，可保持低24位一致，保持高位变动，单网卡中仅需一个网段的一个地址即可与外部正常通信，此配置更符合常规使用。</p>
+<p>Rsyslog在IPv4和IPv6混合使用场景中日志传输延迟<br>问题现象<br>rsyslog客户端配置文件同时配置IPv4和IPv6地址，且端口配置相同的情况下，服务端收集log时会概率性出现日志打印延迟。</p>
+<p>原因分析<br>延迟是因为rsyslog内部存在缓冲队列机制，默认情况下需要缓冲区队列达到一定数量才会写入文件。</p>
+<p>解决方法<br>可在root权限下通过配置Direct模式，关闭缓冲队列机制解决该问题。在rsyslog远程传输服务端的&#x2F;etc&#x2F;rsyslog.d目录下新增的远程传输配置文件中，最开头增加如下配置：</p>
+<p>$ActionQueueType Direct<br>$MainMsgQueueType Direct<br> 说明：</p>
+<p>Direct模式减少队列大小为1，所以在队列中会保留1条日志到下次日志打印；<br>Direct模式会降低服务器端的rsyslog性能。</p>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag> openeuler</tag>
+      </tags>
+  </entry>
 </search>

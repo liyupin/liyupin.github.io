@@ -1,3 +1,4 @@
+https://liyupin.github.io/2022/07/18/%20openEuler22.03-LTS%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/
 https://liyupin.github.io/2022/07/18/taskfile%20%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/
 https://liyupin.github.io/2022/07/14/Centos7%20%E4%B8%8B%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/
 https://liyupin.github.io/2022/07/16/%E4%BD%BF%E7%94%A8lsof%E6%81%A2%E5%A4%8Drm%20-rf%E5%88%A0%E9%99%A4%E5%90%8E%E7%9A%84%E6%96%87%E4%BB%B6/
@@ -123,6 +124,7 @@ https://liyupin.github.io/tags/mysql/
 https://liyupin.github.io/tags/linux/
 https://liyupin.github.io/tags/windows/
 https://liyupin.github.io/tags/shell/
+https://liyupin.github.io/tags/openeuler/
 https://liyupin.github.io/categories/ansible/
 https://liyupin.github.io/categories/linux/
 https://liyupin.github.io/categories/k8s/
