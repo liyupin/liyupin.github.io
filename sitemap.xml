@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://liyupin.github.io/2022/07/18/PYTHON100DAY-1/</loc>
+    
+    <lastmod>2022-07-18</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://liyupin.github.io/2022/07/18/%20openEuler22.03-LTS%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/</loc>
     
     <lastmod>2022-07-18</lastmod>
@@ -1136,6 +1145,13 @@
     <priority>0.2</priority>
   </url>
   
+  <url>
+    <loc>https://liyupin.github.io/tags/python100day/</loc>
+    <lastmod>2022-07-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
 
   
   <url>
@@ -1168,6 +1184,13 @@
   
   <url>
     <loc>https://liyupin.github.io/categories/docker/</loc>
+    <lastmod>2022-07-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/categories/python/</loc>
     <lastmod>2022-07-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
