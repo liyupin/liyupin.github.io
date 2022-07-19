@@ -1082,13 +1082,6 @@
 
   
   <url>
-    <loc>https://liyupin.github.io/tags/openeuler/</loc>
-    <lastmod>2022-07-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://liyupin.github.io/tags/ecos-pro/</loc>
     <lastmod>2022-07-19</lastmod>
     <changefreq>weekly</changefreq>
@@ -1097,6 +1090,13 @@
   
   <url>
     <loc>https://liyupin.github.io/tags/centos/</loc>
+    <lastmod>2022-07-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/tags/openeuler/</loc>
     <lastmod>2022-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
