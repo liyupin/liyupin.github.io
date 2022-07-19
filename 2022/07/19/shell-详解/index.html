@@ -16,15 +16,15 @@
   <meta name="author" content="Cper Liu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Shell脚本详解一、Shell脚本基础概念 1.1 什么是shell?shell英文翻译过来是外壳的意思，作为计算机语言来理解可以认为它是操作系统的外壳。我们可以通过shell命令来操作和控制操作系统，比如Linux中的shell命令就包括ls、cd、pwd等等。 shell是站在内核的基础上编写的一个应用程序，它连接了用户和Linux内核，从而让用户能够更加便捷、高效、安全的使用linux内核">
+    <meta name="description" content="Shell脚本详解一、Shell脚本基础概念1.1 什么是shell?shell英文翻译过来是外壳的意思，作为计算机语言来理解可以认为它是操作系统的外壳。我们可以通过shell命令来操作和控制操作系统，比如Linux中的shell命令就包括ls、cd、pwd等等。 shell是站在内核的基础上编写的一个应用程序，它连接了用户和Linux内核，从而让用户能够更加便捷、高效、安全的使用linux内核，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Shell脚本详解">
 <meta property="og:url" content="https://liyupin.github.io/2022/07/19/shell-%E8%AF%A6%E8%A7%A3/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Shell脚本详解一、Shell脚本基础概念 1.1 什么是shell?shell英文翻译过来是外壳的意思，作为计算机语言来理解可以认为它是操作系统的外壳。我们可以通过shell命令来操作和控制操作系统，比如Linux中的shell命令就包括ls、cd、pwd等等。 shell是站在内核的基础上编写的一个应用程序，它连接了用户和Linux内核，从而让用户能够更加便捷、高效、安全的使用linux内核">
+<meta property="og:description" content="Shell脚本详解一、Shell脚本基础概念1.1 什么是shell?shell英文翻译过来是外壳的意思，作为计算机语言来理解可以认为它是操作系统的外壳。我们可以通过shell命令来操作和控制操作系统，比如Linux中的shell命令就包括ls、cd、pwd等等。 shell是站在内核的基础上编写的一个应用程序，它连接了用户和Linux内核，从而让用户能够更加便捷、高效、安全的使用linux内核，">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-07-19T08:11:00.000Z">
-<meta property="article:modified_time" content="2022-07-19T08:40:15.925Z">
+<meta property="article:modified_time" content="2022-07-19T08:45:09.395Z">
 <meta property="article:author" content="Cper Liu">
 <meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary_large_image">
@@ -288,8 +288,7 @@
             
               <div class="markdown-body">
                 
-                <h1 id="Shell脚本详解"><a href="#Shell脚本详解" class="headerlink" title="Shell脚本详解"></a>Shell脚本详解</h1><p>一、Shell脚本基础概念</p>
-<h2 id="1-1-什么是shell"><a href="#1-1-什么是shell" class="headerlink" title="1.1 什么是shell?"></a>1.1 什么是shell?</h2><p>shell英文翻译过来是外壳的意思，作为计算机语言来理解可以认为它是操作系统的外壳。我们可以通过shell命令来操作和控制操作系统，比如Linux中的shell命令就包括ls、cd、pwd等等。</p>
+                <h1 id="Shell脚本详解"><a href="#Shell脚本详解" class="headerlink" title="Shell脚本详解"></a>Shell脚本详解</h1><h2 id="一、Shell脚本基础概念"><a href="#一、Shell脚本基础概念" class="headerlink" title="一、Shell脚本基础概念"></a>一、Shell脚本基础概念</h2><h3 id="1-1-什么是shell"><a href="#1-1-什么是shell" class="headerlink" title="1.1 什么是shell?"></a>1.1 什么是shell?</h3><p>shell英文翻译过来是外壳的意思，作为计算机语言来理解可以认为它是操作系统的外壳。我们可以通过shell命令来操作和控制操作系统，比如Linux中的shell命令就包括ls、cd、pwd等等。</p>
 <p>shell是站在内核的基础上编写的一个应用程序，它连接了用户和Linux内核，从而让用户能够更加便捷、高效、安全的使用linux内核，这其实就是shell的本质。</p>
 <p>使用专业术语的说法来解释，Shell其实是一个命令解释器，它通过接受用户输入的Shell命令来启动、暂停、停止程序的运行或对计算机进行控制。</p>
 <h3 id="1-2-什么是shell脚本"><a href="#1-2-什么是shell脚本" class="headerlink" title="1.2 什么是shell脚本"></a>1.2 什么是shell脚本</h3><p>shell脚本就是由Shell命令组成的执行文件，将一些命令整合到一个文件中，进行处理业务逻辑，脚本不用编译即可运行。它通过解释器解释运行，所以速度相对来说比较慢。</p>
@@ -298,7 +297,8 @@
 <p>我们创建一个test.sh的shell脚本文件，其中具体内容为下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-built_in">echo</span> hello<br></code></pre></td></tr></table></figure>
 
-<p>“ # ”开头的就是注释，单行注释<br>&lt;&lt;EOF … EOF 或 :&lt;&lt;! … ! ：多行注释<br>#!&#x2F;bin&#x2F;bash ： 主要用于指定解释器<br>Linux中提供的shell解释器有：</p>
+<p>“ # ”开头的就是注释，单行注释<br>&lt;&lt;EOF … EOF 或 :&lt;&lt;! … ! ：多行注释</p>
+<h1 id="x2F-bin-x2F-bash-：-主要用于指定解释器"><a href="#x2F-bin-x2F-bash-：-主要用于指定解释器" class="headerlink" title="!&#x2F;bin&#x2F;bash ： 主要用于指定解释器"></a>!&#x2F;bin&#x2F;bash ： 主要用于指定解释器</h1><p>Linux中提供的shell解释器有：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">/bin/sh<br>/bin/bash<br>/usr/bin/sh<br>/usr/bin/bash<br></code></pre></td></tr></table></figure>
 
 <h3 id="2-2-运行一个Shell脚本"><a href="#2-2-运行一个Shell脚本" class="headerlink" title="2.2 运行一个Shell脚本"></a>2.2 运行一个Shell脚本</h3><p>我们根据脚本文件是否具有可执行权限，将运行一个shell脚本的方法分为两大类。</p>
@@ -319,11 +319,8 @@
 <h5 id="3-1-3-2-拼接字符串"><a href="#3-1-3-2-拼接字符串" class="headerlink" title="3.1.3.2 拼接字符串"></a>3.1.3.2 拼接字符串</h5><p>字面量拼接<br>str01&#x3D;”1””2”或者str01&#x3D;”1”‘2’，这样就将1和2两个字符拼接在了一起。需要注意的是两个串之间不可以有空格。<br>变量拼接<br>str03&#x3D;${part01}${part02}或str04&#x3D;${part01}”end”或str05&#x3D;”${part01} ${part02}”这三种方式都可以拼接字符串变量。<br>命令拼接<br>str02&#x3D; date“end”，这里的date是一个shell命令，需要使用引用，具体如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">str02=`<span class="hljs-built_in">date</span>`<span class="hljs-string">&quot;end&quot;</span><br></code></pre></td></tr></table></figure>
 
-
-
 <h5 id="3-1-3-3-获取字符串长度"><a href="#3-1-3-3-获取字符串长度" class="headerlink" title="3.1.3.3 获取字符串长度"></a>3.1.3.3 获取字符串长度</h5><p>使用wc -L命令<br>wc -L可以获取到当前行的长度，因此对于单独行的字符串可以用这个简单的方法获取，另外wc -l则是获取当前字符串内容的行数。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;abc&quot;</span> |<span class="hljs-built_in">wc</span> -L<br></code></pre></td></tr></table></figure>
-
 
 <p>使用expr length可以获取string的长度.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">expr</span> length <span class="hljs-variable">$&#123;str&#125;</span><br></code></pre></td></tr></table></figure>
