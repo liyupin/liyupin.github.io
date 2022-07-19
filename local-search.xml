@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>centos8 离线安装docker-ce</title>
+    <link href="/2022/07/19/centos8-%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85docker-ce/"/>
+    <url>/2022/07/19/centos8-%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85docker-ce/</url>
+    
+    <content type="html"><![CDATA[<h1 id="centos8-离线安装docker-ce"><a href="#centos8-离线安装docker-ce" class="headerlink" title="centos8 离线安装docker-ce"></a>centos8 离线安装docker-ce</h1><h2 id="创建离线repo源"><a href="#创建离线repo源" class="headerlink" title="创建离线repo源"></a>创建离线repo源</h2><p>centos8除了需要创建repodata 还需要创建modular metadata，如果只有repodata就会报错：No available modular metadata for modular package</p><h3 id="安装modular-metadata生成工具"><a href="#安装modular-metadata生成工具" class="headerlink" title="安装modular metadata生成工具"></a>安装modular metadata生成工具</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><br>yum install createrepo <br>yum install python3-devel python3 gcc<br>yum install python3-createrepo_c libmodulemd<br><br>git <span class="hljs-built_in">clone</span> https://github.com/rpm-software-management/modulemd-tools.git<br><span class="hljs-built_in">cd</span> modulemd-tools/repo2module/<br>python3 setup.py install --user<br></code></pre></td></tr></table></figure><h3 id="创建repodata-和-modular-metadata"><a href="#创建repodata-和-modular-metadata" class="headerlink" title="创建repodata 和 modular metadata"></a>创建repodata 和 modular metadata</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><br><span class="hljs-built_in">cd</span> /opt/package/repo/<br>createrepo_c ./<br>/root/.local/bin/repo2module  -s stable -d . modules.yaml<br>modifyrepo_c --mdtype=modules modules.yaml repodata/<br></code></pre></td></tr></table></figure><h3 id="启动http服务"><a href="#启动http服务" class="headerlink" title="启动http服务"></a>启动http服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">python3 -m http.server 80<br></code></pre></td></tr></table></figure><h3 id="配置repo文件"><a href="#配置repo文件" class="headerlink" title="配置repo文件"></a>配置repo文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> /etc/yum.repos.d/docker-ce.repo <br>[docker-ce-stable]<br>name=Docker CE Stable - <span class="hljs-variable">$basearch</span><br>baseurl=http://172.16.3.132<br>enabled=1<br>gpgcheck=0<br>gpgkey=https://mirrors.aliyun.com/docker-ce/linux/centos/gpg<br><br></code></pre></td></tr></table></figure><h2 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">yum install docker-ce -y<br><br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>centos8</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>linux</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>python100day-2</title>
     <link href="/2022/07/19/python100day-2/"/>
     <url>/2022/07/19/python100day-2/</url>
