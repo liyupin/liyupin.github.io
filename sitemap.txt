@@ -1,3 +1,4 @@
+https://liyupin.github.io/2022/07/19/shell-%E8%AF%A6%E8%A7%A3/
 https://liyupin.github.io/2022/07/19/centos8-%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85docker-ce/
 https://liyupin.github.io/2022/07/19/python100day-2/
 https://liyupin.github.io/2022/07/18/python100day-1/
@@ -140,3 +141,4 @@ https://liyupin.github.io/categories/docker/
 https://liyupin.github.io/categories/python/
 https://liyupin.github.io/categories/python100day/
 https://liyupin.github.io/categories/centos8/
+https://liyupin.github.io/categories/shell/
