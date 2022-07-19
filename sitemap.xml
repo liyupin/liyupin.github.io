@@ -1154,6 +1154,13 @@
   </url>
   
   <url>
+    <loc>https://liyupin.github.io/tags/mysql/</loc>
+    <lastmod>2022-07-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://liyupin.github.io/tags/python100day/</loc>
     <lastmod>2022-07-19</lastmod>
     <changefreq>weekly</changefreq>
@@ -1169,13 +1176,6 @@
   
   <url>
     <loc>https://liyupin.github.io/tags/windows/</loc>
-    <lastmod>2022-07-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://liyupin.github.io/tags/mysql/</loc>
     <lastmod>2022-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1226,14 +1226,14 @@
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/categories/docker/</loc>
+    <loc>https://liyupin.github.io/categories/k8s/</loc>
     <lastmod>2022-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/categories/k8s/</loc>
+    <loc>https://liyupin.github.io/categories/docker/</loc>
     <lastmod>2022-07-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
