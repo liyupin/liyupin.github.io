@@ -16,21 +16,22 @@
   <meta name="author" content="Cper Liu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="1、通过Console口连接交换机，并重启交换机。2、当界面出现以下打印信息时，及时按下快捷键“Ctrl+B”并输入BootROM&#x2F;BootLoad密码，进入BootROM&#x2F;BootLoad主菜单3、密码： &amp;#x41;&amp;#x64;&amp;#109;&amp;#x69;&amp;#110;&amp;#x40;&amp;#x68;&amp;#117;&amp;#97;&amp;#x77;&amp;#101;&amp;#105;&amp;#x2e;&amp;#99;&amp;#x6">
+    <meta name="description" content="树莓派烧录指南镜像下载镜像下载地址为: https:&#x2F;&#x2F;cdimage.ubuntu.com&#x2F;releases 清华mirrors: https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;ubuntu-cdimage&#x2F;releases 在此目录内选择需要的版本进行下载，树莓派镜像一半名称内带有 raspi 字样，ubuntu 18 区分树莓派2、3、4使用不同镜像，ubuntu">
 <meta property="og:type" content="article">
-<meta property="og:title" content="华为交换机Console密码重置">
-<meta property="og:url" content="https://liyupin.github.io/2022/07/14/%E5%8D%8E%E4%B8%BA%E4%BA%A4%E6%8D%A2%E6%9C%BAConsole%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE/index.html">
+<meta property="og:title" content="树莓派烧录指南">
+<meta property="og:url" content="https://liyupin.github.io/2022/07/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E7%83%A7%E5%BD%95%E6%8C%87%E5%8D%97/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="1、通过Console口连接交换机，并重启交换机。2、当界面出现以下打印信息时，及时按下快捷键“Ctrl+B”并输入BootROM&#x2F;BootLoad密码，进入BootROM&#x2F;BootLoad主菜单3、密码： &amp;#x41;&amp;#x64;&amp;#109;&amp;#x69;&amp;#110;&amp;#x40;&amp;#x68;&amp;#117;&amp;#97;&amp;#x77;&amp;#101;&amp;#105;&amp;#x2e;&amp;#99;&amp;#x6">
+<meta property="og:description" content="树莓派烧录指南镜像下载镜像下载地址为: https:&#x2F;&#x2F;cdimage.ubuntu.com&#x2F;releases 清华mirrors: https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;ubuntu-cdimage&#x2F;releases 在此目录内选择需要的版本进行下载，树莓派镜像一半名称内带有 raspi 字样，ubuntu 18 区分树莓派2、3、4使用不同镜像，ubuntu">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-07-14T03:38:36.536Z">
-<meta property="article:modified_time" content="2022-07-14T03:38:36.536Z">
+<meta property="article:published_time" content="2022-07-20T07:32:00.000Z">
+<meta property="article:modified_time" content="2022-07-20T07:36:35.580Z">
 <meta property="article:author" content="Cper Liu">
+<meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>华为交换机Console密码重置 - Hexo</title>
+  <title>树莓派烧录指南 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -210,7 +211,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="华为交换机Console密码重置"></span>
+            <span id="subtitle" data-typed-text="树莓派烧录指南"></span>
           
         </div>
 
@@ -221,8 +222,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-07-14 11:38" pubdate>
-          2022年7月14日 中午
+        <time datetime="2022-07-20 15:32" pubdate>
+          2022年7月20日 下午
         </time>
       </span>
     
@@ -233,7 +234,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          531 字
+          2.6k 字
         
       </span>
     
@@ -244,7 +245,7 @@
         
         
         
-          5 分钟
+          22 分钟
         
       </span>
     
@@ -282,15 +283,28 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">华为交换机Console密码重置</h1>
+            <h1 style="display: none">树莓派烧录指南</h1>
             
             
               <div class="markdown-body">
                 
-                <p>1、通过Console口连接交换机，并重启交换机。<br>2、当界面出现以下打印信息时，及时按下快捷键“Ctrl+B”并输入BootROM&#x2F;BootLoad密码，进入BootROM&#x2F;BootLoad主菜单<br>3、密码： <a href="mailto:&#x41;&#x64;&#109;&#x69;&#110;&#x40;&#x68;&#117;&#97;&#x77;&#101;&#105;&#x2e;&#99;&#x6f;&#x6d;">&#x41;&#x64;&#109;&#x69;&#110;&#x40;&#x68;&#117;&#97;&#x77;&#101;&#105;&#x2e;&#99;&#x6f;&#x6d;</a> A必须大写。<br>4、选着7 Clear password for console user （选择清除console用户密码模式）。<br>5、选择1 Boot with default mode（键入1启动默认模式），进入后更改Console 及telnet密码。</p>
-<h3 id="2设备初始化"><a href="#2设备初始化" class="headerlink" title="*2设备初始化"></a>*2设备初始化</h3><p>1、登录华为交换机<br>2、输入：reset saved-configuration 接着问你是否初始化 选择“Y”<br>3、初始化之后，需要重启交换机才能生效 “reboot”</p>
-<h3 id="3-默认用户名和密码"><a href="#3-默认用户名和密码" class="headerlink" title="3.默认用户名和密码"></a>3.默认用户名和密码</h3><p>华为交换机的默认用户名是admin，密码是<a href="mailto:&#65;&#x64;&#109;&#105;&#110;&#64;&#x68;&#x75;&#97;&#x77;&#x65;&#105;&#46;&#99;&#111;&#x6d;">&#65;&#x64;&#109;&#105;&#110;&#64;&#x68;&#x75;&#97;&#x77;&#x65;&#105;&#46;&#99;&#111;&#x6d;</a></p>
-
+                <h1 id="树莓派烧录指南"><a href="#树莓派烧录指南" class="headerlink" title="树莓派烧录指南"></a>树莓派烧录指南</h1><h2 id="镜像下载"><a href="#镜像下载" class="headerlink" title="镜像下载"></a>镜像下载</h2><p>镜像下载地址为: <a target="_blank" rel="noopener" href="https://cdimage.ubuntu.com/releases">https://cdimage.ubuntu.com/releases</a></p>
+<p>清华mirrors: <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cdimage/releases">https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cdimage/releases</a></p>
+<p>在此目录内选择需要的版本进行下载，树莓派镜像一半名称内带有 raspi 字样，ubuntu 18 区分树莓派2、3、4使用不同镜像，ubuntu 20树莓派2、3、4均使用同一个镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">ubuntu 20.04: https://cdimage.ubuntu.com/releases/focal/release/ubuntu-20.04.1-preinstalled-server-arm64+raspi.img.xz<br>ubuntu 20.04（公司内网）: http://192.168.12.244/operatingSystem/ubuntu/raspberry/ubuntu-20.04.1-preinstalled-server-arm64+raspi.img.xz<br>ubuntu 18.04 树莓派4: http://cdimage.ubuntu.com/releases/18.04.4/release/ubuntu-18.04.5-preinstalled-server-arm64+raspi4.img.xz<br>ubuntu 18.04 树莓派4（公司内网）: http://192.168.12.244/operatingSystem/ubuntu/raspberry/ubuntu-18.04.5-preinstalled-server-arm64+raspi4.img.xz<br>ubuntu 18.04 树莓派3: http://cdimage.ubuntu.com/releases/18.04.4/release/ubuntu-18.04.5-preinstalled-server-arm64+raspi3.img.xz<br></code></pre></td></tr></table></figure>
+<h2 id="系统镜像制作及安装"><a href="#系统镜像制作及安装" class="headerlink" title="系统镜像制作及安装"></a>系统镜像制作及安装</h2><p>推荐使用树莓派imager官方烧录工具： <a target="_blank" rel="noopener" href="https://downloads.raspberrypi.org/imager">https://downloads.raspberrypi.org/imager</a></p>
+<p>或者手动烧录：</p>
+<h3 id="镜像下载-1"><a href="#镜像下载-1" class="headerlink" title="镜像下载"></a>镜像下载</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">% wget http://cdimage.ubuntu.com/releases/18.04.4/release/ubuntu-18.04.4-preinstalled-server-arm64+raspi3.img.xz<br></code></pre></td></tr></table></figure>
+<h3 id="格式化SD卡为-MS-DOS-（FAT32）格式，非必须要求"><a href="#格式化SD卡为-MS-DOS-（FAT32）格式，非必须要求" class="headerlink" title="格式化SD卡为 MS-DOS （FAT32）格式，非必须要求"></a>格式化SD卡为 MS-DOS （FAT32）格式，非必须要求</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">% sudo diskutil eraseDisk FAT32 <span class="hljs-string">&quot;UBUNTU&quot;</span> MBRFormat  /dev/disk2<br>% sudo diskutil unmountDisk /dev/disk2<br></code></pre></td></tr></table></figure>
+<h3 id="烧写启动数据"><a href="#烧写启动数据" class="headerlink" title="烧写启动数据"></a>烧写启动数据</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">% sudo sh -c <span class="hljs-string">&#x27;gunzip -c ~/Downloads/ubuntu-18.04.4-preinstalled-server-arm64+raspi3.img.xz | sudo dd of=/dev/disk2  bs=32m&#x27;</span><br>0+40048 records <span class="hljs-keyword">in</span><br>0+40048 records out<br>2624517120 bytes transferred <span class="hljs-keyword">in</span> 913.454427 secs (2873178 bytes/sec)<br></code></pre></td></tr></table></figure>
+<h3 id="cloudinit-配置"><a href="#cloudinit-配置" class="headerlink" title="cloudinit 配置"></a>cloudinit 配置</h3><p>ubuntu server 提供了 cloud-init 进行服务器配置，可以预先进行配置服务器初始状态，例如ip设置，ssh配置等。而无需在树莓派启动后再进行设置。</p>
+<p>使用树莓派烧录工具烧录完成后，重新插拔SD卡后，电脑能识别到一个名称为system-boot 的FAT分区。 打开可以看到许多文件。</p>
+<p>查看README文件以了解cloud-init的配置内容与初始化流程的执行方式。</p>
+<p>其中 meta-data 用于配置 配置 cloudinit 数据源，目前无需对该文件进行更改。<br>其中 user-meta 用于配置 ssh file 等,我们主要用它来配置ssh初始密码,hostname等。<br>其中 network-config 用于配置服务器网络。<br>可参考下文进行配置：</p>
+<p>设置主机名称<br>设置密码永不过期<br>创建账户ubuntu,密码password<br>设置账户root,密码password<br>设置允许root ssh登录<br>设置静态网络配置<br>user-dat:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment">#cloud-config</span><br><br><span class="hljs-comment"># Enable password authentication with the SSH daemon</span><br><span class="hljs-attr">ssh_pwauth:</span> <span class="hljs-literal">true</span><br><br><span class="hljs-comment"># Hostname</span><br><span class="hljs-attr">hostname:</span> <span class="hljs-string">ubuntu-001</span><br><br><span class="hljs-comment"># On first boot, set the (default) ubuntu user&#x27;s password to &quot;ubuntu&quot; and</span><br><span class="hljs-comment"># expire user passwords</span><br><span class="hljs-attr">chpasswd:</span><br>  <span class="hljs-attr">expire:</span> <span class="hljs-literal">false</span><br>  <span class="hljs-attr">list:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">ubuntu:password</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">root:password</span><br><span class="hljs-attr">runcmd:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">sed</span> <span class="hljs-string">-i</span> <span class="hljs-string">&#x27;s/#PermitRootLogin prohibit-password/PermitRootLogin yes/g&#x27;</span> <span class="hljs-string">/etc/ssh/sshd_config</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">service</span> <span class="hljs-string">ssh</span> <span class="hljs-string">restart</span><br></code></pre></td></tr></table></figure>
+<p>network-config:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># This file contains a netplan-compatible configuration which cloud-init</span><br><span class="hljs-comment"># will apply on first-boot. Please refer to the cloud-init documentation and</span><br><span class="hljs-comment"># the netplan reference for full details:</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># https://cloudinit.readthedocs.io/</span><br><span class="hljs-comment"># https://netplan.io/reference</span><br><span class="hljs-comment">#</span><br><br><span class="hljs-attr">version:</span> <span class="hljs-number">2</span><br><span class="hljs-attr">ethernets:</span><br>  <span class="hljs-attr">eth0:</span><br>    <span class="hljs-attr">optional:</span> <span class="hljs-literal">true</span><br>    <span class="hljs-attr">addresses:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-number">192.168</span><span class="hljs-number">.2</span><span class="hljs-number">.31</span><span class="hljs-string">/16</span><br>    <span class="hljs-attr">gateway4:</span> <span class="hljs-number">192.168</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span><br>    <span class="hljs-attr">nameservers:</span><br>      <span class="hljs-attr">addresses:</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-number">61.139</span><span class="hljs-number">.2</span><span class="hljs-number">.69</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-number">223.5</span><span class="hljs-number">.5</span><span class="hljs-number">.5</span><br></code></pre></td></tr></table></figure>
                 
               </div>
             
@@ -298,6 +312,34 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/ubuntu/" class="category-chain-item">ubuntu</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/linux/">#linux</a>
+      
+    </div>
   
 </div>
 
@@ -307,8 +349,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>华为交换机Console密码重置</div>
-      <div>https://liyupin.github.io/2022/07/14/华为交换机Console密码重置/</div>
+      <div>树莓派烧录指南</div>
+      <div>https://liyupin.github.io/2022/07/20/树莓派烧录指南/</div>
     </div>
     <div class="license-meta">
       
@@ -320,7 +362,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年7月14日</div>
+          <div>2022年7月20日</div>
         </div>
       
       
@@ -350,18 +392,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/07/14/Centos7%20%E4%B8%8B%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/" title="Centos7 下代理配置">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Centos7 下代理配置</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/07/14/%E9%AB%98%E6%95%88%E7%9A%84Nginx%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E5%99%A8/" title="高效的Nginx负载均衡器">
-                        <span class="hidden-mobile">高效的Nginx负载均衡器</span>
+                      <a href="/2022/07/20/Shell%E8%84%9A%E6%9C%AC%E8%AF%A6%E8%A7%A3-3/" title="Shell脚本详解-3">
+                        <span class="hidden-mobile">Shell脚本详解-3</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
