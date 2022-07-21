@@ -16,15 +16,15 @@
   <meta name="author" content="Cper Liu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="ansible  命令 12ansible mysql -m selinux -a &quot;state&#x3D;disabled&quot; #关闭selinux ansible mysql -m lineinfile -a &quot;path&#x3D;&#x2F;etc&#x2F;yum.conf regexp&#x3D;&amp;#x27;^keepcache&amp;#x27; line&#x3D;&amp;#x27;keepcache&#x3D;1&amp;#x27;&amp;quot">
+    <meta name="description" content="ansible  命令关闭seliux123ansible node -m selinux -a &quot;state&#x3D;disabled&quot;  开启yum缓存1ansible mysql -m lineinfile -a &quot;path&#x3D;&#x2F;etc&#x2F;yum.conf regexp&#x3D;&amp;#x27;^keepcache&amp;#x27; line&#x3D;&amp;#x27;keepcache&#x3D;1&amp;#x27;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ansible 命令">
 <meta property="og:url" content="https://liyupin.github.io/2022/07/12/ansible%20%20%E5%91%BD%E4%BB%A4/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="ansible  命令 12ansible mysql -m selinux -a &quot;state&#x3D;disabled&quot; #关闭selinux ansible mysql -m lineinfile -a &quot;path&#x3D;&#x2F;etc&#x2F;yum.conf regexp&#x3D;&amp;#x27;^keepcache&amp;#x27; line&#x3D;&amp;#x27;keepcache&#x3D;1&amp;#x27;&amp;quot">
+<meta property="og:description" content="ansible  命令关闭seliux123ansible node -m selinux -a &quot;state&#x3D;disabled&quot;  开启yum缓存1ansible mysql -m lineinfile -a &quot;path&#x3D;&#x2F;etc&#x2F;yum.conf regexp&#x3D;&amp;#x27;^keepcache&amp;#x27; line&#x3D;&amp;#x27;keepcache&#x3D;1&amp;#x27;">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-07-12T00:28:01.000Z">
-<meta property="article:modified_time" content="2022-07-12T08:28:01.230Z">
+<meta property="article:modified_time" content="2022-07-21T03:01:01.836Z">
 <meta property="article:author" content="Cper Liu">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -233,7 +233,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.7k 字
+          2k 字
         
       </span>
     
@@ -244,7 +244,7 @@
         
         
         
-          15 分钟
+          17 分钟
         
       </span>
     
@@ -288,8 +288,10 @@
               <div class="markdown-body">
                 
                 <hr>
-<p>ansible  命令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">ansible mysql -m selinux -a <span class="hljs-string">&quot;state=disabled&quot;</span> <span class="hljs-comment">#关闭selinux</span><br> ansible mysql -m lineinfile -a <span class="hljs-string">&quot;path=/etc/yum.conf regexp=&#x27;^keepcache&#x27; line=&#x27;keepcache=1&#x27;&quot;</span> <span class="hljs-comment">#开启yum缓存</span><br></code></pre></td></tr></table></figure>
+<h1 id="ansible-命令"><a href="#ansible-命令" class="headerlink" title="ansible  命令"></a>ansible  命令</h1><h2 id="关闭seliux"><a href="#关闭seliux" class="headerlink" title="关闭seliux"></a>关闭seliux</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">ansible node -m selinux -a <span class="hljs-string">&quot;state=disabled&quot;</span> <br><br><br></code></pre></td></tr></table></figure>
+<h2 id="开启yum缓存"><a href="#开启yum缓存" class="headerlink" title="开启yum缓存"></a>开启yum缓存</h2><figure class="highlight csp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csp">ansible mysql -m lineinfile -a &quot;path=/etc/yum.conf regexp=<span class="hljs-string">&#x27;^keepcache&#x27;</span> line=<span class="hljs-string">&#x27;keepcache=1&#x27;</span>&quot; <br></code></pre></td></tr></table></figure>
+<h2 id="设置主机名"><a href="#设置主机名" class="headerlink" title="设置主机名"></a>设置主机名</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">for</span> no <span class="hljs-keyword">in</span> node-&#123;101..105&#125;;<span class="hljs-keyword">do</span> ansible <span class="hljs-variable">$no</span> -m hostname -a <span class="hljs-string">&quot;name=<span class="hljs-variable">$no</span>&quot;</span> -i hosts;<span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+<h2 id="关闭ssh服务dns解析"><a href="#关闭ssh服务dns解析" class="headerlink" title="关闭ssh服务dns解析"></a>关闭ssh服务dns解析</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">ansible node -m lineinfile -a <span class="hljs-string">&quot;path=/etc/ssh/sshd_config regexp=&#x27;^#UseDNS&#x27; line=&#x27;UseDNS no&#x27;&quot;</span> <br>ansible node -m systemd -a <span class="hljs-string">&quot;name=ssh state=restarted&quot;</span><br></code></pre></td></tr></table></figure>
 
 <h2 id="linefile"><a href="#linefile" class="headerlink" title="linefile"></a>linefile</h2><p>EXAMPLES:</p>
 <p>NOTE: Before 2.3, option ‘dest’, ‘destfile’ or ‘name’ was used instead of ‘path’</p>
