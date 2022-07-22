@@ -16,15 +16,15 @@
   <meta name="author" content="Cper Liu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="centos8 离线安装docker-ce创建离线repo源centos8除了需要创建repodata 还需要创建modular metadata，如果只有repodata就会报错：No available modular metadata for modular package 安装modular metadata生成工具12345678yum install createrepo yum in">
+    <meta name="description" content="centos8 离线安装docker-ce更换国内源12dnf config-manager --add-repo http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;docker-ce&#x2F;linux&#x2F;centos&#x2F;docker-ce.repowget -O &#x2F;etc&#x2F;yum.repos.d&#x2F;openEulerOS.repo https:&#x2F;&#x2F;repo.huaweicloud.com&#x2F;reposito">
 <meta property="og:type" content="article">
 <meta property="og:title" content="centos8 离线安装docker-ce">
 <meta property="og:url" content="https://liyupin.github.io/2022/07/19/centos8-%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85docker-ce/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="centos8 离线安装docker-ce创建离线repo源centos8除了需要创建repodata 还需要创建modular metadata，如果只有repodata就会报错：No available modular metadata for modular package 安装modular metadata生成工具12345678yum install createrepo yum in">
+<meta property="og:description" content="centos8 离线安装docker-ce更换国内源12dnf config-manager --add-repo http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;docker-ce&#x2F;linux&#x2F;centos&#x2F;docker-ce.repowget -O &#x2F;etc&#x2F;yum.repos.d&#x2F;openEulerOS.repo https:&#x2F;&#x2F;repo.huaweicloud.com&#x2F;reposito">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-07-19T06:04:00.000Z">
-<meta property="article:modified_time" content="2022-07-19T06:12:31.347Z">
+<meta property="article:modified_time" content="2022-07-22T03:27:19.837Z">
 <meta property="article:author" content="Cper Liu">
 <meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary_large_image">
@@ -234,7 +234,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          810 字
+          1.1k 字
         
       </span>
     
@@ -245,7 +245,7 @@
         
         
         
-          7 分钟
+          9 分钟
         
       </span>
     
@@ -288,13 +288,15 @@
             
               <div class="markdown-body">
                 
-                <h1 id="centos8-离线安装docker-ce"><a href="#centos8-离线安装docker-ce" class="headerlink" title="centos8 离线安装docker-ce"></a>centos8 离线安装docker-ce</h1><h2 id="创建离线repo源"><a href="#创建离线repo源" class="headerlink" title="创建离线repo源"></a>创建离线repo源</h2><p>centos8除了需要创建repodata 还需要创建modular metadata，如果只有repodata就会报错：No available modular metadata for modular package</p>
+                <h1 id="centos8-离线安装docker-ce"><a href="#centos8-离线安装docker-ce" class="headerlink" title="centos8 离线安装docker-ce"></a>centos8 离线安装docker-ce</h1><h2 id="更换国内源"><a href="#更换国内源" class="headerlink" title="更换国内源"></a>更换国内源</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">dnf config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo<br>wget -O /etc/yum.repos.d/openEulerOS.repo https://repo.huaweicloud.com/repository/conf/openeuler_aarch64.repo<br></code></pre></td></tr></table></figure>
+<h2 id="创建离线repo源"><a href="#创建离线repo源" class="headerlink" title="创建离线repo源"></a>创建离线repo源</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">yum install -y docker-ce --downloadonly --downloaderdir=repo/<br></code></pre></td></tr></table></figure>
+
+<p>centos8除了需要创建repodata 还需要创建modular metadata，如果只有repodata就会报错：No available modular metadata for modular package</p>
 <h3 id="安装modular-metadata生成工具"><a href="#安装modular-metadata生成工具" class="headerlink" title="安装modular metadata生成工具"></a>安装modular metadata生成工具</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><br>yum install createrepo <br>yum install python3-devel python3 gcc<br>yum install python3-createrepo_c libmodulemd<br><br>git <span class="hljs-built_in">clone</span> https://github.com/rpm-software-management/modulemd-tools.git<br><span class="hljs-built_in">cd</span> modulemd-tools/repo2module/<br>python3 setup.py install --user<br></code></pre></td></tr></table></figure>
 <h3 id="创建repodata-和-modular-metadata"><a href="#创建repodata-和-modular-metadata" class="headerlink" title="创建repodata 和 modular metadata"></a>创建repodata 和 modular metadata</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><br><span class="hljs-built_in">cd</span> /opt/package/repo/<br>createrepo_c ./<br>/root/.local/bin/repo2module  -s stable -d . modules.yaml<br>modifyrepo_c --mdtype=modules modules.yaml repodata/<br></code></pre></td></tr></table></figure>
 <h3 id="启动http服务"><a href="#启动http服务" class="headerlink" title="启动http服务"></a>启动http服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">python3 -m http.server 80<br></code></pre></td></tr></table></figure>
 <h3 id="配置repo文件"><a href="#配置repo文件" class="headerlink" title="配置repo文件"></a>配置repo文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> /etc/yum.repos.d/docker-ce.repo <br>[docker-ce-stable]<br>name=Docker CE Stable - <span class="hljs-variable">$basearch</span><br>baseurl=http://172.16.3.132<br>enabled=1<br>gpgcheck=0<br>gpgkey=https://mirrors.aliyun.com/docker-ce/linux/centos/gpg<br><br></code></pre></td></tr></table></figure>
 <h2 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">yum install docker-ce -y<br><br></code></pre></td></tr></table></figure>
-
                 
               </div>
             
