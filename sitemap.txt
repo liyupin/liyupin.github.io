@@ -1,3 +1,4 @@
+https://liyupin.github.io/2022/07/22/python100day-5/
 https://liyupin.github.io/2022/07/21/Untitled/
 https://liyupin.github.io/2022/07/21/python100day-4/
 https://liyupin.github.io/2022/07/21/Ubuntu18-04-%E6%9B%B4%E6%8D%A2%E5%9B%BD%E5%86%85%E6%BA%90/
@@ -135,8 +136,8 @@ https://liyupin.github.io/tags/ubuntu/
 https://liyupin.github.io/tags/python/
 https://liyupin.github.io/tags/docker/
 https://liyupin.github.io/tags/k8s/
-https://liyupin.github.io/tags/windows/
 https://liyupin.github.io/tags/mysql/
+https://liyupin.github.io/tags/windows/
 https://liyupin.github.io/tags/shell/
 https://liyupin.github.io/tags/openEuler/
 https://liyupin.github.io/categories/linux/
