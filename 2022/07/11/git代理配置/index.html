@@ -294,7 +294,7 @@
 <h4 id="2、代理服务器不需要鉴权配置"><a href="#2、代理服务器不需要鉴权配置" class="headerlink" title="2、代理服务器不需要鉴权配置"></a>2、代理服务器不需要鉴权配置</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git config --global https.proxy https://proxy.baidu.com:8080<br></code></pre></td></tr></table></figure>
 <h1 id="密码中特殊字符处理"><a href="#密码中特殊字符处理" class="headerlink" title="密码中特殊字符处理"></a>密码中特殊字符处理</h1><p>如果密码中有@等特殊字符，会出错，比如</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git config --global http.proxy http://username:abc@123@proxy.baidu.com:8080<br></code></pre></td></tr></table></figure>
-<p>解析时会从第一个@解析，提示@<a href="mailto:&#x31;&#x32;&#x33;&#x40;&#x70;&#x72;&#x6f;&#x78;&#121;&#104;&#107;&#x2e;&#104;&#x75;&#97;&#x77;&#x65;&#105;&#x2e;&#x63;&#111;&#109;">&#x31;&#x32;&#x33;&#x40;&#x70;&#x72;&#x6f;&#x78;&#121;&#104;&#107;&#x2e;&#104;&#x75;&#97;&#x77;&#x65;&#105;&#x2e;&#x63;&#111;&#109;</a>找不到，此时要对其中的特殊符号进行处理，使用百分比编码(Percent-encoding)对特殊字符进行转换，转换列表如下：</p>
+<p>解析时会从第一个@解析，提示@<a href="mailto:&#x31;&#50;&#51;&#64;&#112;&#114;&#111;&#x78;&#121;&#x68;&#x6b;&#x2e;&#x68;&#117;&#97;&#x77;&#x65;&#x69;&#46;&#99;&#x6f;&#109;">&#x31;&#50;&#51;&#64;&#112;&#114;&#111;&#x78;&#121;&#x68;&#x6b;&#x2e;&#x68;&#117;&#97;&#x77;&#x65;&#x69;&#46;&#99;&#x6f;&#109;</a>找不到，此时要对其中的特殊符号进行处理，使用百分比编码(Percent-encoding)对特殊字符进行转换，转换列表如下：</p>
 <blockquote>
 <p>! –&gt; %21  # –&gt; %23  $ –&gt; %24  &amp; –&gt; %26  ‘ –&gt; %27</p>
 <p>( –&gt; %28  ) –&gt; %29  * –&gt; %2A  + –&gt; %2B  , –&gt; %2C</p>
