@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="字符串和常用数据结构使用字符串第二次世界大战促使了现代电子计算机的诞生，最初计算机被应用于导弹弹道的计算，而在计算机诞生后的很多年时间里，计算机处理的信息基本上都是数值型的信息。世界上的第一台电子计算机叫ENIAC（电子数值积分计算机），诞生于美国的宾夕法尼亚大学，每秒钟能够完成约5000次浮点运算。随着时间的推移，虽然数值运算仍然是计算机日常工作中最为重要的事情之一，但是今天的计算机处理得更多的">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://liyupin.github.io/res/formula_5.png">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-68.png">
 <meta property="og:image" content="https://liyupin.github.io/res/formula_6.png">
 <meta property="og:image" content="https://liyupin.github.io/res/formula_7.png">
 <meta property="og:image" content="https://liyupin.github.io/res/formula_8.png">
@@ -31,11 +31,11 @@
 <meta property="og:image" content="https://liyupin.github.io/res/ipython-timeit.png">
 <meta property="og:image" content="https://liyupin.github.io/res/python-set.png">
 <meta property="article:published_time" content="2022-07-25T01:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-25T01:02:39.931Z">
+<meta property="article:modified_time" content="2022-07-25T01:05:50.815Z">
 <meta property="article:author" content="Cper Liu">
 <meta property="article:tag" content="pytohn">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://liyupin.github.io/res/formula_5.png">
+<meta name="twitter:image" content="https://liyupin.github.io/images/pasted-68.png">
   
   
   
@@ -297,7 +297,7 @@
               <div class="markdown-body">
                 
                 <h2 id="字符串和常用数据结构"><a href="#字符串和常用数据结构" class="headerlink" title="字符串和常用数据结构"></a>字符串和常用数据结构</h2><h3 id="使用字符串"><a href="#使用字符串" class="headerlink" title="使用字符串"></a>使用字符串</h3><p>第二次世界大战促使了现代电子计算机的诞生，最初计算机被应用于导弹弹道的计算，而在计算机诞生后的很多年时间里，计算机处理的信息基本上都是数值型的信息。世界上的第一台电子计算机叫ENIAC（电子数值积分计算机），诞生于美国的宾夕法尼亚大学，每秒钟能够完成约5000次浮点运算。随着时间的推移，虽然数值运算仍然是计算机日常工作中最为重要的事情之一，但是今天的计算机处理得更多的数据可能都是以文本的方式存在的，如果我们希望通过Python程序操作这些文本信息，就必须要先了解字符串类型以及与它相关的知识。</p>
-<p>所谓<strong>字符串</strong>，就是由零个或多个字符组成的有限序列，一般记为<img src="/./res/formula_5.png" srcset="/img/loading.gif" lazyload alt="$${\displaystyle s=a_{1}a_{2}\dots a_{n}(0\leq n \leq \infty)}$$">。在Python程序中，如果我们把单个或多个字符用单引号或者双引号包围起来，就可以表示一个字符串。</p>
+<p>所谓<strong>字符串</strong>，就是由零个或多个字符组成的有限序列，一般记为<br><img src="/images/pasted-68.png" srcset="/img/loading.gif" lazyload alt="upload successful">。在Python程序中，如果我们把单个或多个字符用单引号或者双引号包围起来，就可以表示一个字符串。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Python">s1 = <span class="hljs-string">&#x27;hello, world!&#x27;</span><br>s2 = <span class="hljs-string">&quot;hello, world!&quot;</span><br><span class="hljs-comment"># 以三个双引号或单引号开头的字符串可以折行</span><br>s3 = <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">hello, </span><br><span class="hljs-string">world!</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-built_in">print</span>(s1, s2, s3, end=<span class="hljs-string">&#x27;&#x27;</span>)<br></code></pre></td></tr></table></figure>
 
 <p>可以在字符串中使用<code>\</code>（反斜杠）来表示转义，也就是说<code>\</code>后面的字符不再是它原来的意义，例如：<code>\n</code>不是代表反斜杠和字符n，而是表示换行；而<code>\t</code>也不是代表反斜杠和字符t，而是表示制表符。所以如果想在字符串中表示<code>&#39;</code>要写成<code>\&#39;</code>，同理想表示<code>\</code>要写成<code>\\</code>。可以运行下面的代码看看会输出什么。</p>

@@ -128,8 +128,8 @@ https://liyupin.github.io/2022/07/13/%E8%AE%B0%E4%B8%80%E6%AC%A1centos7.2%20%E6%
 https://liyupin.github.io/2022/07/13/%E9%98%B2%E7%97%85%E6%AF%92%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AF%86%E7%A0%81/
 https://liyupin.github.io/2022/07/13/hello-world/
 https://liyupin.github.io/
-https://liyupin.github.io/tags/ecos-pro/
 https://liyupin.github.io/tags/openeuler/
+https://liyupin.github.io/tags/ecos-pro/
 https://liyupin.github.io/tags/centos/
 https://liyupin.github.io/tags/kvm/
 https://liyupin.github.io/tags/newben/
@@ -138,9 +138,9 @@ https://liyupin.github.io/tags/ubuntu/
 https://liyupin.github.io/tags/python/
 https://liyupin.github.io/tags/docker/
 https://liyupin.github.io/tags/k8s/
+https://liyupin.github.io/tags/mysql/
 https://liyupin.github.io/tags/pytohn/
 https://liyupin.github.io/tags/windows/
-https://liyupin.github.io/tags/mysql/
 https://liyupin.github.io/tags/shell/
 https://liyupin.github.io/tags/openEuler/
 https://liyupin.github.io/categories/linux/
