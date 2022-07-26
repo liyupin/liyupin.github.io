@@ -1181,6 +1181,13 @@
 
   
   <url>
+    <loc>https://liyupin.github.io/tags/ecos-pro/</loc>
+    <lastmod>2022-07-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://liyupin.github.io/tags/openeuler/</loc>
     <lastmod>2022-07-26</lastmod>
     <changefreq>weekly</changefreq>
@@ -1237,7 +1244,7 @@
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/tags/mysql/</loc>
+    <loc>https://liyupin.github.io/tags/pytohn/</loc>
     <lastmod>2022-07-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1245,13 +1252,6 @@
   
   <url>
     <loc>https://liyupin.github.io/tags/windows/</loc>
-    <lastmod>2022-07-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://liyupin.github.io/tags/pytohn/</loc>
     <lastmod>2022-07-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1272,7 +1272,7 @@
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/tags/ecos-pro/</loc>
+    <loc>https://liyupin.github.io/tags/mysql/</loc>
     <lastmod>2022-07-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1302,7 +1302,7 @@
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/categories/python00day/</loc>
+    <loc>https://liyupin.github.io/categories/python100day/</loc>
     <lastmod>2022-07-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1331,13 +1331,6 @@
   
   <url>
     <loc>https://liyupin.github.io/categories/docker/</loc>
-    <lastmod>2022-07-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://liyupin.github.io/categories/python100day/</loc>
     <lastmod>2022-07-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
