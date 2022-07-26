@@ -1,0 +1,695 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Cper Liu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Docker 部署Mycat2简介Mycat是一个彻底开源的，面向企业应用开发的大数据库集群。从定义和分类来看，它是一个开源的分布式数据库系统，是一个实现了MySQL协议的服务器，前端用户可以把它看作是一个数据库代理，用MySQL客户端工具和命令行访问，而其后端可以用MySQL原生协议与多个MySQL服务器通信，也可以用JDBC协议与大多数主流数据库服务器通信，其核心功能是分表分库，即将一个大表水">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mycat 容器化部署">
+<meta property="og:url" content="https://liyupin.github.io/2022/07/26/mycat-%E5%AE%B9%E5%99%A8%E5%8C%96%E9%83%A8%E7%BD%B2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Docker 部署Mycat2简介Mycat是一个彻底开源的，面向企业应用开发的大数据库集群。从定义和分类来看，它是一个开源的分布式数据库系统，是一个实现了MySQL协议的服务器，前端用户可以把它看作是一个数据库代理，用MySQL客户端工具和命令行访问，而其后端可以用MySQL原生协议与多个MySQL服务器通信，也可以用JDBC协议与大多数主流数据库服务器通信，其核心功能是分表分库，即将一个大表水">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-26T01:13:00.000Z">
+<meta property="article:modified_time" content="2022-07-26T01:13:37.649Z">
+<meta property="article:author" content="Cper Liu">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>mycat 容器化部署 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="mycat 容器化部署"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-07-26 09:13" pubdate>
+          2022年7月26日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          37 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">mycat 容器化部署</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Docker-部署Mycat2"><a href="#Docker-部署Mycat2" class="headerlink" title="Docker 部署Mycat2"></a>Docker 部署Mycat2</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Mycat是一个彻底开源的，面向企业应用开发的大数据库集群。从定义和分类来看，它是一个开源的分布式数据库系统，是一个实现了MySQL协议的服务器，前端用户可以把它看作是一个数据库代理，用MySQL客户端工具和命令行访问，而其后端可以用MySQL原生协议与多个MySQL服务器通信，也可以用JDBC协议与大多数主流数据库服务器通信，其核心功能是分表分库，即将一个大表水平分割为N个小表，存储在后端MySQL服务器里或者其他数据库里。</p>
+<h2 id="创建镜像"><a href="#创建镜像" class="headerlink" title="创建镜像"></a>创建镜像</h2><h3 id="1-安装资源地址"><a href="#1-安装资源地址" class="headerlink" title="1. 安装资源地址"></a>1. 安装资源地址</h3>  <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">http:<span class="hljs-regexp">//</span>dl.mycat.org.cn<span class="hljs-regexp">/2.0/</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="2-Dockerfile文件"><a href="#2-Dockerfile文件" class="headerlink" title="2. Dockerfile文件"></a>2. Dockerfile文件</h3><p>  基础镜像openjdk:8-jre版本，其他版本apt-get会报错</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> openjdk:<span class="hljs-number">8</span>-jre<br><br><span class="hljs-keyword">ENV</span> AUTO_RUN_DIR ./mycat2<br><span class="hljs-keyword">ENV</span> DEPENDENCE_FILE mycat2-<span class="hljs-number">1.22</span>-release-jar-with-dependencies.jar<br><span class="hljs-keyword">ENV</span> TEMPLATE_FILE mycat2-install-template-<span class="hljs-number">1.21</span>.zip<br><br><span class="hljs-keyword">RUN</span><span class="language-bash"> sed -i <span class="hljs-string">&quot;s@http://.*archive.ubuntu.com@http://mirrors.aliyun.com@g&quot;</span> /etc/apt/sources.list</span><br><span class="hljs-keyword">RUN</span><span class="language-bash"> sed -i <span class="hljs-string">&quot;s@http://.*security.ubuntu.com@http://mirrors.aliyun.com@g&quot;</span> /etc/apt/sources.list</span><br><br><span class="hljs-keyword">RUN</span><span class="language-bash"> buildDeps=<span class="hljs-string">&#x27;procps wget unzip&#x27;</span> \</span><br><span class="language-bash">&amp;&amp; apt-get update \</span><br><span class="language-bash">&amp;&amp; apt-get install -y <span class="hljs-variable">$buildDeps</span></span><br><br><span class="hljs-comment"># 安装地址 http://dl.mycat.org.cn/2.0/</span><br><br><span class="hljs-comment"># http://dl.mycat.org.cn/2.0/1.22-release/</span><br><br><span class="hljs-comment"># http://dl.mycat.org.cn/2.0/install-template/</span><br><br><span class="hljs-keyword">RUN</span><span class="language-bash"> wget -P <span class="hljs-variable">$AUTO_RUN_DIR</span>/ http://dl.mycat.org.cn/2.0/1.22-release/<span class="hljs-variable">$DEPENDENCE_FILE</span> \</span><br><span class="language-bash">&amp;&amp; wget -P <span class="hljs-variable">$AUTO_RUN_DIR</span>/ http://dl.mycat.org.cn/2.0/install-template/<span class="hljs-variable">$TEMPLATE_FILE</span></span><br><br><span class="hljs-keyword">RUN</span><span class="language-bash"> <span class="hljs-built_in">cd</span> <span class="hljs-variable">$AUTO_RUN_DIR</span>/ \</span><br><span class="language-bash">&amp;&amp; unzip <span class="hljs-variable">$TEMPLATE_FILE</span> \</span><br><span class="language-bash">&amp;&amp; <span class="hljs-built_in">ls</span> -al . \</span><br><span class="language-bash">&amp;&amp; <span class="hljs-built_in">mv</span> <span class="hljs-variable">$DEPENDENCE_FILE</span> mycat/lib/ \</span><br><span class="language-bash">&amp;&amp; <span class="hljs-built_in">chmod</span> +x mycat/bin/* \</span><br><span class="language-bash">&amp;&amp; <span class="hljs-built_in">chmod</span> 755 mycat/lib/* \</span><br><span class="language-bash">&amp;&amp; <span class="hljs-built_in">mv</span> mycat /usr/local</span><br><br><span class="hljs-comment">#copy mycat /usr/local/mycat/</span><br><span class="hljs-keyword">VOLUME</span><span class="language-bash"> /usr/local/mycat/conf</span><br><span class="hljs-keyword">VOLUME</span><span class="language-bash"> /usr/local/mycat/logs</span><br><br><span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">8066</span> <span class="hljs-number">1984</span><br><span class="hljs-keyword">CMD</span><span class="language-bash"> [<span class="hljs-string">&quot;/usr/local/mycat/bin/mycat&quot;</span>, <span class="hljs-string">&quot;console&quot;</span>]</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="3-编译镜像"><a href="#3-编译镜像" class="headerlink" title="3. 编译镜像"></a>3. 编译镜像</h3>  <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> build -t mycat2:<span class="hljs-number">1</span>.<span class="hljs-number">22</span> .<br></code></pre></td></tr></table></figure>
+
+<h2 id="创建容器"><a href="#创建容器" class="headerlink" title="创建容器"></a>创建容器</h2>  <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> run -d --name=mycat2 -p <span class="hljs-number">8066</span>:<span class="hljs-number">8066</span> -p <span class="hljs-number">1984</span>:<span class="hljs-number">1984</span> mycat2:<span class="hljs-number">1</span>.<span class="hljs-number">22</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="1-复制配置"><a href="#1-复制配置" class="headerlink" title="1 . 复制配置"></a>1 . 复制配置</h3><p>复制容器内配置</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">docker cp mycat2:<span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/mycat/</span>conf .<br>docker cp mycat2:<span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/mycat/</span>logs .<br></code></pre></td></tr></table></figure>
+
+
+<h3 id="2-创建容器"><a href="#2-创建容器" class="headerlink" title="2. 创建容器"></a>2. 创建容器</h3>  <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">docker run -d --name=mycat2 -p <span class="hljs-number">8066</span>:<span class="hljs-number">8066</span> -p <span class="hljs-number">1984</span>:<span class="hljs-number">1984</span> -v <span class="hljs-variable">$PWD</span><span class="hljs-regexp">/conf:/u</span>sr<span class="hljs-regexp">/local/my</span>cat<span class="hljs-regexp">/conf -v $PWD/</span>logs:<span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/mycat/</span>logs mycat2:<span class="hljs-number">1.22</span><br></code></pre></td></tr></table></figure>
+
+<p>以root用户权限进入容器</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript">docker exec -<span class="hljs-keyword">it</span> -u root mycat2 bash<br></code></pre></td></tr></table></figure>
+
+
+
+<p>查看容器启动日志</p>
+<p>docker logs -f mycat2</p>
+<h3 id="3-docker-compose方式安装"><a href="#3-docker-compose方式安装" class="headerlink" title="3. docker-compose方式安装"></a>3. docker-compose方式安装</h3>  <figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile">version: <span class="hljs-string">&#x27;3&#x27;</span><br>services:<br>  mycat-service:<br> build:<br>   context: ./<br>   dockerfile: Dockerfile<br> image: mycat2:<span class="hljs-number">1.22</span><br> container_name: mycat2<br> restart: always<br> network_mode: <span class="hljs-string">&quot;host&quot;</span><br> volumes:<br><br>   - /u01/mycat2/conf:/usr/local/mycat/conf<br>   - /u01/mycat2/logs:/usr/local/mycat/logs<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="Mycat2配置"><a href="#Mycat2配置" class="headerlink" title="Mycat2配置"></a>Mycat2配置</h2><p>  mycat配置文件夹</p>
+<ul>
+<li><p>&#96;&#96;&#96;</p>
+<ul>
+<li>clusters<ul>
+<li>prototype.cluster.json &#x2F;&#x2F;无集群的时候自动创建</li>
+<li>c0.cluster.json</li>
+<li>c1.cluster.json</li>
+</ul>
+</li>
+<li>datasources<ul>
+<li>prototypeDs.datasource.json &#x2F;&#x2F;无数据源的时候自动创建</li>
+<li>dr0.datasource.json</li>
+<li>dw0.datasource.json</li>
+</ul>
+</li>
+<li>schemas<ul>
+<li>db1.schema.json</li>
+<li>mysql.schema.json</li>
+</ul>
+</li>
+<li>sequences<ul>
+<li>db1_schema.sequence.json</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>server.json &#x2F;&#x2F;服务器配置</li>
+<li>state.json &#x2F;&#x2F;mycat运行状态,包含集群选举的主节点信息,配置时间戳 <figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs clean">     <br>     <br>### <span class="hljs-number">1.</span> 数据源配置<br><br>  prototypeDs.datasource.json 该配置不能删除，可以设置用户、密码、数据库，该配置会在启动Mycat2时创建名为mycat的数据库，库中有mycat所需的数据表<br><br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<p>cd &#x2F;conf&#x2F;datasources<br>prototypeDs.datasource.json</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs"><br><br><br></code></pre></td></tr></table></figure>
+<p>{<br>        “dbType”:”mysql”,<br>        “idleTimeout”:60000,<br>        “initSqls”:[],<br>        “initSqlsGetConnection”:true,<br>        &#x2F;&#x2F; 数据库读写类型：READ、WRITE、READ_WRITE。Mycat 对数据库需要是可读可写的<br>        “instanceType”:”READ_WRITE”,<br>        “maxCon”:1000,<br>        &#x2F;&#x2F; 定时检查闲置连接，单位：ms<br>        “maxConnectTimeout”:3000,<br>        &#x2F;&#x2F; jdbc查询超时时间，单位：ms<br>        “queryTimeout”: 5000,<br>        “maxRetryCount”:5,<br>        “minCon”:1,<br>        &#x2F;&#x2F; 数据源名称，这里不要修改<br>        “name”:”prototypeDs”,<br>        &#x2F;&#x2F; 数据库root密码<br>        “password”:”123456qq”,<br>        “type”:”JDBC”,<br>        “url”:”jdbc:mysql:&#x2F;&#x2F;localhost:3306&#x2F;test?useSSL&#x3D;false&amp;useUnicode&#x3D;true&amp;serverTimezone&#x3D;Asia&#x2F;Shanghai&amp;characterEncoding&#x3D;UTF-8”,<br>        &#x2F;&#x2F; 数据库用户（要有创建数据的权限）<br>        “user”:”root”,<br>        “weight”:0<br>}</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs clean"><br><br><br>### <span class="hljs-number">2.</span> 集群配置<br><br></code></pre></td></tr></table></figure>
+<p>  cd &#x2F;conf&#x2F;clusters&#x2F;<br>  prototype.cluster.json<br>  <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs"><br>  <br><br></code></pre></td></tr></table></figure><br>  {<br>          &#x2F;&#x2F; 集群类型：SINGLE_NODE（单节点）、MASTER_SLAVE（普通主从）、GARELA_CLUSTER（garela cluster&#x2F;PXC集群）等<br>          “clusterType”:”MASTER_SLAVE”,<br>          “heartbeat”:{<br>                  “heartbeatTimeout”:1000,<br>                  “maxRetry”:3,<br>                  “minSwitchTimeInterval”:300,<br>                  “slaveThreshold”:0<br>          },<br>          “masters”:[<br>                  &#x2F;&#x2F; 主节点数据源名称<br>                  “prototypeDs”,<br>                  “dr0”,<br>                  “dw0”<br>          ],<br>          &#x2F;&#x2F; 只有主节点则从节点可以不配置<br>          “replicas”:[<br>                  &#x2F;&#x2F; 从节点数据源名称<br>          ],<br>          “maxCon”:200,<br>          &#x2F;&#x2F; 集群名称。在后面配置物理库（schema）时会用到<br>          “name”:”prototype”,<br>          &#x2F;&#x2F; 查询负载均衡策略<br>          “readBalanceType”:”BALANCE_ALL”,<br>          &#x2F;&#x2F; NOT_SWITCH（不进行主从切换）、SWITCH（进行主从切换）<br>          “switchType”:”SWITCH”<br>  }<br>  <figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><br>  <br><br><span class="hljs-keyword">BALANCE_ALL(默认值)</span><br><span class="hljs-keyword"></span>获取集群中所有数据源<br><span class="hljs-keyword">BALANCE_ALL_READ</span><br><span class="hljs-keyword"></span>获取集群中允许读的数据源<br><span class="hljs-keyword">BALANCE_READ_WRITE</span><br><span class="hljs-keyword"></span>获取集群中允许读写的数据源,但允许读的数据源优先<br><span class="hljs-keyword">BALANCE_NONE</span><br><span class="hljs-keyword"></span>获取集群中允许写数据源,即主节点中选择<br><br><span class="hljs-number">3</span>. <span class="hljs-comment">### 配置物理库</span><br><br></code></pre></td></tr></table></figure><br>  cd &#x2F;conf&#x2F;schemas&#x2F;<br>  {<br>   &#x2F;&#x2F; 物理库<br>   “schemaName”: “test”,<br>   “customTables”: {},<br>   “globalTables”: {},<br>   &#x2F;&#x2F; 指向集群<br>   “targetName”: “prototype”,<br>   &#x2F;&#x2F; 这里可以配置数据表相关的信息，在物理表已存在或需要启动时自动创建物理表时配置此项<br>   “normalTables”: {}<br>  }<br>  <figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs clean"><br>  <br><br>### <span class="hljs-number">4.</span> 修改 Mycat 登录用户<br><br></code></pre></td></tr></table></figure><br>  cd &#x2F;conf&#x2F;users<br>     root.user.json</p>
+<p>  {<br>          “dialect”:”mysql”,<br>          “ip”:null,<br>          “password”:”123456qq”,<br>          “transactionType”:”proxy”,<br>          “username”:”mycat”</p>
+<pre><code class="hljs">
+</code></pre>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/linux/" class="category-chain-item">linux</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/docker/">#docker</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>mycat 容器化部署</div>
+      <div>https://liyupin.github.io/2022/07/26/mycat-容器化部署/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Cper Liu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年7月26日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/07/26/Untitled/" title="python100day-8">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">python100day-8</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/07/25/python100day-7/" title="python100day-7">
+                        <span class="hidden-mobile">python100day-7</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
