@@ -140,8 +140,8 @@ https://liyupin.github.io/tags/linux/
 https://liyupin.github.io/tags/python/
 https://liyupin.github.io/tags/docker/
 https://liyupin.github.io/tags/k8s/
-https://liyupin.github.io/tags/mysql/
 https://liyupin.github.io/tags/windows/
+https://liyupin.github.io/tags/mysql/
 https://liyupin.github.io/tags/shell/
 https://liyupin.github.io/tags/openEuler/
 https://liyupin.github.io/categories/linux/
