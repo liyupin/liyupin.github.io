@@ -1,0 +1,765 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Cper Liu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="文件和异常实际开发中常常会遇到对数据进行持久化操作的场景，而实现数据持久化最直接简单的方式就是将数据保存到文件中。说到“文件”这个词，可能需要先科普一下关于文件系统的知识，但是这里我们并不浪费笔墨介绍这个概念，请大家自行通过维基百科进行了解。 在Python中实现文件的读写操作其实非常简单，通过Python内置的open函数，我们可以指定文件名、操作模式、编码信息等来获得操作文件的对象，接下来就可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python100day-11">
+<meta property="og:url" content="https://liyupin.github.io/2022/08/01/python100day-11/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="文件和异常实际开发中常常会遇到对数据进行持久化操作的场景，而实现数据持久化最直接简单的方式就是将数据保存到文件中。说到“文件”这个词，可能需要先科普一下关于文件系统的知识，但是这里我们并不浪费笔墨介绍这个概念，请大家自行通过维基百科进行了解。 在Python中实现文件的读写操作其实非常简单，通过Python内置的open函数，我们可以指定文件名、操作模式、编码信息等来获得操作文件的对象，接下来就可">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-71.png">
+<meta property="article:published_time" content="2022-08-01T07:06:00.000Z">
+<meta property="article:modified_time" content="2022-08-01T07:10:11.802Z">
+<meta property="article:author" content="Cper Liu">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://liyupin.github.io/images/pasted-71.png">
+  
+  
+  
+  <title>python100day-11 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="python100day-11"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-08-01 15:06" pubdate>
+          2022年8月1日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          58 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">python100day-11</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="文件和异常"><a href="#文件和异常" class="headerlink" title="文件和异常"></a>文件和异常</h2><p>实际开发中常常会遇到对数据进行<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96">持久化</a>操作的场景，而实现数据持久化最直接简单的方式就是将数据保存到文件中。说到“文件”这个词，可能需要先科普一下关于<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F">文件系统</a>的知识，但是这里我们并不浪费笔墨介绍这个概念，请大家自行通过维基百科进行了解。</p>
+<p>在Python中实现文件的读写操作其实非常简单，通过Python内置的<code>open</code>函数，我们可以指定文件名、操作模式、编码信息等来获得操作文件的对象，接下来就可以对文件进行读写操作了。这里所说的操作模式是指要打开什么样的文件（字符文件还是二进制文件）以及做什么样的操作（读、写还是追加），具体的如下表所示。</p>
+<table>
+<thead>
+<tr>
+<th>操作模式</th>
+<th>具体含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&#39;r&#39;</code></td>
+<td>读取 （默认）</td>
+</tr>
+<tr>
+<td><code>&#39;w&#39;</code></td>
+<td>写入（会先截断之前的内容）</td>
+</tr>
+<tr>
+<td><code>&#39;x&#39;</code></td>
+<td>写入，如果文件已经存在会产生异常</td>
+</tr>
+<tr>
+<td><code>&#39;a&#39;</code></td>
+<td>追加，将内容写入到已有文件的末尾</td>
+</tr>
+<tr>
+<td><code>&#39;b&#39;</code></td>
+<td>二进制模式</td>
+</tr>
+<tr>
+<td><code>&#39;t&#39;</code></td>
+<td>文本模式（默认）</td>
+</tr>
+<tr>
+<td><code>&#39;+&#39;</code></td>
+<td>更新（既可以读又可以写）</td>
+</tr>
+</tbody></table>
+<p>下面这张图来自于<a target="_blank" rel="noopener" href="http://www.runoob.com/">菜鸟教程</a>网站，它展示了如果根据应用程序的需要来设置操作模式。</p>
+<p><img src="/images/pasted-71.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
+<h3 id="读写文本文件"><a href="#读写文本文件" class="headerlink" title="读写文本文件"></a>读写文本文件</h3><p>读取文本文件时，需要在使用<code>open</code>函数时指定好带路径的文件名（可以使用相对路径或绝对路径）并将文件模式设置为<code>&#39;r&#39;</code>（如果不指定，默认值也是<code>&#39;r&#39;</code>），然后通过<code>encoding</code>参数指定编码（如果不指定，默认值是None，那么在读取文件时使用的是操作系统默认的编码），如果不能保证保存文件时使用的编码方式与encoding参数指定的编码方式是一致的，那么就可能因无法解码字符而导致读取失败。下面的例子演示了如何读取一个纯文本文件。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    f = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;致橡树.txt&#x27;</span>, <span class="hljs-string">&#x27;r&#x27;</span>, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>)<br>    <span class="hljs-built_in">print</span>(f.read())<br>    f.close()<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    main()<br></code></pre></td></tr></table></figure>
+
+<p>请注意上面的代码，如果<code>open</code>函数指定的文件并不存在或者无法打开，那么将引发异常状况导致程序崩溃。为了让代码有一定的健壮性和容错性，我们可以使用Python的异常机制对可能在运行时发生状况的代码进行适当的处理，如下所示。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    f = <span class="hljs-literal">None</span><br>    <span class="hljs-keyword">try</span>:<br>        f = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;致橡树.txt&#x27;</span>, <span class="hljs-string">&#x27;r&#x27;</span>, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>)<br>        <span class="hljs-built_in">print</span>(f.read())<br>    <span class="hljs-keyword">except</span> FileNotFoundError:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;无法打开指定的文件!&#x27;</span>)<br>    <span class="hljs-keyword">except</span> LookupError:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;指定了未知的编码!&#x27;</span>)<br>    <span class="hljs-keyword">except</span> UnicodeDecodeError:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;读取文件时解码错误!&#x27;</span>)<br>    <span class="hljs-keyword">finally</span>:<br>        <span class="hljs-keyword">if</span> f:<br>            f.close()<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    main()<br></code></pre></td></tr></table></figure>
+
+<p>在Python中，我们可以将那些在运行时可能会出现状况的代码放在<code>try</code>代码块中，在<code>try</code>代码块的后面可以跟上一个或多个<code>except</code>来捕获可能出现的异常状况。例如在上面读取文件的过程中，文件找不到会引发<code>FileNotFoundError</code>，指定了未知的编码会引发<code>LookupError</code>，而如果读取文件时无法按指定方式解码会引发<code>UnicodeDecodeError</code>，我们在<code>try</code>后面跟上了三个<code>except</code>分别处理这三种不同的异常状况。最后我们使用<code>finally</code>代码块来关闭打开的文件，释放掉程序中获取的外部资源，由于<code>finally</code>块的代码不论程序正常还是异常都会执行到（甚至是调用了<code>sys</code>模块的<code>exit</code>函数退出Python环境，<code>finally</code>块都会被执行，因为<code>exit</code>函数实质上是引发了<code>SystemExit</code>异常），因此我们通常把<code>finally</code>块称为“总是执行代码块”，它最适合用来做释放外部资源的操作。如果不愿意在<code>finally</code>代码块中关闭文件对象释放资源，也可以使用上下文语法，通过<code>with</code>关键字指定文件对象的上下文环境并在离开上下文环境时自动释放文件资源，代码如下所示。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    <span class="hljs-keyword">try</span>:<br>        <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;致橡树.txt&#x27;</span>, <span class="hljs-string">&#x27;r&#x27;</span>, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>            <span class="hljs-built_in">print</span>(f.read())<br>    <span class="hljs-keyword">except</span> FileNotFoundError:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;无法打开指定的文件!&#x27;</span>)<br>    <span class="hljs-keyword">except</span> LookupError:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;指定了未知的编码!&#x27;</span>)<br>    <span class="hljs-keyword">except</span> UnicodeDecodeError:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;读取文件时解码错误!&#x27;</span>)<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    main()<br></code></pre></td></tr></table></figure>
+
+<p>除了使用文件对象的<code>read</code>方法读取文件之外，还可以使用<code>for-in</code>循环逐行读取或者用<code>readlines</code>方法将文件按行读取到一个列表容器中，代码如下所示。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">import</span> time<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    <span class="hljs-comment"># 一次性读取整个文件内容</span><br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;致橡树.txt&#x27;</span>, <span class="hljs-string">&#x27;r&#x27;</span>, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>        <span class="hljs-built_in">print</span>(f.read())<br><br>    <span class="hljs-comment"># 通过for-in循环逐行读取</span><br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;致橡树.txt&#x27;</span>, mode=<span class="hljs-string">&#x27;r&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>        <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> f:<br>            <span class="hljs-built_in">print</span>(line, end=<span class="hljs-string">&#x27;&#x27;</span>)<br>            time.sleep(<span class="hljs-number">0.5</span>)<br>    <span class="hljs-built_in">print</span>()<br><br>    <span class="hljs-comment"># 读取文件按行读取到列表中</span><br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;致橡树.txt&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>        lines = f.readlines()<br>    <span class="hljs-built_in">print</span>(lines)<br>    <br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    main()<br></code></pre></td></tr></table></figure>
+
+<p>要将文本信息写入文件文件也非常简单，在使用<code>open</code>函数时指定好文件名并将文件模式设置为<code>&#39;w&#39;</code>即可。注意如果需要对文件内容进行追加式写入，应该将模式设置为<code>&#39;a&#39;</code>。如果要写入的文件不存在会自动创建文件而不是引发异常。下面的例子演示了如何将1-9999之间的素数分别写入三个文件中（1-99之间的素数保存在a.txt中，100-999之间的素数保存在b.txt中，1000-9999之间的素数保存在c.txt中）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">from</span> math <span class="hljs-keyword">import</span> sqrt<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_prime</span>(<span class="hljs-params">n</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;判断素数的函数&quot;&quot;&quot;</span><br>    <span class="hljs-keyword">assert</span> n &gt; <span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> factor <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>, <span class="hljs-built_in">int</span>(sqrt(n)) + <span class="hljs-number">1</span>):<br>        <span class="hljs-keyword">if</span> n % factor == <span class="hljs-number">0</span>:<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span> <span class="hljs-keyword">if</span> n != <span class="hljs-number">1</span> <span class="hljs-keyword">else</span> <span class="hljs-literal">False</span><br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    filenames = (<span class="hljs-string">&#x27;a.txt&#x27;</span>, <span class="hljs-string">&#x27;b.txt&#x27;</span>, <span class="hljs-string">&#x27;c.txt&#x27;</span>)<br>    fs_list = []<br>    <span class="hljs-keyword">try</span>:<br>        <span class="hljs-keyword">for</span> filename <span class="hljs-keyword">in</span> filenames:<br>            fs_list.append(<span class="hljs-built_in">open</span>(filename, <span class="hljs-string">&#x27;w&#x27;</span>, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>))<br>        <span class="hljs-keyword">for</span> number <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">10000</span>):<br>            <span class="hljs-keyword">if</span> is_prime(number):<br>                <span class="hljs-keyword">if</span> number &lt; <span class="hljs-number">100</span>:<br>                    fs_list[<span class="hljs-number">0</span>].write(<span class="hljs-built_in">str</span>(number) + <span class="hljs-string">&#x27;\n&#x27;</span>)<br>                <span class="hljs-keyword">elif</span> number &lt; <span class="hljs-number">1000</span>:<br>                    fs_list[<span class="hljs-number">1</span>].write(<span class="hljs-built_in">str</span>(number) + <span class="hljs-string">&#x27;\n&#x27;</span>)<br>                <span class="hljs-keyword">else</span>:<br>                    fs_list[<span class="hljs-number">2</span>].write(<span class="hljs-built_in">str</span>(number) + <span class="hljs-string">&#x27;\n&#x27;</span>)<br>    <span class="hljs-keyword">except</span> IOError <span class="hljs-keyword">as</span> ex:<br>        <span class="hljs-built_in">print</span>(ex)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;写文件时发生错误!&#x27;</span>)<br>    <span class="hljs-keyword">finally</span>:<br>        <span class="hljs-keyword">for</span> fs <span class="hljs-keyword">in</span> fs_list:<br>            fs.close()<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;操作完成!&#x27;</span>)<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    main()<br></code></pre></td></tr></table></figure>
+
+<h3 id="读写二进制文件"><a href="#读写二进制文件" class="headerlink" title="读写二进制文件"></a>读写二进制文件</h3><p>知道了如何读写文本文件要读写二进制文件也就很简单了，下面的代码实现了复制图片文件的功能。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    <span class="hljs-keyword">try</span>:<br>        <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;guido.jpg&#x27;</span>, <span class="hljs-string">&#x27;rb&#x27;</span>) <span class="hljs-keyword">as</span> fs1:<br>            data = fs1.read()<br>            <span class="hljs-built_in">print</span>(<span class="hljs-built_in">type</span>(data))  <span class="hljs-comment"># &lt;class &#x27;bytes&#x27;&gt;</span><br>        <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;吉多.jpg&#x27;</span>, <span class="hljs-string">&#x27;wb&#x27;</span>) <span class="hljs-keyword">as</span> fs2:<br>            fs2.write(data)<br>    <span class="hljs-keyword">except</span> FileNotFoundError <span class="hljs-keyword">as</span> e:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;指定的文件无法打开.&#x27;</span>)<br>    <span class="hljs-keyword">except</span> IOError <span class="hljs-keyword">as</span> e:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;读写文件时出现错误.&#x27;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;程序执行结束.&#x27;</span>)<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    main()<br></code></pre></td></tr></table></figure>
+
+<h3 id="读写JSON文件"><a href="#读写JSON文件" class="headerlink" title="读写JSON文件"></a>读写JSON文件</h3><p>通过上面的讲解，我们已经知道如何将文本数据和二进制数据保存到文件中，那么这里还有一个问题，如果希望把一个列表或者一个字典中的数据保存到文件中又该怎么做呢？答案是将数据以JSON格式进行保存。JSON是“JavaScript Object Notation”的缩写，它本来是JavaScript语言中创建对象的一种字面量语法，现在已经被广泛的应用于跨平台跨语言的数据交换，原因很简单，因为JSON也是纯文本，任何系统任何编程语言处理纯文本都是没有问题的。目前JSON基本上已经取代了XML作为异构系统间交换数据的事实标准。关于JSON的知识，更多的可以参考<a target="_blank" rel="noopener" href="http://json.org/">JSON的官方网站</a>，从这个网站也可以了解到每种语言处理JSON数据格式可以使用的工具或三方库，下面是一个JSON的简单例子。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs JSON"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;骆昊&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;age&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">38</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;qq&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">957658</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;friends&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;王大锤&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;白元芳&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;cars&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>        <span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;brand&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;BYD&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;max_speed&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">180</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;brand&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Audi&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;max_speed&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">280</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;brand&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Benz&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;max_speed&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">320</span><span class="hljs-punctuation">&#125;</span><br>    <span class="hljs-punctuation">]</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>可能大家已经注意到了，上面的JSON跟Python中的字典其实是一样一样的，事实上JSON的数据类型和Python的数据类型是很容易找到对应关系的，如下面两张表所示。</p>
+<table>
+<thead>
+<tr>
+<th>JSON</th>
+<th>Python</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>object</td>
+<td>dict</td>
+</tr>
+<tr>
+<td>array</td>
+<td>list</td>
+</tr>
+<tr>
+<td>string</td>
+<td>str</td>
+</tr>
+<tr>
+<td>number (int &#x2F; real)</td>
+<td>int &#x2F; float</td>
+</tr>
+<tr>
+<td>true &#x2F; false</td>
+<td>True &#x2F; False</td>
+</tr>
+<tr>
+<td>null</td>
+<td>None</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>Python</th>
+<th>JSON</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>dict</td>
+<td>object</td>
+</tr>
+<tr>
+<td>list, tuple</td>
+<td>array</td>
+</tr>
+<tr>
+<td>str</td>
+<td>string</td>
+</tr>
+<tr>
+<td>int, float, int- &amp; float-derived Enums</td>
+<td>number</td>
+</tr>
+<tr>
+<td>True &#x2F; False</td>
+<td>true &#x2F; false</td>
+</tr>
+<tr>
+<td>None</td>
+<td>null</td>
+</tr>
+</tbody></table>
+<p>我们使用Python中的json模块就可以将字典或列表以JSON格式保存到文件中，代码如下所示。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">import</span> json<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    mydict = &#123;<br>        <span class="hljs-string">&#x27;name&#x27;</span>: <span class="hljs-string">&#x27;骆昊&#x27;</span>,<br>        <span class="hljs-string">&#x27;age&#x27;</span>: <span class="hljs-number">38</span>,<br>        <span class="hljs-string">&#x27;qq&#x27;</span>: <span class="hljs-number">957658</span>,<br>        <span class="hljs-string">&#x27;friends&#x27;</span>: [<span class="hljs-string">&#x27;王大锤&#x27;</span>, <span class="hljs-string">&#x27;白元芳&#x27;</span>],<br>        <span class="hljs-string">&#x27;cars&#x27;</span>: [<br>            &#123;<span class="hljs-string">&#x27;brand&#x27;</span>: <span class="hljs-string">&#x27;BYD&#x27;</span>, <span class="hljs-string">&#x27;max_speed&#x27;</span>: <span class="hljs-number">180</span>&#125;,<br>            &#123;<span class="hljs-string">&#x27;brand&#x27;</span>: <span class="hljs-string">&#x27;Audi&#x27;</span>, <span class="hljs-string">&#x27;max_speed&#x27;</span>: <span class="hljs-number">280</span>&#125;,<br>            &#123;<span class="hljs-string">&#x27;brand&#x27;</span>: <span class="hljs-string">&#x27;Benz&#x27;</span>, <span class="hljs-string">&#x27;max_speed&#x27;</span>: <span class="hljs-number">320</span>&#125;<br>        ]<br>    &#125;<br>    <span class="hljs-keyword">try</span>:<br>        <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;data.json&#x27;</span>, <span class="hljs-string">&#x27;w&#x27;</span>, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>) <span class="hljs-keyword">as</span> fs:<br>            json.dump(mydict, fs)<br>    <span class="hljs-keyword">except</span> IOError <span class="hljs-keyword">as</span> e:<br>        <span class="hljs-built_in">print</span>(e)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;保存数据完成!&#x27;</span>)<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    main()<br></code></pre></td></tr></table></figure>
+
+<p>json模块主要有四个比较重要的函数，分别是：</p>
+<ul>
+<li><code>dump</code> - 将Python对象按照JSON格式序列化到文件中</li>
+<li><code>dumps</code> - 将Python对象处理成JSON格式的字符串</li>
+<li><code>load</code> - 将文件中的JSON数据反序列化成对象</li>
+<li><code>loads</code> - 将字符串的内容反序列化成Python对象</li>
+</ul>
+<p>这里出现了两个概念，一个叫序列化，一个叫反序列化。自由的百科全书<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/">维基百科</a>上对这两个概念是这样解释的：“序列化（serialization）在计算机科学的数据处理中，是指将数据结构或对象状态转换为可以存储或传输的形式，这样在需要的时候能够恢复到原先的状态，而且通过序列化的数据重新获取字节时，可以利用这些字节来产生原始对象的副本（拷贝）。与这个过程相反的动作，即从一系列字节中提取数据结构的操作，就是反序列化（deserialization）”。</p>
+<p>目前绝大多数网络数据服务（或称之为网络API）都是基于<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%B6%85%E6%96%87%E6%9C%AC%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE">HTTP协议</a>提供JSON格式的数据，关于HTTP协议的相关知识，可以看看阮一峰老师的<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2016/08/http.html">《HTTP协议入门》</a>，如果想了解国内的网络数据服务，可以看看<a target="_blank" rel="noopener" href="https://www.juhe.cn/">聚合数据</a>和<a target="_blank" rel="noopener" href="http://www.avatardata.cn/">阿凡达数据</a>等网站，国外的可以看看<a target="_blank" rel="noopener" href="http://apis.io/">{API}Search</a>网站。下面的例子演示了如何使用<a target="_blank" rel="noopener" href="http://docs.python-requests.org/zh_CN/latest/">requests</a>模块（封装得足够好的第三方网络访问模块）访问网络API获取国内新闻，如何通过json模块解析JSON数据并显示新闻标题，这个例子使用了<a target="_blank" rel="noopener" href="https://www.tianapi.com/">天行数据</a>提供的国内新闻数据接口，其中的APIKey需要自己到该网站申请。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">import</span> requests<br><span class="hljs-keyword">import</span> json<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    resp = requests.get(<span class="hljs-string">&#x27;http://api.tianapi.com/guonei/?key=APIKey&amp;num=10&#x27;</span>)<br>    data_model = json.loads(resp.text)<br>    <span class="hljs-keyword">for</span> news <span class="hljs-keyword">in</span> data_model[<span class="hljs-string">&#x27;newslist&#x27;</span>]:<br>        <span class="hljs-built_in">print</span>(news[<span class="hljs-string">&#x27;title&#x27;</span>])<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    main()<br></code></pre></td></tr></table></figure>
+
+<p>在Python中要实现序列化和反序列化除了使用json模块之外，还可以使用pickle和shelve模块，但是这两个模块是使用特有的序列化协议来序列化数据，因此序列化后的数据只能被Python识别。关于这两个模块的相关知识可以自己看看网络上的资料。另外，如果要了解更多的关于Python异常机制的知识，可以看看segmentfault上面的文章<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000007736783">《总结：Python中的异常处理》</a>，这篇文章不仅介绍了Python中异常机制的使用，还总结了一系列的最佳实践，很值得一读。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/python100day/" class="category-chain-item">python100day</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/python/">#python</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>python100day-11</div>
+      <div>https://liyupin.github.io/2022/08/01/python100day-11/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Cper Liu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年8月1日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/07/28/python100day-10/" title="python100day-10">
+                        <span class="hidden-mobile">python100day-10</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
