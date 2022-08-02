@@ -1,3 +1,4 @@
+https://liyupin.github.io/2022/08/02/Untitled/
 https://liyupin.github.io/2022/08/02/python100day-12/
 https://liyupin.github.io/2022/08/02/20220802%E6%8A%95%E8%B5%84%E6%97%A5%E5%8E%86/
 https://liyupin.github.io/2022/08/01/python100day-11/
@@ -6,7 +7,6 @@ https://liyupin.github.io/2022/07/27/Python%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%
 https://liyupin.github.io/2022/07/25/python100day-7/
 https://liyupin.github.io/2022/07/27/python100day-9/
 https://liyupin.github.io/2022/07/26/python%E5%AE%9E%E4%BE%8B100%E4%BE%8B/
-https://liyupin.github.io/2022/07/26/Untitled/
 https://liyupin.github.io/2022/07/26/mycat-%E5%AE%B9%E5%99%A8%E5%8C%96%E9%83%A8%E7%BD%B2/
 https://liyupin.github.io/2022/07/14/%E5%B8%B8%E7%94%A8shell/
 https://liyupin.github.io/2022/07/23/python100day-6/
@@ -154,9 +154,9 @@ https://liyupin.github.io/categories/linux/
 https://liyupin.github.io/categories/%E6%8A%95%E8%B5%84/
 https://liyupin.github.io/categories/ubuntu/
 https://liyupin.github.io/categories/shell/
-https://liyupin.github.io/categories/python100day/
 https://liyupin.github.io/categories/ansible/
 https://liyupin.github.io/categories/centos8/
-https://liyupin.github.io/categories/docker/
 https://liyupin.github.io/categories/k8s/
+https://liyupin.github.io/categories/docker/
+https://liyupin.github.io/categories/python100day/
 https://liyupin.github.io/categories/windows/

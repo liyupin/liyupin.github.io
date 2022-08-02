@@ -16,23 +16,22 @@
   <meta name="author" content="Cper Liu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Windows Server 2012 R2运行卡顿，访问加载速度慢现象描述  系统运行卡顿 CPU、内存时高时低 内部部署平台web访问速度慢，加载半天 删除系统垃圾仍旧卡顿 重启无效  解决办法  WIN+R键打开运行输入“cmd”打开系统命令行  输入命令netsh int tcp show global，查看ECN功能开启状态  输入命令netsh int tcp set global e">
+    <meta name="description" content="python获取操作系统平台、版本及架构platform模块提供了底层系统平台的相关信息 系统架构 32位还是64位 123456789101112131415161718192021&gt;&gt;&gt; import platform&gt;&gt;&gt; platform.architecture()(&amp;#x27;64bit&amp;#x27;, &amp;#x27;ELF&amp;#x27;) # pytho">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Windows Server 2012 R2运行卡顿，访问加载速度慢">
-<meta property="og:url" content="https://liyupin.github.io/2022/07/13/Windows%20Server%202012%20R2%E8%BF%90%E8%A1%8C%E5%8D%A1%E9%A1%BF%EF%BC%8C%E8%AE%BF%E9%97%AE%E5%8A%A0%E8%BD%BD%E9%80%9F%E5%BA%A6%E6%85%A2/index.html">
+<meta property="og:title" content="python获取操作系统平台、版本及架构">
+<meta property="og:url" content="https://liyupin.github.io/2022/08/02/Untitled/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Windows Server 2012 R2运行卡顿，访问加载速度慢现象描述  系统运行卡顿 CPU、内存时高时低 内部部署平台web访问速度慢，加载半天 删除系统垃圾仍旧卡顿 重启无效  解决办法  WIN+R键打开运行输入“cmd”打开系统命令行  输入命令netsh int tcp show global，查看ECN功能开启状态  输入命令netsh int tcp set global e">
+<meta property="og:description" content="python获取操作系统平台、版本及架构platform模块提供了底层系统平台的相关信息 系统架构 32位还是64位 123456789101112131415161718192021&gt;&gt;&gt; import platform&gt;&gt;&gt; platform.architecture()(&amp;#x27;64bit&amp;#x27;, &amp;#x27;ELF&amp;#x27;) # pytho">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://weixin.aisoutu.com/cunchu4/4/2022-02-23/4_16456305790556035.png">
-<meta property="article:published_time" content="2022-07-13T06:34:16.294Z">
-<meta property="article:modified_time" content="2022-07-08T03:52:37.232Z">
+<meta property="article:published_time" content="2022-08-02T11:40:00.000Z">
+<meta property="article:modified_time" content="2022-08-02T11:41:41.675Z">
 <meta property="article:author" content="Cper Liu">
+<meta property="article:tag" content="python">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://weixin.aisoutu.com/cunchu4/4/2022-02-23/4_16456305790556035.png">
   
   
   
-  <title>Windows Server 2012 R2运行卡顿，访问加载速度慢 - Hexo</title>
+  <title>python获取操作系统平台、版本及架构 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -212,7 +211,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Windows Server 2012 R2运行卡顿，访问加载速度慢"></span>
+            <span id="subtitle" data-typed-text="python获取操作系统平台、版本及架构"></span>
           
         </div>
 
@@ -223,8 +222,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-07-13 14:34" pubdate>
-          2022年7月13日 下午
+        <time datetime="2022-08-02 19:40" pubdate>
+          2022年8月2日 晚上
         </time>
       </span>
     
@@ -235,7 +234,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.3k 字
+          2.6k 字
         
       </span>
     
@@ -246,7 +245,7 @@
         
         
         
-          12 分钟
+          22 分钟
         
       </span>
     
@@ -284,64 +283,41 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Windows Server 2012 R2运行卡顿，访问加载速度慢</h1>
+            <h1 style="display: none">python获取操作系统平台、版本及架构</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="Windows-Server-2012-R2运行卡顿，访问加载速度慢"><a href="#Windows-Server-2012-R2运行卡顿，访问加载速度慢" class="headerlink" title="Windows Server 2012 R2运行卡顿，访问加载速度慢"></a><a target="_blank" rel="noopener" href="https://www.cnblogs.com/wangjinxing1994/p/13678598.html">Windows Server 2012 R2运行卡顿，访问加载速度慢</a></h1><h2 id="现象描述"><a href="#现象描述" class="headerlink" title="现象描述"></a>现象描述</h2><hr>
-<ul>
-<li>系统运行卡顿</li>
-<li>CPU、内存时高时低</li>
-<li>内部部署平台web访问速度慢，加载半天</li>
-<li>删除系统垃圾仍旧卡顿</li>
-<li>重启无效</li>
-</ul>
-<h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><hr>
-<ol>
-<li><p>WIN+R键打开运行输入“cmd”打开系统命令行</p>
-</li>
-<li><p>输入命令<strong>netsh int tcp show global</strong>，查看ECN功能开启状态</p>
-</li>
-<li><p>输入命令<strong>netsh int tcp set global ecn&#x3D;disable</strong>，关闭ECN功能</p>
-</li>
-<li><p>输入命令<strong>netsh int tcp show global</strong>，查看ECN功能是否关闭</p>
-</li>
-</ol>
-<h1 id="windows系统卡顿解决方案"><a href="#windows系统卡顿解决方案" class="headerlink" title="windows系统卡顿解决方案"></a>windows系统卡顿解决方案</h1><p>   当发现windows系统运行速度变慢或突然出现网络卡顿中断的情况，则可能是主机的带宽和CPU利用率过高导致。Windows系统带宽流量过高或CPU利用率高，可以采用如下步骤进行排查：</p>
-<p>   <strong>问题定位：</strong>定位影响win系统带宽和CPU利用率高的进程。</p>
-<p>   Windows操作系统本身提供了较多工具可以定位问题，包括任务管理器、性能监视器(Performance Monitor)、资监视器(Resource Monitor)、Process Explorer、Xperf (Windows server 2008 以后)和抓取系统Full Memory Dump检查。在流量大的情况下，您还可以使用Wireshark抓取一段时间的网络包，分析流量使用情况。</p>
-<p>   <strong>问题处理：</strong>排查进程是否正常，并分类进行处理。</p>
-<ol>
-<li><ul>
-<li>正常进程：优化程序，或变更服务器的配置。</li>
-<li>异常进程：建议您手动关闭进程，您也可以借助第三方工具关闭进程。</li>
-</ul>
-</li>
-</ol>
-<h2 id="问题定位步骤"><a href="#问题定位步骤" class="headerlink" title="问题定位步骤"></a>问题定位步骤</h2><p>   打开“运行”窗口，输入“perfmon -res”。</p>
-<p>   在“资源监视器”中，单击“CPU”或“网络”，查看CPU占用或率带宽使用情况。<br>   <img src="https://weixin.aisoutu.com/cunchu4/4/2022-02-23/4_16456305790556035.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p>   查看CPU和带宽占用率较高的进程ID和进程名。</p>
-<p>   打开“Windows任务管理器”，在任务管理器中打开PID，找到进程的具体位置，核对是否异常进程。</p>
-<ol>
-<li><ol>
-<li>选择“详细信息”选项卡。</li>
-<li>单击PID进行排序。</li>
-<li>在查找到的CPU或带宽占用率高的进程上右键单击“打开文件位置”。</li>
-<li>定位进程是否是正常或是否为恶意程序。</li>
-</ol>
-</li>
-</ol>
-<h2 id="分析处理"><a href="#分析处理" class="headerlink" title="分析处理"></a>分析处理</h2><p>   在采取措施处理问题前，首先需要判断影响CPU或带宽占用率高的进程是正常进程还是异常进程。</p>
-<p>   正常进程分析处理建议</p>
-<p>   如果你的操作系统是Windows 2008&#x2F;Windows 2012，请检查内存大小，看是否内存不足，建议内存配置在4GB以上；</p>
-<p>   检查win系统是否有执行Windows Update的行为。</p>
-<p>   核对云服务器运行的应用程序中是否有对网络和CPU要求高的需求，如果是，建议您变更云服务器的配置或修改带宽。</p>
-<p>   如果云主机配置已经比较高，建议考虑云主机上应用场景的分离部署，例如将数据库和应用分开部署。</p>
-<p>异常进程分析处理建议</p>
-<p>   如果是CPU或带宽利用率高由于病毒、木马入侵等这些异常进程导致的，那么需要手动结束进程。建议的处理顺序如下：</p>
-<p>   另外提醒下，若服务器或站点遭受DDOS攻击或CC攻击等，短期内产生大量的访问需求。还可以购买安全防护产品。</p>
-<p>   本文来自网络或网友投稿，如有侵犯您的权益请联系邮箱:<a href="mailto:&#x77;&#x79;&#x6c;&#56;&#54;&#48;&#x32;&#49;&#x31;&#x40;&#x71;&#x71;&#x2e;&#x63;&#x6f;&#109;">&#x77;&#x79;&#x6c;&#56;&#54;&#48;&#x32;&#49;&#x31;&#x40;&#x71;&#x71;&#x2e;&#x63;&#x6f;&#109;</a>,我们将第一时间删除。</p>
+                <h1 id="python获取操作系统平台、版本及架构"><a href="#python获取操作系统平台、版本及架构" class="headerlink" title="python获取操作系统平台、版本及架构"></a>python获取操作系统平台、版本及架构</h1><p>platform模块提供了底层系统平台的相关信息</p>
+<p><strong>系统架构</strong></p>
+<p>32位还是64位</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> platform<br><br><br><br><span class="hljs-meta">&gt;&gt;&gt; </span>platform.architecture()<br><br><br><br>(<span class="hljs-string">&#x27;64bit&#x27;</span>, <span class="hljs-string">&#x27;ELF&#x27;</span>) <span class="hljs-comment"># python 3.3.2+ 64 bits on debian jessie 64 bits</span><br><br><br><br>(<span class="hljs-string">&#x27;32bit&#x27;</span>, <span class="hljs-string">&#x27;WindowsPE&#x27;</span>) <span class="hljs-comment"># python 3.3.2 32 bits on windows 8.1 64 bits</span><br><br><br><br>(<span class="hljs-string">&#x27;64bit&#x27;</span>, <span class="hljs-string">&#x27;WindowsPE&#x27;</span>) <span class="hljs-comment"># python 3.3.2 64 bits on wndows 8.1 64 bits</span><br><br><br><br>(<span class="hljs-string">&#x27;64bit&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>) <span class="hljs-comment"># python 3.4.1 64 bits on mac os x 10.9.4</span><br></code></pre></td></tr></table></figure>
+
+<p>ELF和WindowsPE是可执行文件格式</p>
+<p><strong>操作系统</strong><br>linux,mac还是windows</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>platform.system()<br><br><span class="hljs-string">&#x27;Linux&#x27;</span> <span class="hljs-comment"># python 3.3.2+ 64 bits on debian jessie 64 bits</span><br><span class="hljs-string">&#x27;Windows&#x27;</span> <span class="hljs-comment"># python 3.3.2 32 bits on windows 8.1 64 bits</span><br><span class="hljs-string">&#x27;Windows&#x27;</span> <span class="hljs-comment"># python 3.3.2 64 bits on windows 8.1 64 bits</span><br><span class="hljs-string">&#x27;Darwin&#x27;</span> <span class="hljs-comment"># python 3.4.1 64 bits on mac os x 10.9.4</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>系统版本</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>platform.version()<br><br><span class="hljs-string">&#x27;#1 SMP Debian 3.10.11-1 (2013-09-10)&#x27;</span> <span class="hljs-comment"># python 3.3.2+ 64 bits on debian jessie 64 bits</span><br><br><span class="hljs-string">&#x27;6.2.9200&#x27;</span> <span class="hljs-comment"># python 3.3.2 32 bits on windows 8.1 64 bits</span><br><br><span class="hljs-string">&#x27;6.2.9200&#x27;</span> <span class="hljs-comment"># python 3.3.2 64 bits on windows 8.1 64 bits</span><br><br><span class="hljs-string">&#x27;Darwin Kernel Version 13.3.0: Tue Jun  3 21:27:35 PDT 2014; root:xnu-2422.110.17~1/RELEASE_X86_64&#x27;</span> <span class="hljs-comment"># python 3.4.1 64 bits on mac os x 10.9.4</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>CPU平台</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>platform.machine()<br><span class="hljs-string">&#x27;x86_64&#x27;</span> <span class="hljs-comment"># python 3.3.2+ 64 bits on debian jessie 64 bits</span><br><br><span class="hljs-string">&#x27;AMD64&#x27;</span> <span class="hljs-comment"># python 3.3.2 32 bits on windows 8.1 64 bits</span><br><br><br><span class="hljs-string">&#x27;AMD64&#x27;</span> <span class="hljs-comment"># python 3.3.2 64 bits on windows 8.1 64 bits</span><br><br><span class="hljs-string">&#x27;x86_64&#x27;</span> <span class="hljs-comment"># python 3.4.1 64 bits on mac os x 10.9.4</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>linux发行版</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>platform.dist()<br><br>(<span class="hljs-string">&#x27;debian&#x27;</span>, <span class="hljs-string">&#x27;jessie/sid&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>) <span class="hljs-comment"># python 3.3.2+ 64 bits on debian jessie 64 bits</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>节点名</strong><br>也就是机器名</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>platform.node()<br><br><span class="hljs-string">&#x27;work&#x27;</span> <span class="hljs-comment"># python 3.3.2+ 64 bits on debian jessie 64 bits</span><br><br><span class="hljs-string">&#x27;work-xxx&#x27;</span> <span class="hljs-comment"># python 3.3.2 32 bits on windows 8.1 64 bits</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>系统信息</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>platform.uname()<br><br><br><br>uname_result(system=<span class="hljs-string">&#x27;Linux&#x27;</span>, node=<span class="hljs-string">&#x27;work&#x27;</span>, release=<span class="hljs-string">&#x27;3.10-3-amd64&#x27;</span>, version=<span class="hljs-string">&#x27;#1 SMP Debian 3.10.11-1 (2013-09-10)&#x27;</span>, machine=<span class="hljs-string">&#x27;x86_64&#x27;</span>, processor=<span class="hljs-string">&#x27;&#x27;</span>) <span class="hljs-comment"># python 3.3.2+ 64 bits on debian jessie 64 bits</span><br><br>uname_result(system=<span class="hljs-string">&#x27;Windows&#x27;</span>, node=<span class="hljs-string">&#x27;work-xxx&#x27;</span>, release=<span class="hljs-string">&#x27;8&#x27;</span>, version=<span class="hljs-string">&#x27;6.2.9200&#x27;</span>, machine=<span class="hljs-string">&#x27;AMD64&#x27;</span>, processor=<span class="hljs-string">&#x27;Intel64 Family 6 Model 58 Stepping 9,</span><br><span class="hljs-string"></span><br><span class="hljs-string"></span><br><span class="hljs-string"></span><br><span class="hljs-string">GenuineIntel&#x27;</span>) <span class="hljs-comment"># python 3.3.2 32 bits on windows 8.1 64 bits</span><br><br>uname_result(system=<span class="hljs-string">&#x27;Darwin&#x27;</span>, node=<span class="hljs-string">&#x27;mba&#x27;</span>, release=<span class="hljs-string">&#x27;13.3.0&#x27;</span>, version=<span class="hljs-string">&#x27;Darwin Kernel Version 13.3.0: Tue Jun  3 21:27:35 PDT 2014; root:xnu-2422.110.17~1/RELEASE_X86_64&#x27;</span>, machine=<span class="hljs-string">&#x27;x86_64&#x27;</span>, processor=<span class="hljs-string">&#x27;i386&#x27;</span>) <span class="hljs-comment"># python 3.4.1 64 bits on mac os x 10.9.4</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>python版本</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>platform.python_verison()<br><br><span class="hljs-string">&#x27;3.3.2+&#x27;</span> <span class="hljs-comment"># python 3.3.2+ 64 bits on debian jessie 64 bits</span><br><br><span class="hljs-string">&#x27;3.3.3&#x27;</span> <span class="hljs-comment"># python 3.3.2 32 bits on windows 8.1 64 bits</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>文章知识点与官方知识档案匹配，可进一步学习相关知识</p>
 
                 
               </div>
@@ -350,6 +326,34 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/linux/" class="category-chain-item">linux</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/python/">#python</a>
+      
+    </div>
   
 </div>
 
@@ -359,8 +363,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Windows Server 2012 R2运行卡顿，访问加载速度慢</div>
-      <div>https://liyupin.github.io/2022/07/13/Windows Server 2012 R2运行卡顿，访问加载速度慢/</div>
+      <div>python获取操作系统平台、版本及架构</div>
+      <div>https://liyupin.github.io/2022/08/02/Untitled/</div>
     </div>
     <div class="license-meta">
       
@@ -372,7 +376,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年7月13日</div>
+          <div>2022年8月2日</div>
         </div>
       
       
@@ -402,18 +406,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/07/13/python%20%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/" title="python 面向对象编程">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">python 面向对象编程</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/07/13/VSCode%E9%85%8D%E7%BD%AE%E8%BF%9C%E7%A8%8BDocker%E8%BF%9B%E8%A1%8C%E6%9E%84%E5%BB%BApush%20%E9%98%BF%E9%87%8C%E4%BA%91docker%20hub/" title="Docker 开启远程访问">
-                        <span class="hidden-mobile">Docker 开启远程访问</span>
+                      <a href="/2022/08/02/python100day-12/" title="python100day-12">
+                        <span class="hidden-mobile">python100day-12</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
