@@ -1,3 +1,4 @@
+https://liyupin.github.io/2022/08/02/python100day-12/
 https://liyupin.github.io/2022/08/02/20220802%E6%8A%95%E8%B5%84%E6%97%A5%E5%8E%86/
 https://liyupin.github.io/2022/08/01/python100day-11/
 https://liyupin.github.io/2022/07/28/python100day-10/
@@ -156,6 +157,6 @@ https://liyupin.github.io/categories/shell/
 https://liyupin.github.io/categories/python100day/
 https://liyupin.github.io/categories/ansible/
 https://liyupin.github.io/categories/centos8/
-https://liyupin.github.io/categories/k8s/
 https://liyupin.github.io/categories/docker/
+https://liyupin.github.io/categories/k8s/
 https://liyupin.github.io/categories/windows/
