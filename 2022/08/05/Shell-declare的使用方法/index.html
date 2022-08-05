@@ -16,21 +16,22 @@
   <meta name="author" content="Cper Liu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="git config –global user.email “&amp;#x34;&amp;#48;&amp;#50;&amp;#x32;&amp;#51;&amp;#x39;&amp;#51;&amp;#x39;&amp;#x39;&amp;#64;&amp;#113;&amp;#x71;&amp;#x2e;&amp;#99;&amp;#111;&amp;#109;“git config –global user.name “liyupin”">
+    <meta name="description" content="Shell declare的使用方法帮助declare声明变量总结如下： 12345678910declare [+&#x2F;-][选项] 变量名选项：   -：给变量舍得类型属性   +：取消变量的类型属性  -a：将变量声明为数组型  -i：将变量声明为整型  -x：将变量声明为环境变量  -r：将变量声明为只读变量  -p：查看变量的被声明的类型  1、变量声明为数值型1declare -i num">
 <meta property="og:type" content="article">
-<meta property="og:title" content="git配置用户">
-<meta property="og:url" content="https://liyupin.github.io/2022/07/12/git%E9%85%8D%E7%BD%AE%E7%94%A8%E6%88%B7/index.html">
+<meta property="og:title" content="Shell declare的使用方法">
+<meta property="og:url" content="https://liyupin.github.io/2022/08/05/Shell-declare%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="git config –global user.email “&amp;#x34;&amp;#48;&amp;#50;&amp;#x32;&amp;#51;&amp;#x39;&amp;#51;&amp;#x39;&amp;#x39;&amp;#64;&amp;#113;&amp;#x71;&amp;#x2e;&amp;#99;&amp;#111;&amp;#109;“git config –global user.name “liyupin”">
+<meta property="og:description" content="Shell declare的使用方法帮助declare声明变量总结如下： 12345678910declare [+&#x2F;-][选项] 变量名选项：   -：给变量舍得类型属性   +：取消变量的类型属性  -a：将变量声明为数组型  -i：将变量声明为整型  -x：将变量声明为环境变量  -r：将变量声明为只读变量  -p：查看变量的被声明的类型  1、变量声明为数值型1declare -i num">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-07-12T09:45:14.000Z">
-<meta property="article:modified_time" content="2022-07-12T09:45:22.363Z">
+<meta property="article:published_time" content="2022-08-05T07:35:00.000Z">
+<meta property="article:modified_time" content="2022-08-05T07:36:12.433Z">
 <meta property="article:author" content="Cper Liu">
+<meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>git配置用户 - Hexo</title>
+  <title>Shell declare的使用方法 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -210,7 +211,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="git配置用户"></span>
+            <span id="subtitle" data-typed-text="Shell declare的使用方法"></span>
           
         </div>
 
@@ -221,8 +222,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-07-12 17:45" pubdate>
-          2022年7月12日 下午
+        <time datetime="2022-08-05 15:35" pubdate>
+          2022年8月5日 下午
         </time>
       </span>
     
@@ -233,7 +234,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          152 字
+          561 字
         
       </span>
     
@@ -244,7 +245,7 @@
         
         
         
-          2 分钟
+          5 分钟
         
       </span>
     
@@ -282,13 +283,36 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">git配置用户</h1>
+            <h1 style="display: none">Shell declare的使用方法</h1>
             
             
               <div class="markdown-body">
                 
-                <p>git config –global user.email “<a href="mailto:&#x34;&#48;&#50;&#x32;&#51;&#x39;&#51;&#x39;&#x39;&#64;&#113;&#x71;&#x2e;&#99;&#111;&#109;">&#x34;&#48;&#50;&#x32;&#51;&#x39;&#51;&#x39;&#x39;&#64;&#113;&#x71;&#x2e;&#99;&#111;&#109;</a>“<br>git config –global user.name “liyupin”</p>
+                <h1 id="Shell-declare的使用方法"><a href="#Shell-declare的使用方法" class="headerlink" title="Shell declare的使用方法"></a>Shell declare的使用方法</h1><h2 id="帮助"><a href="#帮助" class="headerlink" title="帮助"></a>帮助</h2><p>declare声明变量总结如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">declare</span> [+/-][选项] 变量名<br><br>选项：<br>   -：给变量舍得类型属性<br>   +：取消变量的类型属性<br>  -a：将变量声明为数组型<br>  -i：将变量声明为整型<br>  -x：将变量声明为环境变量<br>  -r：将变量声明为只读变量<br>  -p：查看变量的被声明的类型<br></code></pre></td></tr></table></figure>
 
+<h3 id="1、变量声明为数值型"><a href="#1、变量声明为数值型" class="headerlink" title="1、变量声明为数值型"></a>1、变量声明为数值型</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">declare</span> -i num=12<br></code></pre></td></tr></table></figure>
+
+<p>也可以查看变量类型</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css">declare -<span class="hljs-selector-tag">p</span> num<br></code></pre></td></tr></table></figure>
+
+<p>得到的结果如下</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">declare</span> <span class="hljs-operator">-</span>i num<span class="hljs-operator">=</span>&quot;12&quot;<br></code></pre></td></tr></table></figure>
+
+<h3 id="2、声明数组变量"><a href="#2、声明数组变量" class="headerlink" title="2、声明数组变量"></a>2、<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%A3%B0%E6%98%8E%E6%95%B0%E7%BB%84&spm=1001.2101.3001.7020">声明数组</a>变量</h3><p>（1）定义<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E6%95%B0%E7%BB%84&spm=1001.2101.3001.7020">数组</a></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql">arr[<span class="hljs-number">0</span>]<span class="hljs-operator">=</span>x<br><br>arr[<span class="hljs-number">1</span>]<span class="hljs-operator">=</span>y<br><br><span class="hljs-keyword">declare</span> <span class="hljs-operator">-</span>a arr[<span class="hljs-number">2</span>]<span class="hljs-operator">=</span>z<br></code></pre></td></tr></table></figure>
+
+<p>（2）查看数组</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;arr&#125;</span> ---结果x<br><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;arr[2]&#125;</span> ---结果z<br><br><span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;arr[8]&#125;</span> ---结果x y z<br></code></pre></td></tr></table></figure>
+
+<p>和普通变量区别是使用大括号，同时使用下标，若没有下标，则默认使用0。</p>
+<h3 id="3、声明环境变量"><a href="#3、声明环境变量" class="headerlink" title="3、声明环境变量"></a>3、声明<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F&spm=1001.2101.3001.7020">环境变量</a></h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">declare</span> <span class="hljs-operator">-</span>x t<span class="hljs-operator">=</span><span class="hljs-number">123</span><br></code></pre></td></tr></table></figure>
+
+<p>export命令调用的也是上面declare -x 的命令</p>
+<h3 id="4、声明变量只读属性"><a href="#4、声明变量只读属性" class="headerlink" title="4、声明变量只读属性"></a>4、声明变量只读属性</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">declare</span> <span class="hljs-operator">-</span>r a<span class="hljs-operator">=</span><span class="hljs-number">123</span><br></code></pre></td></tr></table></figure>
+
+<p>重新赋值会报错，不能修改，不能删除</p>
+<h3 id="5、查看变量属性"><a href="#5、查看变量属性" class="headerlink" title="5、查看变量属性"></a>5、查看变量属性</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs css">declare -<span class="hljs-selector-tag">p</span>     查看所有变量属性<br>declare -<span class="hljs-selector-tag">p</span>  变量名  查看指定变量的属性<br></code></pre></td></tr></table></figure>
                 
               </div>
             
@@ -296,6 +320,34 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/shell/" class="category-chain-item">shell</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/linux/">#linux</a>
+      
+    </div>
   
 </div>
 
@@ -305,8 +357,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>git配置用户</div>
-      <div>https://liyupin.github.io/2022/07/12/git配置用户/</div>
+      <div>Shell declare的使用方法</div>
+      <div>https://liyupin.github.io/2022/08/05/Shell-declare的使用方法/</div>
     </div>
     <div class="license-meta">
       
@@ -318,7 +370,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年7月12日</div>
+          <div>2022年8月5日</div>
         </div>
       
       
@@ -348,18 +400,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/07/12/Linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E8%AE%BF%E9%97%AE%E6%97%A0%E6%8A%A5%E9%94%99%EF%BC%8C%20%E5%9C%A8win10%E4%B8%8B%E8%AE%BF%E9%97%AE%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/" title="Linux服务器上访问无报错， 在win10下访问出现错误">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Linux服务器上访问无报错， 在win10下访问出现错误</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/07/12/%E7%B2%BE%E9%80%9APython%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC-%E8%BF%90%E7%BB%B4%E4%BA%BA%E5%91%98%E5%AE%9D%E5%85%B8/" title="精通Python自动化脚本-运维人员宝典">
-                        <span class="hidden-mobile">精通Python自动化脚本-运维人员宝典</span>
+                      <a href="/2022/08/05/gitea%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D/" title="gitea备份与恢复">
+                        <span class="hidden-mobile">gitea备份与恢复</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
