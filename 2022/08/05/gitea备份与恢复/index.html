@@ -16,21 +16,22 @@
   <meta name="author" content="Cper Liu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="1、通过Console口连接交换机，并重启交换机。2、当界面出现以下打印信息时，及时按下快捷键“Ctrl+B”并输入BootROM&#x2F;BootLoad密码，进入BootROM&#x2F;BootLoad主菜单3、密码： &amp;#65;&amp;#x64;&amp;#109;&amp;#x69;&amp;#x6e;&amp;#x40;&amp;#104;&amp;#x75;&amp;#97;&amp;#x77;&amp;#101;&amp;#105;&amp;#46;&amp;#99;&amp;#x6f;">
+    <meta name="description" content="Gitea安装，备份及恢复官网：https:&#x2F;&#x2F;gitea.io&#x2F;en-us&#x2F; 安装环境安装查看有没有安装git 1git --version    安装git1apt install git    安装sqlite31apt install sqlite3  下载gitea 在官方地址下载匹配的版本文件，替换后面的URL即可 1wget -O gitea https:&#x2F;&#x2F;dl.gitea.io&#x2F;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="华为交换机Console密码重置">
-<meta property="og:url" content="https://liyupin.github.io/2022/07/14/%E5%8D%8E%E4%B8%BA%E4%BA%A4%E6%8D%A2%E6%9C%BAConsole%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE/index.html">
+<meta property="og:title" content="gitea备份与恢复">
+<meta property="og:url" content="https://liyupin.github.io/2022/08/05/gitea%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="1、通过Console口连接交换机，并重启交换机。2、当界面出现以下打印信息时，及时按下快捷键“Ctrl+B”并输入BootROM&#x2F;BootLoad密码，进入BootROM&#x2F;BootLoad主菜单3、密码： &amp;#65;&amp;#x64;&amp;#109;&amp;#x69;&amp;#x6e;&amp;#x40;&amp;#104;&amp;#x75;&amp;#97;&amp;#x77;&amp;#101;&amp;#105;&amp;#46;&amp;#99;&amp;#x6f;">
+<meta property="og:description" content="Gitea安装，备份及恢复官网：https:&#x2F;&#x2F;gitea.io&#x2F;en-us&#x2F; 安装环境安装查看有没有安装git 1git --version    安装git1apt install git    安装sqlite31apt install sqlite3  下载gitea 在官方地址下载匹配的版本文件，替换后面的URL即可 1wget -O gitea https:&#x2F;&#x2F;dl.gitea.io&#x2F;">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-07-14T03:38:36.536Z">
-<meta property="article:modified_time" content="2022-07-14T03:38:36.536Z">
+<meta property="article:published_time" content="2022-08-05T02:43:00.000Z">
+<meta property="article:modified_time" content="2022-08-05T02:44:09.131Z">
 <meta property="article:author" content="Cper Liu">
+<meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>华为交换机Console密码重置 - Hexo</title>
+  <title>gitea备份与恢复 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -210,7 +211,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="华为交换机Console密码重置"></span>
+            <span id="subtitle" data-typed-text="gitea备份与恢复"></span>
           
         </div>
 
@@ -221,8 +222,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-07-14 11:38" pubdate>
-          2022年7月14日 中午
+        <time datetime="2022-08-05 10:43" pubdate>
+          2022年8月5日 上午
         </time>
       </span>
     
@@ -233,7 +234,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          532 字
+          2k 字
         
       </span>
     
@@ -244,7 +245,7 @@
         
         
         
-          5 分钟
+          17 分钟
         
       </span>
     
@@ -282,14 +283,69 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">华为交换机Console密码重置</h1>
+            <h1 style="display: none">gitea备份与恢复</h1>
             
             
               <div class="markdown-body">
                 
-                <p>1、通过Console口连接交换机，并重启交换机。<br>2、当界面出现以下打印信息时，及时按下快捷键“Ctrl+B”并输入BootROM&#x2F;BootLoad密码，进入BootROM&#x2F;BootLoad主菜单<br>3、密码： <a href="mailto:&#65;&#x64;&#109;&#x69;&#x6e;&#x40;&#104;&#x75;&#97;&#x77;&#101;&#105;&#46;&#99;&#x6f;&#x6d;">&#65;&#x64;&#109;&#x69;&#x6e;&#x40;&#104;&#x75;&#97;&#x77;&#101;&#105;&#46;&#99;&#x6f;&#x6d;</a> A必须大写。<br>4、选着7 Clear password for console user （选择清除console用户密码模式）。<br>5、选择1 Boot with default mode（键入1启动默认模式），进入后更改Console 及telnet密码。</p>
-<h3 id="2设备初始化"><a href="#2设备初始化" class="headerlink" title="*2设备初始化"></a>*2设备初始化</h3><p>1、登录华为交换机<br>2、输入：reset saved-configuration 接着问你是否初始化 选择“Y”<br>3、初始化之后，需要重启交换机才能生效 “reboot”</p>
-<h3 id="3-默认用户名和密码"><a href="#3-默认用户名和密码" class="headerlink" title="3.默认用户名和密码"></a>3.默认用户名和密码</h3><p>华为交换机的默认用户名是admin，密码是<a href="mailto:&#65;&#100;&#109;&#x69;&#x6e;&#x40;&#x68;&#x75;&#x61;&#x77;&#101;&#105;&#46;&#x63;&#111;&#109;">&#65;&#100;&#109;&#x69;&#x6e;&#x40;&#x68;&#x75;&#x61;&#x77;&#101;&#105;&#46;&#x63;&#111;&#109;</a></p>
+                <h1 id="Gitea安装，备份及恢复"><a href="#Gitea安装，备份及恢复" class="headerlink" title="Gitea安装，备份及恢复"></a>Gitea安装，备份及恢复</h1><p>官网：<a target="_blank" rel="noopener" href="https://gitea.io/en-us/">https://gitea.io/en-us/</a></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>环境安装<br>查看有没有安装git</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">git <span class="hljs-comment">--version</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h3><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">apt <span class="hljs-keyword">install</span> git<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="安装sqlite3"><a href="#安装sqlite3" class="headerlink" title="安装sqlite3"></a>安装sqlite3</h3><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">apt <span class="hljs-keyword">install</span> sqlite3<br></code></pre></td></tr></table></figure>
+
+<p>下载gitea</p>
+<p>在官方地址下载匹配的版本文件，替换后面的URL即可</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">wget</span> -O gitea https://dl.gitea.io/gitea/<span class="hljs-number">1</span>.<span class="hljs-number">15</span>.<span class="hljs-number">2</span>/gitea-<span class="hljs-number">1</span>.<span class="hljs-number">15</span>.<span class="hljs-number">2</span>-linux-amd64<br></code></pre></td></tr></table></figure>
+
+<p>下载后将文件移动至&#x2F;usr&#x2F;loacl&#x2F;bin下并添加可执行权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">mv</span> gitea /usr/local/bin<br><span class="hljs-built_in">chmod</span> +x gitea<br></code></pre></td></tr></table></figure>
+
+<p>可以用.&#x2F;gitea web测试一下，登录IP：3000即可出现测试页面，但不要点注册和登录按键</p>
+<p>创建gitea启动用户及需要的文件<br>创建gitea启动用户</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">adduser git <span class="hljs-params">--system</span> <span class="hljs-params">--shell</span> <span class="hljs-string">/bin/bash</span> <span class="hljs-params">--gecos</span> &#x27;Git Version Control&#x27; <span class="hljs-params">--group</span> <span class="hljs-params">--disabled-password</span> <span class="hljs-params">--home</span> <span class="hljs-string">/home/git</span><br></code></pre></td></tr></table></figure>
+
+
+<p>1创建需要的文件</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs awk">mkdir -p <span class="hljs-regexp">/var/</span>lib<span class="hljs-regexp">/gitea/</span>&#123;custom,data,log&#125;   <span class="hljs-comment"># data用来存放数据</span><br>chown -R git:git <span class="hljs-regexp">/var/</span>lib<span class="hljs-regexp">/gitea/</span><br>chmod -R <span class="hljs-number">750</span> <span class="hljs-regexp">/var/</span>lib<span class="hljs-regexp">/gitea/</span><br>mkdir <span class="hljs-regexp">/etc/gi</span>tea							<span class="hljs-comment"># /gitea存放gitea的主要配置文件 app.ini</span><br>chown root:git <span class="hljs-regexp">/etc/gi</span>tea<br>chmod <span class="hljs-number">770</span> <span class="hljs-regexp">/etc/gi</span>tea<br></code></pre></td></tr></table></figure>
+
+
+<p>将Linux作为服务器运行<br>在&#x2F;etc&#x2F;systemd&#x2F;system下创建gitea.service文件，内容如下</p>
+<p>将Linux作为服务器运行<br>在&#x2F;etc&#x2F;systemd&#x2F;system下创建gitea.service文件，内容如下</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-section">[Unit]</span><br><span class="hljs-attr">Description</span>=Gitea (Git with a cup of tea)<br><span class="hljs-attr">After</span>=syslog.target<br><span class="hljs-attr">After</span>=network.target<br><br><span class="hljs-section">[Service]</span><br><span class="hljs-attr">RestartSec</span>=<span class="hljs-number">2</span>s<br><span class="hljs-attr">Type</span>=simple<br><span class="hljs-attr">User</span>=git            <span class="hljs-comment"># 修改为自己的启动用户名</span><br><span class="hljs-attr">Group</span>=git           <span class="hljs-comment"># 修改为自己的启动用户的组名</span><br><span class="hljs-attr">WorkingDirectory</span>=/var/lib/gitea/                                     <span class="hljs-comment">#工作路径，其中包括custom，data，log文件</span><br><span class="hljs-attr">ExecStart</span>=/usr/local/bin/gitea web --config /etc/gitea/app.ini       <span class="hljs-comment"># 存放app.ini</span><br><span class="hljs-attr">Restart</span>=always<br><span class="hljs-attr">Environment</span>=USER=git HOME=/home/git GITEA_WORK_DIR=/var/lib/gitea<br><br><span class="hljs-section">[Install]</span><br><span class="hljs-attr">WantedBy</span>=multi-user.target<br></code></pre></td></tr></table></figure>
+
+
+<p>给gitea.service 文件加上可执行权限</p>
+<p>给gitea.service 文件加上可执行权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">chmod</span> +x gitea.service <br></code></pre></td></tr></table></figure>
+
+
+<p>之后即可用systemctl命令运行服务</p>
+<p>之后即可用systemctl命令运行服务</p>
+<figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs nsis"><span class="hljs-params">system</span>ctl start gitea<br><span class="hljs-params">system</span>ctl restat gitea<br><span class="hljs-params">system</span>ctl status gitea<br><span class="hljs-params">system</span>ctl stop gitea<br></code></pre></td></tr></table></figure>
+
+<p>运行成功后输入IP:3000即可进入gitea配置界面，之后可以通过修改app.ini文件更改gitea的配置</p>
+<h2 id="Gitea-迁移"><a href="#Gitea-迁移" class="headerlink" title="Gitea 迁移"></a>Gitea 迁移</h2><h3 id="Gitea备份"><a href="#Gitea备份" class="headerlink" title="Gitea备份"></a>Gitea备份</h3><p>首先切换到Gitea用户，执行以下命令</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">.<span class="hljs-regexp">/gitea dump -c /</span>etc<span class="hljs-regexp">/gitea/</span>app.ini    <br></code></pre></td></tr></table></figure>
+
+
+
+<p>更具自己的app.ini文件更改路径</p>
+<p>文件会打包进gitea-dump-*****.zip中</p>
+<h3 id="Gitea恢复"><a href="#Gitea恢复" class="headerlink" title="Gitea恢复"></a>Gitea恢复</h3><p>首先从第二台主机上配置好Gitea</p>
+<p>解压备份好的压缩包</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-symbol">mkdire</span> <span class="hljs-meta">Data</span><br><span class="hljs-symbol">unzip</span> -d /<span class="hljs-meta">Data</span> gitea-dump-*****.zip<br></code></pre></td></tr></table></figure>
+
+<p>将custom，data中的数据复制到对应的地址下，覆盖原文件</p>
+<p>利用sqlite3 数据库文件&lt; gitea-db.sql导入数据库完成，覆盖原文件</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs gradle">cd /Data<br>mv <span class="hljs-regexp">/custom/</span>* <span class="hljs-regexp">/var/</span>lib<span class="hljs-regexp">/gitea/</span>custom<br>mv <span class="hljs-regexp">/data/</span>* <span class="hljs-regexp">/var/</span>lib<span class="hljs-regexp">/gitea/</span>data<br>mv <span class="hljs-regexp">/repos/</span>* <span class="hljs-regexp">/var/</span>lib<span class="hljs-regexp">/gitea/</span>data/gitea-<span class="hljs-keyword">repositories</span><br><br>sqlite3 gitea.db &lt; gitea-db.sql<br>mv gitea.db <span class="hljs-regexp">/var/</span>lib<span class="hljs-regexp">/gitea/</span>data<br></code></pre></td></tr></table></figure>
+
 
                 
               </div>
@@ -298,6 +354,34 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%BF%90%E7%BB%B4/" class="category-chain-item">运维</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/linux/">#linux</a>
+      
+    </div>
   
 </div>
 
@@ -307,8 +391,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>华为交换机Console密码重置</div>
-      <div>https://liyupin.github.io/2022/07/14/华为交换机Console密码重置/</div>
+      <div>gitea备份与恢复</div>
+      <div>https://liyupin.github.io/2022/08/05/gitea备份与恢复/</div>
     </div>
     <div class="license-meta">
       
@@ -320,7 +404,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年7月14日</div>
+          <div>2022年8月5日</div>
         </div>
       
       
@@ -350,18 +434,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/07/14/Centos7%20%E4%B8%8B%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/" title="Centos7 下代理配置">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Centos7 下代理配置</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/07/14/%E9%AB%98%E6%95%88%E7%9A%84Nginx%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E5%99%A8/" title="高效的Nginx负载均衡器">
-                        <span class="hidden-mobile">高效的Nginx负载均衡器</span>
+                      <a href="/2022/08/05/python100day-14/" title="python100day-14">
+                        <span class="hidden-mobile">python100day-14</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

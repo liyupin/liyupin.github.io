@@ -1742,7 +1742,7 @@
   <entry>
     <title>GitLab基础：新版本下使用gitlab-rake进行备份和恢复</title>
     <url>/2022/07/13/GitLab%20%E6%95%B0%E6%8D%AE%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D/</url>
-    <content><![CDATA[<h1 id="GitLab基础：新版本下使用gitlab-rake进行备份和恢复"><a href="#GitLab基础：新版本下使用gitlab-rake进行备份和恢复" class="headerlink" title="GitLab基础：新版本下使用gitlab-rake进行备份和恢复"></a>GitLab基础：新版本下使用gitlab-rake进行备份和恢复</h1><h1 id="gitlab管理员账号"><a href="#gitlab管理员账号" class="headerlink" title="gitlab管理员账号"></a>gitlab管理员账号</h1><p><a href="mailto:&#x61;&#100;&#109;&#x69;&#x6e;&#x40;&#x65;&#120;&#97;&#x6d;&#112;&#x6c;&#101;&#x2e;&#99;&#x6f;&#x6d;">&#x61;&#100;&#109;&#x69;&#x6e;&#x40;&#x65;&#120;&#97;&#x6d;&#112;&#x6c;&#101;&#x2e;&#99;&#x6f;&#x6d;</a></p>
+    <content><![CDATA[<h1 id="GitLab基础：新版本下使用gitlab-rake进行备份和恢复"><a href="#GitLab基础：新版本下使用gitlab-rake进行备份和恢复" class="headerlink" title="GitLab基础：新版本下使用gitlab-rake进行备份和恢复"></a>GitLab基础：新版本下使用gitlab-rake进行备份和恢复</h1><h1 id="gitlab管理员账号"><a href="#gitlab管理员账号" class="headerlink" title="gitlab管理员账号"></a>gitlab管理员账号</h1><p><a href="mailto:&#x61;&#x64;&#x6d;&#105;&#110;&#64;&#x65;&#120;&#97;&#x6d;&#x70;&#108;&#101;&#46;&#99;&#111;&#x6d;">&#x61;&#x64;&#x6d;&#105;&#110;&#64;&#x65;&#120;&#97;&#x6d;&#x70;&#108;&#101;&#46;&#99;&#111;&#x6d;</a></p>
 <p><img src="https://img-blog.csdnimg.cn/20200719101629711.jpeg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdW1pYW9jbg==,size_16,color_FFFFFF,t_70#pic_center#pic_center" alt="在这里插入图片描述"></p>
 <p>从GitLab12.1开始，可以直接使用rake进行备份，如果之前的项目中使用的gitlab-rake进行备份和恢复的方式是否可用这个观点进行了如下实验，通过本文进行简单记录。</p>
 <h1 id="备份源环境准备"><a href="#备份源环境准备" class="headerlink" title="备份源环境准备"></a>备份源环境准备</h1><p>容器化方式，直接使用docker-compose，启动如下服务</p>
@@ -2039,6 +2039,23 @@
 ]]></content>
   </entry>
   <entry>
+    <title>Linux服务器上访问无报错， 在win10下访问出现错误</title>
+    <url>/2022/07/12/Linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E8%AE%BF%E9%97%AE%E6%97%A0%E6%8A%A5%E9%94%99%EF%BC%8C%20%E5%9C%A8win10%E4%B8%8B%E8%AE%BF%E9%97%AE%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/</url>
+    <content><![CDATA[<hr>
+<p>问题：Linux服务器上访问无报错， 在win10下访问出现错误：</p>
+<p><img src="/images/pasted-1.png" alt="upload successful"></p>
+<p>解决办法：设置IE浏览器&gt;&gt;Internet选项&gt;&gt;高级&gt;&gt;将“使用被动FTP（用于防火墙和DSL调制解调器的兼容）”选项去掉&gt;&gt;确定即可</p>
+<p><img src="/images/pasted-2.png" alt="upload successful"></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>NGINX 日志分割</title>
+    <url>/2022/07/13/NGINX%20%E6%97%A5%E5%BF%97%E5%88%86%E5%89%B2/</url>
+    <content><![CDATA[<h1 id="NGINX-日志分割"><a href="#NGINX-日志分割" class="headerlink" title="NGINX 日志分割"></a>NGINX 日志分割</h1><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-comment">#设置日志文件存放目录</span><br>LOG_HOME=<span class="hljs-string">&quot;/var/log/nginx/&quot;</span><br><span class="hljs-comment">#备分文件名称</span><br>LOG_PATH_BAK=<span class="hljs-string">&quot;<span class="hljs-subst">$(date -d yesterday +%Y%m%d%H%M)</span>&quot;</span><br><span class="hljs-comment">#重命名日志文件</span><br><span class="hljs-built_in">mv</span> <span class="hljs-variable">$&#123;LOG_HOME&#125;</span>/access.log <span class="hljs-variable">$&#123;LOG_HOME&#125;</span>/<span class="hljs-variable">$&#123;LOG_PATH_BAK&#125;</span>.access.log<br><span class="hljs-comment">#向nginx主进程发信号重新打开日志 </span><br><span class="hljs-built_in">kill</span> -USR1 `<span class="hljs-built_in">cat</span> /usr/local/nginx/logs/nginx.pid`<br><br><span class="hljs-comment">#find /var/log/nginx/ -type f -mtime +90 -delete</span><br></code></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
     <title>Linux 系统优化相关经验总结</title>
     <url>/2022/07/13/Linux%20%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96%E7%9B%B8%E5%85%B3%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<h1 id="Linux-系统优化相关经验总结"><a href="#Linux-系统优化相关经验总结" class="headerlink" title="Linux 系统优化相关经验总结"></a>Linux 系统优化相关经验总结</h1><p>一、背景<br>我们在系统运维过程中，尤其业务负载高或复杂的场景中，可能出现系统瓶颈影响业务运行的情况，甚至造成系统宕机等风险，这是我们必要情况需要对系统参数进行优化处理来缓解这种压力和风险，本文即对日常运维过程常见的维护经验总结汇总，以供后续工作参考。</p>
@@ -2140,23 +2157,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Linux服务器上访问无报错， 在win10下访问出现错误</title>
-    <url>/2022/07/12/Linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E8%AE%BF%E9%97%AE%E6%97%A0%E6%8A%A5%E9%94%99%EF%BC%8C%20%E5%9C%A8win10%E4%B8%8B%E8%AE%BF%E9%97%AE%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/</url>
-    <content><![CDATA[<hr>
-<p>问题：Linux服务器上访问无报错， 在win10下访问出现错误：</p>
-<p><img src="/images/pasted-1.png" alt="upload successful"></p>
-<p>解决办法：设置IE浏览器&gt;&gt;Internet选项&gt;&gt;高级&gt;&gt;将“使用被动FTP（用于防火墙和DSL调制解调器的兼容）”选项去掉&gt;&gt;确定即可</p>
-<p><img src="/images/pasted-2.png" alt="upload successful"></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>NGINX 日志分割</title>
-    <url>/2022/07/13/NGINX%20%E6%97%A5%E5%BF%97%E5%88%86%E5%89%B2/</url>
-    <content><![CDATA[<h1 id="NGINX-日志分割"><a href="#NGINX-日志分割" class="headerlink" title="NGINX 日志分割"></a>NGINX 日志分割</h1><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-comment">#设置日志文件存放目录</span><br>LOG_HOME=<span class="hljs-string">&quot;/var/log/nginx/&quot;</span><br><span class="hljs-comment">#备分文件名称</span><br>LOG_PATH_BAK=<span class="hljs-string">&quot;<span class="hljs-subst">$(date -d yesterday +%Y%m%d%H%M)</span>&quot;</span><br><span class="hljs-comment">#重命名日志文件</span><br><span class="hljs-built_in">mv</span> <span class="hljs-variable">$&#123;LOG_HOME&#125;</span>/access.log <span class="hljs-variable">$&#123;LOG_HOME&#125;</span>/<span class="hljs-variable">$&#123;LOG_PATH_BAK&#125;</span>.access.log<br><span class="hljs-comment">#向nginx主进程发信号重新打开日志 </span><br><span class="hljs-built_in">kill</span> -USR1 `<span class="hljs-built_in">cat</span> /usr/local/nginx/logs/nginx.pid`<br><br><span class="hljs-comment">#find /var/log/nginx/ -type f -mtime +90 -delete</span><br></code></pre></td></tr></table></figure>
-
-]]></content>
-  </entry>
-  <entry>
     <title>NGINX服务器转发配置</title>
     <url>/2022/07/13/NGINX%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BD%AC%E5%8F%91%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<h1 id="NGINX服务器转发配置"><a href="#NGINX服务器转发配置" class="headerlink" title="NGINX服务器转发配置"></a>NGINX服务器转发配置</h1><h2 id="备份当前配置"><a href="#备份当前配置" class="headerlink" title="备份当前配置"></a>备份当前配置</h2><figure class="highlight stata"><table><tr><td class="code"><pre><code class="hljs stata">Last login: Tue <span class="hljs-keyword">Dec</span>  7 17:29:06 2021 from 10.0.1.30<br>[root@localhost ~]# <span class="hljs-keyword">cd</span> /usr/<span class="hljs-keyword">local</span>/nginx/<span class="hljs-keyword">conf</span><br>[root@localhost <span class="hljs-keyword">conf</span>]# <span class="hljs-keyword">pwd</span><br>/usr/<span class="hljs-keyword">local</span>/nginx/<span class="hljs-keyword">conf</span><br>[root@localhost <span class="hljs-keyword">conf</span>]# ll<br>总用量 1028<br>-rw-r--r--  1 nginx nginx 47798 12月  7 17:11 nginx.<span class="hljs-keyword">conf</span><br><br>cp  nginx.<span class="hljs-keyword">conf</span> nginx.<span class="hljs-keyword">conf</span>-20211215.bk<br><br><br></code></pre></td></tr></table></figure>
@@ -2171,49 +2171,6 @@
 <p>生效配置 nginx -s reload</p>
 <figure class="highlight ebnf"><table><tr><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">nginx -s reload</span><br></code></pre></td></tr></table></figure>
 
-]]></content>
-  </entry>
-  <entry>
-    <title>Prometheus 存储容量规划</title>
-    <url>/2022/07/14/Prometheus%20%E5%AD%98%E5%82%A8%E5%AE%B9%E9%87%8F%E8%A7%84%E5%88%92/</url>
-    <content><![CDATA[<h1 id="Prometheus-存储容量规划"><a href="#Prometheus-存储容量规划" class="headerlink" title="Prometheus 存储容量规划"></a><a href="http://support.transwarp.cn/t/topic/3226">Prometheus 存储容量规划</a></h1><p><a href="http://support.transwarp.cn/u/dezheng"><img src="http://support.transwarp.cn/letter_avatar_proxy/v2/letter/d/73ab20/45.png" alt="dezheng"></a></p>
-<p>.</p>
-<p>本文主要分析 Prometheus 在 TDH 集群上运行时存储用量受到哪些因素影响，以及如何根据这些因素得出一个经验公式, 用来预估 Prometheus 的磁盘使用量和内存消耗</p>
-<p>经验公式<br>正式分析 Prometheus 的磁盘使用量和内存消耗 之前，先给一个基本的经验公式，可以直接根据这个公式来合理分配磁盘与内存.</p>
-<p>Prometheus 需要磁盘大小 &#x3D; 节点个数 * 1 GB<br>Prometheus 需要内存大小 &#x3D; 节点个数 * 50 MB</p>
-<p>磁盘容量规划<br>首先明确几个概念:</p>
-<ul>
-<li>监控节点: 一个 exporter 进程被认为是一个监控节点。Manager 在安装 AQUILA时，默认每个节点都会安装一个 node-exporter 收集节点信息(CPU, Memory 等), 每个节点安装一个 tdh-exporter 收集 TDH Services metrics (目前有: HDFS, YARN, ZOOKEEPER, KAFKA, HYPERBASE, INCEPTOR). 故在 TDH 集群上, 每个节点有两个 exporter 进程.</li>
-<li>测量点: 一个测量点代表了某监控节点上的一个观测对象. 从某测量点采集到的一组样本数据构成一条时间序列（time series).</li>
-<li>抓取间隔: Promtheus 对某个监控节点采集 metrics 的时间间隔. 一般为同类监控节点设置相同的抓取间隔. AQUILA对应的配置值为: prometheus.node.exporter.scrape_interval(默认15s) 和 prometheus.tdh.exporter.scrape_interval(默认60s)</li>
-<li>保留时间: 样本数据在磁盘上保存的时间,超过该时间限制的数据就会被删除. 存储在磁盘上的样本都是经过编码之后的样本(对样本进行过数据编码, 一般为 double-delta 编码). AQUILA对应的配置值为 prometheus.storage.retention.time(默认15天)</li>
-<li>活跃样本留存时间: 留存于内存的活跃样本（已经被编码）在内存保留时间. 在内存中的留存数据越多，查询过往数据的性能越高，但是消耗内存也会增加. 在实际应用中，需要根据所监控的业务的性质，设定合理的内存留存时间. AQUILA对应的配置值为 prometheus.min-block-duration (默认2h), prometheus.max-block-duration(默认36h). Facebook 在论文 《Gorilla: A Fast, Scalable, In-Memory Time Series DataBase》 （Prometheus实现参考论文）中给出了留存内存时间的一般经验: 26 h.</li>
-<li>样本(测量点)大小: 根据 Prometheus 官方文档说明, 每一个编码后的样本大概占用1-2字节大小</li>
-</ul>
-<p>每个监控节点上的测量点由具体使用的 exporter 定义, 测量点可根据 exporter 暴露给 prometheus 的 api 获取（以下测量点为 TDH 集群上单个节点上的测量点：<br>node-exporter 有 534 个测量点<br>tdh-exporter 有 481 个测量点 （每个服务均安装一个）</p>
-<p>根据以上概念可以得出, Prometheus 存储用量受到: 测量点(即样本数量), 样本大小, 抓取间隔, 保留时间四个因素影响.</p>
-<p>根据 Prometheus 官方文档说明: 磁盘大小 &#x3D; 保留时间 * 每秒获取样本数 * 样本大小<br>官方文档中的每秒获取样本数可由抓取间隔内收集的样本总数除以抓取间隔获取.</p>
-<p>根据以上公式我们可以得出在 TDH 集群上, Promethues 压缩样本使用磁盘大小公式为 :<br>compact_data_disk_usage &#x3D; (534 &#x2F; prometheus.node.exporter.scrape_interval + 481 &#x2F; prometheus.tdh.exporter.scrape_interval) * nodeNum * prometheus.storage.retention.time (in seconds) * 单个样本平均大小(1-2 bytes)</p>
-<p>将上述值全部替换为默认参数计算:<br>compact_data_disk_usage &#x3D; (534 &#x2F; 15 + 481 &#x2F; 60) * 3 * (15 * 24 * 60 * 60) * 2 &#x3D; 339163200 bytes &#x3D; 323 mb</p>
-<p>除了持久化在磁盘的样本之外, 根据Prometheus 官方文档说明, Prometheus 还在在磁盘上写入 write-ahead-log (WAL) 来防止 Prometheus 程序突然崩溃导致在内存中的未写入的磁盘的样本的丢失. WAL 文件大小取决于Prometheus 留存于内存的活跃样本的大小. 而留存于内存的活跃样本的大小又取决于每秒获取样本数和活跃样本留存内存时间.记录活跃样本信息的 WAL 文件都是 raw data, 故大小比经过编码之后的样本大得多. Prometheus 官方文档中说明至少会保存3个 write-ahead log files(每一个最大为128M), 如果实际使用中留存内存的样本数量非常大, 那么用来记录样本的 WAL 文件可能需要不止三个.</p>
-<p>计算 wal file 之前需要计算留存于内存的活跃样本占用内存大小<br>active_data_mem_uage &#x3D; (534 &#x2F; prometheus.node.exporter.scrape_interval + 481 &#x2F; prometheus.tdh.exporter.scrape_interval) * nodeNum * prometheus.max-block-duration(in seconds) * 单个样本平均大小(1-2 bytes)</p>
-<p>将上述值全部替换为默认参数计算:<br>active_data_mem_uage &#x3D; (534 &#x2F; 15 + 481 &#x2F; 60) * 3 * (36 * 60 * 60) * 2 &#x3D; 33916320 bytes &#x3D; 32 mb<br>Prometheus 编码之后的样本平均大小为1~2 bytes, 而未编码的 double类型数据为 8 bytes, 故raw data最大可为编码之后的样本数据的八倍. 可以粗略的认为 WAL file 大小和 样本 raw data近似相等, 故可以得出公式:<br>wal_file_disk_usage &#x3D; active_data_mem_uage * (8 &#x2F; 1) &#x3D; 256m</p>
-<p>综上所述, total_disk_usage &#x3D; compact_data_disk_usage + wal_file_disk_usage, 考虑集群的扩展性，建议预留磁盘空间为 total_disk_usage * 5.<br>故在有三个节点的 TDH 集群上，TDH Services 均安装一个, AQUILA 参数均为默认参数的情况下, 使用的磁盘大小预估为: 323 mb + 256m &#x3D; 579m, 考虑到后续集群的扩展性, 建议大小为: 579 * 5 &#x3D; 2895 mb</p>
-<p>在实际集群上，我们可以根据部署的需求，例如部署多个Inceptor(会导致tdh-exporter测量点增加), 减少抓取间隔 (导致每秒获取样本数增加), 增加保留时间, 添加新的监控节点，以上因素均会导致 prometheus 磁盘使用量增加.我们可初步根据上述公式，计算出一个合理的磁盘使用空间.</p>
-<p>内存容量规划<br>Prometheus 对内存的使用由以下四个部分组成：</p>
-<ul>
-<li>留存于内存的活跃样本</li>
-<li>排队等待持久化的过期样本</li>
-<li>索引数据</li>
-<li>其他运行时内存消耗</li>
-</ul>
-<p>1). 留存于内存的活跃样本<br>active_data_mem_uage &#x3D; (534 &#x2F; prometheus.node.exporter.scrape_interval + 481 &#x2F; prometheus.tdh.exporter.scrape_interval) * nodeNum * prometheus.max-block-duration(in seconds) * 单个样本平均大小(1-2 bytes)</p>
-<p>将上述值全部替换为默认参数计算:<br>active_data_mem_uage &#x3D; (534 &#x2F; 15 + 481 &#x2F; 60) * 3 * (36 * 60 * 60) * 2 &#x3D; 32 mb</p>
-<p>2). 排队等待持久化的过期样本<br>当留存于内存的样本超过了最大留存时间 prometheus.max-block-duration(默认36h), 会被持久化到磁盘.<br>一个经验值: 排队等待持久化的过期样本占用内存大小不会超过 active_data_mem_uage.</p>
-<p>3). 索引数据<br>索引数据所需的内存较少，一个经验公式为，每一千个时间序列大约需要 1M 内存. 在本文中使用的时间序列大小为: (534 + 481) * 3 &#x3D; 3M</p>
-<p>4). 其他运行时内存消耗<br>Prometheus 程序本身运行消耗的内存非常小, 不会超过留存于内存的活跃样本内存大小</p>
-<p>综上所述，Prometheus 内存等于上述四部分相加, 排队等待持久化的过期样本占用内存大小不会超过留存于内存的活跃样本内存大小, 索引数据大小可忽略, 其他运行时内存消耗大小也不会超过留存于内存的活跃样本内存大小.</p>
-<p>故一个Prometheu 内存容量经验公式为:<br>total_mem_usage &#x3D; 3 * active_data_mem_uage</p>
 ]]></content>
   </entry>
   <entry>
@@ -2461,6 +2418,49 @@
       <tags>
         <tag>newben</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Prometheus 存储容量规划</title>
+    <url>/2022/07/14/Prometheus%20%E5%AD%98%E5%82%A8%E5%AE%B9%E9%87%8F%E8%A7%84%E5%88%92/</url>
+    <content><![CDATA[<h1 id="Prometheus-存储容量规划"><a href="#Prometheus-存储容量规划" class="headerlink" title="Prometheus 存储容量规划"></a><a href="http://support.transwarp.cn/t/topic/3226">Prometheus 存储容量规划</a></h1><p><a href="http://support.transwarp.cn/u/dezheng"><img src="http://support.transwarp.cn/letter_avatar_proxy/v2/letter/d/73ab20/45.png" alt="dezheng"></a></p>
+<p>.</p>
+<p>本文主要分析 Prometheus 在 TDH 集群上运行时存储用量受到哪些因素影响，以及如何根据这些因素得出一个经验公式, 用来预估 Prometheus 的磁盘使用量和内存消耗</p>
+<p>经验公式<br>正式分析 Prometheus 的磁盘使用量和内存消耗 之前，先给一个基本的经验公式，可以直接根据这个公式来合理分配磁盘与内存.</p>
+<p>Prometheus 需要磁盘大小 &#x3D; 节点个数 * 1 GB<br>Prometheus 需要内存大小 &#x3D; 节点个数 * 50 MB</p>
+<p>磁盘容量规划<br>首先明确几个概念:</p>
+<ul>
+<li>监控节点: 一个 exporter 进程被认为是一个监控节点。Manager 在安装 AQUILA时，默认每个节点都会安装一个 node-exporter 收集节点信息(CPU, Memory 等), 每个节点安装一个 tdh-exporter 收集 TDH Services metrics (目前有: HDFS, YARN, ZOOKEEPER, KAFKA, HYPERBASE, INCEPTOR). 故在 TDH 集群上, 每个节点有两个 exporter 进程.</li>
+<li>测量点: 一个测量点代表了某监控节点上的一个观测对象. 从某测量点采集到的一组样本数据构成一条时间序列（time series).</li>
+<li>抓取间隔: Promtheus 对某个监控节点采集 metrics 的时间间隔. 一般为同类监控节点设置相同的抓取间隔. AQUILA对应的配置值为: prometheus.node.exporter.scrape_interval(默认15s) 和 prometheus.tdh.exporter.scrape_interval(默认60s)</li>
+<li>保留时间: 样本数据在磁盘上保存的时间,超过该时间限制的数据就会被删除. 存储在磁盘上的样本都是经过编码之后的样本(对样本进行过数据编码, 一般为 double-delta 编码). AQUILA对应的配置值为 prometheus.storage.retention.time(默认15天)</li>
+<li>活跃样本留存时间: 留存于内存的活跃样本（已经被编码）在内存保留时间. 在内存中的留存数据越多，查询过往数据的性能越高，但是消耗内存也会增加. 在实际应用中，需要根据所监控的业务的性质，设定合理的内存留存时间. AQUILA对应的配置值为 prometheus.min-block-duration (默认2h), prometheus.max-block-duration(默认36h). Facebook 在论文 《Gorilla: A Fast, Scalable, In-Memory Time Series DataBase》 （Prometheus实现参考论文）中给出了留存内存时间的一般经验: 26 h.</li>
+<li>样本(测量点)大小: 根据 Prometheus 官方文档说明, 每一个编码后的样本大概占用1-2字节大小</li>
+</ul>
+<p>每个监控节点上的测量点由具体使用的 exporter 定义, 测量点可根据 exporter 暴露给 prometheus 的 api 获取（以下测量点为 TDH 集群上单个节点上的测量点：<br>node-exporter 有 534 个测量点<br>tdh-exporter 有 481 个测量点 （每个服务均安装一个）</p>
+<p>根据以上概念可以得出, Prometheus 存储用量受到: 测量点(即样本数量), 样本大小, 抓取间隔, 保留时间四个因素影响.</p>
+<p>根据 Prometheus 官方文档说明: 磁盘大小 &#x3D; 保留时间 * 每秒获取样本数 * 样本大小<br>官方文档中的每秒获取样本数可由抓取间隔内收集的样本总数除以抓取间隔获取.</p>
+<p>根据以上公式我们可以得出在 TDH 集群上, Promethues 压缩样本使用磁盘大小公式为 :<br>compact_data_disk_usage &#x3D; (534 &#x2F; prometheus.node.exporter.scrape_interval + 481 &#x2F; prometheus.tdh.exporter.scrape_interval) * nodeNum * prometheus.storage.retention.time (in seconds) * 单个样本平均大小(1-2 bytes)</p>
+<p>将上述值全部替换为默认参数计算:<br>compact_data_disk_usage &#x3D; (534 &#x2F; 15 + 481 &#x2F; 60) * 3 * (15 * 24 * 60 * 60) * 2 &#x3D; 339163200 bytes &#x3D; 323 mb</p>
+<p>除了持久化在磁盘的样本之外, 根据Prometheus 官方文档说明, Prometheus 还在在磁盘上写入 write-ahead-log (WAL) 来防止 Prometheus 程序突然崩溃导致在内存中的未写入的磁盘的样本的丢失. WAL 文件大小取决于Prometheus 留存于内存的活跃样本的大小. 而留存于内存的活跃样本的大小又取决于每秒获取样本数和活跃样本留存内存时间.记录活跃样本信息的 WAL 文件都是 raw data, 故大小比经过编码之后的样本大得多. Prometheus 官方文档中说明至少会保存3个 write-ahead log files(每一个最大为128M), 如果实际使用中留存内存的样本数量非常大, 那么用来记录样本的 WAL 文件可能需要不止三个.</p>
+<p>计算 wal file 之前需要计算留存于内存的活跃样本占用内存大小<br>active_data_mem_uage &#x3D; (534 &#x2F; prometheus.node.exporter.scrape_interval + 481 &#x2F; prometheus.tdh.exporter.scrape_interval) * nodeNum * prometheus.max-block-duration(in seconds) * 单个样本平均大小(1-2 bytes)</p>
+<p>将上述值全部替换为默认参数计算:<br>active_data_mem_uage &#x3D; (534 &#x2F; 15 + 481 &#x2F; 60) * 3 * (36 * 60 * 60) * 2 &#x3D; 33916320 bytes &#x3D; 32 mb<br>Prometheus 编码之后的样本平均大小为1~2 bytes, 而未编码的 double类型数据为 8 bytes, 故raw data最大可为编码之后的样本数据的八倍. 可以粗略的认为 WAL file 大小和 样本 raw data近似相等, 故可以得出公式:<br>wal_file_disk_usage &#x3D; active_data_mem_uage * (8 &#x2F; 1) &#x3D; 256m</p>
+<p>综上所述, total_disk_usage &#x3D; compact_data_disk_usage + wal_file_disk_usage, 考虑集群的扩展性，建议预留磁盘空间为 total_disk_usage * 5.<br>故在有三个节点的 TDH 集群上，TDH Services 均安装一个, AQUILA 参数均为默认参数的情况下, 使用的磁盘大小预估为: 323 mb + 256m &#x3D; 579m, 考虑到后续集群的扩展性, 建议大小为: 579 * 5 &#x3D; 2895 mb</p>
+<p>在实际集群上，我们可以根据部署的需求，例如部署多个Inceptor(会导致tdh-exporter测量点增加), 减少抓取间隔 (导致每秒获取样本数增加), 增加保留时间, 添加新的监控节点，以上因素均会导致 prometheus 磁盘使用量增加.我们可初步根据上述公式，计算出一个合理的磁盘使用空间.</p>
+<p>内存容量规划<br>Prometheus 对内存的使用由以下四个部分组成：</p>
+<ul>
+<li>留存于内存的活跃样本</li>
+<li>排队等待持久化的过期样本</li>
+<li>索引数据</li>
+<li>其他运行时内存消耗</li>
+</ul>
+<p>1). 留存于内存的活跃样本<br>active_data_mem_uage &#x3D; (534 &#x2F; prometheus.node.exporter.scrape_interval + 481 &#x2F; prometheus.tdh.exporter.scrape_interval) * nodeNum * prometheus.max-block-duration(in seconds) * 单个样本平均大小(1-2 bytes)</p>
+<p>将上述值全部替换为默认参数计算:<br>active_data_mem_uage &#x3D; (534 &#x2F; 15 + 481 &#x2F; 60) * 3 * (36 * 60 * 60) * 2 &#x3D; 32 mb</p>
+<p>2). 排队等待持久化的过期样本<br>当留存于内存的样本超过了最大留存时间 prometheus.max-block-duration(默认36h), 会被持久化到磁盘.<br>一个经验值: 排队等待持久化的过期样本占用内存大小不会超过 active_data_mem_uage.</p>
+<p>3). 索引数据<br>索引数据所需的内存较少，一个经验公式为，每一千个时间序列大约需要 1M 内存. 在本文中使用的时间序列大小为: (534 + 481) * 3 &#x3D; 3M</p>
+<p>4). 其他运行时内存消耗<br>Prometheus 程序本身运行消耗的内存非常小, 不会超过留存于内存的活跃样本内存大小</p>
+<p>综上所述，Prometheus 内存等于上述四部分相加, 排队等待持久化的过期样本占用内存大小不会超过留存于内存的活跃样本内存大小, 索引数据大小可忽略, 其他运行时内存消耗大小也不会超过留存于内存的活跃样本内存大小.</p>
+<p>故一个Prometheu 内存容量经验公式为:<br>total_mem_usage &#x3D; 3 * active_data_mem_uage</p>
+]]></content>
   </entry>
   <entry>
     <title>Python pip 安装与使用</title>
@@ -3222,7 +3222,7 @@
 <p>异常进程分析处理建议</p>
 <p>   如果是CPU或带宽利用率高由于病毒、木马入侵等这些异常进程导致的，那么需要手动结束进程。建议的处理顺序如下：</p>
 <p>   另外提醒下，若服务器或站点遭受DDOS攻击或CC攻击等，短期内产生大量的访问需求。还可以购买安全防护产品。</p>
-<p>   本文来自网络或网友投稿，如有侵犯您的权益请联系邮箱:<a href="mailto:&#x77;&#121;&#x6c;&#x38;&#x36;&#48;&#50;&#49;&#x31;&#64;&#x71;&#x71;&#46;&#99;&#111;&#x6d;">&#x77;&#121;&#x6c;&#x38;&#x36;&#48;&#50;&#49;&#x31;&#64;&#x71;&#x71;&#46;&#99;&#111;&#x6d;</a>,我们将第一时间删除。</p>
+<p>   本文来自网络或网友投稿，如有侵犯您的权益请联系邮箱:<a href="mailto:&#x77;&#121;&#108;&#56;&#54;&#48;&#x32;&#x31;&#x31;&#x40;&#113;&#x71;&#46;&#x63;&#x6f;&#x6d;">&#x77;&#121;&#108;&#56;&#54;&#48;&#x32;&#x31;&#x31;&#x40;&#113;&#x71;&#46;&#x63;&#x6f;&#x6d;</a>,我们将第一时间删除。</p>
 ]]></content>
   </entry>
   <entry>
@@ -4791,6 +4791,75 @@
 <figure class="highlight css"><table><tr><td class="code"><pre><code class="hljs css">myItem<br>    - protos<br>        -demo<span class="hljs-selector-class">.proto</span><br>    - php<br>        - GPBMetadata<br>              - ...<br>        - Protobuf<br>              - ...<br></code></pre></td></tr></table></figure>]]></content>
   </entry>
   <entry>
+    <title>gitea备份与恢复</title>
+    <url>/2022/08/05/gitea%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D/</url>
+    <content><![CDATA[<h1 id="Gitea安装，备份及恢复"><a href="#Gitea安装，备份及恢复" class="headerlink" title="Gitea安装，备份及恢复"></a>Gitea安装，备份及恢复</h1><p>官网：<a href="https://gitea.io/en-us/">https://gitea.io/en-us/</a></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>环境安装<br>查看有没有安装git</p>
+<figure class="highlight ada"><table><tr><td class="code"><pre><code class="hljs ada">git <span class="hljs-comment">--version</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h3><figure class="highlight cmake"><table><tr><td class="code"><pre><code class="hljs cmake">apt <span class="hljs-keyword">install</span> git<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="安装sqlite3"><a href="#安装sqlite3" class="headerlink" title="安装sqlite3"></a>安装sqlite3</h3><figure class="highlight cmake"><table><tr><td class="code"><pre><code class="hljs cmake">apt <span class="hljs-keyword">install</span> sqlite3<br></code></pre></td></tr></table></figure>
+
+<p>下载gitea</p>
+<p>在官方地址下载匹配的版本文件，替换后面的URL即可</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">wget</span> -O gitea https://dl.gitea.io/gitea/<span class="hljs-number">1</span>.<span class="hljs-number">15</span>.<span class="hljs-number">2</span>/gitea-<span class="hljs-number">1</span>.<span class="hljs-number">15</span>.<span class="hljs-number">2</span>-linux-amd64<br></code></pre></td></tr></table></figure>
+
+<p>下载后将文件移动至&#x2F;usr&#x2F;loacl&#x2F;bin下并添加可执行权限</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">mv</span> gitea /usr/local/bin<br><span class="hljs-built_in">chmod</span> +x gitea<br></code></pre></td></tr></table></figure>
+
+<p>可以用.&#x2F;gitea web测试一下，登录IP：3000即可出现测试页面，但不要点注册和登录按键</p>
+<p>创建gitea启动用户及需要的文件<br>创建gitea启动用户</p>
+<figure class="highlight jboss-cli"><table><tr><td class="code"><pre><code class="hljs jboss-cli">adduser git <span class="hljs-params">--system</span> <span class="hljs-params">--shell</span> <span class="hljs-string">/bin/bash</span> <span class="hljs-params">--gecos</span> &#x27;Git Version Control&#x27; <span class="hljs-params">--group</span> <span class="hljs-params">--disabled-password</span> <span class="hljs-params">--home</span> <span class="hljs-string">/home/git</span><br></code></pre></td></tr></table></figure>
+
+
+<p>1创建需要的文件</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><code class="hljs awk">mkdir -p <span class="hljs-regexp">/var/</span>lib<span class="hljs-regexp">/gitea/</span>&#123;custom,data,log&#125;   <span class="hljs-comment"># data用来存放数据</span><br>chown -R git:git <span class="hljs-regexp">/var/</span>lib<span class="hljs-regexp">/gitea/</span><br>chmod -R <span class="hljs-number">750</span> <span class="hljs-regexp">/var/</span>lib<span class="hljs-regexp">/gitea/</span><br>mkdir <span class="hljs-regexp">/etc/gi</span>tea							<span class="hljs-comment"># /gitea存放gitea的主要配置文件 app.ini</span><br>chown root:git <span class="hljs-regexp">/etc/gi</span>tea<br>chmod <span class="hljs-number">770</span> <span class="hljs-regexp">/etc/gi</span>tea<br></code></pre></td></tr></table></figure>
+
+
+<p>将Linux作为服务器运行<br>在&#x2F;etc&#x2F;systemd&#x2F;system下创建gitea.service文件，内容如下</p>
+<p>将Linux作为服务器运行<br>在&#x2F;etc&#x2F;systemd&#x2F;system下创建gitea.service文件，内容如下</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><code class="hljs ini"><span class="hljs-section">[Unit]</span><br><span class="hljs-attr">Description</span>=Gitea (Git with a cup of tea)<br><span class="hljs-attr">After</span>=syslog.target<br><span class="hljs-attr">After</span>=network.target<br><br><span class="hljs-section">[Service]</span><br><span class="hljs-attr">RestartSec</span>=<span class="hljs-number">2</span>s<br><span class="hljs-attr">Type</span>=simple<br><span class="hljs-attr">User</span>=git            <span class="hljs-comment"># 修改为自己的启动用户名</span><br><span class="hljs-attr">Group</span>=git           <span class="hljs-comment"># 修改为自己的启动用户的组名</span><br><span class="hljs-attr">WorkingDirectory</span>=/var/lib/gitea/                                     <span class="hljs-comment">#工作路径，其中包括custom，data，log文件</span><br><span class="hljs-attr">ExecStart</span>=/usr/local/bin/gitea web --config /etc/gitea/app.ini       <span class="hljs-comment"># 存放app.ini</span><br><span class="hljs-attr">Restart</span>=always<br><span class="hljs-attr">Environment</span>=USER=git HOME=/home/git GITEA_WORK_DIR=/var/lib/gitea<br><br><span class="hljs-section">[Install]</span><br><span class="hljs-attr">WantedBy</span>=multi-user.target<br></code></pre></td></tr></table></figure>
+
+
+<p>给gitea.service 文件加上可执行权限</p>
+<p>给gitea.service 文件加上可执行权限</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">chmod</span> +x gitea.service <br></code></pre></td></tr></table></figure>
+
+
+<p>之后即可用systemctl命令运行服务</p>
+<p>之后即可用systemctl命令运行服务</p>
+<figure class="highlight nsis"><table><tr><td class="code"><pre><code class="hljs nsis"><span class="hljs-params">system</span>ctl start gitea<br><span class="hljs-params">system</span>ctl restat gitea<br><span class="hljs-params">system</span>ctl status gitea<br><span class="hljs-params">system</span>ctl stop gitea<br></code></pre></td></tr></table></figure>
+
+<p>运行成功后输入IP:3000即可进入gitea配置界面，之后可以通过修改app.ini文件更改gitea的配置</p>
+<h2 id="Gitea-迁移"><a href="#Gitea-迁移" class="headerlink" title="Gitea 迁移"></a>Gitea 迁移</h2><h3 id="Gitea备份"><a href="#Gitea备份" class="headerlink" title="Gitea备份"></a>Gitea备份</h3><p>首先切换到Gitea用户，执行以下命令</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><code class="hljs awk">.<span class="hljs-regexp">/gitea dump -c /</span>etc<span class="hljs-regexp">/gitea/</span>app.ini    <br></code></pre></td></tr></table></figure>
+
+
+
+<p>更具自己的app.ini文件更改路径</p>
+<p>文件会打包进gitea-dump-*****.zip中</p>
+<h3 id="Gitea恢复"><a href="#Gitea恢复" class="headerlink" title="Gitea恢复"></a>Gitea恢复</h3><p>首先从第二台主机上配置好Gitea</p>
+<p>解压备份好的压缩包</p>
+<figure class="highlight armasm"><table><tr><td class="code"><pre><code class="hljs armasm"><span class="hljs-symbol">mkdire</span> <span class="hljs-meta">Data</span><br><span class="hljs-symbol">unzip</span> -d /<span class="hljs-meta">Data</span> gitea-dump-*****.zip<br></code></pre></td></tr></table></figure>
+
+<p>将custom，data中的数据复制到对应的地址下，覆盖原文件</p>
+<p>利用sqlite3 数据库文件&lt; gitea-db.sql导入数据库完成，覆盖原文件</p>
+<figure class="highlight gradle"><table><tr><td class="code"><pre><code class="hljs gradle">cd /Data<br>mv <span class="hljs-regexp">/custom/</span>* <span class="hljs-regexp">/var/</span>lib<span class="hljs-regexp">/gitea/</span>custom<br>mv <span class="hljs-regexp">/data/</span>* <span class="hljs-regexp">/var/</span>lib<span class="hljs-regexp">/gitea/</span>data<br>mv <span class="hljs-regexp">/repos/</span>* <span class="hljs-regexp">/var/</span>lib<span class="hljs-regexp">/gitea/</span>data/gitea-<span class="hljs-keyword">repositories</span><br><br>sqlite3 gitea.db &lt; gitea-db.sql<br>mv gitea.db <span class="hljs-regexp">/var/</span>lib<span class="hljs-regexp">/gitea/</span>data<br></code></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>git代理配置</title>
     <url>/2022/07/11/git%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<h2 id="git代理配置"><a href="#git代理配置" class="headerlink" title="git代理配置"></a><a href="https://www.cnblogs.com/z45281625/p/10694664.html">git代理配置</a></h2><h1 id="命令行模式下配置"><a href="#命令行模式下配置" class="headerlink" title="命令行模式下配置"></a>命令行模式下配置</h1><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><br>git config --global https.proxy http://192.168.25.40:8118<br><br>git config --global http.proxy http://192.168.25.40:8118<br></code></pre></td></tr></table></figure>
@@ -4800,7 +4869,7 @@
 <h4 id="2、代理服务器不需要鉴权配置"><a href="#2、代理服务器不需要鉴权配置" class="headerlink" title="2、代理服务器不需要鉴权配置"></a>2、代理服务器不需要鉴权配置</h4><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">git config --global https.proxy https://proxy.baidu.com:8080<br></code></pre></td></tr></table></figure>
 <h1 id="密码中特殊字符处理"><a href="#密码中特殊字符处理" class="headerlink" title="密码中特殊字符处理"></a>密码中特殊字符处理</h1><p>如果密码中有@等特殊字符，会出错，比如</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">git config --global http.proxy http://username:abc@123@proxy.baidu.com:8080<br></code></pre></td></tr></table></figure>
-<p>解析时会从第一个@解析，提示@<a href="mailto:&#49;&#x32;&#x33;&#64;&#x70;&#x72;&#111;&#120;&#121;&#104;&#107;&#46;&#104;&#x75;&#x61;&#x77;&#101;&#105;&#x2e;&#x63;&#x6f;&#109;">&#49;&#x32;&#x33;&#64;&#x70;&#x72;&#111;&#120;&#121;&#104;&#107;&#46;&#104;&#x75;&#x61;&#x77;&#101;&#105;&#x2e;&#x63;&#x6f;&#109;</a>找不到，此时要对其中的特殊符号进行处理，使用百分比编码(Percent-encoding)对特殊字符进行转换，转换列表如下：</p>
+<p>解析时会从第一个@解析，提示@<a href="mailto:&#x31;&#50;&#x33;&#64;&#x70;&#x72;&#x6f;&#x78;&#x79;&#x68;&#x6b;&#46;&#104;&#x75;&#x61;&#119;&#x65;&#x69;&#46;&#x63;&#x6f;&#x6d;">&#x31;&#50;&#x33;&#64;&#x70;&#x72;&#x6f;&#x78;&#x79;&#x68;&#x6b;&#46;&#104;&#x75;&#x61;&#119;&#x65;&#x69;&#46;&#x63;&#x6f;&#x6d;</a>找不到，此时要对其中的特殊符号进行处理，使用百分比编码(Percent-encoding)对特殊字符进行转换，转换列表如下：</p>
 <blockquote>
 <p>! –&gt; %21  # –&gt; %23  $ –&gt; %24  &amp; –&gt; %26  ‘ –&gt; %27</p>
 <p>( –&gt; %28  ) –&gt; %29  * –&gt; %2A  + –&gt; %2B  , –&gt; %2C</p>
@@ -4824,7 +4893,7 @@
   <entry>
     <title>git配置用户</title>
     <url>/2022/07/12/git%E9%85%8D%E7%BD%AE%E7%94%A8%E6%88%B7/</url>
-    <content><![CDATA[<p>git config –global user.email “<a href="mailto:&#x34;&#x30;&#x32;&#x32;&#x33;&#x39;&#51;&#57;&#x39;&#x40;&#x71;&#x71;&#x2e;&#99;&#x6f;&#x6d;">&#x34;&#x30;&#x32;&#x32;&#x33;&#x39;&#51;&#57;&#x39;&#x40;&#x71;&#x71;&#x2e;&#99;&#x6f;&#x6d;</a>“<br>git config –global user.name “liyupin”</p>
+    <content><![CDATA[<p>git config –global user.email “<a href="mailto:&#x34;&#48;&#50;&#x32;&#51;&#x39;&#x33;&#57;&#57;&#64;&#113;&#x71;&#x2e;&#x63;&#x6f;&#x6d;">&#x34;&#48;&#50;&#x32;&#51;&#x39;&#x33;&#57;&#57;&#64;&#113;&#x71;&#x2e;&#x63;&#x6f;&#x6d;</a>“<br>git config –global user.name “liyupin”</p>
 ]]></content>
   </entry>
   <entry>
@@ -7635,7 +7704,7 @@
 <p>Encoding Credentials on Windows using Powershell</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript">$Bytes = [<span class="hljs-title class_">System</span>.<span class="hljs-property">Text</span>.<span class="hljs-property">Encoding</span>]::<span class="hljs-title class_">UTF8</span>.<span class="hljs-title class_">GetBytes</span>(<span class="hljs-string">&quot;admin:admin123&quot;</span>)<br>[<span class="hljs-title class_">Convert</span>]::<span class="hljs-title class_">ToBase64String</span>($Bytes)<br><br></code></pre></td></tr></table></figure>
 
-<p>Adding Credentials to the npm Configuration<br>Once you have the encoded credentials the value as well as author information can then be added to the .npmrc file:<br>#an email is required to publish npm packages<br>email&#x3D;<a href="mailto:&#106;&#97;&#x6e;&#x65;&#64;&#101;&#x78;&#x61;&#x6d;&#112;&#108;&#x65;&#x2e;&#x63;&#x6f;&#109;">&#106;&#97;&#x6e;&#x65;&#64;&#101;&#x78;&#x61;&#x6d;&#112;&#108;&#x65;&#x2e;&#x63;&#x6f;&#109;</a><br>always-auth&#x3D;true<br>_auth&#x3D;YWRtaW46YWRtaW4xMjM&#x3D;</p>
+<p>Adding Credentials to the npm Configuration<br>Once you have the encoded credentials the value as well as author information can then be added to the .npmrc file:<br>#an email is required to publish npm packages<br>email&#x3D;<a href="mailto:&#106;&#x61;&#x6e;&#x65;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#x65;&#46;&#99;&#x6f;&#109;">&#106;&#x61;&#x6e;&#x65;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#x65;&#46;&#99;&#x6f;&#109;</a><br>always-auth&#x3D;true<br>_auth&#x3D;YWRtaW46YWRtaW4xMjM&#x3D;</p>
 <p><em>Using whatever tool you are generating the encoded username and password string, try to encode the string admin:admin123. The result is YWRtaW46YWRtaW4xMjM&#x3D;. Another example for a valid setup is jane:testpassword123 resulting in amFuZTp0ZXN0cGFzc3dvcmQxMjM&#x3D;.<br>Once a package is published to the private registry in the repository manager, any other developers or build servers, that access it via the repository group have instant access to the packages.</em></p>
 <ul>
 <li>说明<br>修改系统用户目录文件：.npmc<br>email：设置个人邮箱地址<br>always-auth：true，设置授权<br>_auth：通过base64编码设置的用户名:密码字符串</li>
@@ -7692,9 +7761,9 @@
   <entry>
     <title>华为交换机Console密码重置</title>
     <url>/2022/07/14/%E5%8D%8E%E4%B8%BA%E4%BA%A4%E6%8D%A2%E6%9C%BAConsole%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE/</url>
-    <content><![CDATA[<p>1、通过Console口连接交换机，并重启交换机。<br>2、当界面出现以下打印信息时，及时按下快捷键“Ctrl+B”并输入BootROM&#x2F;BootLoad密码，进入BootROM&#x2F;BootLoad主菜单<br>3、密码： <a href="mailto:&#x41;&#x64;&#x6d;&#105;&#110;&#x40;&#x68;&#x75;&#x61;&#119;&#101;&#105;&#x2e;&#99;&#111;&#109;">&#x41;&#x64;&#x6d;&#105;&#110;&#x40;&#x68;&#x75;&#x61;&#119;&#101;&#105;&#x2e;&#99;&#111;&#109;</a> A必须大写。<br>4、选着7 Clear password for console user （选择清除console用户密码模式）。<br>5、选择1 Boot with default mode（键入1启动默认模式），进入后更改Console 及telnet密码。</p>
+    <content><![CDATA[<p>1、通过Console口连接交换机，并重启交换机。<br>2、当界面出现以下打印信息时，及时按下快捷键“Ctrl+B”并输入BootROM&#x2F;BootLoad密码，进入BootROM&#x2F;BootLoad主菜单<br>3、密码： <a href="mailto:&#65;&#x64;&#109;&#x69;&#x6e;&#x40;&#104;&#x75;&#97;&#x77;&#101;&#105;&#46;&#99;&#x6f;&#x6d;">&#65;&#x64;&#109;&#x69;&#x6e;&#x40;&#104;&#x75;&#97;&#x77;&#101;&#105;&#46;&#99;&#x6f;&#x6d;</a> A必须大写。<br>4、选着7 Clear password for console user （选择清除console用户密码模式）。<br>5、选择1 Boot with default mode（键入1启动默认模式），进入后更改Console 及telnet密码。</p>
 <h3 id="2设备初始化"><a href="#2设备初始化" class="headerlink" title="*2设备初始化"></a>*2设备初始化</h3><p>1、登录华为交换机<br>2、输入：reset saved-configuration 接着问你是否初始化 选择“Y”<br>3、初始化之后，需要重启交换机才能生效 “reboot”</p>
-<h3 id="3-默认用户名和密码"><a href="#3-默认用户名和密码" class="headerlink" title="3.默认用户名和密码"></a>3.默认用户名和密码</h3><p>华为交换机的默认用户名是admin，密码是<a href="mailto:&#x41;&#x64;&#x6d;&#x69;&#x6e;&#x40;&#x68;&#x75;&#97;&#x77;&#x65;&#105;&#x2e;&#99;&#x6f;&#109;">&#x41;&#x64;&#x6d;&#x69;&#x6e;&#x40;&#x68;&#x75;&#97;&#x77;&#x65;&#105;&#x2e;&#99;&#x6f;&#109;</a></p>
+<h3 id="3-默认用户名和密码"><a href="#3-默认用户名和密码" class="headerlink" title="3.默认用户名和密码"></a>3.默认用户名和密码</h3><p>华为交换机的默认用户名是admin，密码是<a href="mailto:&#65;&#100;&#109;&#x69;&#x6e;&#x40;&#x68;&#x75;&#x61;&#x77;&#101;&#105;&#46;&#x63;&#111;&#109;">&#65;&#100;&#109;&#x69;&#x6e;&#x40;&#x68;&#x75;&#x61;&#x77;&#101;&#105;&#46;&#x63;&#111;&#109;</a></p>
 ]]></content>
   </entry>
   <entry>
