@@ -1,0 +1,705 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Cper Liu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="网络编程入门计算机网络基础计算机网络是独立自主的计算机互联而成的系统的总称，组建计算机网络最主要的目的是实现多台计算机之间的通信和资源共享。今天计算机网络中的设备和计算机网络的用户已经多得不可计数，而计算机网络也可以称得上是一个“复杂巨系统”，对于这样的系统，我们不可能用一两篇文章把它讲清楚，有兴趣的读者可以自行阅读Andrew S.Tanenbaum老师的经典之作《计算机网络》或Kurose和R">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python100day-14">
+<meta property="og:url" content="https://liyupin.github.io/2022/08/05/python100day-14/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="网络编程入门计算机网络基础计算机网络是独立自主的计算机互联而成的系统的总称，组建计算机网络最主要的目的是实现多台计算机之间的通信和资源共享。今天计算机网络中的设备和计算机网络的用户已经多得不可计数，而计算机网络也可以称得上是一个“复杂巨系统”，对于这样的系统，我们不可能用一两篇文章把它讲清楚，有兴趣的读者可以自行阅读Andrew S.Tanenbaum老师的经典之作《计算机网络》或Kurose和R">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://liyupin.github.io/res/arpanet.png">
+<meta property="og:image" content="https://liyupin.github.io/res/osimodel.png">
+<meta property="og:image" content="https://liyupin.github.io/res/before-browser.jpg">
+<meta property="og:image" content="https://liyupin.github.io/res/after-browser.jpg">
+<meta property="og:image" content="https://liyupin.github.io/res/TCP-IP-model.png">
+<meta property="og:image" content="https://liyupin.github.io/res/telnet.png">
+<meta property="article:published_time" content="2022-08-05T01:14:00.000Z">
+<meta property="article:modified_time" content="2022-08-05T01:14:55.443Z">
+<meta property="article:author" content="Cper Liu">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://liyupin.github.io/res/arpanet.png">
+  
+  
+  
+  <title>python100day-14 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="python100day-14"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-08-05 09:14" pubdate>
+          2022年8月5日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          12k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          98 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">python100day-14</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="网络编程入门"><a href="#网络编程入门" class="headerlink" title="网络编程入门"></a>网络编程入门</h2><h3 id="计算机网络基础"><a href="#计算机网络基础" class="headerlink" title="计算机网络基础"></a>计算机网络基础</h3><p>计算机网络是独立自主的计算机互联而成的系统的总称，组建计算机网络最主要的目的是实现多台计算机之间的通信和资源共享。今天计算机网络中的设备和计算机网络的用户已经多得不可计数，而计算机网络也可以称得上是一个“复杂巨系统”，对于这样的系统，我们不可能用一两篇文章把它讲清楚，有兴趣的读者可以自行阅读Andrew S.Tanenbaum老师的经典之作《计算机网络》或Kurose和Ross老师合著的《计算机网络:自顶向下方法》来了解计算机网络的相关知识。</p>
+<h4 id="计算机网络发展史"><a href="#计算机网络发展史" class="headerlink" title="计算机网络发展史"></a>计算机网络发展史</h4><ol>
+<li><p>1960s - 美国国防部ARPANET项目问世，奠定了分组交换网络的基础。</p>
+<p><img src="/./res/arpanet.png" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>1980s - 国际标准化组织（ISO）发布OSI&#x2F;RM，奠定了网络技术标准化的基础。</p>
+<p><img src="/./res/osimodel.png" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>1990s - 英国人<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%8F%90%E5%A7%86%C2%B7%E6%9F%8F%E5%85%A7%E8%8C%B2-%E6%9D%8E">蒂姆·伯纳斯-李</a>发明了图形化的浏览器，浏览器的简单易用性使得计算机网络迅速被普及。</p>
+<p>在没有浏览器的年代，上网是这样的。</p>
+<p><img src="/./res/before-browser.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>有了浏览器以后，上网是这样的。</p>
+<p><img src="/./res/after-browser.jpg" srcset="/img/loading.gif" lazyload></p>
+</li>
+</ol>
+<h4 id="TCP-x2F-IP模型"><a href="#TCP-x2F-IP模型" class="headerlink" title="TCP&#x2F;IP模型"></a>TCP&#x2F;IP模型</h4><p>实现网络通信的基础是网络通信协议，这些协议通常是由<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%BA%92%E8%81%94%E7%BD%91%E5%B7%A5%E7%A8%8B%E4%BB%BB%E5%8A%A1%E7%BB%84">互联网工程任务组</a> （IETF）制定的。所谓“协议”就是通信计算机双方必须共同遵从的一组约定，例如怎样建立连接、怎样互相识别等，网络协议的三要素是：语法、语义和时序。构成我们今天使用的Internet的基础的是TCP&#x2F;IP协议族，所谓协议族就是一系列的协议及其构成的通信模型，我们通常也把这套东西称为TCP&#x2F;IP模型。与国际标准化组织发布的OSI&#x2F;RM这个七层模型不同，TCP&#x2F;IP是一个四层模型，也就是说，该模型将我们使用的网络从逻辑上分解为四个层次，自底向上依次是：网络接口层、网络层、传输层和应用层，如下图所示。</p>
+<p><img src="/./res/TCP-IP-model.png" srcset="/img/loading.gif" lazyload></p>
+<p>IP通常被翻译为网际协议，它服务于网络层，主要实现了寻址和路由的功能。接入网络的每一台主机都需要有自己的IP地址，IP地址就是主机在计算机网络上的身份标识。当然由于IPv4地址的匮乏，我们平常在家里、办公室以及其他可以接入网络的公共区域上网时获得的IP地址并不是全球唯一的IP地址，而是一个<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/%E5%B1%80%E5%9F%9F%E7%BD%91">局域网（LAN）</a>中的内部IP地址，通过<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2">网络地址转换（NAT）服务</a>我们也可以实现对网络的访问。计算机网络上有大量的被我们称为“<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%B7%AF%E7%94%B1%E5%99%A8">路由器</a>”的网络中继设备，它们会存储转发我们发送到网络上的数据分组，让从源头发出的数据最终能够找到传送到目的地通路，这项功能就是所谓的路由。</p>
+<p>TCP全称传输控制协议，它是基于IP提供的寻址和路由服务而建立起来的负责实现端到端可靠传输的协议，之所以将TCP称为可靠的传输协议是因为TCP向调用者承诺了三件事情：</p>
+<ol>
+<li>数据不传丢不传错（利用握手、校验和重传机制可以实现）。</li>
+<li>流量控制（通过滑动窗口匹配数据发送者和接收者之间的传输速度）。</li>
+<li>拥塞控制（通过RTT时间以及对滑动窗口的控制缓解网络拥堵）。</li>
+</ol>
+<h4 id="网络应用模式"><a href="#网络应用模式" class="headerlink" title="网络应用模式"></a>网络应用模式</h4><ol>
+<li>C&#x2F;S模式和B&#x2F;S模式。这里的C指的是Client（客户端），通常是一个需要安装到某个宿主操作系统上的应用程序；而B指的是Browser（浏览器），它几乎是所有图形化操作系统都默认安装了的一个应用软件；通过C或B都可以实现对S（服务器）的访问。关于二者的比较和讨论在网络上有一大堆的文章，在此我们就不再浪费笔墨了。</li>
+<li>去中心化的网络应用模式。不管是B&#x2F;S还是C&#x2F;S都需要服务器的存在，服务器就是整个应用模式的中心，而去中心化的网络应用通常没有固定的服务器或者固定的客户端，所有应用的使用者既可以作为资源的提供者也可以作为资源的访问者。</li>
+</ol>
+<h3 id="基于HTTP协议的网络资源访问"><a href="#基于HTTP协议的网络资源访问" class="headerlink" title="基于HTTP协议的网络资源访问"></a>基于HTTP协议的网络资源访问</h3><h4 id="HTTP（超文本传输协议）"><a href="#HTTP（超文本传输协议）" class="headerlink" title="HTTP（超文本传输协议）"></a>HTTP（超文本传输协议）</h4><p>HTTP是超文本传输协议（Hyper-Text Transfer Proctol）的简称，维基百科上对HTTP的解释是：超文本传输协议是一种用于分布式、协作式和超媒体信息系统的应用层协议，它是<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%85%A8%E7%90%83%E8%B3%87%E8%A8%8A%E7%B6%B2">万维网</a>数据通信的基础，设计HTTP最初的目的是为了提供一种发布和接收<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/HTML">HTML</a>页面的方法，通过HTTP或者<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%B6%85%E6%96%87%E6%9C%AC%E4%BC%A0%E8%BE%93%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE">HTTPS</a>（超文本传输安全协议）请求的资源由URI（<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%B5%B1%E4%B8%80%E8%B3%87%E6%BA%90%E6%A8%99%E8%AD%98%E7%AC%A6">统一资源标识符</a>）来标识。关于HTTP的更多内容，我们推荐阅读阮一峰老师的<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2016/08/http.html">《HTTP 协议入门》</a>，简单的说，通过HTTP我们可以获取网络上的（基于字符的）资源，开发中经常会用到的网络API（有的地方也称之为网络数据接口）就是基于HTTP来实现数据传输的。</p>
+<h4 id="JSON格式"><a href="#JSON格式" class="headerlink" title="JSON格式"></a>JSON格式</h4><p><strong>JSON</strong>（<strong>J</strong>ava<strong>S</strong>cript <strong>O</strong>bject <strong>N</strong>otation）是一种轻量级的数据交换语言，该语言以易于让人阅读的文字（纯文本）为基础，用来传输由属性值或者序列性的值组成的数据对象。尽管JSON是最初只是Javascript中一种创建对象的字面量语法，但它在当下更是一种独立于语言的数据格式，很多编程语言都支持JSON格式数据的生成和解析，Python内置的json模块也提供了这方面的功能。由于JSON是纯文本，它和<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/XML">XML</a>一样都适用于异构系统之间的数据交换，而相较于XML，JSON显得更加的轻便和优雅。下面是表达同样信息的XML和JSON，而JSON的优势是相当直观的。</p>
+<p>XML的例子：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs XML"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">message</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">from</span>&gt;</span>Alice<span class="hljs-tag">&lt;/<span class="hljs-name">from</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">to</span>&gt;</span>Bob<span class="hljs-tag">&lt;/<span class="hljs-name">to</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">content</span>&gt;</span>Will you marry me?<span class="hljs-tag">&lt;/<span class="hljs-name">content</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">message</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>JSON的例子：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs JSON"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;from&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Alice&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;to&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Bob&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;content&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Will you marry me?&quot;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="requests库"><a href="#requests库" class="headerlink" title="requests库"></a>requests库</h4><p>requests是一个基于HTTP协议来使用网络的第三库，其<a target="_blank" rel="noopener" href="http://cn.python-requests.org/zh_CN/latest/">官方网站</a>有这样的一句介绍它的话：“Requests是唯一的一个<strong>非转基因</strong>的Python HTTP库，人类可以安全享用。”简单的说，使用requests库可以非常方便的使用HTTP，避免安全缺陷、冗余代码以及“重复发明轮子”（行业黑话，通常用在软件工程领域表示重新创造一个已有的或是早已被优化過的基本方法）。前面的文章中我们已经使用过这个库，下面我们还是通过requests来实现一个访问网络数据接口并从中获取美女图片下载链接然后下载美女图片到本地的例子程序，程序中使用了<a target="_blank" rel="noopener" href="https://www.tianapi.com/">天行数据</a>提供的网络API。</p>
+<p>我们可以先通过pip安装requests及其依赖库。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">pip install requests<br></code></pre></td></tr></table></figure>
+
+<p>如果使用PyCharm作为开发工具，可以直接在代码中书写<code>import requests</code>，然后通过代码修复功能来自动下载安装requests。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">from</span> time <span class="hljs-keyword">import</span> time<br><span class="hljs-keyword">from</span> threading <span class="hljs-keyword">import</span> Thread<br><br><span class="hljs-keyword">import</span> requests<br><br><br><span class="hljs-comment"># 继承Thread类创建自定义的线程类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">DownloadHanlder</span>(<span class="hljs-title class_ inherited__">Thread</span>):<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, url</span>):<br>        <span class="hljs-built_in">super</span>().__init__()<br>        self.url = url<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">run</span>(<span class="hljs-params">self</span>):<br>        filename = self.url[self.url.rfind(<span class="hljs-string">&#x27;/&#x27;</span>) + <span class="hljs-number">1</span>:]<br>        resp = requests.get(self.url)<br>        <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;/Users/Hao/&#x27;</span> + filename, <span class="hljs-string">&#x27;wb&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>            f.write(resp.content)<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    <span class="hljs-comment"># 通过requests模块的get函数获取网络资源</span><br>    <span class="hljs-comment"># 下面的代码中使用了天行数据接口提供的网络API</span><br>    <span class="hljs-comment"># 要使用该数据接口需要在天行数据的网站上注册</span><br>    <span class="hljs-comment"># 然后用自己的Key替换掉下面代码的中APIKey即可</span><br>    resp = requests.get(<br>        <span class="hljs-string">&#x27;http://api.tianapi.com/meinv/?key=APIKey&amp;num=10&#x27;</span>)<br>    <span class="hljs-comment"># 将服务器返回的JSON格式的数据解析为字典</span><br>    data_model = resp.json()<br>    <span class="hljs-keyword">for</span> mm_dict <span class="hljs-keyword">in</span> data_model[<span class="hljs-string">&#x27;newslist&#x27;</span>]:<br>        url = mm_dict[<span class="hljs-string">&#x27;picUrl&#x27;</span>]<br>        <span class="hljs-comment"># 通过多线程的方式实现图片下载</span><br>        DownloadHanlder(url).start()<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    main()<br></code></pre></td></tr></table></figure>
+
+<h3 id="基于传输层协议的套接字编程"><a href="#基于传输层协议的套接字编程" class="headerlink" title="基于传输层协议的套接字编程"></a>基于传输层协议的套接字编程</h3><p>套接字这个词对很多不了解网络编程的人来说显得非常晦涩和陌生，其实说得通俗点，套接字就是一套用<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/C%E8%AF%AD%E8%A8%80">C语言</a>写成的应用程序开发库，主要用于实现进程间通信和网络编程，在网络应用开发中被广泛使用。在Python中也可以基于套接字来使用传输层提供的传输服务，并基于此开发自己的网络应用。实际开发中使用的套接字可以分为三类：流套接字（TCP套接字）、数据报套接字和原始套接字。</p>
+<h4 id="TCP套接字"><a href="#TCP套接字" class="headerlink" title="TCP套接字"></a>TCP套接字</h4><p>所谓TCP套接字就是使用TCP协议提供的传输服务来实现网络通信的编程接口。在Python中可以通过创建socket对象并指定type属性为SOCK_STREAM来使用TCP套接字。由于一台主机可能拥有多个IP地址，而且很有可能会配置多个不同的服务，所以作为服务器端的程序，需要在创建套接字对象后将其绑定到指定的IP地址和端口上。这里的端口并不是物理设备而是对IP地址的扩展，用于区分不同的服务，例如我们通常将HTTP服务跟80端口绑定，而MySQL数据库服务默认绑定在3306端口，这样当服务器收到用户请求时就可以根据端口号来确定到底用户请求的是HTTP服务器还是数据库服务器提供的服务。端口的取值范围是0~65535，而1024以下的端口我们通常称之为“著名端口”（留给像FTP、HTTP、SMTP等“著名服务”使用的端口，有的地方也称之为“周知端口”），自定义的服务通常不使用这些端口，除非自定义的是HTTP或FTP这样的著名服务。</p>
+<p>下面的代码实现了一个提供时间日期的服务器。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">from</span> socket <span class="hljs-keyword">import</span> socket, SOCK_STREAM, AF_INET<br><span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> datetime<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    <span class="hljs-comment"># 1.创建套接字对象并指定使用哪种传输服务</span><br>    <span class="hljs-comment"># family=AF_INET - IPv4地址</span><br>    <span class="hljs-comment"># family=AF_INET6 - IPv6地址</span><br>    <span class="hljs-comment"># type=SOCK_STREAM - TCP套接字</span><br>    <span class="hljs-comment"># type=SOCK_DGRAM - UDP套接字</span><br>    <span class="hljs-comment"># type=SOCK_RAW - 原始套接字</span><br>    server = socket(family=AF_INET, <span class="hljs-built_in">type</span>=SOCK_STREAM)<br>    <span class="hljs-comment"># 2.绑定IP地址和端口(端口用于区分不同的服务)</span><br>    <span class="hljs-comment"># 同一时间在同一个端口上只能绑定一个服务否则报错</span><br>    server.bind((<span class="hljs-string">&#x27;192.168.1.2&#x27;</span>, <span class="hljs-number">6789</span>))<br>    <span class="hljs-comment"># 3.开启监听 - 监听客户端连接到服务器</span><br>    <span class="hljs-comment"># 参数512可以理解为连接队列的大小</span><br>    server.listen(<span class="hljs-number">512</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;服务器启动开始监听...&#x27;</span>)<br>    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>        <span class="hljs-comment"># 4.通过循环接收客户端的连接并作出相应的处理(提供服务)</span><br>        <span class="hljs-comment"># accept方法是一个阻塞方法如果没有客户端连接到服务器代码不会向下执行</span><br>        <span class="hljs-comment"># accept方法返回一个元组其中的第一个元素是客户端对象</span><br>        <span class="hljs-comment"># 第二个元素是连接到服务器的客户端的地址(由IP和端口两部分构成)</span><br>        client, addr = server.accept()<br>        <span class="hljs-built_in">print</span>(<span class="hljs-built_in">str</span>(addr) + <span class="hljs-string">&#x27;连接到了服务器.&#x27;</span>)<br>        <span class="hljs-comment"># 5.发送数据</span><br>        client.send(<span class="hljs-built_in">str</span>(datetime.now()).encode(<span class="hljs-string">&#x27;utf-8&#x27;</span>))<br>        <span class="hljs-comment"># 6.断开连接</span><br>        client.close()<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    main()<br></code></pre></td></tr></table></figure>
+
+<p>运行服务器程序后我们可以通过Windows系统的telnet来访问该服务器，结果如下图所示。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">telnet 192.168.1.2 6789<br></code></pre></td></tr></table></figure>
+
+<p><img src="/./res/telnet.png" srcset="/img/loading.gif" lazyload></p>
+<p>当然我们也可以通过Python的程序来实现TCP客户端的功能，相较于实现服务器程序，实现客户端程序就简单多了，代码如下所示。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">from</span> socket <span class="hljs-keyword">import</span> socket<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    <span class="hljs-comment"># 1.创建套接字对象默认使用IPv4和TCP协议</span><br>    client = socket()<br>    <span class="hljs-comment"># 2.连接到服务器(需要指定IP地址和端口)</span><br>    client.connect((<span class="hljs-string">&#x27;192.168.1.2&#x27;</span>, <span class="hljs-number">6789</span>))<br>    <span class="hljs-comment"># 3.从服务器接收数据</span><br>    <span class="hljs-built_in">print</span>(client.recv(<span class="hljs-number">1024</span>).decode(<span class="hljs-string">&#x27;utf-8&#x27;</span>))<br>    client.close()<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    main()<br></code></pre></td></tr></table></figure>
+
+<p>需要注意的是，上面的服务器并没有使用多线程或者异步I&#x2F;O的处理方式，这也就意味着当服务器与一个客户端处于通信状态时，其他的客户端只能排队等待。很显然，这样的服务器并不能满足我们的需求，我们需要的服务器是能够同时接纳和处理多个用户请求的。下面我们来设计一个使用多线程技术处理多个用户请求的服务器，该服务器会向连接到服务器的客户端发送一张图片。</p>
+<p>服务器端代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">from</span> socket <span class="hljs-keyword">import</span> socket, SOCK_STREAM, AF_INET<br><span class="hljs-keyword">from</span> base64 <span class="hljs-keyword">import</span> b64encode<br><span class="hljs-keyword">from</span> json <span class="hljs-keyword">import</span> dumps<br><span class="hljs-keyword">from</span> threading <span class="hljs-keyword">import</span> Thread<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    <br>    <span class="hljs-comment"># 自定义线程类</span><br>    <span class="hljs-keyword">class</span> <span class="hljs-title class_">FileTransferHandler</span>(<span class="hljs-title class_ inherited__">Thread</span>):<br><br>        <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, cclient</span>):<br>            <span class="hljs-built_in">super</span>().__init__()<br>            self.cclient = cclient<br><br>        <span class="hljs-keyword">def</span> <span class="hljs-title function_">run</span>(<span class="hljs-params">self</span>):<br>            my_dict = &#123;&#125;<br>            my_dict[<span class="hljs-string">&#x27;filename&#x27;</span>] = <span class="hljs-string">&#x27;guido.jpg&#x27;</span><br>            <span class="hljs-comment"># JSON是纯文本不能携带二进制数据</span><br>            <span class="hljs-comment"># 所以图片的二进制数据要处理成base64编码</span><br>            my_dict[<span class="hljs-string">&#x27;filedata&#x27;</span>] = data<br>            <span class="hljs-comment"># 通过dumps函数将字典处理成JSON字符串</span><br>            json_str = dumps(my_dict)<br>            <span class="hljs-comment"># 发送JSON字符串</span><br>            self.cclient.send(json_str.encode(<span class="hljs-string">&#x27;utf-8&#x27;</span>))<br>            self.cclient.close()<br><br>    <span class="hljs-comment"># 1.创建套接字对象并指定使用哪种传输服务</span><br>    server = socket()<br>    <span class="hljs-comment"># 2.绑定IP地址和端口(区分不同的服务)</span><br>    server.bind((<span class="hljs-string">&#x27;192.168.1.2&#x27;</span>, <span class="hljs-number">5566</span>))<br>    <span class="hljs-comment"># 3.开启监听 - 监听客户端连接到服务器</span><br>    server.listen(<span class="hljs-number">512</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;服务器启动开始监听...&#x27;</span>)<br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;guido.jpg&#x27;</span>, <span class="hljs-string">&#x27;rb&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>        <span class="hljs-comment"># 将二进制数据处理成base64再解码成字符串</span><br>        data = b64encode(f.read()).decode(<span class="hljs-string">&#x27;utf-8&#x27;</span>)<br>    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>        client, addr = server.accept()<br>        <span class="hljs-comment"># 启动一个线程来处理客户端的请求</span><br>        FileTransferHandler(client).start()<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    main()<br></code></pre></td></tr></table></figure>
+
+<p>客户端代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">from</span> socket <span class="hljs-keyword">import</span> socket<br><span class="hljs-keyword">from</span> json <span class="hljs-keyword">import</span> loads<br><span class="hljs-keyword">from</span> base64 <span class="hljs-keyword">import</span> b64decode<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    client = socket()<br>    client.connect((<span class="hljs-string">&#x27;192.168.1.2&#x27;</span>, <span class="hljs-number">5566</span>))<br>    <span class="hljs-comment"># 定义一个保存二进制数据的对象</span><br>    in_data = <span class="hljs-built_in">bytes</span>()<br>    <span class="hljs-comment"># 由于不知道服务器发送的数据有多大每次接收1024字节</span><br>    data = client.recv(<span class="hljs-number">1024</span>)<br>    <span class="hljs-keyword">while</span> data:<br>        <span class="hljs-comment"># 将收到的数据拼接起来</span><br>        in_data += data<br>        data = client.recv(<span class="hljs-number">1024</span>)<br>    <span class="hljs-comment"># 将收到的二进制数据解码成JSON字符串并转换成字典</span><br>    <span class="hljs-comment"># loads函数的作用就是将JSON字符串转成字典对象</span><br>    my_dict = loads(in_data.decode(<span class="hljs-string">&#x27;utf-8&#x27;</span>))<br>    filename = my_dict[<span class="hljs-string">&#x27;filename&#x27;</span>]<br>    filedata = my_dict[<span class="hljs-string">&#x27;filedata&#x27;</span>].encode(<span class="hljs-string">&#x27;utf-8&#x27;</span>)<br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;/Users/Hao/&#x27;</span> + filename, <span class="hljs-string">&#x27;wb&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>        <span class="hljs-comment"># 将base64格式的数据解码成二进制数据并写入文件</span><br>        f.write(b64decode(filedata))<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;图片已保存.&#x27;</span>)<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    main()<br></code></pre></td></tr></table></figure>
+
+<p>在这个案例中，我们使用了JSON作为数据传输的格式（通过JSON格式对传输的数据进行了序列化和反序列化的操作），但是JSON并不能携带二进制数据，因此对图片的二进制数据进行了Base64编码的处理。Base64是一种用64个字符表示所有二进制数据的编码方式，通过将二进制数据每6位一组的方式重新组织，刚好可以使用0~9的数字、大小写字母以及“+”和“&#x2F;”总共64个字符表示从<code>000000</code>到<code>111111</code>的64种状态。<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Base64">维基百科</a>上有关于Base64编码的详细讲解，不熟悉Base64的读者可以自行阅读。</p>
+<blockquote>
+<p><strong>说明：</strong> 上面的代码主要为了讲解网络编程的相关内容因此并没有对异常状况进行处理，请读者自行添加异常处理代码来增强程序的健壮性。</p>
+</blockquote>
+<h4 id="UDP套接字"><a href="#UDP套接字" class="headerlink" title="UDP套接字"></a>UDP套接字</h4><p>传输层除了有可靠的传输协议TCP之外，还有一种非常轻便的传输协议叫做用户数据报协议，简称UDP。TCP和UDP都是提供端到端传输服务的协议，二者的差别就如同打电话和发短信的区别，后者不对传输的可靠性和可达性做出任何承诺从而避免了TCP中握手和重传的开销，所以在强调性能和而不是数据完整性的场景中（例如传输网络音视频数据），UDP可能是更好的选择。可能大家会注意到一个现象，就是在观看网络视频时，有时会出现卡顿，有时会出现花屏，这无非就是部分数据传丢或传错造成的。在Python中也可以使用UDP套接字来创建网络应用，对此我们不进行赘述，有兴趣的读者可以自行研究。</p>
+<h3 id="网络应用开发"><a href="#网络应用开发" class="headerlink" title="网络应用开发"></a>网络应用开发</h3><h4 id="发送电子邮件"><a href="#发送电子邮件" class="headerlink" title="发送电子邮件"></a>发送电子邮件</h4><p>在即时通信软件如此发达的今天，电子邮件仍然是互联网上使用最为广泛的应用之一，公司向应聘者发出录用通知、网站向用户发送一个激活账号的链接、银行向客户推广它们的理财产品等几乎都是通过电子邮件来完成的，而这些任务应该都是由程序自动完成的。</p>
+<p>就像我们可以用HTTP（超文本传输协议）来访问一个网站一样，发送邮件要使用SMTP（简单邮件传输协议），SMTP也是一个建立在TCP（传输控制协议）提供的可靠数据传输服务的基础上的应用级协议，它规定了邮件的发送者如何跟发送邮件的服务器进行通信的细节，而Python中的smtplib模块将这些操作简化成了几个简单的函数。</p>
+<p>下面的代码演示了如何在Python发送邮件。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">from</span> smtplib <span class="hljs-keyword">import</span> SMTP<br><span class="hljs-keyword">from</span> email.header <span class="hljs-keyword">import</span> Header<br><span class="hljs-keyword">from</span> email.mime.text <span class="hljs-keyword">import</span> MIMEText<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    <span class="hljs-comment"># 请自行修改下面的邮件发送者和接收者</span><br>    sender = <span class="hljs-string">&#x27;abcdefg@126.com&#x27;</span><br>    receivers = [<span class="hljs-string">&#x27;uvwxyz@qq.com&#x27;</span>, <span class="hljs-string">&#x27;uvwxyz@126.com&#x27;</span>]<br>    message = MIMEText(<span class="hljs-string">&#x27;用Python发送邮件的示例代码.&#x27;</span>, <span class="hljs-string">&#x27;plain&#x27;</span>, <span class="hljs-string">&#x27;utf-8&#x27;</span>)<br>    message[<span class="hljs-string">&#x27;From&#x27;</span>] = Header(<span class="hljs-string">&#x27;王大锤&#x27;</span>, <span class="hljs-string">&#x27;utf-8&#x27;</span>)<br>    message[<span class="hljs-string">&#x27;To&#x27;</span>] = Header(<span class="hljs-string">&#x27;骆昊&#x27;</span>, <span class="hljs-string">&#x27;utf-8&#x27;</span>)<br>    message[<span class="hljs-string">&#x27;Subject&#x27;</span>] = Header(<span class="hljs-string">&#x27;示例代码实验邮件&#x27;</span>, <span class="hljs-string">&#x27;utf-8&#x27;</span>)<br>    smtper = SMTP(<span class="hljs-string">&#x27;smtp.126.com&#x27;</span>)<br>    <span class="hljs-comment"># 请自行修改下面的登录口令</span><br>    smtper.login(sender, <span class="hljs-string">&#x27;secretpass&#x27;</span>)<br>    smtper.sendmail(sender, receivers, message.as_string())<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;邮件发送完成!&#x27;</span>)<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    main()<br></code></pre></td></tr></table></figure>
+
+<p>如果要发送带有附件的邮件，那么可以按照下面的方式进行操作。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">from</span> smtplib <span class="hljs-keyword">import</span> SMTP<br><span class="hljs-keyword">from</span> email.header <span class="hljs-keyword">import</span> Header<br><span class="hljs-keyword">from</span> email.mime.text <span class="hljs-keyword">import</span> MIMEText<br><span class="hljs-keyword">from</span> email.mime.image <span class="hljs-keyword">import</span> MIMEImage<br><span class="hljs-keyword">from</span> email.mime.multipart <span class="hljs-keyword">import</span> MIMEMultipart<br><br><span class="hljs-keyword">import</span> urllib<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    <span class="hljs-comment"># 创建一个带附件的邮件消息对象</span><br>    message = MIMEMultipart()<br>    <br>    <span class="hljs-comment"># 创建文本内容</span><br>    text_content = MIMEText(<span class="hljs-string">&#x27;附件中有本月数据请查收&#x27;</span>, <span class="hljs-string">&#x27;plain&#x27;</span>, <span class="hljs-string">&#x27;utf-8&#x27;</span>)<br>    message[<span class="hljs-string">&#x27;Subject&#x27;</span>] = Header(<span class="hljs-string">&#x27;本月数据&#x27;</span>, <span class="hljs-string">&#x27;utf-8&#x27;</span>)<br>    <span class="hljs-comment"># 将文本内容添加到邮件消息对象中</span><br>    message.attach(text_content)<br><br>    <span class="hljs-comment"># 读取文件并将文件作为附件添加到邮件消息对象中</span><br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;/Users/Hao/Desktop/hello.txt&#x27;</span>, <span class="hljs-string">&#x27;rb&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>        txt = MIMEText(f.read(), <span class="hljs-string">&#x27;base64&#x27;</span>, <span class="hljs-string">&#x27;utf-8&#x27;</span>)<br>        txt[<span class="hljs-string">&#x27;Content-Type&#x27;</span>] = <span class="hljs-string">&#x27;text/plain&#x27;</span><br>        txt[<span class="hljs-string">&#x27;Content-Disposition&#x27;</span>] = <span class="hljs-string">&#x27;attachment; filename=hello.txt&#x27;</span><br>        message.attach(txt)<br>    <span class="hljs-comment"># 读取文件并将文件作为附件添加到邮件消息对象中</span><br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;/Users/Hao/Desktop/汇总数据.xlsx&#x27;</span>, <span class="hljs-string">&#x27;rb&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>        xls = MIMEText(f.read(), <span class="hljs-string">&#x27;base64&#x27;</span>, <span class="hljs-string">&#x27;utf-8&#x27;</span>)<br>        xls[<span class="hljs-string">&#x27;Content-Type&#x27;</span>] = <span class="hljs-string">&#x27;application/vnd.ms-excel&#x27;</span><br>        xls[<span class="hljs-string">&#x27;Content-Disposition&#x27;</span>] = <span class="hljs-string">&#x27;attachment; filename=month-data.xlsx&#x27;</span><br>        message.attach(xls)<br>    <br>    <span class="hljs-comment"># 创建SMTP对象</span><br>    smtper = SMTP(<span class="hljs-string">&#x27;smtp.126.com&#x27;</span>)<br>    <span class="hljs-comment"># 开启安全连接</span><br>    <span class="hljs-comment"># smtper.starttls()</span><br>    sender = <span class="hljs-string">&#x27;abcdefg@126.com&#x27;</span><br>    receivers = [<span class="hljs-string">&#x27;uvwxyz@qq.com&#x27;</span>]<br>    <span class="hljs-comment"># 登录到SMTP服务器</span><br>    <span class="hljs-comment"># 请注意此处不是使用密码而是邮件客户端授权码进行登录</span><br>    <span class="hljs-comment"># 对此有疑问的读者可以联系自己使用的邮件服务器客服</span><br>    smtper.login(sender, <span class="hljs-string">&#x27;secretpass&#x27;</span>)<br>    <span class="hljs-comment"># 发送邮件</span><br>    smtper.sendmail(sender, receivers, message.as_string())<br>    <span class="hljs-comment"># 与邮件服务器断开连接</span><br>    smtper.quit()<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;发送完成!&#x27;</span>)<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    main()<br></code></pre></td></tr></table></figure>
+
+<h4 id="发送短信"><a href="#发送短信" class="headerlink" title="发送短信"></a>发送短信</h4><p>发送短信也是项目中常见的功能，网站的注册码、验证码、营销信息基本上都是通过短信来发送给用户的。在下面的代码中我们使用了<a target="_blank" rel="noopener" href="http://www.ihuyi.com/">互亿无线</a>短信平台（该平台为注册用户提供了50条免费短信以及常用开发语言发送短信的demo，可以登录该网站并在用户自服务页面中对短信进行配置）提供的API接口实现了发送短信的服务，当然国内的短信平台很多，读者可以根据自己的需要进行选择（通常会考虑费用预算、短信达到率、使用的难易程度等指标），如果需要在商业项目中使用短信服务建议购买短信平台提供的套餐服务。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">import</span> urllib.parse<br><span class="hljs-keyword">import</span> http.client<br><span class="hljs-keyword">import</span> json<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    host  = <span class="hljs-string">&quot;106.ihuyi.com&quot;</span><br>    sms_send_uri = <span class="hljs-string">&quot;/webservice/sms.php?method=Submit&quot;</span><br>    <span class="hljs-comment"># 下面的参数需要填入自己注册的账号和对应的密码</span><br>    params = urllib.parse.urlencode(&#123;<span class="hljs-string">&#x27;account&#x27;</span>: <span class="hljs-string">&#x27;你自己的账号&#x27;</span>, <span class="hljs-string">&#x27;password&#x27;</span> : <span class="hljs-string">&#x27;你自己的密码&#x27;</span>, <span class="hljs-string">&#x27;content&#x27;</span>: <span class="hljs-string">&#x27;您的验证码是：147258。请不要把验证码泄露给其他人。&#x27;</span>, <span class="hljs-string">&#x27;mobile&#x27;</span>: <span class="hljs-string">&#x27;接收者的手机号&#x27;</span>, <span class="hljs-string">&#x27;format&#x27;</span>:<span class="hljs-string">&#x27;json&#x27;</span> &#125;)<br>    <span class="hljs-built_in">print</span>(params)<br>    headers = &#123;<span class="hljs-string">&#x27;Content-type&#x27;</span>: <span class="hljs-string">&#x27;application/x-www-form-urlencoded&#x27;</span>, <span class="hljs-string">&#x27;Accept&#x27;</span>: <span class="hljs-string">&#x27;text/plain&#x27;</span>&#125;<br>    conn = http.client.HTTPConnection(host, port=<span class="hljs-number">80</span>, timeout=<span class="hljs-number">30</span>)<br>    conn.request(<span class="hljs-string">&#x27;POST&#x27;</span>, sms_send_uri, params, headers)<br>    response = conn.getresponse()<br>    response_str = response.read()<br>    jsonstr = response_str.decode(<span class="hljs-string">&#x27;utf-8&#x27;</span>)<br>    <span class="hljs-built_in">print</span>(json.loads(jsonstr))<br>    conn.close()<br><br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    main()<br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/python100day/" class="category-chain-item">python100day</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/python/">#python</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>python100day-14</div>
+      <div>https://liyupin.github.io/2022/08/05/python100day-14/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Cper Liu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年8月5日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/08/03/python100day-13/" title="python100day-13">
+                        <span class="hidden-mobile">python100day-13</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
