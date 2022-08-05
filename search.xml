@@ -1742,7 +1742,7 @@
   <entry>
     <title>GitLab基础：新版本下使用gitlab-rake进行备份和恢复</title>
     <url>/2022/07/13/GitLab%20%E6%95%B0%E6%8D%AE%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D/</url>
-    <content><![CDATA[<h1 id="GitLab基础：新版本下使用gitlab-rake进行备份和恢复"><a href="#GitLab基础：新版本下使用gitlab-rake进行备份和恢复" class="headerlink" title="GitLab基础：新版本下使用gitlab-rake进行备份和恢复"></a>GitLab基础：新版本下使用gitlab-rake进行备份和恢复</h1><h1 id="gitlab管理员账号"><a href="#gitlab管理员账号" class="headerlink" title="gitlab管理员账号"></a>gitlab管理员账号</h1><p><a href="mailto:&#x61;&#x64;&#109;&#105;&#110;&#64;&#101;&#120;&#x61;&#109;&#x70;&#x6c;&#101;&#46;&#99;&#x6f;&#109;">&#x61;&#x64;&#109;&#105;&#110;&#64;&#101;&#120;&#x61;&#109;&#x70;&#x6c;&#101;&#46;&#99;&#x6f;&#109;</a></p>
+    <content><![CDATA[<h1 id="GitLab基础：新版本下使用gitlab-rake进行备份和恢复"><a href="#GitLab基础：新版本下使用gitlab-rake进行备份和恢复" class="headerlink" title="GitLab基础：新版本下使用gitlab-rake进行备份和恢复"></a>GitLab基础：新版本下使用gitlab-rake进行备份和恢复</h1><h1 id="gitlab管理员账号"><a href="#gitlab管理员账号" class="headerlink" title="gitlab管理员账号"></a>gitlab管理员账号</h1><p><a href="mailto:&#x61;&#100;&#109;&#x69;&#x6e;&#x40;&#x65;&#120;&#97;&#x6d;&#112;&#x6c;&#101;&#x2e;&#99;&#x6f;&#x6d;">&#x61;&#100;&#109;&#x69;&#x6e;&#x40;&#x65;&#120;&#97;&#x6d;&#112;&#x6c;&#101;&#x2e;&#99;&#x6f;&#x6d;</a></p>
 <p><img src="https://img-blog.csdnimg.cn/20200719101629711.jpeg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdW1pYW9jbg==,size_16,color_FFFFFF,t_70#pic_center#pic_center" alt="在这里插入图片描述"></p>
 <p>从GitLab12.1开始，可以直接使用rake进行备份，如果之前的项目中使用的gitlab-rake进行备份和恢复的方式是否可用这个观点进行了如下实验，通过本文进行简单记录。</p>
 <h1 id="备份源环境准备"><a href="#备份源环境准备" class="headerlink" title="备份源环境准备"></a>备份源环境准备</h1><p>容器化方式，直接使用docker-compose，启动如下服务</p>
@@ -2174,6 +2174,49 @@
 ]]></content>
   </entry>
   <entry>
+    <title>Prometheus 存储容量规划</title>
+    <url>/2022/07/14/Prometheus%20%E5%AD%98%E5%82%A8%E5%AE%B9%E9%87%8F%E8%A7%84%E5%88%92/</url>
+    <content><![CDATA[<h1 id="Prometheus-存储容量规划"><a href="#Prometheus-存储容量规划" class="headerlink" title="Prometheus 存储容量规划"></a><a href="http://support.transwarp.cn/t/topic/3226">Prometheus 存储容量规划</a></h1><p><a href="http://support.transwarp.cn/u/dezheng"><img src="http://support.transwarp.cn/letter_avatar_proxy/v2/letter/d/73ab20/45.png" alt="dezheng"></a></p>
+<p>.</p>
+<p>本文主要分析 Prometheus 在 TDH 集群上运行时存储用量受到哪些因素影响，以及如何根据这些因素得出一个经验公式, 用来预估 Prometheus 的磁盘使用量和内存消耗</p>
+<p>经验公式<br>正式分析 Prometheus 的磁盘使用量和内存消耗 之前，先给一个基本的经验公式，可以直接根据这个公式来合理分配磁盘与内存.</p>
+<p>Prometheus 需要磁盘大小 &#x3D; 节点个数 * 1 GB<br>Prometheus 需要内存大小 &#x3D; 节点个数 * 50 MB</p>
+<p>磁盘容量规划<br>首先明确几个概念:</p>
+<ul>
+<li>监控节点: 一个 exporter 进程被认为是一个监控节点。Manager 在安装 AQUILA时，默认每个节点都会安装一个 node-exporter 收集节点信息(CPU, Memory 等), 每个节点安装一个 tdh-exporter 收集 TDH Services metrics (目前有: HDFS, YARN, ZOOKEEPER, KAFKA, HYPERBASE, INCEPTOR). 故在 TDH 集群上, 每个节点有两个 exporter 进程.</li>
+<li>测量点: 一个测量点代表了某监控节点上的一个观测对象. 从某测量点采集到的一组样本数据构成一条时间序列（time series).</li>
+<li>抓取间隔: Promtheus 对某个监控节点采集 metrics 的时间间隔. 一般为同类监控节点设置相同的抓取间隔. AQUILA对应的配置值为: prometheus.node.exporter.scrape_interval(默认15s) 和 prometheus.tdh.exporter.scrape_interval(默认60s)</li>
+<li>保留时间: 样本数据在磁盘上保存的时间,超过该时间限制的数据就会被删除. 存储在磁盘上的样本都是经过编码之后的样本(对样本进行过数据编码, 一般为 double-delta 编码). AQUILA对应的配置值为 prometheus.storage.retention.time(默认15天)</li>
+<li>活跃样本留存时间: 留存于内存的活跃样本（已经被编码）在内存保留时间. 在内存中的留存数据越多，查询过往数据的性能越高，但是消耗内存也会增加. 在实际应用中，需要根据所监控的业务的性质，设定合理的内存留存时间. AQUILA对应的配置值为 prometheus.min-block-duration (默认2h), prometheus.max-block-duration(默认36h). Facebook 在论文 《Gorilla: A Fast, Scalable, In-Memory Time Series DataBase》 （Prometheus实现参考论文）中给出了留存内存时间的一般经验: 26 h.</li>
+<li>样本(测量点)大小: 根据 Prometheus 官方文档说明, 每一个编码后的样本大概占用1-2字节大小</li>
+</ul>
+<p>每个监控节点上的测量点由具体使用的 exporter 定义, 测量点可根据 exporter 暴露给 prometheus 的 api 获取（以下测量点为 TDH 集群上单个节点上的测量点：<br>node-exporter 有 534 个测量点<br>tdh-exporter 有 481 个测量点 （每个服务均安装一个）</p>
+<p>根据以上概念可以得出, Prometheus 存储用量受到: 测量点(即样本数量), 样本大小, 抓取间隔, 保留时间四个因素影响.</p>
+<p>根据 Prometheus 官方文档说明: 磁盘大小 &#x3D; 保留时间 * 每秒获取样本数 * 样本大小<br>官方文档中的每秒获取样本数可由抓取间隔内收集的样本总数除以抓取间隔获取.</p>
+<p>根据以上公式我们可以得出在 TDH 集群上, Promethues 压缩样本使用磁盘大小公式为 :<br>compact_data_disk_usage &#x3D; (534 &#x2F; prometheus.node.exporter.scrape_interval + 481 &#x2F; prometheus.tdh.exporter.scrape_interval) * nodeNum * prometheus.storage.retention.time (in seconds) * 单个样本平均大小(1-2 bytes)</p>
+<p>将上述值全部替换为默认参数计算:<br>compact_data_disk_usage &#x3D; (534 &#x2F; 15 + 481 &#x2F; 60) * 3 * (15 * 24 * 60 * 60) * 2 &#x3D; 339163200 bytes &#x3D; 323 mb</p>
+<p>除了持久化在磁盘的样本之外, 根据Prometheus 官方文档说明, Prometheus 还在在磁盘上写入 write-ahead-log (WAL) 来防止 Prometheus 程序突然崩溃导致在内存中的未写入的磁盘的样本的丢失. WAL 文件大小取决于Prometheus 留存于内存的活跃样本的大小. 而留存于内存的活跃样本的大小又取决于每秒获取样本数和活跃样本留存内存时间.记录活跃样本信息的 WAL 文件都是 raw data, 故大小比经过编码之后的样本大得多. Prometheus 官方文档中说明至少会保存3个 write-ahead log files(每一个最大为128M), 如果实际使用中留存内存的样本数量非常大, 那么用来记录样本的 WAL 文件可能需要不止三个.</p>
+<p>计算 wal file 之前需要计算留存于内存的活跃样本占用内存大小<br>active_data_mem_uage &#x3D; (534 &#x2F; prometheus.node.exporter.scrape_interval + 481 &#x2F; prometheus.tdh.exporter.scrape_interval) * nodeNum * prometheus.max-block-duration(in seconds) * 单个样本平均大小(1-2 bytes)</p>
+<p>将上述值全部替换为默认参数计算:<br>active_data_mem_uage &#x3D; (534 &#x2F; 15 + 481 &#x2F; 60) * 3 * (36 * 60 * 60) * 2 &#x3D; 33916320 bytes &#x3D; 32 mb<br>Prometheus 编码之后的样本平均大小为1~2 bytes, 而未编码的 double类型数据为 8 bytes, 故raw data最大可为编码之后的样本数据的八倍. 可以粗略的认为 WAL file 大小和 样本 raw data近似相等, 故可以得出公式:<br>wal_file_disk_usage &#x3D; active_data_mem_uage * (8 &#x2F; 1) &#x3D; 256m</p>
+<p>综上所述, total_disk_usage &#x3D; compact_data_disk_usage + wal_file_disk_usage, 考虑集群的扩展性，建议预留磁盘空间为 total_disk_usage * 5.<br>故在有三个节点的 TDH 集群上，TDH Services 均安装一个, AQUILA 参数均为默认参数的情况下, 使用的磁盘大小预估为: 323 mb + 256m &#x3D; 579m, 考虑到后续集群的扩展性, 建议大小为: 579 * 5 &#x3D; 2895 mb</p>
+<p>在实际集群上，我们可以根据部署的需求，例如部署多个Inceptor(会导致tdh-exporter测量点增加), 减少抓取间隔 (导致每秒获取样本数增加), 增加保留时间, 添加新的监控节点，以上因素均会导致 prometheus 磁盘使用量增加.我们可初步根据上述公式，计算出一个合理的磁盘使用空间.</p>
+<p>内存容量规划<br>Prometheus 对内存的使用由以下四个部分组成：</p>
+<ul>
+<li>留存于内存的活跃样本</li>
+<li>排队等待持久化的过期样本</li>
+<li>索引数据</li>
+<li>其他运行时内存消耗</li>
+</ul>
+<p>1). 留存于内存的活跃样本<br>active_data_mem_uage &#x3D; (534 &#x2F; prometheus.node.exporter.scrape_interval + 481 &#x2F; prometheus.tdh.exporter.scrape_interval) * nodeNum * prometheus.max-block-duration(in seconds) * 单个样本平均大小(1-2 bytes)</p>
+<p>将上述值全部替换为默认参数计算:<br>active_data_mem_uage &#x3D; (534 &#x2F; 15 + 481 &#x2F; 60) * 3 * (36 * 60 * 60) * 2 &#x3D; 32 mb</p>
+<p>2). 排队等待持久化的过期样本<br>当留存于内存的样本超过了最大留存时间 prometheus.max-block-duration(默认36h), 会被持久化到磁盘.<br>一个经验值: 排队等待持久化的过期样本占用内存大小不会超过 active_data_mem_uage.</p>
+<p>3). 索引数据<br>索引数据所需的内存较少，一个经验公式为，每一千个时间序列大约需要 1M 内存. 在本文中使用的时间序列大小为: (534 + 481) * 3 &#x3D; 3M</p>
+<p>4). 其他运行时内存消耗<br>Prometheus 程序本身运行消耗的内存非常小, 不会超过留存于内存的活跃样本内存大小</p>
+<p>综上所述，Prometheus 内存等于上述四部分相加, 排队等待持久化的过期样本占用内存大小不会超过留存于内存的活跃样本内存大小, 索引数据大小可忽略, 其他运行时内存消耗大小也不会超过留存于内存的活跃样本内存大小.</p>
+<p>故一个Prometheu 内存容量经验公式为:<br>total_mem_usage &#x3D; 3 * active_data_mem_uage</p>
+]]></content>
+  </entry>
+  <entry>
     <title>Newben3.0 一键部署详细安装文档</title>
     <url>/2022/07/07/Newben3.0%20%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2%E8%AF%A6%E7%BB%86%E5%AE%89%E8%A3%85%E6%96%87%E6%A1%A3/</url>
     <content><![CDATA[<h1 id="Newben3-0-一键部署详细安装文档"><a href="#Newben3-0-一键部署详细安装文档" class="headerlink" title="Newben3.0 一键部署详细安装文档"></a>Newben3.0 一键部署详细安装文档</h1><p>本文档主要用于帮助用户在虚拟机或物理机上安装<code>newben3.0</code>的核心组件与安装<code>web</code>客户端。</p>
@@ -2418,49 +2461,6 @@
       <tags>
         <tag>newben</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Prometheus 存储容量规划</title>
-    <url>/2022/07/14/Prometheus%20%E5%AD%98%E5%82%A8%E5%AE%B9%E9%87%8F%E8%A7%84%E5%88%92/</url>
-    <content><![CDATA[<h1 id="Prometheus-存储容量规划"><a href="#Prometheus-存储容量规划" class="headerlink" title="Prometheus 存储容量规划"></a><a href="http://support.transwarp.cn/t/topic/3226">Prometheus 存储容量规划</a></h1><p><a href="http://support.transwarp.cn/u/dezheng"><img src="http://support.transwarp.cn/letter_avatar_proxy/v2/letter/d/73ab20/45.png" alt="dezheng"></a></p>
-<p>.</p>
-<p>本文主要分析 Prometheus 在 TDH 集群上运行时存储用量受到哪些因素影响，以及如何根据这些因素得出一个经验公式, 用来预估 Prometheus 的磁盘使用量和内存消耗</p>
-<p>经验公式<br>正式分析 Prometheus 的磁盘使用量和内存消耗 之前，先给一个基本的经验公式，可以直接根据这个公式来合理分配磁盘与内存.</p>
-<p>Prometheus 需要磁盘大小 &#x3D; 节点个数 * 1 GB<br>Prometheus 需要内存大小 &#x3D; 节点个数 * 50 MB</p>
-<p>磁盘容量规划<br>首先明确几个概念:</p>
-<ul>
-<li>监控节点: 一个 exporter 进程被认为是一个监控节点。Manager 在安装 AQUILA时，默认每个节点都会安装一个 node-exporter 收集节点信息(CPU, Memory 等), 每个节点安装一个 tdh-exporter 收集 TDH Services metrics (目前有: HDFS, YARN, ZOOKEEPER, KAFKA, HYPERBASE, INCEPTOR). 故在 TDH 集群上, 每个节点有两个 exporter 进程.</li>
-<li>测量点: 一个测量点代表了某监控节点上的一个观测对象. 从某测量点采集到的一组样本数据构成一条时间序列（time series).</li>
-<li>抓取间隔: Promtheus 对某个监控节点采集 metrics 的时间间隔. 一般为同类监控节点设置相同的抓取间隔. AQUILA对应的配置值为: prometheus.node.exporter.scrape_interval(默认15s) 和 prometheus.tdh.exporter.scrape_interval(默认60s)</li>
-<li>保留时间: 样本数据在磁盘上保存的时间,超过该时间限制的数据就会被删除. 存储在磁盘上的样本都是经过编码之后的样本(对样本进行过数据编码, 一般为 double-delta 编码). AQUILA对应的配置值为 prometheus.storage.retention.time(默认15天)</li>
-<li>活跃样本留存时间: 留存于内存的活跃样本（已经被编码）在内存保留时间. 在内存中的留存数据越多，查询过往数据的性能越高，但是消耗内存也会增加. 在实际应用中，需要根据所监控的业务的性质，设定合理的内存留存时间. AQUILA对应的配置值为 prometheus.min-block-duration (默认2h), prometheus.max-block-duration(默认36h). Facebook 在论文 《Gorilla: A Fast, Scalable, In-Memory Time Series DataBase》 （Prometheus实现参考论文）中给出了留存内存时间的一般经验: 26 h.</li>
-<li>样本(测量点)大小: 根据 Prometheus 官方文档说明, 每一个编码后的样本大概占用1-2字节大小</li>
-</ul>
-<p>每个监控节点上的测量点由具体使用的 exporter 定义, 测量点可根据 exporter 暴露给 prometheus 的 api 获取（以下测量点为 TDH 集群上单个节点上的测量点：<br>node-exporter 有 534 个测量点<br>tdh-exporter 有 481 个测量点 （每个服务均安装一个）</p>
-<p>根据以上概念可以得出, Prometheus 存储用量受到: 测量点(即样本数量), 样本大小, 抓取间隔, 保留时间四个因素影响.</p>
-<p>根据 Prometheus 官方文档说明: 磁盘大小 &#x3D; 保留时间 * 每秒获取样本数 * 样本大小<br>官方文档中的每秒获取样本数可由抓取间隔内收集的样本总数除以抓取间隔获取.</p>
-<p>根据以上公式我们可以得出在 TDH 集群上, Promethues 压缩样本使用磁盘大小公式为 :<br>compact_data_disk_usage &#x3D; (534 &#x2F; prometheus.node.exporter.scrape_interval + 481 &#x2F; prometheus.tdh.exporter.scrape_interval) * nodeNum * prometheus.storage.retention.time (in seconds) * 单个样本平均大小(1-2 bytes)</p>
-<p>将上述值全部替换为默认参数计算:<br>compact_data_disk_usage &#x3D; (534 &#x2F; 15 + 481 &#x2F; 60) * 3 * (15 * 24 * 60 * 60) * 2 &#x3D; 339163200 bytes &#x3D; 323 mb</p>
-<p>除了持久化在磁盘的样本之外, 根据Prometheus 官方文档说明, Prometheus 还在在磁盘上写入 write-ahead-log (WAL) 来防止 Prometheus 程序突然崩溃导致在内存中的未写入的磁盘的样本的丢失. WAL 文件大小取决于Prometheus 留存于内存的活跃样本的大小. 而留存于内存的活跃样本的大小又取决于每秒获取样本数和活跃样本留存内存时间.记录活跃样本信息的 WAL 文件都是 raw data, 故大小比经过编码之后的样本大得多. Prometheus 官方文档中说明至少会保存3个 write-ahead log files(每一个最大为128M), 如果实际使用中留存内存的样本数量非常大, 那么用来记录样本的 WAL 文件可能需要不止三个.</p>
-<p>计算 wal file 之前需要计算留存于内存的活跃样本占用内存大小<br>active_data_mem_uage &#x3D; (534 &#x2F; prometheus.node.exporter.scrape_interval + 481 &#x2F; prometheus.tdh.exporter.scrape_interval) * nodeNum * prometheus.max-block-duration(in seconds) * 单个样本平均大小(1-2 bytes)</p>
-<p>将上述值全部替换为默认参数计算:<br>active_data_mem_uage &#x3D; (534 &#x2F; 15 + 481 &#x2F; 60) * 3 * (36 * 60 * 60) * 2 &#x3D; 33916320 bytes &#x3D; 32 mb<br>Prometheus 编码之后的样本平均大小为1~2 bytes, 而未编码的 double类型数据为 8 bytes, 故raw data最大可为编码之后的样本数据的八倍. 可以粗略的认为 WAL file 大小和 样本 raw data近似相等, 故可以得出公式:<br>wal_file_disk_usage &#x3D; active_data_mem_uage * (8 &#x2F; 1) &#x3D; 256m</p>
-<p>综上所述, total_disk_usage &#x3D; compact_data_disk_usage + wal_file_disk_usage, 考虑集群的扩展性，建议预留磁盘空间为 total_disk_usage * 5.<br>故在有三个节点的 TDH 集群上，TDH Services 均安装一个, AQUILA 参数均为默认参数的情况下, 使用的磁盘大小预估为: 323 mb + 256m &#x3D; 579m, 考虑到后续集群的扩展性, 建议大小为: 579 * 5 &#x3D; 2895 mb</p>
-<p>在实际集群上，我们可以根据部署的需求，例如部署多个Inceptor(会导致tdh-exporter测量点增加), 减少抓取间隔 (导致每秒获取样本数增加), 增加保留时间, 添加新的监控节点，以上因素均会导致 prometheus 磁盘使用量增加.我们可初步根据上述公式，计算出一个合理的磁盘使用空间.</p>
-<p>内存容量规划<br>Prometheus 对内存的使用由以下四个部分组成：</p>
-<ul>
-<li>留存于内存的活跃样本</li>
-<li>排队等待持久化的过期样本</li>
-<li>索引数据</li>
-<li>其他运行时内存消耗</li>
-</ul>
-<p>1). 留存于内存的活跃样本<br>active_data_mem_uage &#x3D; (534 &#x2F; prometheus.node.exporter.scrape_interval + 481 &#x2F; prometheus.tdh.exporter.scrape_interval) * nodeNum * prometheus.max-block-duration(in seconds) * 单个样本平均大小(1-2 bytes)</p>
-<p>将上述值全部替换为默认参数计算:<br>active_data_mem_uage &#x3D; (534 &#x2F; 15 + 481 &#x2F; 60) * 3 * (36 * 60 * 60) * 2 &#x3D; 32 mb</p>
-<p>2). 排队等待持久化的过期样本<br>当留存于内存的样本超过了最大留存时间 prometheus.max-block-duration(默认36h), 会被持久化到磁盘.<br>一个经验值: 排队等待持久化的过期样本占用内存大小不会超过 active_data_mem_uage.</p>
-<p>3). 索引数据<br>索引数据所需的内存较少，一个经验公式为，每一千个时间序列大约需要 1M 内存. 在本文中使用的时间序列大小为: (534 + 481) * 3 &#x3D; 3M</p>
-<p>4). 其他运行时内存消耗<br>Prometheus 程序本身运行消耗的内存非常小, 不会超过留存于内存的活跃样本内存大小</p>
-<p>综上所述，Prometheus 内存等于上述四部分相加, 排队等待持久化的过期样本占用内存大小不会超过留存于内存的活跃样本内存大小, 索引数据大小可忽略, 其他运行时内存消耗大小也不会超过留存于内存的活跃样本内存大小.</p>
-<p>故一个Prometheu 内存容量经验公式为:<br>total_mem_usage &#x3D; 3 * active_data_mem_uage</p>
-]]></content>
   </entry>
   <entry>
     <title>Python pip 安装与使用</title>
@@ -3222,7 +3222,7 @@
 <p>异常进程分析处理建议</p>
 <p>   如果是CPU或带宽利用率高由于病毒、木马入侵等这些异常进程导致的，那么需要手动结束进程。建议的处理顺序如下：</p>
 <p>   另外提醒下，若服务器或站点遭受DDOS攻击或CC攻击等，短期内产生大量的访问需求。还可以购买安全防护产品。</p>
-<p>   本文来自网络或网友投稿，如有侵犯您的权益请联系邮箱:<a href="mailto:&#119;&#x79;&#x6c;&#x38;&#x36;&#48;&#50;&#49;&#49;&#x40;&#113;&#113;&#x2e;&#99;&#x6f;&#109;">&#119;&#x79;&#x6c;&#x38;&#x36;&#48;&#50;&#49;&#49;&#x40;&#113;&#113;&#x2e;&#99;&#x6f;&#109;</a>,我们将第一时间删除。</p>
+<p>   本文来自网络或网友投稿，如有侵犯您的权益请联系邮箱:<a href="mailto:&#x77;&#121;&#x6c;&#x38;&#x36;&#48;&#50;&#49;&#x31;&#64;&#x71;&#x71;&#46;&#99;&#111;&#x6d;">&#x77;&#121;&#x6c;&#x38;&#x36;&#48;&#50;&#49;&#x31;&#64;&#x71;&#x71;&#46;&#99;&#111;&#x6d;</a>,我们将第一时间删除。</p>
 ]]></content>
   </entry>
   <entry>
@@ -4800,7 +4800,7 @@
 <h4 id="2、代理服务器不需要鉴权配置"><a href="#2、代理服务器不需要鉴权配置" class="headerlink" title="2、代理服务器不需要鉴权配置"></a>2、代理服务器不需要鉴权配置</h4><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">git config --global https.proxy https://proxy.baidu.com:8080<br></code></pre></td></tr></table></figure>
 <h1 id="密码中特殊字符处理"><a href="#密码中特殊字符处理" class="headerlink" title="密码中特殊字符处理"></a>密码中特殊字符处理</h1><p>如果密码中有@等特殊字符，会出错，比如</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">git config --global http.proxy http://username:abc@123@proxy.baidu.com:8080<br></code></pre></td></tr></table></figure>
-<p>解析时会从第一个@解析，提示@<a href="mailto:&#49;&#x32;&#x33;&#x40;&#x70;&#114;&#111;&#120;&#121;&#104;&#107;&#46;&#x68;&#117;&#x61;&#119;&#101;&#x69;&#46;&#99;&#111;&#x6d;">&#49;&#x32;&#x33;&#x40;&#x70;&#114;&#111;&#120;&#121;&#104;&#107;&#46;&#x68;&#117;&#x61;&#119;&#101;&#x69;&#46;&#99;&#111;&#x6d;</a>找不到，此时要对其中的特殊符号进行处理，使用百分比编码(Percent-encoding)对特殊字符进行转换，转换列表如下：</p>
+<p>解析时会从第一个@解析，提示@<a href="mailto:&#49;&#x32;&#x33;&#64;&#x70;&#x72;&#111;&#120;&#121;&#104;&#107;&#46;&#104;&#x75;&#x61;&#x77;&#101;&#105;&#x2e;&#x63;&#x6f;&#109;">&#49;&#x32;&#x33;&#64;&#x70;&#x72;&#111;&#120;&#121;&#104;&#107;&#46;&#104;&#x75;&#x61;&#x77;&#101;&#105;&#x2e;&#x63;&#x6f;&#109;</a>找不到，此时要对其中的特殊符号进行处理，使用百分比编码(Percent-encoding)对特殊字符进行转换，转换列表如下：</p>
 <blockquote>
 <p>! –&gt; %21  # –&gt; %23  $ –&gt; %24  &amp; –&gt; %26  ‘ –&gt; %27</p>
 <p>( –&gt; %28  ) –&gt; %29  * –&gt; %2A  + –&gt; %2B  , –&gt; %2C</p>
@@ -4824,7 +4824,7 @@
   <entry>
     <title>git配置用户</title>
     <url>/2022/07/12/git%E9%85%8D%E7%BD%AE%E7%94%A8%E6%88%B7/</url>
-    <content><![CDATA[<p>git config –global user.email “<a href="mailto:&#52;&#48;&#50;&#x32;&#x33;&#x39;&#51;&#x39;&#x39;&#64;&#113;&#x71;&#46;&#x63;&#111;&#109;">&#52;&#48;&#50;&#x32;&#x33;&#x39;&#51;&#x39;&#x39;&#64;&#113;&#x71;&#46;&#x63;&#111;&#109;</a>“<br>git config –global user.name “liyupin”</p>
+    <content><![CDATA[<p>git config –global user.email “<a href="mailto:&#x34;&#x30;&#x32;&#x32;&#x33;&#x39;&#51;&#57;&#x39;&#x40;&#x71;&#x71;&#x2e;&#99;&#x6f;&#x6d;">&#x34;&#x30;&#x32;&#x32;&#x33;&#x39;&#51;&#57;&#x39;&#x40;&#x71;&#x71;&#x2e;&#99;&#x6f;&#x6d;</a>“<br>git config –global user.name “liyupin”</p>
 ]]></content>
   </entry>
   <entry>
@@ -6212,7 +6212,8 @@
 </ol>
 <p>  <br><img src="/images/pasted-74.png" alt="upload successful"></p>
 <p>   有了浏览器以后，上网是这样的。</p>
-<p>  <br><img src="/images/pasted-75.png" alt="upload successful"></p>
+<p>  </p>
+<p><img src="/images/pasted-78.png" alt="upload successful"></p>
 <h4 id="TCP-x2F-IP模型"><a href="#TCP-x2F-IP模型" class="headerlink" title="TCP&#x2F;IP模型"></a>TCP&#x2F;IP模型</h4><p>实现网络通信的基础是网络通信协议，这些协议通常是由<a href="https://zh.wikipedia.org/wiki/%E4%BA%92%E8%81%94%E7%BD%91%E5%B7%A5%E7%A8%8B%E4%BB%BB%E5%8A%A1%E7%BB%84">互联网工程任务组</a> （IETF）制定的。所谓“协议”就是通信计算机双方必须共同遵从的一组约定，例如怎样建立连接、怎样互相识别等，网络协议的三要素是：语法、语义和时序。构成我们今天使用的Internet的基础的是TCP&#x2F;IP协议族，所谓协议族就是一系列的协议及其构成的通信模型，我们通常也把这套东西称为TCP&#x2F;IP模型。与国际标准化组织发布的OSI&#x2F;RM这个七层模型不同，TCP&#x2F;IP是一个四层模型，也就是说，该模型将我们使用的网络从逻辑上分解为四个层次，自底向上依次是：网络接口层、网络层、传输层和应用层，如下图所示。</p>
 <p><img src="/images/pasted-76.png" alt="upload successful"></p>
 <p>IP通常被翻译为网际协议，它服务于网络层，主要实现了寻址和路由的功能。接入网络的每一台主机都需要有自己的IP地址，IP地址就是主机在计算机网络上的身份标识。当然由于IPv4地址的匮乏，我们平常在家里、办公室以及其他可以接入网络的公共区域上网时获得的IP地址并不是全球唯一的IP地址，而是一个<a href="https://zh.wikipedia.org/zh-hans/%E5%B1%80%E5%9F%9F%E7%BD%91">局域网（LAN）</a>中的内部IP地址，通过<a href="https://zh.wikipedia.org/wiki/%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2">网络地址转换（NAT）服务</a>我们也可以实现对网络的访问。计算机网络上有大量的被我们称为“<a href="https://zh.wikipedia.org/wiki/%E8%B7%AF%E7%94%B1%E5%99%A8">路由器</a>”的网络中继设备，它们会存储转发我们发送到网络上的数据分组，让从源头发出的数据最终能够找到传送到目的地通路，这项功能就是所谓的路由。</p>
@@ -7634,7 +7635,7 @@
 <p>Encoding Credentials on Windows using Powershell</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript">$Bytes = [<span class="hljs-title class_">System</span>.<span class="hljs-property">Text</span>.<span class="hljs-property">Encoding</span>]::<span class="hljs-title class_">UTF8</span>.<span class="hljs-title class_">GetBytes</span>(<span class="hljs-string">&quot;admin:admin123&quot;</span>)<br>[<span class="hljs-title class_">Convert</span>]::<span class="hljs-title class_">ToBase64String</span>($Bytes)<br><br></code></pre></td></tr></table></figure>
 
-<p>Adding Credentials to the npm Configuration<br>Once you have the encoded credentials the value as well as author information can then be added to the .npmrc file:<br>#an email is required to publish npm packages<br>email&#x3D;<a href="mailto:&#106;&#97;&#110;&#101;&#x40;&#x65;&#x78;&#x61;&#109;&#x70;&#x6c;&#x65;&#46;&#x63;&#x6f;&#109;">&#106;&#97;&#110;&#101;&#x40;&#x65;&#x78;&#x61;&#109;&#x70;&#x6c;&#x65;&#46;&#x63;&#x6f;&#109;</a><br>always-auth&#x3D;true<br>_auth&#x3D;YWRtaW46YWRtaW4xMjM&#x3D;</p>
+<p>Adding Credentials to the npm Configuration<br>Once you have the encoded credentials the value as well as author information can then be added to the .npmrc file:<br>#an email is required to publish npm packages<br>email&#x3D;<a href="mailto:&#106;&#97;&#x6e;&#x65;&#64;&#101;&#x78;&#x61;&#x6d;&#112;&#108;&#x65;&#x2e;&#x63;&#x6f;&#109;">&#106;&#97;&#x6e;&#x65;&#64;&#101;&#x78;&#x61;&#x6d;&#112;&#108;&#x65;&#x2e;&#x63;&#x6f;&#109;</a><br>always-auth&#x3D;true<br>_auth&#x3D;YWRtaW46YWRtaW4xMjM&#x3D;</p>
 <p><em>Using whatever tool you are generating the encoded username and password string, try to encode the string admin:admin123. The result is YWRtaW46YWRtaW4xMjM&#x3D;. Another example for a valid setup is jane:testpassword123 resulting in amFuZTp0ZXN0cGFzc3dvcmQxMjM&#x3D;.<br>Once a package is published to the private registry in the repository manager, any other developers or build servers, that access it via the repository group have instant access to the packages.</em></p>
 <ul>
 <li>说明<br>修改系统用户目录文件：.npmc<br>email：设置个人邮箱地址<br>always-auth：true，设置授权<br>_auth：通过base64编码设置的用户名:密码字符串</li>
@@ -7691,9 +7692,9 @@
   <entry>
     <title>华为交换机Console密码重置</title>
     <url>/2022/07/14/%E5%8D%8E%E4%B8%BA%E4%BA%A4%E6%8D%A2%E6%9C%BAConsole%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE/</url>
-    <content><![CDATA[<p>1、通过Console口连接交换机，并重启交换机。<br>2、当界面出现以下打印信息时，及时按下快捷键“Ctrl+B”并输入BootROM&#x2F;BootLoad密码，进入BootROM&#x2F;BootLoad主菜单<br>3、密码： <a href="mailto:&#65;&#100;&#109;&#105;&#x6e;&#64;&#x68;&#x75;&#x61;&#119;&#101;&#x69;&#x2e;&#x63;&#x6f;&#109;">&#65;&#100;&#109;&#105;&#x6e;&#64;&#x68;&#x75;&#x61;&#119;&#101;&#x69;&#x2e;&#x63;&#x6f;&#109;</a> A必须大写。<br>4、选着7 Clear password for console user （选择清除console用户密码模式）。<br>5、选择1 Boot with default mode（键入1启动默认模式），进入后更改Console 及telnet密码。</p>
+    <content><![CDATA[<p>1、通过Console口连接交换机，并重启交换机。<br>2、当界面出现以下打印信息时，及时按下快捷键“Ctrl+B”并输入BootROM&#x2F;BootLoad密码，进入BootROM&#x2F;BootLoad主菜单<br>3、密码： <a href="mailto:&#x41;&#x64;&#x6d;&#105;&#110;&#x40;&#x68;&#x75;&#x61;&#119;&#101;&#105;&#x2e;&#99;&#111;&#109;">&#x41;&#x64;&#x6d;&#105;&#110;&#x40;&#x68;&#x75;&#x61;&#119;&#101;&#105;&#x2e;&#99;&#111;&#109;</a> A必须大写。<br>4、选着7 Clear password for console user （选择清除console用户密码模式）。<br>5、选择1 Boot with default mode（键入1启动默认模式），进入后更改Console 及telnet密码。</p>
 <h3 id="2设备初始化"><a href="#2设备初始化" class="headerlink" title="*2设备初始化"></a>*2设备初始化</h3><p>1、登录华为交换机<br>2、输入：reset saved-configuration 接着问你是否初始化 选择“Y”<br>3、初始化之后，需要重启交换机才能生效 “reboot”</p>
-<h3 id="3-默认用户名和密码"><a href="#3-默认用户名和密码" class="headerlink" title="3.默认用户名和密码"></a>3.默认用户名和密码</h3><p>华为交换机的默认用户名是admin，密码是<a href="mailto:&#65;&#x64;&#x6d;&#105;&#110;&#x40;&#x68;&#x75;&#x61;&#119;&#x65;&#105;&#46;&#x63;&#111;&#109;">&#65;&#x64;&#x6d;&#105;&#110;&#x40;&#x68;&#x75;&#x61;&#119;&#x65;&#105;&#46;&#x63;&#111;&#109;</a></p>
+<h3 id="3-默认用户名和密码"><a href="#3-默认用户名和密码" class="headerlink" title="3.默认用户名和密码"></a>3.默认用户名和密码</h3><p>华为交换机的默认用户名是admin，密码是<a href="mailto:&#x41;&#x64;&#x6d;&#x69;&#x6e;&#x40;&#x68;&#x75;&#97;&#x77;&#x65;&#105;&#x2e;&#99;&#x6f;&#109;">&#x41;&#x64;&#x6d;&#x69;&#x6e;&#x40;&#x68;&#x75;&#97;&#x77;&#x65;&#105;&#x2e;&#99;&#x6f;&#109;</a></p>
 ]]></content>
   </entry>
   <entry>
@@ -7949,6 +7950,186 @@
 <p>故障：到下面卡住了<br>clone(child_stack&#x3D;0x7ff631ffafb0, flags&#x3D;CLONE_VM|CLONE_FS|CLONE_FILES|CLONE_SIGHAND|CLONE_THREAD|CLONE_SYSVSEM|CLONE_SETTLS|CLONE_PARENT_SETTID|CLONE_CHILD_CLEARTID, parent_tidptr&#x3D;0x7ff631ffb9d0, tls&#x3D;0x7ff631ffb700, child_tidptr&#x3D;0x7ff631ffb9d0) &#x3D; 25759<br>rt_sigprocmask(SIG_SETMASK, [], NULL, 8) &#x3D; 0<br>futex(0x55c38622c0a8, FUTEX_WAIT, 0, NULL) &#x3D; 0</p>
 <p>正常情况<br>clone(child_stack&#x3D;0x7fa86cddffb0, flags&#x3D;CLONE_VM|CLONE_FS|CLONE_FILES|CLONE_SIGHAND|CLONE_THREAD|CLONE_SYSVSEM|CLONE_SETTLS|CLONE_PARENT_SETTID|CLONE_CHILD_CLEARTID, parent_tidptr&#x3D;0x7fa86cde09d0, tls&#x3D;0x7fa86cde0700, child_tidptr&#x3D;0x7fa86cde09d0) &#x3D; 15449<br>rt_sigprocmask(SIG_S) &#x3D; 40<br>) &#x3D; 4<br>write(2, “\33[K”, 3) &#x3D; 3<br>) &#x3D; 1<br>write(2, “8c5a7da1afbc: “, 148c5a7da1afbc: ) &#x3D; 14<br>ioctl(1, TIOCGWINSZ, {ws_row&#x3D;32, ws_col&#x3D;138, ws_xpixel&#x3D;0, ws_ypixel&#x3D;0}) &#x3D; 0<br>) &#x3D; 18Pulling fs layer \r”, 18Pulling fs layer<br>write(2, “\33[1B”, 4) &#x3D; 4<br>…<br>…<br>+++ exited with 0 +++</p>
 <p>busctl tree<br>可以输出所有 bus 上对外暴露的接口</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>系统最大打开文件描述符数</title>
+    <url>/2022/07/13/%E7%B3%BB%E7%BB%9F%E6%9C%80%E5%A4%A7%E6%89%93%E5%BC%80%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6%E6%95%B0/</url>
+    <content><![CDATA[<h3 id="查看系统的配置"><a href="#查看系统的配置" class="headerlink" title="查看系统的配置"></a>查看系统的配置</h3><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">ulimit</span> -a | grep open<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="查看程序服务的打开文件限制"><a href="#查看程序服务的打开文件限制" class="headerlink" title="查看程序服务的打开文件限制"></a>查看程序服务的打开文件限制</h3><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> /proc/40636/limits<br></code></pre></td></tr></table></figure>
+
+<p>查看docker打开文件数限制</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><code class="hljs dockerfile">ansible all -m <span class="hljs-keyword">shell</span><span class="language-bash"> -a <span class="hljs-string">&quot;pid=<span class="hljs-subst">$(pgrep -f dockerd)</span>;grep open /proc/<span class="hljs-subst">$(pgrep -f dockerd)</span>/limits;lsof -p <span class="hljs-subst">$(pgrep -f dockerd)</span> | wc -l&quot;</span></span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="查看程序服务打开文件数"><a href="#查看程序服务打开文件数" class="headerlink" title="查看程序服务打开文件数"></a>查看程序服务打开文件数</h3><p>（连接数）情况，</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">lsof -p 40636 | <span class="hljs-built_in">wc</span> -l<br></code></pre></td></tr></table></figure>
+
+<p>lsof -p $(ps -ef|grep dockerd|awk ‘NR&#x3D;&#x3D;1{print $2}’) | wc -l</p>
+<h3 id="查看系统最大打开文件描述符数"><a href="#查看系统最大打开文件描述符数" class="headerlink" title="查看系统最大打开文件描述符数:"></a>查看系统最大打开文件描述符数:</h3><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> /proc/sys/fs/file-max<br>6553600<br>\<span class="hljs-comment">#3 设置</span><br>$ vim /etc/sysctl.conf<br>fs.file-max = 6553600<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="查看某进程的文件打开数"><a href="#查看某进程的文件打开数" class="headerlink" title="查看某进程的文件打开数"></a>查看某进程的文件打开数</h3><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> /proc//limits<br><span class="hljs-built_in">ls</span> -lh /proc//fd<br><span class="hljs-built_in">ls</span> -lh /proc//fd|<span class="hljs-built_in">wc</span> -l<br>lsof -p 78757 | <span class="hljs-built_in">wc</span> -l<br><br><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="查看文件打开数"><a href="#查看文件打开数" class="headerlink" title="查看文件打开数"></a>查看文件打开数</h3><p>&#x2F;proc&#x2F;sys&#x2F;fs&#x2F;file-nr</p>
+<p>该文件与 file-max 相关，它有三个值：</p>
+<p>已分配文件句柄的数目</p>
+<p>已使用文件句柄的数目</p>
+<p>文件句柄的最大数目</p>
+<p>该文件是只读的，仅用于显示信息。</p>
+<h3 id="查看所有进程的文件打开数"><a href="#查看所有进程的文件打开数" class="headerlink" title="查看所有进程的文件打开数"></a>查看所有进程的文件打开数</h3><p>lsof |wc -l</p>
+<p>查看某个进程打开的文件数</p>
+<p>lsof -p pid |wc -l</p>
+<h3 id="调整"><a href="#调整" class="headerlink" title="调整"></a>调整</h3><hr>
+<p>Linux ulimit命令用于控制shell程序的资源。</p>
+<p>ulimit为shell内建指令，可用来控制shell执行程序的资源。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">-a 　显示目前资源限制的设定。<br>-c &lt;core文件上限&gt; 　设定core文件的最大值，单位为区块。<br>-d &lt;数据节区大小&gt; 　程序数据节区的最大值，单位为KB。<br>-f &lt;文件大小&gt; 　shell所能建立的最大文件，单位为区块。<br>-H 　设定资源的硬性限制，也就是管理员所设下的限制。<br>-m &lt;内存大小&gt; 　指定可使用内存的上限，单位为KB。<br>-n &lt;文件数目&gt; 　指定同一时间最多可开启的文件数。<br>-p &lt;缓冲区大小&gt; 　指定管道缓冲区的大小，单位512字节。<br>-s &lt;堆叠大小&gt; 　指定堆叠的上限，单位为KB。<br>-S 　设定资源的弹性限制。<br>-t &lt;CPU时间&gt; 　指定CPU使用时间的上限，单位为秒。<br>-u &lt;程序数目&gt; 　用户最多可开启的程序数目。<br>-v &lt;虚拟内存大小&gt; 　指定可使用的虚拟内存上限，单位为KB。<br></code></pre></td></tr></table></figure>]]></content>
+  </entry>
+  <entry>
+    <title>网络排错必备</title>
+    <url>/2022/07/14/%E7%BD%91%E7%BB%9C%E6%8E%92%E9%94%99%E5%BF%85%E5%A4%87/</url>
+    <content><![CDATA[<p>为什么还要必备条件？因为这里所讲的网络排错并不仅仅是停留在某一个小小命令的使用上，而是一套系统的方法，如果没有这些条件，难以在项目中灵活运用，所以还是先看看这些基础的条件吧。</p>
+<h4 id="1-了解网络通信的基础设备和其对应的OSI层次"><a href="#1-了解网络通信的基础设备和其对应的OSI层次" class="headerlink" title="1.了解网络通信的基础设备和其对应的OSI层次"></a>1.了解网络通信的基础设备和其对应的OSI层次</h4><p>像交换机、三层交换机、路由器、防火墙这些最基本的网络设备应该要有些了解，尤其是它们对应的OSI层次以及作用，比如普通的二层交换机对应OSI七层模型中的数据链路层，它可以隔绝冲突域，同时可能通过虚拟局域网技术(VLAN)来隔绝广播域，二层交换机通过二层地址即MAC地址来实现数据帧的转发；再比如路由器，它对应网络层，可以提供路由寻址的功能等等。</p>
+<h4 id="2-了解中小型企业网络的基本架构"><a href="#2-了解中小型企业网络的基本架构" class="headerlink" title="2.了解中小型企业网络的基本架构"></a>2.了解中小型企业网络的基本架构</h4><p>一般中小型企业网络的基本架构都是这样的：接入层–汇聚层–核心层–网络出口。</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/ac7ee6298f64ebe35da524c22fc23e7d.png" alt="网络基本架构"></p>
+<p>如果网络环境比较庞大，汇聚层和核心层都会有，像这里的话，一般小型网络，就直接没有汇聚层，不过思想是一样的。</p>
+<p>下面讲的排错其实都是针对用户PC来说明的，事实上，数据中心中的网络排错也是类似的。不管网络环境多么复杂，其实简化下来跟这个都是差不多的。</p>
+<h4 id="3-知道常用的网络排错命令"><a href="#3-知道常用的网络排错命令" class="headerlink" title="3.知道常用的网络排错命令"></a>3.知道常用的网络排错命令</h4><p>如果用户使用的是Windows操作系统，那么下面的这些命令就很重要了：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/b55e7f14cec1d0dc0d4268ff6d1fda14.png" alt="常见的命令合集"></p>
+<p>这些命令都是网络排错和检查过程中会用到的基础命令。</p>
+<h4 id="4-清楚知道网络排错的一个重要原则"><a href="#4-清楚知道网络排错的一个重要原则" class="headerlink" title="4. 清楚知道网络排错的一个重要原则"></a>4. 清楚知道网络排错的一个重要原则</h4><p>网络排错，不就是要判断网络哪里出了问题，因此，你就必须要知道数据的走向。</p>
+<p>所以这个重要的原则是：关注数据的走向。</p>
+<p>下面讲的网络排错思路其实就是通过追踪数据的走向来一步步缩小网络故障点的，因此，时刻记住这一点非常非常重要！这也是为什么上面需要让你了解中小型企业网络的基本架构了。</p>
+<h3 id="网络排错基本思路"><a href="#网络排错基本思路" class="headerlink" title="网络排错基本思路"></a>网络排错基本思路</h3><p>基本思路如下：</p>
+<p>步骤一：检查物理链路是否有问题</p>
+<p>步骤二：查看本机IP地址、路由、DNS的设置是否有问题</p>
+<p>步骤三：测试网关或路由器的通畅情况。先测网关然后再测路由器，一级一级地测试IP)</p>
+<p>步骤四：测试ping公网ip的通畅情况(平时要记几个外部公网ip）</p>
+<p>步骤五：测试DNS的通畅情况，可以直接ping网站地址</p>
+<h3 id="网络排错详细步骤"><a href="#网络排错详细步骤" class="headerlink" title="网络排错详细步骤"></a>网络排错详细步骤</h3><p>为了更好的讲述网络排错的过程和思路，假设我们有下面的一个网络环境：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/905cc6c6ce12b936718c5f680ded6fb2.png" alt="网络环境"></p>
+<p>下面，我们就以上面这个网络环境为例子，详细介绍我们的网络排错思路，每一步要怎么做，每一步为什么要这样做以及这样做之后我们可以得到什么信息，都会做一个说明。</p>
+<h4 id="1-检查物理链路是否有问题"><a href="#1-检查物理链路是否有问题" class="headerlink" title="1. 检查物理链路是否有问题"></a>1. 检查物理链路是否有问题</h4><p>这一步是我个人认为在做网络排错时必须要做的第一步！经常会听朋友说，领导的电脑上不了网，需要过去排错，搞了老半天，还发现不了问题，最后在几经绝望之时，竟然发现网线都没接上电脑。这就真的是悲剧了，浪费了很多时间不说，这样的网络排错思路本来就是有错误的，所以清晰的思路很重要，避免走弯路。</p>
+<p>因为也许不是每个人都可以去机房查看交换机的接线情况，所以这一步，我们排查的重点范围就应该放在如下面图所示的地方：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/081dfbb5485f3030cebfc8746acfdb4b.png" alt="检查物理链路"></p>
+<p>在这一步，下面几点是需要注意排查的：</p>
+<ul>
+<li>确认电脑本身的网卡有没有问题</li>
+<li>确认接的网线有没有问题(检查水晶头、网线的连接、网线的质量)</li>
+<li>本机所连接的交换机(如果可以去机房查看的话)</li>
+</ul>
+<p>如果上面这几点排查都没有问题了，那么就是该网络环境中的其他设备问题了。这一范围的排查相对比较简单，因为只涉及到物理链路的连接问题。</p>
+<h4 id="2-查看本机IP地址、路由、DNS的设置是否有问题"><a href="#2-查看本机IP地址、路由、DNS的设置是否有问题" class="headerlink" title="2. 查看本机IP地址、路由、DNS的设置是否有问题"></a>2. 查看本机IP地址、路由、DNS的设置是否有问题</h4><p>上面第一步，物理链路的排查没有问题了，也就是说，电脑接上网线之后，电脑有反应了，可以识别，但是网络还是不通，来到这一步，就应该先把注意的范围放在电脑的设置上面了。</p>
+<p>这一步，我们关注的重点是：</p>
+<p>(1) IP地址设置</p>
+<p>如果采用的是DHCP自动获取的方法，那么这时候只需要看自己本机的设置上有没有开启自动获取IP的设置以及有没有开启相关的服务;如果用的是静态IP，那么就必须要注意IP地址的填写有没有错(一般网络管理人员给的)、IP地址的子网掩码有没有问题(这很重要，对于静态IP，很多人在这里设置错误)。</p>
+<p>另外值得提的是，给电脑分配ip地址时，最好是绑定mac地址，避免用户私改ip地址，造成ip冲突。</p>
+<p>一般可以用下面的命令查看：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/cafe972bd525c1dc48e0bad272d8f7ae.png" alt="查看IP配置"></p>
+<p>(2) 路由设置</p>
+<p>对于服务器、PC，一般是指默认网关的设置了;对于路由器本身或三层交换机，那就是静态路由或动态路由的设置问题了。</p>
+<p>(3) DNS设置</p>
+<p>主要是要确保所设置的DNS服务器地址到底有没有提供域名解析服务或者是否出现了故障，你得设置一个正确的DNS服务器地址或可以自动获取。</p>
+<p>在windows上面你可以通过下面的命令查看：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/6eeb0c4cea029fff978d861c579d8c12.png" alt="查看dns配置"></p>
+<h4 id="3-测试网关或路由器的通畅情况"><a href="#3-测试网关或路由器的通畅情况" class="headerlink" title="3. 测试网关或路由器的通畅情况"></a>3. 测试网关或路由器的通畅情况</h4><p>先测网关然后再测路由器，一级一级地测试。</p>
+<p>在上面的网络环境中，在网络通的情况下，我们在电脑上使用命令tracert -d命令，会得到下面的结果：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/a63d4e30dfa7207a97436528149a8922.png" alt="测试路由"></p>
+<p>通过这个测试结果，我们可以清楚地知道电脑在访问互联网时，数据的走向情况：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/cbcb01ff28e362d6fc5b31f7cb232760.png" alt="数据走向"></p>
+<p>根据这个数据走向，我们就可以得到一个重要的思路，就是根据数据走向来检测网络的通畅情况!因此，我们可以分两步：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/ac1de1a3a022e01b14c066954c29fac8.png" alt="测试网关"></p>
+<p>(1) 先测试电脑到网关192.168.2.254的通畅情况</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"></p>
+<p>我们可以在自己的电脑上自己ping网关的地址，看是否有响应</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/7c28092f32a7e9341ad48d0d447b1583.png" alt="ping网关"></p>
+<p>一般这样的判断方法是比较快的，但有时候，无论怎样都ping不通，那么则可能有以下的几种情况：</p>
+<ul>
+<li>网关设备做了禁止ping的设置</li>
+<li>网关接口或网关设备出现故障</li>
+</ul>
+<p>对于a，一般很少会在这些设备在做ping的限制操作，实在是没有太大的必要这样做，当然，网络安全等要求十分严格的除外。ping通192.168.2.254网关后，再ping一下172.16.13.1以确认电脑到整个网关设备都没有问题。</p>
+<p>对于ping不通的时候，我个人还建议在电脑上执行如下操作：arp -a ：网关地址和网关的mac地址。</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/487c32d74f8cf171eb4ce67474e71194.png" alt="查看arp"></p>
+<p>即查看电脑本身有没有获取到网关的MAC的地址，显然，如果没有网关的MAC地址，那也是不可能ping通网关的，在排除了前面电脑设置的问题后，你可以猜测是网关设备出了问题，这时就可以联系网络工程师对网关设备进行测试了。</p>
+<p>(2) 测试到其它路由器的通畅情况</p>
+<p>前面一步没有问题了，也就是电脑到网关通信正常了，再测试网关到出口路由器的通畅情况：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/ae77d9dca5789c156bdb34616fef52fc.png" alt="出口路由器"></p>
+<p>这里，我们使用tracert -d命令就可以了：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/8b74ed818808b5c3063bb5ad6b7229fe.png" alt="tracert出口路由器"></p>
+<p>当然，如果发现不通，那么则可能是下面的情况：</p>
+<p>· 网关设备与路由器之间的物理链路问题</p>
+<p>· 网关设备与路由器之间的设置问题，比如路由协议、接口配置之类的</p>
+<p>出现上面的情况，那就是网络工程师的问题了，当然，如果你是网络工程师，应该要马上查看一下设备的状态，看是不是设备哪里出现问题了。</p>
+<p>上面的步骤完成了，假设你的出口路由器设置是没有问题的，比如NAT与默认路由等的设置没有问题，那么我们大致可以知道，内网的一个基本通信是正常的(至少你的电脑和出口路由器的通信没问题)，我们就要看看电脑到底能不能访问互联网了。</p>
+<h3 id="测试ping公网ip的通畅情况"><a href="#测试ping公网ip的通畅情况" class="headerlink" title="测试ping公网ip的通畅情况"></a>测试ping公网ip的通畅情况</h3><p>来到这一步的时候，就说明前面三步是没有问题的，也就是说，本地局域网络的通信是正常的，这时要做的就是判断本地局域网络与外网(公网)之间的通信有没有问题了：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/7ce6606ea145a7c218b7841cf8987e4f.png" alt="测试公网"></p>
+<p>这里采取的是直接ping公网地址的方法，是为了排除DNS的影响(万一你的DNS设置又有问题)，至于要ping什么样的公网地址，个人建议是，可以ping一些没有禁止ping的公共DNS服务器地址，比如114.114.114.114和8.8.8.8的：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/3a060df02274c9061b7c0a8454f9cf8a.png" alt="ping dns"></p>
+<p>这样之后，基本上就可以确定网络是没有问题的了。能ping通外网，说明网络是没有问题的，当然，这里并没有提到出口放置防火墙的情况，实际上，思路是一致的，但是，你需要考虑的是，你的访问数据有没有被防火墙给过滤掉，是数据出去的时候过滤了，还是数据回来的时候过滤了？由于还要涉及到防火墙的设置，这里就不再提及了，只是仍要注意这一点就是了。</p>
+<h3 id="测试DNS的通畅情况"><a href="#测试DNS的通畅情况" class="headerlink" title="测试DNS的通畅情况"></a>测试DNS的通畅情况</h3><p>如题，可以直接ping网站地址，看有没有回显IP地址，至于通不通是另外一回事，只要可以回显IP地址，那么DNS就没有问题了，不过这里仍然要说一下nslookup这个命令，这是一个非常好用的命令，我平常自己在网络排错时，基本上都会用到：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/2a0cfafa7e7f3ab7a338e8b5588fa9d7.png" alt="dns排查命令"></p>
+<p>当然也可以像下面这样使用：</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/096fd699c927ef0877b53b01f74c245e.png" alt="dns排查命令"></p>
+<p>使用nslookup命令，作用有二：</p>
+<ul>
+<li>帮你测试你设置的DNS服务器有没有问题</li>
+<li>在不考虑DNS服务器是否智能的前提下，你可以根据回显IP地址速度的快慢来大致判断DNS服务器的优劣情况</li>
+</ul>
+<p>所以可以充分利用nslookup命令了。</p>
+<p>所以对于网络排错的思路和一些基本命令的掌握还是很重要的，虽然单个命令的使用的功能不是特别大，但组合起来使用却是可以解决很多问题。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>选股公式</title>
+    <url>/2022/07/13/%E8%82%A1%E7%A5%A8%E5%85%AC%E5%BC%8F/</url>
+    <content><![CDATA[<p>MA1 : MA(CLOSE,P1);<br>MA2 : MA(CLOSE,P2);<br>MA3 : MA(CLOSE,P3);<br>MA4 : MA(CLOSE,P4);<br>MA5 : MA(CLOSE,P5);<br>MA6 : MA(CLOSE,P6);<br>MA7 : MA(CLOSE,P7);<br>MA8 : MA(CLOSE,P8);<br>BIAS1 :&#x3D; (CLOSE-MA(CLOSE,5))&#x2F;MA(CLOSE,5)*100;<br>BIAS2 :&#x3D;(CLOSE-MA(CLOSE,10))&#x2F;MA(CLOSE,10)*100;<br>BIAS3 :&#x3D;(CLOSE-MA(CLOSE,20))&#x2F;MA(CLOSE,20)*100;<br>STICKLINE(CLOSE&lt;ref(CLOSE,1),o,c,7,0),COLORCYAN;<br>dy:&#x3D;(ma(c,5)&gt;ma(c,10)),drawnull;<br>dt:BARSLAST(dy&#x3D;0),drawnull;<br>yx:COUNT(CLOSE&lt;ref(CLOSE,1),dt),drawnull;<br>DRAWTEXT(CLOSE&#x2F;OPEN&gt;1.08,LOW,’大阳线’);<br>DRAWTEXT(CLOSE&#x2F;OPEN&gt;1.05 and CLOSE&#x2F;OPEN&lt;1.08,LOW,’中阳线’);</p>
+<p>lqd:&#x3D;ma(c,20)&gt;ma(c,60),drawnull;<br>yx1:&#x3D;c&gt;o;<br>ly:BARSLAST(yx1&#x3D;0),drawnull;<br>DRAWTEXT(ly&gt;5,l<em>1.05,’6连阳’),COLORMAGENTA;<br>DRAWMOVETEXT(ly&gt;5,’6连阳’);<br>STICKLINE(ly&gt;5,c,ref(CLOSE,1),7,0),COLORMAGENTA;<br>nq:BARSLAST(lqd&#x3D;0),drawnull;<br>ztb:&#x3D;c&gt;&#x3D;1.09</em>o,drawnull;<br>60s:&#x3D;c&gt; ma(c,60),drawnull;<br>60st:BARSLAST(60s&#x3D;0),drawnull;<br>ztbtj:count(ztb,60st),COLORCYAN,drawnull;<br>FILLRGN(ma(c,120),ma(c,250),ma(c,120)&gt;ma(c,250),RGB(90,0,0),ma(c,120)&lt;ma(c,250),RGB(0,90,0));<br>tpxg:nq&gt;1 and cross(c,ma(c,10)),drawnull;</p>
+<p>PARTLINE(MA2,MA2&gt;ref(ma2,1),RGB(255,255,0),MA2&lt;&#x3D;ref(ma2,1),RGB(0,255,0))LINETHICK1,drawnull;</p>
+<p>PARTLINE(MA1,MA1&gt;ref(ma1,1),RGB(255,255,255),MA1&lt;&#x3D;ref(ma1,1),RGB(0,255,0))LINETHICK1,drawnull;</p>
+<p>PARTLINE(MA3,MA3&gt;ref(MA3,1),RGB(255,0,255),MA3&lt;&#x3D;ref(MA3,1),RGB(0,255,0))LINETHICK1,drawnull;</p>
+<p>PARTLINE(MA4,MA4&gt;ref(MA4,1),RGB(0,0,255),MA3&lt;&#x3D;ref(MA4,1),RGB(0,255,0))LINETHICK2,drawnull;</p>
+<p>bkname,COLORMAGENTA;</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>记一次centos7.2 文件系统修复</title>
+    <url>/2022/07/13/%E8%AE%B0%E4%B8%80%E6%AC%A1centos7.2%20%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%BF%AE%E5%A4%8D/</url>
+    <content><![CDATA[<p>centos 7 系统恢复</p>
+<p>故障描述</p>
+<p>启动之后操作系统只能进入到单用户模式</p>
+<p>使用U盘进入救援模式进行恢复</p>
+<p>选择Troubleshooting</p>
+<p>选择Rescue a Centos system</p>
+<p>选择1 continue<br>但是选择这个之后就一直卡在这里不动，很奇怪不知道怎么回事</p>
+<p>重启系统进入centos 7 单用户模式，于是修改启动项，</p>
+<p>按e进入如下界面，原来是ro 编辑ro 为rw imit&#x3D;&#x2F;sysroot&#x2F;bin&#x2F;sh 完成后直接按ctrl+x</p>
+<p>文件系统修复</p>
+<p>进入单用户模式下，chroot &#x2F;sysroot 报错，使用命令行挂载试试<br>mount –o remount,rw &#x2F;sysroot<br>chroot &#x2F;sysroot</p>
+<p>还是报错，怀疑文件系统有问题，因为centos 7 默认是xfs 文件系统，所以使用xfs 文件的修复工具进行修复。<br>执行xfs 看到我还有三个命令可用</p>
+<p>xfs 相关命令介绍<br>xfs_db 调试或检测xfs 文件系统(查看文件系统碎片等)<br>xfs_metadump 将xfs文件系统的元数据拷贝到<br>xfs_repair 尝试修复受损的xfs 文件系统</p>
+<p>xfs_repair -n &#x2F;dev&#x2F;dm-0 检查不修复<br>因为根分区&#x2F;dev&#x2F;sda1 对应的实际是&#x2F;dev&#x2F;dm-0</p>
+<p>如果是日志和数据不一致了，xfs 默认会在挂载的时候修复这种不一致，操作系统给出的建议是以读写的方式挂载并自动修复，可以尝试以只读不修复方式挂载文件系统。</p>
+<p>mount -o ro,norecovery &#x2F;dev&#x2F;dm-0 &#x2F;data0</p>
+<p>如果不能以读写挂载不成功，可以清除日志再挂载</p>
+<p>xfs_repair -L &#x2F;dev&#x2F;dm-0</p>
+<p>清除日志有风险，可以在操作前将数据备份一下。</p>
+<p>最后冒了一次风险执行<br>xfs_repair -L &#x2F;dev&#x2F;dm-0<br>然后reboot 重启就好了</p>
+<p>造成故障原因：<br>重启设备或者断电造成linux 内核崩溃和系统停止，使xfs 调用堆栈及内核崩溃的。<br>报错如下：</p>
+<p>xfs:xfs_error_report+0xf&#x2F;0x58</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>记录历史</title>
+    <url>/2022/07/12/%E8%AE%B0%E5%BD%95%E5%8E%86%E5%8F%B2/</url>
+    <content><![CDATA[<p>2022.07.12<br>天气炎热</p>
 ]]></content>
   </entry>
   <entry>
@@ -12448,186 +12629,6 @@
 <li>MySQLdb, Python连接指南: <a href="https://mysqlclient.readthedocs.io/">https://mysqlclient.readthedocs.io/</a></li>
 <li>SQLite数据库的DB-API 2.0接口: <a href="https://docs.python.org/3/library/sqlite3.html">https://docs.python.org/3/library/sqlite3.html</a></li>
 </ul>
-]]></content>
-  </entry>
-  <entry>
-    <title>系统最大打开文件描述符数</title>
-    <url>/2022/07/13/%E7%B3%BB%E7%BB%9F%E6%9C%80%E5%A4%A7%E6%89%93%E5%BC%80%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6%E6%95%B0/</url>
-    <content><![CDATA[<h3 id="查看系统的配置"><a href="#查看系统的配置" class="headerlink" title="查看系统的配置"></a>查看系统的配置</h3><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">ulimit</span> -a | grep open<br></code></pre></td></tr></table></figure>
-
-
-
-<h3 id="查看程序服务的打开文件限制"><a href="#查看程序服务的打开文件限制" class="headerlink" title="查看程序服务的打开文件限制"></a>查看程序服务的打开文件限制</h3><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> /proc/40636/limits<br></code></pre></td></tr></table></figure>
-
-<p>查看docker打开文件数限制</p>
-<figure class="highlight dockerfile"><table><tr><td class="code"><pre><code class="hljs dockerfile">ansible all -m <span class="hljs-keyword">shell</span><span class="language-bash"> -a <span class="hljs-string">&quot;pid=<span class="hljs-subst">$(pgrep -f dockerd)</span>;grep open /proc/<span class="hljs-subst">$(pgrep -f dockerd)</span>/limits;lsof -p <span class="hljs-subst">$(pgrep -f dockerd)</span> | wc -l&quot;</span></span><br></code></pre></td></tr></table></figure>
-
-
-
-<h3 id="查看程序服务打开文件数"><a href="#查看程序服务打开文件数" class="headerlink" title="查看程序服务打开文件数"></a>查看程序服务打开文件数</h3><p>（连接数）情况，</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">lsof -p 40636 | <span class="hljs-built_in">wc</span> -l<br></code></pre></td></tr></table></figure>
-
-<p>lsof -p $(ps -ef|grep dockerd|awk ‘NR&#x3D;&#x3D;1{print $2}’) | wc -l</p>
-<h3 id="查看系统最大打开文件描述符数"><a href="#查看系统最大打开文件描述符数" class="headerlink" title="查看系统最大打开文件描述符数:"></a>查看系统最大打开文件描述符数:</h3><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">$ <span class="hljs-built_in">cat</span> /proc/sys/fs/file-max<br>6553600<br>\<span class="hljs-comment">#3 设置</span><br>$ vim /etc/sysctl.conf<br>fs.file-max = 6553600<br></code></pre></td></tr></table></figure>
-
-
-
-<h3 id="查看某进程的文件打开数"><a href="#查看某进程的文件打开数" class="headerlink" title="查看某进程的文件打开数"></a>查看某进程的文件打开数</h3><figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span> /proc//limits<br><span class="hljs-built_in">ls</span> -lh /proc//fd<br><span class="hljs-built_in">ls</span> -lh /proc//fd|<span class="hljs-built_in">wc</span> -l<br>lsof -p 78757 | <span class="hljs-built_in">wc</span> -l<br><br><br></code></pre></td></tr></table></figure>
-
-
-
-<h3 id="查看文件打开数"><a href="#查看文件打开数" class="headerlink" title="查看文件打开数"></a>查看文件打开数</h3><p>&#x2F;proc&#x2F;sys&#x2F;fs&#x2F;file-nr</p>
-<p>该文件与 file-max 相关，它有三个值：</p>
-<p>已分配文件句柄的数目</p>
-<p>已使用文件句柄的数目</p>
-<p>文件句柄的最大数目</p>
-<p>该文件是只读的，仅用于显示信息。</p>
-<h3 id="查看所有进程的文件打开数"><a href="#查看所有进程的文件打开数" class="headerlink" title="查看所有进程的文件打开数"></a>查看所有进程的文件打开数</h3><p>lsof |wc -l</p>
-<p>查看某个进程打开的文件数</p>
-<p>lsof -p pid |wc -l</p>
-<h3 id="调整"><a href="#调整" class="headerlink" title="调整"></a>调整</h3><hr>
-<p>Linux ulimit命令用于控制shell程序的资源。</p>
-<p>ulimit为shell内建指令，可用来控制shell执行程序的资源。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">-a 　显示目前资源限制的设定。<br>-c &lt;core文件上限&gt; 　设定core文件的最大值，单位为区块。<br>-d &lt;数据节区大小&gt; 　程序数据节区的最大值，单位为KB。<br>-f &lt;文件大小&gt; 　shell所能建立的最大文件，单位为区块。<br>-H 　设定资源的硬性限制，也就是管理员所设下的限制。<br>-m &lt;内存大小&gt; 　指定可使用内存的上限，单位为KB。<br>-n &lt;文件数目&gt; 　指定同一时间最多可开启的文件数。<br>-p &lt;缓冲区大小&gt; 　指定管道缓冲区的大小，单位512字节。<br>-s &lt;堆叠大小&gt; 　指定堆叠的上限，单位为KB。<br>-S 　设定资源的弹性限制。<br>-t &lt;CPU时间&gt; 　指定CPU使用时间的上限，单位为秒。<br>-u &lt;程序数目&gt; 　用户最多可开启的程序数目。<br>-v &lt;虚拟内存大小&gt; 　指定可使用的虚拟内存上限，单位为KB。<br></code></pre></td></tr></table></figure>]]></content>
-  </entry>
-  <entry>
-    <title>选股公式</title>
-    <url>/2022/07/13/%E8%82%A1%E7%A5%A8%E5%85%AC%E5%BC%8F/</url>
-    <content><![CDATA[<p>MA1 : MA(CLOSE,P1);<br>MA2 : MA(CLOSE,P2);<br>MA3 : MA(CLOSE,P3);<br>MA4 : MA(CLOSE,P4);<br>MA5 : MA(CLOSE,P5);<br>MA6 : MA(CLOSE,P6);<br>MA7 : MA(CLOSE,P7);<br>MA8 : MA(CLOSE,P8);<br>BIAS1 :&#x3D; (CLOSE-MA(CLOSE,5))&#x2F;MA(CLOSE,5)*100;<br>BIAS2 :&#x3D;(CLOSE-MA(CLOSE,10))&#x2F;MA(CLOSE,10)*100;<br>BIAS3 :&#x3D;(CLOSE-MA(CLOSE,20))&#x2F;MA(CLOSE,20)*100;<br>STICKLINE(CLOSE&lt;ref(CLOSE,1),o,c,7,0),COLORCYAN;<br>dy:&#x3D;(ma(c,5)&gt;ma(c,10)),drawnull;<br>dt:BARSLAST(dy&#x3D;0),drawnull;<br>yx:COUNT(CLOSE&lt;ref(CLOSE,1),dt),drawnull;<br>DRAWTEXT(CLOSE&#x2F;OPEN&gt;1.08,LOW,’大阳线’);<br>DRAWTEXT(CLOSE&#x2F;OPEN&gt;1.05 and CLOSE&#x2F;OPEN&lt;1.08,LOW,’中阳线’);</p>
-<p>lqd:&#x3D;ma(c,20)&gt;ma(c,60),drawnull;<br>yx1:&#x3D;c&gt;o;<br>ly:BARSLAST(yx1&#x3D;0),drawnull;<br>DRAWTEXT(ly&gt;5,l<em>1.05,’6连阳’),COLORMAGENTA;<br>DRAWMOVETEXT(ly&gt;5,’6连阳’);<br>STICKLINE(ly&gt;5,c,ref(CLOSE,1),7,0),COLORMAGENTA;<br>nq:BARSLAST(lqd&#x3D;0),drawnull;<br>ztb:&#x3D;c&gt;&#x3D;1.09</em>o,drawnull;<br>60s:&#x3D;c&gt; ma(c,60),drawnull;<br>60st:BARSLAST(60s&#x3D;0),drawnull;<br>ztbtj:count(ztb,60st),COLORCYAN,drawnull;<br>FILLRGN(ma(c,120),ma(c,250),ma(c,120)&gt;ma(c,250),RGB(90,0,0),ma(c,120)&lt;ma(c,250),RGB(0,90,0));<br>tpxg:nq&gt;1 and cross(c,ma(c,10)),drawnull;</p>
-<p>PARTLINE(MA2,MA2&gt;ref(ma2,1),RGB(255,255,0),MA2&lt;&#x3D;ref(ma2,1),RGB(0,255,0))LINETHICK1,drawnull;</p>
-<p>PARTLINE(MA1,MA1&gt;ref(ma1,1),RGB(255,255,255),MA1&lt;&#x3D;ref(ma1,1),RGB(0,255,0))LINETHICK1,drawnull;</p>
-<p>PARTLINE(MA3,MA3&gt;ref(MA3,1),RGB(255,0,255),MA3&lt;&#x3D;ref(MA3,1),RGB(0,255,0))LINETHICK1,drawnull;</p>
-<p>PARTLINE(MA4,MA4&gt;ref(MA4,1),RGB(0,0,255),MA3&lt;&#x3D;ref(MA4,1),RGB(0,255,0))LINETHICK2,drawnull;</p>
-<p>bkname,COLORMAGENTA;</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>记一次centos7.2 文件系统修复</title>
-    <url>/2022/07/13/%E8%AE%B0%E4%B8%80%E6%AC%A1centos7.2%20%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%BF%AE%E5%A4%8D/</url>
-    <content><![CDATA[<p>centos 7 系统恢复</p>
-<p>故障描述</p>
-<p>启动之后操作系统只能进入到单用户模式</p>
-<p>使用U盘进入救援模式进行恢复</p>
-<p>选择Troubleshooting</p>
-<p>选择Rescue a Centos system</p>
-<p>选择1 continue<br>但是选择这个之后就一直卡在这里不动，很奇怪不知道怎么回事</p>
-<p>重启系统进入centos 7 单用户模式，于是修改启动项，</p>
-<p>按e进入如下界面，原来是ro 编辑ro 为rw imit&#x3D;&#x2F;sysroot&#x2F;bin&#x2F;sh 完成后直接按ctrl+x</p>
-<p>文件系统修复</p>
-<p>进入单用户模式下，chroot &#x2F;sysroot 报错，使用命令行挂载试试<br>mount –o remount,rw &#x2F;sysroot<br>chroot &#x2F;sysroot</p>
-<p>还是报错，怀疑文件系统有问题，因为centos 7 默认是xfs 文件系统，所以使用xfs 文件的修复工具进行修复。<br>执行xfs 看到我还有三个命令可用</p>
-<p>xfs 相关命令介绍<br>xfs_db 调试或检测xfs 文件系统(查看文件系统碎片等)<br>xfs_metadump 将xfs文件系统的元数据拷贝到<br>xfs_repair 尝试修复受损的xfs 文件系统</p>
-<p>xfs_repair -n &#x2F;dev&#x2F;dm-0 检查不修复<br>因为根分区&#x2F;dev&#x2F;sda1 对应的实际是&#x2F;dev&#x2F;dm-0</p>
-<p>如果是日志和数据不一致了，xfs 默认会在挂载的时候修复这种不一致，操作系统给出的建议是以读写的方式挂载并自动修复，可以尝试以只读不修复方式挂载文件系统。</p>
-<p>mount -o ro,norecovery &#x2F;dev&#x2F;dm-0 &#x2F;data0</p>
-<p>如果不能以读写挂载不成功，可以清除日志再挂载</p>
-<p>xfs_repair -L &#x2F;dev&#x2F;dm-0</p>
-<p>清除日志有风险，可以在操作前将数据备份一下。</p>
-<p>最后冒了一次风险执行<br>xfs_repair -L &#x2F;dev&#x2F;dm-0<br>然后reboot 重启就好了</p>
-<p>造成故障原因：<br>重启设备或者断电造成linux 内核崩溃和系统停止，使xfs 调用堆栈及内核崩溃的。<br>报错如下：</p>
-<p>xfs:xfs_error_report+0xf&#x2F;0x58</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>记录历史</title>
-    <url>/2022/07/12/%E8%AE%B0%E5%BD%95%E5%8E%86%E5%8F%B2/</url>
-    <content><![CDATA[<p>2022.07.12<br>天气炎热</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>网络排错必备</title>
-    <url>/2022/07/14/%E7%BD%91%E7%BB%9C%E6%8E%92%E9%94%99%E5%BF%85%E5%A4%87/</url>
-    <content><![CDATA[<p>为什么还要必备条件？因为这里所讲的网络排错并不仅仅是停留在某一个小小命令的使用上，而是一套系统的方法，如果没有这些条件，难以在项目中灵活运用，所以还是先看看这些基础的条件吧。</p>
-<h4 id="1-了解网络通信的基础设备和其对应的OSI层次"><a href="#1-了解网络通信的基础设备和其对应的OSI层次" class="headerlink" title="1.了解网络通信的基础设备和其对应的OSI层次"></a>1.了解网络通信的基础设备和其对应的OSI层次</h4><p>像交换机、三层交换机、路由器、防火墙这些最基本的网络设备应该要有些了解，尤其是它们对应的OSI层次以及作用，比如普通的二层交换机对应OSI七层模型中的数据链路层，它可以隔绝冲突域，同时可能通过虚拟局域网技术(VLAN)来隔绝广播域，二层交换机通过二层地址即MAC地址来实现数据帧的转发；再比如路由器，它对应网络层，可以提供路由寻址的功能等等。</p>
-<h4 id="2-了解中小型企业网络的基本架构"><a href="#2-了解中小型企业网络的基本架构" class="headerlink" title="2.了解中小型企业网络的基本架构"></a>2.了解中小型企业网络的基本架构</h4><p>一般中小型企业网络的基本架构都是这样的：接入层–汇聚层–核心层–网络出口。</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/ac7ee6298f64ebe35da524c22fc23e7d.png" alt="网络基本架构"></p>
-<p>如果网络环境比较庞大，汇聚层和核心层都会有，像这里的话，一般小型网络，就直接没有汇聚层，不过思想是一样的。</p>
-<p>下面讲的排错其实都是针对用户PC来说明的，事实上，数据中心中的网络排错也是类似的。不管网络环境多么复杂，其实简化下来跟这个都是差不多的。</p>
-<h4 id="3-知道常用的网络排错命令"><a href="#3-知道常用的网络排错命令" class="headerlink" title="3.知道常用的网络排错命令"></a>3.知道常用的网络排错命令</h4><p>如果用户使用的是Windows操作系统，那么下面的这些命令就很重要了：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/b55e7f14cec1d0dc0d4268ff6d1fda14.png" alt="常见的命令合集"></p>
-<p>这些命令都是网络排错和检查过程中会用到的基础命令。</p>
-<h4 id="4-清楚知道网络排错的一个重要原则"><a href="#4-清楚知道网络排错的一个重要原则" class="headerlink" title="4. 清楚知道网络排错的一个重要原则"></a>4. 清楚知道网络排错的一个重要原则</h4><p>网络排错，不就是要判断网络哪里出了问题，因此，你就必须要知道数据的走向。</p>
-<p>所以这个重要的原则是：关注数据的走向。</p>
-<p>下面讲的网络排错思路其实就是通过追踪数据的走向来一步步缩小网络故障点的，因此，时刻记住这一点非常非常重要！这也是为什么上面需要让你了解中小型企业网络的基本架构了。</p>
-<h3 id="网络排错基本思路"><a href="#网络排错基本思路" class="headerlink" title="网络排错基本思路"></a>网络排错基本思路</h3><p>基本思路如下：</p>
-<p>步骤一：检查物理链路是否有问题</p>
-<p>步骤二：查看本机IP地址、路由、DNS的设置是否有问题</p>
-<p>步骤三：测试网关或路由器的通畅情况。先测网关然后再测路由器，一级一级地测试IP)</p>
-<p>步骤四：测试ping公网ip的通畅情况(平时要记几个外部公网ip）</p>
-<p>步骤五：测试DNS的通畅情况，可以直接ping网站地址</p>
-<h3 id="网络排错详细步骤"><a href="#网络排错详细步骤" class="headerlink" title="网络排错详细步骤"></a>网络排错详细步骤</h3><p>为了更好的讲述网络排错的过程和思路，假设我们有下面的一个网络环境：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/905cc6c6ce12b936718c5f680ded6fb2.png" alt="网络环境"></p>
-<p>下面，我们就以上面这个网络环境为例子，详细介绍我们的网络排错思路，每一步要怎么做，每一步为什么要这样做以及这样做之后我们可以得到什么信息，都会做一个说明。</p>
-<h4 id="1-检查物理链路是否有问题"><a href="#1-检查物理链路是否有问题" class="headerlink" title="1. 检查物理链路是否有问题"></a>1. 检查物理链路是否有问题</h4><p>这一步是我个人认为在做网络排错时必须要做的第一步！经常会听朋友说，领导的电脑上不了网，需要过去排错，搞了老半天，还发现不了问题，最后在几经绝望之时，竟然发现网线都没接上电脑。这就真的是悲剧了，浪费了很多时间不说，这样的网络排错思路本来就是有错误的，所以清晰的思路很重要，避免走弯路。</p>
-<p>因为也许不是每个人都可以去机房查看交换机的接线情况，所以这一步，我们排查的重点范围就应该放在如下面图所示的地方：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/081dfbb5485f3030cebfc8746acfdb4b.png" alt="检查物理链路"></p>
-<p>在这一步，下面几点是需要注意排查的：</p>
-<ul>
-<li>确认电脑本身的网卡有没有问题</li>
-<li>确认接的网线有没有问题(检查水晶头、网线的连接、网线的质量)</li>
-<li>本机所连接的交换机(如果可以去机房查看的话)</li>
-</ul>
-<p>如果上面这几点排查都没有问题了，那么就是该网络环境中的其他设备问题了。这一范围的排查相对比较简单，因为只涉及到物理链路的连接问题。</p>
-<h4 id="2-查看本机IP地址、路由、DNS的设置是否有问题"><a href="#2-查看本机IP地址、路由、DNS的设置是否有问题" class="headerlink" title="2. 查看本机IP地址、路由、DNS的设置是否有问题"></a>2. 查看本机IP地址、路由、DNS的设置是否有问题</h4><p>上面第一步，物理链路的排查没有问题了，也就是说，电脑接上网线之后，电脑有反应了，可以识别，但是网络还是不通，来到这一步，就应该先把注意的范围放在电脑的设置上面了。</p>
-<p>这一步，我们关注的重点是：</p>
-<p>(1) IP地址设置</p>
-<p>如果采用的是DHCP自动获取的方法，那么这时候只需要看自己本机的设置上有没有开启自动获取IP的设置以及有没有开启相关的服务;如果用的是静态IP，那么就必须要注意IP地址的填写有没有错(一般网络管理人员给的)、IP地址的子网掩码有没有问题(这很重要，对于静态IP，很多人在这里设置错误)。</p>
-<p>另外值得提的是，给电脑分配ip地址时，最好是绑定mac地址，避免用户私改ip地址，造成ip冲突。</p>
-<p>一般可以用下面的命令查看：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/cafe972bd525c1dc48e0bad272d8f7ae.png" alt="查看IP配置"></p>
-<p>(2) 路由设置</p>
-<p>对于服务器、PC，一般是指默认网关的设置了;对于路由器本身或三层交换机，那就是静态路由或动态路由的设置问题了。</p>
-<p>(3) DNS设置</p>
-<p>主要是要确保所设置的DNS服务器地址到底有没有提供域名解析服务或者是否出现了故障，你得设置一个正确的DNS服务器地址或可以自动获取。</p>
-<p>在windows上面你可以通过下面的命令查看：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/6eeb0c4cea029fff978d861c579d8c12.png" alt="查看dns配置"></p>
-<h4 id="3-测试网关或路由器的通畅情况"><a href="#3-测试网关或路由器的通畅情况" class="headerlink" title="3. 测试网关或路由器的通畅情况"></a>3. 测试网关或路由器的通畅情况</h4><p>先测网关然后再测路由器，一级一级地测试。</p>
-<p>在上面的网络环境中，在网络通的情况下，我们在电脑上使用命令tracert -d命令，会得到下面的结果：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/a63d4e30dfa7207a97436528149a8922.png" alt="测试路由"></p>
-<p>通过这个测试结果，我们可以清楚地知道电脑在访问互联网时，数据的走向情况：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/cbcb01ff28e362d6fc5b31f7cb232760.png" alt="数据走向"></p>
-<p>根据这个数据走向，我们就可以得到一个重要的思路，就是根据数据走向来检测网络的通畅情况!因此，我们可以分两步：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/ac1de1a3a022e01b14c066954c29fac8.png" alt="测试网关"></p>
-<p>(1) 先测试电脑到网关192.168.2.254的通畅情况</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"></p>
-<p>我们可以在自己的电脑上自己ping网关的地址，看是否有响应</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/7c28092f32a7e9341ad48d0d447b1583.png" alt="ping网关"></p>
-<p>一般这样的判断方法是比较快的，但有时候，无论怎样都ping不通，那么则可能有以下的几种情况：</p>
-<ul>
-<li>网关设备做了禁止ping的设置</li>
-<li>网关接口或网关设备出现故障</li>
-</ul>
-<p>对于a，一般很少会在这些设备在做ping的限制操作，实在是没有太大的必要这样做，当然，网络安全等要求十分严格的除外。ping通192.168.2.254网关后，再ping一下172.16.13.1以确认电脑到整个网关设备都没有问题。</p>
-<p>对于ping不通的时候，我个人还建议在电脑上执行如下操作：arp -a ：网关地址和网关的mac地址。</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/487c32d74f8cf171eb4ce67474e71194.png" alt="查看arp"></p>
-<p>即查看电脑本身有没有获取到网关的MAC的地址，显然，如果没有网关的MAC地址，那也是不可能ping通网关的，在排除了前面电脑设置的问题后，你可以猜测是网关设备出了问题，这时就可以联系网络工程师对网关设备进行测试了。</p>
-<p>(2) 测试到其它路由器的通畅情况</p>
-<p>前面一步没有问题了，也就是电脑到网关通信正常了，再测试网关到出口路由器的通畅情况：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/ae77d9dca5789c156bdb34616fef52fc.png" alt="出口路由器"></p>
-<p>这里，我们使用tracert -d命令就可以了：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/8b74ed818808b5c3063bb5ad6b7229fe.png" alt="tracert出口路由器"></p>
-<p>当然，如果发现不通，那么则可能是下面的情况：</p>
-<p>· 网关设备与路由器之间的物理链路问题</p>
-<p>· 网关设备与路由器之间的设置问题，比如路由协议、接口配置之类的</p>
-<p>出现上面的情况，那就是网络工程师的问题了，当然，如果你是网络工程师，应该要马上查看一下设备的状态，看是不是设备哪里出现问题了。</p>
-<p>上面的步骤完成了，假设你的出口路由器设置是没有问题的，比如NAT与默认路由等的设置没有问题，那么我们大致可以知道，内网的一个基本通信是正常的(至少你的电脑和出口路由器的通信没问题)，我们就要看看电脑到底能不能访问互联网了。</p>
-<h3 id="测试ping公网ip的通畅情况"><a href="#测试ping公网ip的通畅情况" class="headerlink" title="测试ping公网ip的通畅情况"></a>测试ping公网ip的通畅情况</h3><p>来到这一步的时候，就说明前面三步是没有问题的，也就是说，本地局域网络的通信是正常的，这时要做的就是判断本地局域网络与外网(公网)之间的通信有没有问题了：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/7ce6606ea145a7c218b7841cf8987e4f.png" alt="测试公网"></p>
-<p>这里采取的是直接ping公网地址的方法，是为了排除DNS的影响(万一你的DNS设置又有问题)，至于要ping什么样的公网地址，个人建议是，可以ping一些没有禁止ping的公共DNS服务器地址，比如114.114.114.114和8.8.8.8的：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/3a060df02274c9061b7c0a8454f9cf8a.png" alt="ping dns"></p>
-<p>这样之后，基本上就可以确定网络是没有问题的了。能ping通外网，说明网络是没有问题的，当然，这里并没有提到出口放置防火墙的情况，实际上，思路是一致的，但是，你需要考虑的是，你的访问数据有没有被防火墙给过滤掉，是数据出去的时候过滤了，还是数据回来的时候过滤了？由于还要涉及到防火墙的设置，这里就不再提及了，只是仍要注意这一点就是了。</p>
-<h3 id="测试DNS的通畅情况"><a href="#测试DNS的通畅情况" class="headerlink" title="测试DNS的通畅情况"></a>测试DNS的通畅情况</h3><p>如题，可以直接ping网站地址，看有没有回显IP地址，至于通不通是另外一回事，只要可以回显IP地址，那么DNS就没有问题了，不过这里仍然要说一下nslookup这个命令，这是一个非常好用的命令，我平常自己在网络排错时，基本上都会用到：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/2a0cfafa7e7f3ab7a338e8b5588fa9d7.png" alt="dns排查命令"></p>
-<p>当然也可以像下面这样使用：</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/a57f71aed601265df5cc37673a0315de.png" alt="图片"> <img src="https://img-blog.csdnimg.cn/img_convert/096fd699c927ef0877b53b01f74c245e.png" alt="dns排查命令"></p>
-<p>使用nslookup命令，作用有二：</p>
-<ul>
-<li>帮你测试你设置的DNS服务器有没有问题</li>
-<li>在不考虑DNS服务器是否智能的前提下，你可以根据回显IP地址速度的快慢来大致判断DNS服务器的优劣情况</li>
-</ul>
-<p>所以可以充分利用nslookup命令了。</p>
-<p>所以对于网络排错的思路和一些基本命令的掌握还是很重要的，虽然单个命令的使用的功能不是特别大，但组合起来使用却是可以解决很多问题。</p>
 ]]></content>
   </entry>
   <entry>
