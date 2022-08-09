@@ -1,3 +1,4 @@
+https://liyupin.github.io/2022/08/09/pod%E4%BA%B2%E5%92%8C%E6%80%A7%E5%92%8C%E5%8F%8D%E4%BA%B2%E5%92%8C%E6%80%A7/
 https://liyupin.github.io/2022/08/09/python100day-15/
 https://liyupin.github.io/2022/08/05/Shell-declare%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/
 https://liyupin.github.io/2022/08/05/gitea%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D/
@@ -146,9 +147,9 @@ https://liyupin.github.io/tags/%E8%82%A1%E7%A5%A8/
 https://liyupin.github.io/tags/ecos-pro/
 https://liyupin.github.io/tags/centos/
 https://liyupin.github.io/tags/kvm/
+https://liyupin.github.io/tags/newben/
 https://liyupin.github.io/tags/linux/
 https://liyupin.github.io/tags/python/
-https://liyupin.github.io/tags/newben/
 https://liyupin.github.io/tags/docker/
 https://liyupin.github.io/tags/k8s/
 https://liyupin.github.io/tags/mysql/
@@ -157,8 +158,8 @@ https://liyupin.github.io/tags/shell/
 https://liyupin.github.io/tags/openEuler/
 https://liyupin.github.io/categories/linux/
 https://liyupin.github.io/categories/%E6%8A%95%E8%B5%84/
-https://liyupin.github.io/categories/shell/
 https://liyupin.github.io/categories/ubuntu/
+https://liyupin.github.io/categories/shell/
 https://liyupin.github.io/categories/ansible/
 https://liyupin.github.io/categories/centos8/
 https://liyupin.github.io/categories/%E8%BF%90%E7%BB%B4/
