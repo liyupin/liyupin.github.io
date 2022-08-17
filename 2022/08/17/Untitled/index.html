@@ -16,22 +16,24 @@
   <meta name="author" content="Cper Liu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="python获取操作系统平台、版本及架构platform模块提供了底层系统平台的相关信息 系统架构 32位还是64位 123456789101112131415161718192021&gt;&gt;&gt; import platform&gt;&gt;&gt; platform.architecture()(&amp;#x27;64bit&amp;#x27;, &amp;#x27;ELF&amp;#x27;) # pytho">
+    <meta name="description" content="Kubernetes源码笔记 前言在熟悉kubernetes及常用组件、插件的管理使用后，总还觉得差了些什么，不够通透，是时候来读一读源码了，结合代码与实际使用场景来互相印证，有助于对kubernetes的理解更为透彻。这里将会分多篇介绍kubernetes各核心组件的工作模式、调度管理算法等。 版本Kubernetes v1.14.3 ,最新部署的一套环境是此版本，代码版本保持一致，方便后续测试">
 <meta property="og:type" content="article">
-<meta property="og:title" content="python获取操作系统平台、版本及架构">
-<meta property="og:url" content="https://liyupin.github.io/2022/08/02/Untitled/index.html">
+<meta property="og:title" content="k8s源码学习——总览">
+<meta property="og:url" content="https://liyupin.github.io/2022/08/17/Untitled/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="python获取操作系统平台、版本及架构platform模块提供了底层系统平台的相关信息 系统架构 32位还是64位 123456789101112131415161718192021&gt;&gt;&gt; import platform&gt;&gt;&gt; platform.architecture()(&amp;#x27;64bit&amp;#x27;, &amp;#x27;ELF&amp;#x27;) # pytho">
+<meta property="og:description" content="Kubernetes源码笔记 前言在熟悉kubernetes及常用组件、插件的管理使用后，总还觉得差了些什么，不够通透，是时候来读一读源码了，结合代码与实际使用场景来互相印证，有助于对kubernetes的理解更为透彻。这里将会分多篇介绍kubernetes各核心组件的工作模式、调度管理算法等。 版本Kubernetes v1.14.3 ,最新部署的一套环境是此版本，代码版本保持一致，方便后续测试">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-08-02T11:40:00.000Z">
-<meta property="article:modified_time" content="2022-08-02T11:41:41.675Z">
+<meta property="og:image" content="http://mycloudn.wqyin.cn/20190824164634.png">
+<meta property="article:published_time" content="2022-08-17T06:26:00.000Z">
+<meta property="article:modified_time" content="2022-08-17T06:50:14.482Z">
 <meta property="article:author" content="Cper Liu">
-<meta property="article:tag" content="python">
+<meta property="article:tag" content="k8s">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://mycloudn.wqyin.cn/20190824164634.png">
   
   
   
-  <title>python获取操作系统平台、版本及架构 - Hexo</title>
+  <title>k8s源码学习——总览 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -211,7 +213,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="python获取操作系统平台、版本及架构"></span>
+            <span id="subtitle" data-typed-text="k8s源码学习——总览"></span>
           
         </div>
 
@@ -222,8 +224,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-08-02 19:40" pubdate>
-          2022年8月2日 晚上
+        <time datetime="2022-08-17 14:26" pubdate>
+          2022年8月17日 下午
         </time>
       </span>
     
@@ -234,7 +236,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.6k 字
+          842 字
         
       </span>
     
@@ -245,7 +247,7 @@
         
         
         
-          22 分钟
+          8 分钟
         
       </span>
     
@@ -283,41 +285,30 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">python获取操作系统平台、版本及架构</h1>
+            <h1 style="display: none">k8s源码学习——总览</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="python获取操作系统平台、版本及架构"><a href="#python获取操作系统平台、版本及架构" class="headerlink" title="python获取操作系统平台、版本及架构"></a>python获取操作系统平台、版本及架构</h1><p>platform模块提供了底层系统平台的相关信息</p>
-<p><strong>系统架构</strong></p>
-<p>32位还是64位</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> platform<br><br><br><br><span class="hljs-meta">&gt;&gt;&gt; </span>platform.architecture()<br><br><br><br>(<span class="hljs-string">&#x27;64bit&#x27;</span>, <span class="hljs-string">&#x27;ELF&#x27;</span>) <span class="hljs-comment"># python 3.3.2+ 64 bits on debian jessie 64 bits</span><br><br><br><br>(<span class="hljs-string">&#x27;32bit&#x27;</span>, <span class="hljs-string">&#x27;WindowsPE&#x27;</span>) <span class="hljs-comment"># python 3.3.2 32 bits on windows 8.1 64 bits</span><br><br><br><br>(<span class="hljs-string">&#x27;64bit&#x27;</span>, <span class="hljs-string">&#x27;WindowsPE&#x27;</span>) <span class="hljs-comment"># python 3.3.2 64 bits on wndows 8.1 64 bits</span><br><br><br><br>(<span class="hljs-string">&#x27;64bit&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>) <span class="hljs-comment"># python 3.4.1 64 bits on mac os x 10.9.4</span><br></code></pre></td></tr></table></figure>
+                <h1 id="Kubernetes源码笔记"><a href="#Kubernetes源码笔记" class="headerlink" title="Kubernetes源码笔记"></a>Kubernetes源码笔记</h1><p><img src="http://mycloudn.wqyin.cn/20190824164634.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在熟悉kubernetes及常用组件、插件的管理使用后，总还觉得差了些什么，不够通透，是时候来读一读源码了，结合代码与实际使用场景来互相印证，有助于对kubernetes的理解更为透彻。这里将会分多篇介绍kubernetes各核心组件的工作模式、调度管理算法等。</p>
+<h2 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h2><p>Kubernetes v1.14.3 ,最新部署的一套环境是此版本，代码版本保持一致，方便后续测试调试</p>
+<h2 id="核心组件"><a href="#核心组件" class="headerlink" title="核心组件"></a>核心组件</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/yinwenqin/kubeSourceCodeNote/tree/master/scheduler">Scheduler</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/yinwenqin/kubeSourceCodeNote/tree/master/controller">Controller</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/yinwenqin/kubeSourceCodeNote/tree/master/apiServer">APIServer</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/yinwenqin/kubeSourceCodeNote/tree/master/pkg">pkg公共库</a></li>
+</ul>
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>golang(安装步骤略，网上很多),我的环境如下:</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">GOPATH</span><span class="hljs-operator">=</span><span class="hljs-string">&quot;/Users/ywq/go&quot;</span><br>go version go1.<span class="hljs-number">11.6</span> darwin/amd64<br>Copy<br></code></pre></td></tr></table></figure>
 
-<p>ELF和WindowsPE是可执行文件格式</p>
-<p><strong>操作系统</strong><br>linux,mac还是windows</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>platform.system()<br><br><span class="hljs-string">&#x27;Linux&#x27;</span> <span class="hljs-comment"># python 3.3.2+ 64 bits on debian jessie 64 bits</span><br><span class="hljs-string">&#x27;Windows&#x27;</span> <span class="hljs-comment"># python 3.3.2 32 bits on windows 8.1 64 bits</span><br><span class="hljs-string">&#x27;Windows&#x27;</span> <span class="hljs-comment"># python 3.3.2 64 bits on windows 8.1 64 bits</span><br><span class="hljs-string">&#x27;Darwin&#x27;</span> <span class="hljs-comment"># python 3.4.1 64 bits on mac os x 10.9.4</span><br></code></pre></td></tr></table></figure>
+<p>注意:本系列文档中,GOPATH路径<code>/Users/ywq/go/</code>,在自己的环境下请替换成相应本地的GOPATH，这一点后面不再说明</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#拉取kubernetes项目源码:</span><br><span class="hljs-built_in">cd</span> /Users/ywq/go/<br><span class="hljs-built_in">mkdir</span> -p src/k8s.io<br><span class="hljs-built_in">cd</span> src/k8s.io<br>git <span class="hljs-built_in">clone</span> https://github.com/kubernetes/kubernetes.git<br><span class="hljs-built_in">cd</span> kubernetes<br>git checkout v1.14.3  <span class="hljs-comment"># 切换到tag为v1.14.3的版本</span><br>Copy<br></code></pre></td></tr></table></figure>
 
-<p><strong>系统版本</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>platform.version()<br><br><span class="hljs-string">&#x27;#1 SMP Debian 3.10.11-1 (2013-09-10)&#x27;</span> <span class="hljs-comment"># python 3.3.2+ 64 bits on debian jessie 64 bits</span><br><br><span class="hljs-string">&#x27;6.2.9200&#x27;</span> <span class="hljs-comment"># python 3.3.2 32 bits on windows 8.1 64 bits</span><br><br><span class="hljs-string">&#x27;6.2.9200&#x27;</span> <span class="hljs-comment"># python 3.3.2 64 bits on windows 8.1 64 bits</span><br><br><span class="hljs-string">&#x27;Darwin Kernel Version 13.3.0: Tue Jun  3 21:27:35 PDT 2014; root:xnu-2422.110.17~1/RELEASE_X86_64&#x27;</span> <span class="hljs-comment"># python 3.4.1 64 bits on mac os x 10.9.4</span><br></code></pre></td></tr></table></figure>
-
-<p><strong>CPU平台</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>platform.machine()<br><span class="hljs-string">&#x27;x86_64&#x27;</span> <span class="hljs-comment"># python 3.3.2+ 64 bits on debian jessie 64 bits</span><br><br><span class="hljs-string">&#x27;AMD64&#x27;</span> <span class="hljs-comment"># python 3.3.2 32 bits on windows 8.1 64 bits</span><br><br><br><span class="hljs-string">&#x27;AMD64&#x27;</span> <span class="hljs-comment"># python 3.3.2 64 bits on windows 8.1 64 bits</span><br><br><span class="hljs-string">&#x27;x86_64&#x27;</span> <span class="hljs-comment"># python 3.4.1 64 bits on mac os x 10.9.4</span><br></code></pre></td></tr></table></figure>
-
-<p><strong>linux发行版</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>platform.dist()<br><br>(<span class="hljs-string">&#x27;debian&#x27;</span>, <span class="hljs-string">&#x27;jessie/sid&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>) <span class="hljs-comment"># python 3.3.2+ 64 bits on debian jessie 64 bits</span><br></code></pre></td></tr></table></figure>
-
-<p><strong>节点名</strong><br>也就是机器名</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>platform.node()<br><br><span class="hljs-string">&#x27;work&#x27;</span> <span class="hljs-comment"># python 3.3.2+ 64 bits on debian jessie 64 bits</span><br><br><span class="hljs-string">&#x27;work-xxx&#x27;</span> <span class="hljs-comment"># python 3.3.2 32 bits on windows 8.1 64 bits</span><br></code></pre></td></tr></table></figure>
-
-<p><strong>系统信息</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>platform.uname()<br><br><br><br>uname_result(system=<span class="hljs-string">&#x27;Linux&#x27;</span>, node=<span class="hljs-string">&#x27;work&#x27;</span>, release=<span class="hljs-string">&#x27;3.10-3-amd64&#x27;</span>, version=<span class="hljs-string">&#x27;#1 SMP Debian 3.10.11-1 (2013-09-10)&#x27;</span>, machine=<span class="hljs-string">&#x27;x86_64&#x27;</span>, processor=<span class="hljs-string">&#x27;&#x27;</span>) <span class="hljs-comment"># python 3.3.2+ 64 bits on debian jessie 64 bits</span><br><br>uname_result(system=<span class="hljs-string">&#x27;Windows&#x27;</span>, node=<span class="hljs-string">&#x27;work-xxx&#x27;</span>, release=<span class="hljs-string">&#x27;8&#x27;</span>, version=<span class="hljs-string">&#x27;6.2.9200&#x27;</span>, machine=<span class="hljs-string">&#x27;AMD64&#x27;</span>, processor=<span class="hljs-string">&#x27;Intel64 Family 6 Model 58 Stepping 9,</span><br><span class="hljs-string"></span><br><span class="hljs-string"></span><br><span class="hljs-string"></span><br><span class="hljs-string">GenuineIntel&#x27;</span>) <span class="hljs-comment"># python 3.3.2 32 bits on windows 8.1 64 bits</span><br><br>uname_result(system=<span class="hljs-string">&#x27;Darwin&#x27;</span>, node=<span class="hljs-string">&#x27;mba&#x27;</span>, release=<span class="hljs-string">&#x27;13.3.0&#x27;</span>, version=<span class="hljs-string">&#x27;Darwin Kernel Version 13.3.0: Tue Jun  3 21:27:35 PDT 2014; root:xnu-2422.110.17~1/RELEASE_X86_64&#x27;</span>, machine=<span class="hljs-string">&#x27;x86_64&#x27;</span>, processor=<span class="hljs-string">&#x27;i386&#x27;</span>) <span class="hljs-comment"># python 3.4.1 64 bits on mac os x 10.9.4</span><br></code></pre></td></tr></table></figure>
-
-<p><strong>python版本</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>platform.python_verison()<br><br><span class="hljs-string">&#x27;3.3.2+&#x27;</span> <span class="hljs-comment"># python 3.3.2+ 64 bits on debian jessie 64 bits</span><br><br><span class="hljs-string">&#x27;3.3.3&#x27;</span> <span class="hljs-comment"># python 3.3.2 32 bits on windows 8.1 64 bits</span><br></code></pre></td></tr></table></figure>
-
-
-
-<p>文章知识点与官方知识档案匹配，可进一步学习相关知识</p>
+<p>源码拉取完成后，用自己的IDE打开，准备工作完毕.</p>
+<h2 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h2><p>Kubernetes这一整个项目颇为庞大，一般情况下，如果熟悉kubernetes的应用，结合应用来理解源码的设计理念会容易许多，因此，对其应用不熟悉的朋友，不建议直接阅读源码。另外，目前处于边阅读代码边输出总结的阶段，如文中有误，请予以指正，非常感谢！</p>
+<p>在此立一个flag，源码干货总结笔记，至少做到周不断更！</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>官方开发者向导md文档: <a target="_blank" rel="noopener" href="https://github.com/kubernetes/community/tree/master/contributors/devel">https://github.com/kubernetes/community/tree/master/contributors/devel</a></p>
 
                 
               </div>
@@ -336,7 +327,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/linux/" class="category-chain-item">linux</a>
+  <a href="/categories/go/" class="category-chain-item">go</a>
   
   
 
@@ -351,7 +342,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/python/">#python</a>
+        <a href="/tags/k8s/">#k8s</a>
       
     </div>
   
@@ -363,8 +354,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>python获取操作系统平台、版本及架构</div>
-      <div>https://liyupin.github.io/2022/08/02/Untitled/</div>
+      <div>k8s源码学习——总览</div>
+      <div>https://liyupin.github.io/2022/08/17/Untitled/</div>
     </div>
     <div class="license-meta">
       
@@ -376,7 +367,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年8月2日</div>
+          <div>2022年8月17日</div>
         </div>
       
       
@@ -406,18 +397,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/08/03/python100day-13/" title="python100day-13">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">python100day-13</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/08/02/python100day-12/" title="python100day-12">
-                        <span class="hidden-mobile">python100day-12</span>
+                      <a href="/2022/08/16/python100day-21-30/" title="python100day-21-30">
+                        <span class="hidden-mobile">python100day-21-30</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
