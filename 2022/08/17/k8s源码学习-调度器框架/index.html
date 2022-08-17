@@ -1,0 +1,702 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Cper Liu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="调度器框架前言在上一篇文档中，我们找到了sheduler调度功能主逻辑的入口: P1-调度器入口篇 那么在本篇，我们基于找到的入口，来进入调度器框架内部，看一看整体的逻辑流程,本篇先跳过调度的算法(Predicates断言选择、Priority优先级排序)，只关注pkg&#x2F;scheduler目录内的scheduler框架相关的逻辑流向，摸清scheduler框架本身的代码结构，调度算法留在后面的文章">
+<meta property="og:type" content="article">
+<meta property="og:title" content="k8s源码学习--调度器框架">
+<meta property="og:url" content="https://liyupin.github.io/2022/08/17/k8s%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0-%E8%B0%83%E5%BA%A6%E5%99%A8%E6%A1%86%E6%9E%B6/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="调度器框架前言在上一篇文档中，我们找到了sheduler调度功能主逻辑的入口: P1-调度器入口篇 那么在本篇，我们基于找到的入口，来进入调度器框架内部，看一看整体的逻辑流程,本篇先跳过调度的算法(Predicates断言选择、Priority优先级排序)，只关注pkg&#x2F;scheduler目录内的scheduler框架相关的逻辑流向，摸清scheduler框架本身的代码结构，调度算法留在后面的文章">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://mycloudn.wqyin.cn/schedule.jpg">
+<meta property="og:image" content="http://mycloudn.wqyin.cn/AlgSchedule.jpg">
+<meta property="og:image" content="http://mycloudn.wqyin.cn/scheduleStruct.jpg">
+<meta property="og:image" content="http://mycloudn.wqyin.cn/genericSchedule.jpg">
+<meta property="og:image" content="http://mycloudn.wqyin.cn/createGenSche.jpg">
+<meta property="og:image" content="http://mycloudn.wqyin.cn/newGenericScheduler.jpg">
+<meta property="og:image" content="http://mycloudn.wqyin.cn/newGenericScheduler.jpg">
+<meta property="og:image" content="http://mycloudn.wqyin.cn/createFromProvider.jpg">
+<meta property="og:image" content="http://mycloudn.wqyin.cn/getAlgorithmProvider.jpg">
+<meta property="og:image" content="http://mycloudn.wqyin.cn/addMapEle.jpg">
+<meta property="og:image" content="http://mycloudn.wqyin.cn/registerAlgorithmProvider.jpg">
+<meta property="og:image" content="http://mycloudn.wqyin.cn/registerAlgorithmProvider1.jpg">
+<meta property="og:image" content="http://mycloudn.wqyin.cn/init.jpg">
+<meta property="og:image" content="http://mycloudn.wqyin.cn/default.jpg">
+<meta property="og:image" content="http://mycloudn.wqyin.cn/memPressure.jpg">
+<meta property="og:image" content="http://mycloudn.wqyin.cn/preinit.jpg">
+<meta property="og:image" content="http://mycloudn.wqyin.cn/addDefaultFunc.jpg">
+<meta property="og:image" content="http://mycloudn.wqyin.cn/registerDefaults.jpg">
+<meta property="og:image" content="http://mycloudn.wqyin.cn/SetDefaults_KubeSchedulerConfiguration.jpg">
+<meta property="og:image" content="http://mycloudn.wqyin.cn/dir.jpg">
+<meta property="article:published_time" content="2022-08-17T09:39:00.000Z">
+<meta property="article:modified_time" content="2022-08-17T09:39:39.110Z">
+<meta property="article:author" content="Cper Liu">
+<meta property="article:tag" content="k8s">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://mycloudn.wqyin.cn/schedule.jpg">
+  
+  
+  
+  <title>k8s源码学习--调度器框架 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="k8s源码学习--调度器框架"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-08-17 17:39" pubdate>
+          2022年8月17日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          70 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">k8s源码学习--调度器框架</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="调度器框架"><a href="#调度器框架" class="headerlink" title="调度器框架"></a>调度器框架</h2><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在上一篇文档中，我们找到了sheduler调度功能主逻辑的入口:</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/yinwenqin/kubeSourceCodeNote/blob/master/scheduler/Kubernetes%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0-Scheduler-P1-%E8%B0%83%E5%BA%A6%E5%99%A8%E5%85%A5%E5%8F%A3%E7%AF%87.md"><strong>P1-调度器入口篇</strong></a></p>
+<p>那么在本篇，我们基于找到的入口，来进入调度器框架内部，看一看整体的逻辑流程,本篇先跳过调度的算法(Predicates断言选择、Priority优先级排序)，只关注<code>pkg/scheduler</code>目录内的scheduler框架相关的逻辑流向，摸清scheduler框架本身的代码结构，调度算法留在后面的文章再谈</p>
+<h2 id="框架流程"><a href="#框架流程" class="headerlink" title="框架流程"></a>框架流程</h2><p>回顾上一篇篇末，我们找到了调度框架的实际调度工作逻辑的入口位置，<code>pkg/scheduler/scheduler.go:435</code>, <code>scheduleOne()</code>函数内部，定位在<code>pkg/scheduler/scheduler.go:457</code>位置,是通过这个<code>sched.schedule(pod)</code>方法来获取与pod匹配的node的，我们直接跳转2次,来到了这里<code>pkg/scheduler/core/generic_scheduler.go:107</code></p>
+<p><img src="http://mycloudn.wqyin.cn/schedule.jpg" srcset="/img/loading.gif" lazyload></p>
+<p><img src="http://mycloudn.wqyin.cn/AlgSchedule.jpg" srcset="/img/loading.gif" lazyload></p>
+<p><img src="http://mycloudn.wqyin.cn/scheduleStruct.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>通过注释可以知道，ScheduleAlgorithm interface中的Schedule方法就是用来为pod筛选node的，但这是个接口方法，并不是实际调用的，我们稍微往下,在<code>pkg/scheduler/core/generic_scheduler.go:162</code>这个位置，就可以找到实际调用的Schedule方法:</p>
+<p><img src="http://mycloudn.wqyin.cn/genericSchedule.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>这个函数里面有4个重要的步骤:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 调度前预先检查pvc是否创建</span><br>pkg/scheduler/core/generic_scheduler.<span class="hljs-keyword">go</span>:<span class="hljs-number">166</span><br>err := podPassesBasicChecks(pod, g.pvcLister)<br><br><span class="hljs-comment">// 根据Predicate筛选node</span><br>pkg/scheduler/core/generic_scheduler.<span class="hljs-keyword">go</span>:<span class="hljs-number">184</span><br>filteredNodes, failedPredicateMap, err := g.findNodesThatFit(pod, nodes)<br><br><span class="hljs-comment">// 给筛选出的node排出优先级</span><br>pkg/scheduler/core/generic_scheduler.<span class="hljs-keyword">go</span>:<span class="hljs-number">215</span><br> PrioritizeNodes(pod, g.nodeInfoSnapshot.NodeInfoMap, metaPrioritiesInterface, g.prioritizers, filteredNodes, g.extenders)<br><br><span class="hljs-comment">// 选出优先级最高的node作为fit node</span><br>pkg/scheduler/core/generic_scheduler.<span class="hljs-keyword">go</span>:<span class="hljs-number">226</span><br>g.selectHost(priorityList)<br></code></pre></td></tr></table></figure>
+
+<p>本篇我们不看Schedule方法内的具体调度算法细节，在这里标记一下，下一篇我们将从这里开始.</p>
+<p>先来逆向回溯代码结构，找到哪里创建了scheduler，调度器的默认初始化配置，默认的调度算法来源等等框架相关的东西。<code>Schedule()</code>方法属于<code>genericScheduler</code>结构体，先查看<code>genericScheduler</code>结构体，再选中结构体名称，crtl + b组合键查看它在哪些地方被引用，找出创建结构体的位置:</p>
+<p><img src="http://mycloudn.wqyin.cn/createGenSche.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>通过缩略代码框，排除test相关的测试文件，很容易找出创建结构体的地方位于<code>pkg/scheduler/core/generic_scheduler.go:1189</code>，点击图中红框圈中位置，跳转过去，果然找到了<code>NewGenericScheduler()</code>方法，这个方法是用来创建一个<code>genericScheduler</code>对象的，那么我们再次crtl + b组合键查看<code>NewGenericScheduler</code>再什么地方被调用：</p>
+<p><img src="http://mycloudn.wqyin.cn/newGenericScheduler.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>找出了在<code>pkg/scheduler/factory/factory.go:441</code>这个位置上找到了调用入口，这里位于<code>CreateFromKeys()</code>方法中，继续crtl + b查看它的引用,跳转到<code>pkg/scheduler/factory/factory.go:336</code>这个位置：</p>
+<p><img src="http://mycloudn.wqyin.cn/newGenericScheduler.jpg" srcset="/img/loading.gif" lazyload></p>
+<p><img src="http://mycloudn.wqyin.cn/createFromProvider.jpg" srcset="/img/loading.gif" lazyload></p>
+<p><img src="http://mycloudn.wqyin.cn/getAlgorithmProvider.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>这里找到了<code>algorithmProviderMap</code>这个变量，顾名思义，这个变量里面包含的应该就是调度算法的来源,点击进去查看,跳转到了<code>pkg/scheduler/factory/plugins.go:86</code>这个位置,组合键查看引用，一眼就可以看出哪个引用为这个map添加了元素：</p>
+<p><img src="http://mycloudn.wqyin.cn/addMapEle.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>跳转过去，来到了<code>pkg/scheduler/factory/plugins.go:391</code>这个位置，这个函数的作用是为scheduler的配置指定调度算法，即<code>FitPredicate、Priority</code>这两个算法需要用到的metric或者方法,再次请出组合键，查找哪个地方调用了这个方法：</p>
+<p><img src="http://mycloudn.wqyin.cn/registerAlgorithmProvider.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>来到了<code>pkg/scheduler/algorithmprovider/defaults/defaults.go:99</code>，继续组合键向上查找引用,这次引用只有一个，没有弹窗直接跳转过去了<code>pkg/scheduler/algorithmprovider/defaults/defaults.go:36</code>:</p>
+<p><img src="http://mycloudn.wqyin.cn/registerAlgorithmProvider1.jpg" srcset="/img/loading.gif" lazyload></p>
+<p><img src="http://mycloudn.wqyin.cn/init.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>我们来看看<code>defaultPredicates(), defaultPriorities()</code>这两个函数具体的内容:</p>
+<p><img src="http://mycloudn.wqyin.cn/default.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>我们随便点击进去一个<code>predicates</code>选项查看其内容:</p>
+<p><img src="http://mycloudn.wqyin.cn/memPressure.jpg" srcset="/img/loading.gif" lazyload></p>
+<p><code>CheckNodeMemoryPressure</code>这个词相应熟悉kubernetes 应用的朋友一定不会陌生，例如在node内存压力大无法调度的pod时，<code>kubectl describe pod xxx</code>就会在状态信息里面看到这个关键词。</p>
+<p>让我们回到<code>pkg/scheduler/algorithmprovider/defaults/defaults.go:102</code>这个位置，查看<code>factory.RegisterAlgorithmProvider(factory.DefaultProvider, predSet, priSet)</code>方法的详情,可以看到<code>参数factory.DefaultProvider</code>值为字符串格式的<code>DefaultProvider</code>，<strong>先记住这个关键值</strong>，进入方法内部:</p>
+<p><code>pkg/scheduler/factory/plugins.go:387</code>:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">RegisterAlgorithmProvider</span><span class="hljs-params">(name <span class="hljs-type">string</span>, predicateKeys, priorityKeys sets.String)</span></span> <span class="hljs-type">string</span> &#123;<br>	schedulerFactoryMutex.Lock()<br>	<span class="hljs-keyword">defer</span> schedulerFactoryMutex.Unlock()<br>	validateAlgorithmNameOrDie(name)<br>	algorithmProviderMap[name] = AlgorithmProviderConfig&#123;<br>		FitPredicateKeys:     predicateKeys,<br>		PriorityFunctionKeys: priorityKeys,<br>	&#125;<br>	<span class="hljs-keyword">return</span> name<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>可以看到，这个方法为DefaultProvider绑定了配置：筛选算法和优先级排序算法的key集合，这些key只是字符串，那么是怎么具体落实到计算的方法过程上去的呢？让我们看看<code>pkg/scheduler/algorithmprovider/defaults/</code>目录下的<code>register_predicates.go,register_priorities.go</code>这两个文件:</p>
+<p><img src="http://mycloudn.wqyin.cn/preinit.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>它们同样也在init()函数中初始化时使用<code>factory.RegisterFitPredicate()</code>方法做了一些注册操作,这个方法的两个参数，前一个是筛选&#x2F;计算优先级 的关键key名，后一个是具体计算的功能实现方法，点击<code>factory.RegisterFitPredicate()</code>方法，深入一级，查看内部代码，</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// RegisterFitPredicateFactory registers a fit predicate factory with the</span><br><span class="hljs-comment">// algorithm registry. Returns the name with which the predicate was registered.</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">RegisterFitPredicateFactory</span><span class="hljs-params">(name <span class="hljs-type">string</span>, predicateFactory FitPredicateFactory)</span></span> <span class="hljs-type">string</span> &#123;<br>	schedulerFactoryMutex.Lock()<br>	<span class="hljs-keyword">defer</span> schedulerFactoryMutex.Unlock()<br>	validateAlgorithmNameOrDie(name)<br>	fitPredicateMap[name] = predicateFactory<br>	<span class="hljs-keyword">return</span> name<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>可以看出，两者使用map[string]func()的方式关联在了一起，那么在后面实际调用的时候，必定是在map中基于key找出方法并执行。优先级相关的<code>factory.RegisterPriorityFunction2()</code>方法亦是同理。</p>
+<h3 id="生成默认配置"><a href="#生成默认配置" class="headerlink" title="生成默认配置"></a>生成默认配置</h3><p>还记得刚刚重点圈出的<code>DefaultProvider</code>关键值吗？通过上面我们知道了，所有默认Predicate&#x2F;priority算法的实现都是绑定在这个默认的<code>AlgorithmProvider</code>身上的，那么，启动scheduler的时候，究竟是如何将<code>DefaultProvider</code>作为默认<code>AlgorithmProvider</code>呢？让我们回到最初的调度器启动命令入口位置<code>cmd/kube-scheduler/app/server.go:62</code>:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><code class="hljs go">opts, err := options.NewOptions()<br><span class="hljs-comment">// 点击NewOptions跳转进入内部,来到了这个位置:cmd/kube-scheduler/app/options/options.go:75</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">NewOptions</span><span class="hljs-params">()</span></span> (*Options, <span class="hljs-type">error</span>) &#123;<br>	cfg, err := newDefaultComponentConfig()<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, err<br>	&#125;<br>	... <span class="hljs-comment">// 省略</span><br>&#125;<br><span class="hljs-comment">// 这个newDefaultComponentConfig方法特别有意思，从字面看它是用来为组件填充默认配置的</span><br><span class="hljs-comment">// 来看看它的内容，点击来到了cmd/kube-scheduler/app/options/options.go:132</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">newDefaultComponentConfig</span><span class="hljs-params">()</span></span> (*kubeschedulerconfig.KubeSchedulerConfiguration, <span class="hljs-type">error</span>) &#123;<br>	cfgv1alpha1 := kubeschedulerconfigv1alpha1.KubeSchedulerConfiguration&#123;&#125;<br>	kubeschedulerscheme.Scheme.Default(&amp;cfgv1alpha1)<br>... <span class="hljs-comment">// 省略</span><br>&#125;<br><br><span class="hljs-comment">// 点击kubeschedulerscheme.Scheme.Default(&amp;cfgv1alpha1)中的Default跳转进入</span><br><span class="hljs-comment">// 来到了这里:vendor/k8s.io/apimachinery/pkg/runtime/scheme.go:389</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *Scheme)</span></span> AddTypeDefaultingFunc(srcType Object, fn <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(<span class="hljs-keyword">interface</span>&#123;&#125;)</span></span>) &#123;<br>	s.defaulterFuncs[reflect.TypeOf(srcType)] = fn<br>&#125;<br><br><span class="hljs-comment">// Default sets defaults on the provided Object.</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *Scheme)</span></span> Default(src Object) &#123;<br>	<span class="hljs-keyword">if</span> fn, ok := s.defaulterFuncs[reflect.TypeOf(src)]; ok &#123;<br>		fn(src)<br>	&#125;<br>&#125;<br><br><span class="hljs-comment">// 看看defaulterFuncs的数据类型：</span><br>	<span class="hljs-comment">// defaulterFuncs is an array of interfaces to be called with an object to provide defaulting</span><br>	<span class="hljs-comment">// the provided object must be a pointer.</span><br>	defaulterFuncs <span class="hljs-keyword">map</span>[reflect.Type]<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(<span class="hljs-keyword">interface</span>&#123;&#125;)</span></span><br><br><span class="hljs-comment">// 不难看出，这个Default()方法是通过反射器，获取对象的类型，以类型作为map的key，从而获取该类型</span><br><span class="hljs-comment">// 对应的defaulterFuncs，也即是该结构体填充默认配置的方法，最后执行该方法</span><br><span class="hljs-comment">// 那么这个defaulterFuncs map[reflect.Type]func(interface&#123;&#125;)，里面的元素时怎么填充的呢？</span><br><span class="hljs-comment">// 作者很贴心地将添加map元素的方法写在了Default()方法的正上方:</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *Scheme)</span></span> AddTypeDefaultingFunc(srcType Object, fn <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(<span class="hljs-keyword">interface</span>&#123;&#125;)</span></span>) &#123;<br>	s.defaulterFuncs[reflect.TypeOf(srcType)] = fn<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>我们选中然后ctrl+b，查找AddTypeDefaultingFunc()的引用，弹窗中你可以看到有非常非常多的对象都引用了该方法，这些不同类型的对象相信无一例外都是通过Default()方法来生成默认配置的，我们找到其中的包含scheduler的方法:</p>
+<p><img src="http://mycloudn.wqyin.cn/addDefaultFunc.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>跳转进去，来到了这个位置<code>pkg/scheduler/apis/config/v1alpha1/zz_generated.defaults.go:31</code>(原谅我的灵魂笔法):</p>
+<p><img src="http://mycloudn.wqyin.cn/registerDefaults.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>进入<code>SetDefaults_KubeSchedulerConfiguration()</code>，来到<code>pkg/scheduler/apis/config/v1alpha1/defaults.go:42</code>:</p>
+<p><img src="http://mycloudn.wqyin.cn/SetDefaults_KubeSchedulerConfiguration.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>看到了<code>DefaultProvider</code>吗？是不是觉得瞬间豁然开朗，原来是在这里调用指定了scheduler配置的<code>AlgorithmSource.Provider</code>。</p>
+<h3 id="调度功能实现的回溯"><a href="#调度功能实现的回溯" class="headerlink" title="调度功能实现的回溯"></a>调度功能实现的回溯</h3><p>让我们捋一捋调度器框架运行调度功能相关的流程:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// 1.获取AlgorithmSource.Provider(默认&quot;DefaultProvider&quot;)，作为key从map中获取到pkg/scheduler/algorithmprovider包内为其初始化的两种算法key集合</span><br>algorithmProviderMap[name] = AlgorithmProviderConfig&#123;<br>		FitPredicateKeys:     predicateKeys,<br>		PriorityFunctionKeys: priorityKeys,<br>	&#125;<br>	<br><span class="hljs-comment">// 2.填充genericScheduler对象的predicates元素:</span><br><span class="hljs-comment">// pkg/scheduler/factory/plugins.go:411</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">getFitPredicateFunctions</span><span class="hljs-params">(names sets.String, args PluginFactoryArgs)</span></span> (<span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]predicates.FitPredicate, <span class="hljs-type">error</span>) &#123;<br>	schedulerFactoryMutex.Lock()<br>	<span class="hljs-keyword">defer</span> schedulerFactoryMutex.Unlock()<br><br>	fitPredicates := <span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]predicates.FitPredicate&#123;&#125;<br>	<span class="hljs-keyword">for</span> _, name := <span class="hljs-keyword">range</span> names.List() &#123;<br>		factory, ok := fitPredicateMap[name]<br>		<span class="hljs-keyword">if</span> !ok &#123;<br>			<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, fmt.Errorf(<span class="hljs-string">&quot;invalid predicate name %q specified - no corresponding function found&quot;</span>, name)<br>		&#125;<br>		fitPredicates[name] = factory(args)<br>	&#125;<br><br>	<span class="hljs-comment">// Always include mandatory fit predicates.</span><br>	<span class="hljs-keyword">for</span> name := <span class="hljs-keyword">range</span> mandatoryFitPredicates &#123;<br>		<span class="hljs-keyword">if</span> factory, found := fitPredicateMap[name]; found &#123;<br>			fitPredicates[name] = factory(args)<br>		&#125;<br>	&#125;<br><br>	<span class="hljs-keyword">return</span> fitPredicates, <span class="hljs-literal">nil</span><br>&#125;<br><br><span class="hljs-comment">// 3.对predicates内的每一个key，找到对应的检查方法，执行每一项检查,返回检查结果</span><br><span class="hljs-comment">// pkg/scheduler/core/generic_scheduler.go:608</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">podFitsOnNode</span><span class="hljs-params">(</span></span><br><span class="hljs-params"><span class="hljs-function">	pod *v1.Pod,</span></span><br><span class="hljs-params"><span class="hljs-function">	meta predicates.PredicateMetadata,</span></span><br><span class="hljs-params"><span class="hljs-function">	info *schedulernodeinfo.NodeInfo,</span></span><br><span class="hljs-params"><span class="hljs-function">	predicateFuncs <span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]predicates.FitPredicate,</span></span><br><span class="hljs-params"><span class="hljs-function">	queue internalqueue.SchedulingQueue,</span></span><br><span class="hljs-params"><span class="hljs-function">	alwaysCheckAllPredicates <span class="hljs-type">bool</span>,</span></span><br><span class="hljs-params"><span class="hljs-function">)</span></span> (<span class="hljs-type">bool</span>, []predicates.PredicateFailureReason, <span class="hljs-type">error</span>) &#123;<br>	<span class="hljs-keyword">var</span> failedPredicates []predicates.PredicateFailureReason<br><br>	podsAdded := <span class="hljs-literal">false</span><br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">2</span>; i++ &#123;<br>		metaToUse := meta<br>		nodeInfoToUse := info<br>		<span class="hljs-keyword">if</span> i == <span class="hljs-number">0</span> &#123;<br>			podsAdded, metaToUse, nodeInfoToUse = addNominatedPods(pod, meta, info, queue)<br>		&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> !podsAdded || <span class="hljs-built_in">len</span>(failedPredicates) != <span class="hljs-number">0</span> &#123;<br>			<span class="hljs-keyword">break</span><br>		&#125;<br>		<span class="hljs-keyword">for</span> _, predicateKey := <span class="hljs-keyword">range</span> predicates.Ordering() &#123;<br>			<span class="hljs-keyword">var</span> (<br>				fit     <span class="hljs-type">bool</span><br>				reasons []predicates.PredicateFailureReason<br>				err     <span class="hljs-type">error</span><br>			)<br>			<span class="hljs-keyword">if</span> predicate, exist := predicateFuncs[predicateKey]; exist &#123;<br>				fit, reasons, err = predicate(pod, metaToUse, nodeInfoToUse)<br>				<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>					<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>, []predicates.PredicateFailureReason&#123;&#125;, err<br>				&#125;<br>				... <span class="hljs-comment">// 省略</span><br>					&#125;<br>				&#125;<br>			&#125;<br>		&#125;<br>	&#125;<br><br>	<span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(failedPredicates) == <span class="hljs-number">0</span>, failedPredicates, <span class="hljs-literal">nil</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="目录结构总结"><a href="#目录结构总结" class="headerlink" title="目录结构总结"></a>目录结构总结</h3><p>最后，对<code>pkg/scheduler</code>路径下的各子目录的功能来一个图文总结吧:</p>
+<p><img src="http://mycloudn.wqyin.cn/dir.jpg" srcset="/img/loading.gif" lazyload></p>
+<h3 id="Last"><a href="#Last" class="headerlink" title="Last"></a>Last</h3><p>如果有沉下心来阅读代码，结合上面的图文讲解、代码块中的中文注释，相信你对调度器框架包内的代码结构会有一个较为清晰的整体掌握，本篇框架篇到此结束，下一篇来谈谈详细的调度算法的细节</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/go/" class="category-chain-item">go</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/k8s/">#k8s</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>k8s源码学习--调度器框架</div>
+      <div>https://liyupin.github.io/2022/08/17/k8s源码学习-调度器框架/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Cper Liu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年8月17日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/08/17/k8s%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0-%E8%B0%83%E5%BA%A6%E5%99%A8%E5%85%A5%E5%8F%A3/" title="k8s源码学习--调度器入口">
+                        <span class="hidden-mobile">k8s源码学习--调度器入口</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

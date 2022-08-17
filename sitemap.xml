@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://liyupin.github.io/2022/08/17/k8s%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0-%E8%B0%83%E5%BA%A6%E5%99%A8%E6%A1%86%E6%9E%B6/</loc>
+    
+    <lastmod>2022-08-17</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://liyupin.github.io/2022/08/17/k8s%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0-%E8%B0%83%E5%BA%A6%E5%99%A8%E5%85%A5%E5%8F%A3/</loc>
     
     <lastmod>2022-08-17</lastmod>
@@ -1325,6 +1334,13 @@
 
   
   <url>
+    <loc>https://liyupin.github.io/tags/openeuler/</loc>
+    <lastmod>2022-08-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://liyupin.github.io/tags/%E8%82%A1%E7%A5%A8/</loc>
     <lastmod>2022-08-17</lastmod>
     <changefreq>weekly</changefreq>
@@ -1402,13 +1418,6 @@
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/tags/openeuler/</loc>
-    <lastmod>2022-08-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://liyupin.github.io/tags/windows/</loc>
     <lastmod>2022-08-17</lastmod>
     <changefreq>weekly</changefreq>
@@ -1432,14 +1441,14 @@
 
   
   <url>
-    <loc>https://liyupin.github.io/categories/%E6%8A%95%E8%B5%84/</loc>
+    <loc>https://liyupin.github.io/categories/linux/</loc>
     <lastmod>2022-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/categories/linux/</loc>
+    <loc>https://liyupin.github.io/categories/%E6%8A%95%E8%B5%84/</loc>
     <lastmod>2022-08-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
