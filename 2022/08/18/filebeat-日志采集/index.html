@@ -1,0 +1,700 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Cper Liu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="日志采集利器 Filebeat！Filebeat概述| 什么是Filebeatfilebeat是用于”转发”和”集中日志数据”的轻量级数据采集器。 filebeat会监视指定的日志文件路径，收集日志事件并将数据转发到elasticsearch，logstash，redis，kafka存储服务器。 当您要面对成百上千，甚至成千上万的服务器，虚拟机的容器生成的日志时，请告别SSH吧。 Filebeat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="filebeat 日志采集">
+<meta property="og:url" content="https://liyupin.github.io/2022/08/18/filebeat-%E6%97%A5%E5%BF%97%E9%87%87%E9%9B%86/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="日志采集利器 Filebeat！Filebeat概述| 什么是Filebeatfilebeat是用于”转发”和”集中日志数据”的轻量级数据采集器。 filebeat会监视指定的日志文件路径，收集日志事件并将数据转发到elasticsearch，logstash，redis，kafka存储服务器。 当您要面对成百上千，甚至成千上万的服务器，虚拟机的容器生成的日志时，请告别SSH吧。 Filebeat">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/frhpCyJtJy3lVjpsdz0owEpo1mCosPPBPy3s2CVM5svKvYgfFcBxrc2aOszFtrXicibLjeicg3x3tibMb3N0cyZpIg/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/frhpCyJtJy3lVjpsdz0owEpo1mCosPPBiciaqUFFN5LpOYTicJUibgcYtdSJAZT5iayYdvM5y6QibL0a7ibUEiabt6uFWw/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="article:published_time" content="2022-08-18T03:24:00.000Z">
+<meta property="article:modified_time" content="2022-08-18T03:24:59.033Z">
+<meta property="article:author" content="Cper Liu">
+<meta property="article:tag" content="log">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://mmbiz.qpic.cn/mmbiz_png/frhpCyJtJy3lVjpsdz0owEpo1mCosPPBPy3s2CVM5svKvYgfFcBxrc2aOszFtrXicibLjeicg3x3tibMb3N0cyZpIg/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1">
+  
+  
+  
+  <title>filebeat 日志采集 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="filebeat 日志采集"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-08-18 11:24" pubdate>
+          2022年8月18日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          11k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          94 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">filebeat 日志采集</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="日志采集利器-Filebeat！"><a href="#日志采集利器-Filebeat！" class="headerlink" title="日志采集利器 Filebeat！"></a>日志采集利器 Filebeat！</h1><h2 id="Filebeat概述"><a href="#Filebeat概述" class="headerlink" title="Filebeat概述"></a>Filebeat概述</h2><h3 id="什么是Filebeat"><a href="#什么是Filebeat" class="headerlink" title="| 什么是Filebeat"></a>| 什么是Filebeat</h3><p>filebeat是用于”转发”和”集中日志数据”的轻量级数据采集器。</p>
+<p>filebeat会监视指定的日志文件路径，收集日志事件并将数据转发到elasticsearch，logstash，redis，kafka存储服务器。</p>
+<p>当您要面对成百上千，甚至成千上万的服务器，虚拟机的容器生成的日志时，请告别SSH吧。</p>
+<p>Filebeat将为您提供一种轻量级方法，用于转发和汇总日志与文件，让简单的事情不再繁杂。</p>
+<h3 id="Filebeat的组件"><a href="#Filebeat的组件" class="headerlink" title="| Filebeat的组件"></a>| Filebeat的组件</h3><p>Filebeat包含两个主要组件，input(输入)和Harvester(收割机)，两个组件协同工作将文件的尾部最新数据发送出去。</p>
+<ul>
+<li>Harveste组件: 负责逐行读取单个文件的内容,然后将内容发送到输出。</li>
+<li>input组件: 输入负责管理收割机并找到所有要读取的源。该参数的源文件路径需要使用者手动配置。</li>
+<li>Spooler(缓冲区): 将Harvester组件采集的数据进行统一的缓存,并发往目的端,可以是 Elasticsearch, Logstash , kafka 和 Redis 等。</li>
+</ul>
+<h3 id="Filebeat工作原理"><a href="#Filebeat工作原理" class="headerlink" title="| Filebeat工作原理"></a>| Filebeat工作原理</h3><p>filebeat工作流程如下</p>
+<ol>
+<li>filebeat启动后，filebeat通过Input读取指定的日志路径;</li>
+<li>为该文件日志启动收割进程harvester,每个收割进程读取一个日志文件的新内容,并发送这些新的日志数据到处理程序spooler;</li>
+<li>spooler会集合这些事件,最后filebeat会发送集合的数据到你指定的位置。</li>
+</ol>
+<p>Filebeat如何保持文件的状态？</p>
+<ul>
+<li>Filebeat保持每个文件的状态,并经常将状态刷新到注册表文件(data&#x2F;registry&#x2F;filebeat&#x2F;log.json)中的磁盘。</li>
+<li>该状态用于记住收割机读取的最后一个偏移量,并确保发送所有日志行。</li>
+</ul>
+<p>Filebeat如何确保至少一次交付？</p>
+<ol>
+<li>Filebeat保证事件将至少传送到配置的输出一次并且不会丢失数据。</li>
+<li>Filebeat能够实现这种行为，因为它将每个事件的传递状态存储在注册表文件中。</li>
+</ol>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/frhpCyJtJy3lVjpsdz0owEpo1mCosPPBPy3s2CVM5svKvYgfFcBxrc2aOszFtrXicibLjeicg3x3tibMb3N0cyZpIg/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" srcset="/img/loading.gif" lazyload alt="图片"></p>
+<h2 id="部署Filebeat环境"><a href="#部署Filebeat环境" class="headerlink" title="部署Filebeat环境"></a>部署Filebeat环境</h2><h3 id="安装Filebeat软件"><a href="#安装Filebeat软件" class="headerlink" title="| 安装Filebeat软件"></a>| 安装Filebeat软件</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-comment"># 编译安装Filebeatwget https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.12.1-linux-x86_64.tar.gztar xf filebeat-7.12.1-linux-x86_64.tar.gz -C /oldboyedu/softwares/cd /oldboyedu/softwares/ln -s filebeat-7.12.1-linux-x86_64 filebeatvim /etc/profile.d/filebeat.sh# 添加Filebeat的环境变量</span><br>cat <span class="hljs-regexp">/etc/</span>profile.d<span class="hljs-regexp">/filebeat.sh#!/</span>bin/bash<br>export FILE_BEAT=<span class="hljs-regexp">/oldboyedu/</span>softwares/filebeatexport PATH=<span class="hljs-variable">$PATH</span>:<span class="hljs-variable">$FILE_BEAT</span><span class="hljs-comment"># 使环境变量生效</span><br>source <span class="hljs-regexp">/etc/</span>profile.d/filebeat.sh <span class="hljs-comment"># 查看环境变量是否生效</span><br>which filebeat<br></code></pre></td></tr></table></figure>
+
+<h3 id="filebeat参数介绍"><a href="#filebeat参数介绍" class="headerlink" title="| filebeat参数介绍"></a>| filebeat参数介绍</h3><p><img src="https://mmbiz.qpic.cn/mmbiz_png/frhpCyJtJy3lVjpsdz0owEpo1mCosPPBiciaqUFFN5LpOYTicJUibgcYtdSJAZT5iayYdvM5y6QibL0a7ibUEiabt6uFWw/640?wx_fmt=png&wxfrom=5&wx_lazy=1&wx_co=1" srcset="/img/loading.gif" lazyload alt="图片"></p>
+<h3 id="运行第一个实例"><a href="#运行第一个实例" class="headerlink" title="| 运行第一个实例"></a>| 运行第一个实例</h3><h3 id="将标准输入的数据进行标准输出"><a href="#将标准输入的数据进行标准输出" class="headerlink" title="**将标准输入的数据进行标准输出\"></a>**将标准输入的数据进行标准输出\</h3><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">vim <span class="hljs-keyword">stdin</span>-<span class="hljs-built_in">to</span>-console.yamlfilebeat.inputs:- type: <span class="hljs-keyword">stdin</span>  enabled: <span class="hljs-literal">true</span><br>output.console:  pretty: <span class="hljs-literal">true</span>  enable: <span class="hljs-literal">true</span><span class="hljs-comment"># 查看filebeat的输出</span><br>filebeat -e -c <span class="hljs-keyword">stdin</span>-<span class="hljs-built_in">to</span>-console.yaml<br></code></pre></td></tr></table></figure>
+
+<h2 id="企业实战"><a href="#企业实战" class="headerlink" title="企业实战"></a>企业实战</h2><h3 id="nginx日志收集"><a href="#nginx日志收集" class="headerlink" title="| nginx日志收集"></a>| nginx日志收集</h3><p>**安装nginx\</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">yum -y <span class="hljs-keyword">install</span> epel-releaseyum -y <span class="hljs-keyword">install</span> nginx<br></code></pre></td></tr></table></figure>
+
+<p>**创建配置文件\</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk">vim <span class="hljs-regexp">/etc/</span>nginx<span class="hljs-regexp">/conf.d/</span>elk103.oldboyedu.com.confserver &#123;	listen <span class="hljs-number">80</span>;		server_name es.oldboyedu.com;<br>	root <span class="hljs-regexp">/oldboyedu/</span>data<span class="hljs-regexp">/nginx/</span>;<br>	location / &#123;		index index.html;	&#125;&#125;<br></code></pre></td></tr></table></figure>
+
+<p>**创建测试数据\</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">mkdir -p <span class="hljs-regexp">/oldboyedu/</span>data<span class="hljs-regexp">/nginx/</span><br>echo <span class="hljs-string">&quot;&lt;h1&gt;cper liyupi、&lt;/h1&gt;&quot;</span> &gt; <span class="hljs-regexp">/oldboyedu/</span>data<span class="hljs-regexp">/nginx/i</span>ndex.html<br></code></pre></td></tr></table></figure>
+
+<p>**检查配置文件\</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">nginx -t</span><br></code></pre></td></tr></table></figure>
+
+<p>**启动nginx服务\</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">systemctl <span class="hljs-literal">start</span> nginx<br></code></pre></td></tr></table></figure>
+
+<p>**测试nginx服务\</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gradle"># 编写脚本vim <span class="hljs-regexp">/server/</span>scripts<span class="hljs-regexp">/nginx.sh #!/</span>bin/bashwhile <span class="hljs-keyword">true</span>  <span class="hljs-keyword">do</span>  <span class="hljs-keyword">for</span> i in <span class="hljs-string">&quot;curl es.oldboyedu.com&quot;</span>    <span class="hljs-keyword">do</span>	Time=$((RANDOM%<span class="hljs-number">5</span> +<span class="hljs-number">1</span> ))	echo <span class="hljs-string">&quot;本次间隔时间为：$Time&quot;</span>	curl elk103.oldboyedu.com	sleep $Time  donedone<br></code></pre></td></tr></table></figure>
+
+<p>**配置nginx收集JSON并重启nginx\</p>
+<figure class="highlight hsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs hsp"><span class="hljs-meta"># 修改nginx的配置文件vim /etc/nginx/nginx.conf...</span><br><span class="hljs-meta"># 自定义nginx的日志格式为json格式log_format oldboyedu_nginx_json &#x27;&#123;<span class="hljs-string">&quot;@timestamp&quot;</span>:<span class="hljs-string">&quot;$time_iso8601&quot;</span>,&#x27;                           &#x27;<span class="hljs-string">&quot;host&quot;</span>:<span class="hljs-string">&quot;$server_addr&quot;</span>,&#x27;                           &#x27;<span class="hljs-string">&quot;clientip&quot;</span>:<span class="hljs-string">&quot;$remote_addr&quot;</span>,&#x27;                           &#x27;<span class="hljs-string">&quot;size&quot;</span>:$body_bytes_sent,&#x27;                           &#x27;<span class="hljs-string">&quot;responsetime&quot;</span>:$request_time,&#x27;                           &#x27;<span class="hljs-string">&quot;upstreamtime&quot;</span>:<span class="hljs-string">&quot;$upstream_response_time&quot;</span>,&#x27;                           &#x27;<span class="hljs-string">&quot;upstreamhost&quot;</span>:<span class="hljs-string">&quot;$upstream_addr&quot;</span>,&#x27;                           &#x27;<span class="hljs-string">&quot;http_host&quot;</span>:<span class="hljs-string">&quot;$host&quot;</span>,&#x27;                           &#x27;<span class="hljs-string">&quot;uri&quot;</span>:<span class="hljs-string">&quot;$uri&quot;</span>,&#x27;                           &#x27;<span class="hljs-string">&quot;domain&quot;</span>:<span class="hljs-string">&quot;$host&quot;</span>,&#x27;                           &#x27;<span class="hljs-string">&quot;xff&quot;</span>:<span class="hljs-string">&quot;$http_x_forwarded_for&quot;</span>,&#x27;                           &#x27;<span class="hljs-string">&quot;referer&quot;</span>:<span class="hljs-string">&quot;$http_referer&quot;</span>,&#x27;                           &#x27;<span class="hljs-string">&quot;tcp_xff&quot;</span>:<span class="hljs-string">&quot;$proxy_protocol_addr&quot;</span>,&#x27;                           &#x27;<span class="hljs-string">&quot;http_user_agent&quot;</span>:<span class="hljs-string">&quot;$http_user_agent&quot;</span>,&#x27;                           &#x27;<span class="hljs-string">&quot;status&quot;</span>:<span class="hljs-string">&quot;$status&quot;</span>&#125;&#x27;;</span><br><br>access_log  /var/log/nginx/access.log  oldboyedu_nginx_json<span class="hljs-comment">;</span><br><span class="hljs-meta"># 测试配置文件是否正常nginx -t</span><br><span class="hljs-meta"># 重新加载nginxsystemctl restart nginx</span><br></code></pre></td></tr></table></figure>
+
+<p>**配置**filebeat的配置文件\</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">vim <span class="hljs-number">01</span>-nginx-<span class="hljs-keyword">to</span>-es.yamlfilebeat.inputs:- <span class="hljs-keyword">type</span>: <span class="hljs-keyword">log</span>  paths: 	- /var/<span class="hljs-keyword">log</span>/nginx/<span class="hljs-keyword">access</span>.<span class="hljs-keyword">log</span>  tags: &quot;nginx&quot;  # 默认值为<span class="hljs-keyword">false</span>，我们需要修改为<span class="hljs-keyword">true</span>，即不会将消息存储至message字段!  <span class="hljs-type">json</span>.keys_under_root: <span class="hljs-keyword">true</span><br>output.elasticsearch:  hosts: [&quot;192.168.56.130:9200&quot;,&quot;192.168.56.131:9200&quot;,&quot;192.168.56.132:9200&quot;]  #<span class="hljs-keyword">index</span>: &quot;oldboy-2022-%&#123;[agent.version]&#125;-%&#123;+yyyy.MM.dd&#125;&quot;  indices:	- <span class="hljs-keyword">index</span>: &quot;oldboyedu-nginx2022-%&#123;+yyyy.MM.dd&#125;&quot;	  <span class="hljs-keyword">when</span>.contains:		tags: &quot;nginx&quot;<br># 禁用索引的生命周期!setup.ilm.enabled: <span class="hljs-keyword">false</span># 指定索引模板的名称setup.<span class="hljs-keyword">template</span>.name: &quot;oldboyedu&quot;# 指定索引模板的匹配模式setup.<span class="hljs-keyword">template</span>.pattern: &quot;oldboyedu-nginx*&quot;# 指定索引模板的分片信息setup.<span class="hljs-keyword">template</span>.settings:  <span class="hljs-keyword">index</span>.number_of_shards: <span class="hljs-number">5</span>  <span class="hljs-keyword">index</span>.number_of_replicas: <span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
+
+<p>**收集nginx的错误日志\</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">vim <span class="hljs-number">02</span>-nginx-<span class="hljs-keyword">to</span>-es.yaml filebeat.inputs:- <span class="hljs-keyword">type</span>: <span class="hljs-keyword">log</span>  paths:     - /var/<span class="hljs-keyword">log</span>/nginx/<span class="hljs-keyword">access</span>.<span class="hljs-keyword">log</span>  tags: &quot;nginx-access&quot;  # 默认值为<span class="hljs-keyword">false</span>，我们需要修改为<span class="hljs-keyword">true</span>，即不会将消息存储至message字段!  <span class="hljs-type">json</span>.keys_under_root: <span class="hljs-keyword">true</span><br><br>- <span class="hljs-keyword">type</span>: <span class="hljs-keyword">log</span>  paths:     - /var/<span class="hljs-keyword">log</span>/nginx/error.<span class="hljs-keyword">log</span>  tags: &quot;nginx-error&quot;<br><br>output.elasticsearch:  hosts: [&quot;192.168.56.130:9200&quot;,&quot;192.168.56.131:9200&quot;,&quot;192.168.56.132:9200&quot;]  #<span class="hljs-keyword">index</span>: &quot;oldboy-2022-%&#123;[agent.version]&#125;-%&#123;+yyyy.MM.dd&#125;&quot;  indices:    - <span class="hljs-keyword">index</span>: &quot;oldboyedu-nginx-access-%&#123;+yyyy.MM.dd&#125;&quot;      <span class="hljs-keyword">when</span>.contains:        tags: &quot;nginx-access&quot;<br>    - <span class="hljs-keyword">index</span>: &quot;oldboyedu-nginx-error-%&#123;+yyyy.MM.dd&#125;&quot;      <span class="hljs-keyword">when</span>.contains:        tags: &quot;nginx-error&quot;<br># 禁用索引的生命周期!setup.ilm.enabled: <span class="hljs-keyword">false</span># 指定索引模板的名称setup.<span class="hljs-keyword">template</span>.name: &quot;oldboyedu&quot;# 指定索引模板的匹配模式setup.<span class="hljs-keyword">template</span>.pattern: &quot;oldboyedu-nginx*&quot;# 指定索引模板的分片信息setup.<span class="hljs-keyword">template</span>.settings:  <span class="hljs-keyword">index</span>.number_of_shards: <span class="hljs-number">5</span>  <span class="hljs-keyword">index</span>.number_of_replicas: <span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="Nginx多虚拟主机"><a href="#Nginx多虚拟主机" class="headerlink" title="| Nginx多虚拟主机"></a>| Nginx多虚拟主机</h3><p>**配置nginx的多虚拟主机\</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs gradle">vim <span class="hljs-regexp">/etc/</span>nginx<span class="hljs-regexp">/conf.d/</span>bbs.oldboyedu.com.confserver &#123;	listen <span class="hljs-number">80</span>;		server_name bbs.oldboyedu.com;<br>	root <span class="hljs-regexp">/oldboyedu/</span>data<span class="hljs-regexp">/nginx/</span>bbs;<br>	 # 指定access.log的存储路径及日志格式.        access_log <span class="hljs-regexp">/var/</span>log<span class="hljs-regexp">/nginx/</span>bbs.log oldboyedu_nginx_json;<br>	location <span class="hljs-regexp">/ &#123;		index index.html;	&#125;&#125;vim /</span>etc<span class="hljs-regexp">/nginx/</span>conf.d/blog.oldboyedu.com.conf server &#123;	listen <span class="hljs-number">80</span>;		server_name blog.oldboyedu.com;<br>	root <span class="hljs-regexp">/oldboyedu/</span>data<span class="hljs-regexp">/nginx/</span>blog;<br>        # 指定access.log的存储路径及日志格式.        access_log <span class="hljs-regexp">/var/</span>log<span class="hljs-regexp">/nginx/</span>blog.log oldboyedu_nginx_json;<br>	location / &#123;		index index.html;	&#125;&#125;<br></code></pre></td></tr></table></figure>
+
+<p>**创建测试数据\</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs dts">mkdir -p <span class="hljs-keyword">/oldboyedu/</span>data<span class="hljs-keyword">/nginx/</span><span class="hljs-punctuation">&#123;</span>blog,bbs<span class="hljs-punctuation">&#125;</span>echo <span class="hljs-string">&quot;&lt;h1&gt;blog&lt;/h1&gt;&quot;</span> &gt; <span class="hljs-keyword">/oldboyedu/</span>data<span class="hljs-keyword">/nginx/</span>blog/index.htmlecho <span class="hljs-string">&quot;&lt;h1&gt;bbs&lt;/h1&gt;&quot;</span> &gt; <span class="hljs-keyword">/oldboyedu/</span>data<span class="hljs-keyword">/nginx/</span>bbs/index.html<br><span class="hljs-meta"># 检查配置文件的语法nginx -t</span><br><br><br><span class="hljs-meta"># 修改主机名映射vim /etc/hosts</span><br>...<br><span class="hljs-number">192.168</span><span class="hljs-number">.56</span><span class="hljs-number">.132</span> blog.oldboyedu.com192<span class="hljs-number">.168</span><span class="hljs-number">.56</span><span class="hljs-number">.132</span> bbs.oldboyedu.com<br><span class="hljs-meta"># 重启nginx服务systemctl restart nginx</span><br><span class="hljs-meta"># 测试服务curl blog.oldboyedu.comcurl bbs.oldboyedu.com</span><br></code></pre></td></tr></table></figure>
+
+<p>**编写fielbeat的yaml\</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">vim nginx_vm_host.yamlfilebeat.inputs:- <span class="hljs-keyword">type</span>: <span class="hljs-keyword">log</span>  enabled: <span class="hljs-keyword">true</span>  paths:    - /var/<span class="hljs-keyword">log</span>/nginx/<span class="hljs-keyword">access</span>.<span class="hljs-keyword">log</span>  # <span class="hljs-keyword">false</span>会将<span class="hljs-type">json</span>解析的格式存储至message，改为<span class="hljs-keyword">true</span>则不存储至message  <span class="hljs-type">json</span>.keys_under_root: <span class="hljs-keyword">true</span>  # 覆盖默认的message字段，使用自定义<span class="hljs-type">json</span>格式的key  <span class="hljs-type">json</span>.overwrite_keys: <span class="hljs-keyword">true</span>  # 为访问日志(&quot;access.log&quot;)打标签  tags: [&quot;nginx-access&quot;]<br>- <span class="hljs-keyword">type</span>: <span class="hljs-keyword">log</span>  enabled: <span class="hljs-keyword">true</span>  paths:    - /var/<span class="hljs-keyword">log</span>/nginx/blog.<span class="hljs-keyword">log</span>  # <span class="hljs-keyword">false</span>会将<span class="hljs-type">json</span>解析的格式存储至message，改为<span class="hljs-keyword">true</span>则不存储至message  <span class="hljs-type">json</span>.keys_under_root: <span class="hljs-keyword">true</span>  # 覆盖默认的message字段，使用自定义<span class="hljs-type">json</span>格式的key  <span class="hljs-type">json</span>.overwrite_keys: <span class="hljs-keyword">true</span>  # 为访问日志(&quot;access.log&quot;)打标签  tags: [&quot;nginx-blog&quot;]<br><br>- <span class="hljs-keyword">type</span>: <span class="hljs-keyword">log</span>  enabled: <span class="hljs-keyword">true</span>  paths:    - /var/<span class="hljs-keyword">log</span>/nginx/demo.<span class="hljs-keyword">log</span>  # <span class="hljs-keyword">false</span>会将<span class="hljs-type">json</span>解析的格式存储至message，改为<span class="hljs-keyword">true</span>则不存储至message  <span class="hljs-type">json</span>.keys_under_root: <span class="hljs-keyword">true</span>  # 覆盖默认的message字段，使用自定义<span class="hljs-type">json</span>格式的key  <span class="hljs-type">json</span>.overwrite_keys: <span class="hljs-keyword">true</span>  # 为访问日志(&quot;access.log&quot;)打标签  tags: [&quot;nginx-demo&quot;]<br>- <span class="hljs-keyword">type</span>: <span class="hljs-keyword">log</span>  <span class="hljs-keyword">enable</span>: <span class="hljs-keyword">true</span>  paths:    - /var/<span class="hljs-keyword">log</span>/nginx/error.<span class="hljs-keyword">log</span>  # 为错误日志(&quot;error.log&quot;)打标签  tags: [&quot;nginx-error&quot;]<br>output.elasticsearch:  hosts: [&quot;192.168.56.130:9200&quot;,&quot;192.168.56.131:9200&quot;,&quot;192.168.56.132:9200&quot;]  # <span class="hljs-keyword">index</span>: &quot;nginx-access-%&#123;[agent.version]&#125;-%&#123;+yyyy.MM.dd&#125;&quot;  # 注意哈，下面的标签不再是&quot;index&quot;啦~  indices:    - <span class="hljs-keyword">index</span>: &quot;nginx-access-%&#123;[agent.version]&#125;-%&#123;+yyyy.MM.dd&#125;&quot;      <span class="hljs-keyword">when</span>.contains:        tags: &quot;nginx-access&quot;<br>    - <span class="hljs-keyword">index</span>: &quot;nginx-error-%&#123;[agent.version]&#125;-%&#123;+yyyy.MM.dd&#125;&quot;      <span class="hljs-keyword">when</span>.contains:        tags: &quot;nginx-error&quot;<br>    - <span class="hljs-keyword">index</span>: &quot;nginx-blog-%&#123;[agent.version]&#125;-%&#123;+yyyy.MM.dd&#125;&quot;      <span class="hljs-keyword">when</span>.contains:        tags: &quot;nginx-blog&quot;<br>    - <span class="hljs-keyword">index</span>: &quot;nginx-demo-%&#123;[agent.version]&#125;-%&#123;+yyyy.MM.dd&#125;&quot;      <span class="hljs-keyword">when</span>.contains:        tags: &quot;nginx-demo&quot;<br>setup.ilm.enabled: <span class="hljs-keyword">false</span># 定义模板名称.setup.<span class="hljs-keyword">template</span>.name: &quot;nginx&quot;# 定义模板的匹配索引名称.setup.<span class="hljs-keyword">template</span>.pattern: &quot;nginx-*&quot;[root@oldboy-es03 project]# filebeat -e -c nginx_vm_host.yaml<br></code></pre></td></tr></table></figure>
+
+<h3 id="Tomcat日志收集"><a href="#Tomcat日志收集" class="headerlink" title="| Tomcat日志收集"></a>| Tomcat日志收集</h3><p>**部署tomcat\</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs xml">tar zxf apache-tomcat-10.0.6.tar.gz -C /oldboy/softwares/cd  /oldboyedu/softwares/ln -s apache-tomcat-10.0.6 tomcat# 配置JDK 的环境变量<br>vim  /etc/profile.d/tomcat.sh#!/bin/bash<br>export TOMCAT_HOME=/oldboyedu/softwares/tomcatexport PATH=$PATH:$TOMCAT_HOME/bin# 让环境变量生效<br>.  /etc/profile.d/tomcat.shcatalina.sh<br># 配置tomcat的JSON格式vim /oldboyedu/softwares/tomcat/conf/server.xml···(大概在133行哟~)<br>      <span class="hljs-tag">&lt;<span class="hljs-name">Host</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;tomcat.oldboyedu.com&quot;</span>  <span class="hljs-attr">appBase</span>=<span class="hljs-string">&quot;webapps&quot;</span>            <span class="hljs-attr">unpackWARs</span>=<span class="hljs-string">&quot;true&quot;</span> <span class="hljs-attr">autoDeploy</span>=<span class="hljs-string">&quot;true&quot;</span>&gt;</span><br>...(需要手动注释一下原内容)<span class="hljs-comment">&lt;!--        &lt;Valve className=&quot;org.apache.catalina.valves.AccessLogValve&quot; directory=&quot;logs&quot;               prefix=&quot;localhost_access_log&quot; suffix=&quot;.txt&quot;               pattern=&quot;%h %l %u %t &amp;quot;%r&amp;quot; %s %b&quot; /&gt;--&gt;</span><br><br><br><span class="hljs-tag">&lt;<span class="hljs-name">Valve</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;org.apache.catalina.valves.AccessLogValve&quot;</span> <span class="hljs-attr">directory</span>=<span class="hljs-string">&quot;logs&quot;</span>            <span class="hljs-attr">prefix</span>=<span class="hljs-string">&quot;tomcat.oldboyedu.com_access_log&quot;</span> <span class="hljs-attr">suffix</span>=<span class="hljs-string">&quot;.txt&quot;</span><span class="hljs-attr">pattern</span>=<span class="hljs-string">&quot;&#123;<span class="hljs-symbol">&amp;quot;</span>clientip<span class="hljs-symbol">&amp;quot;</span>:<span class="hljs-symbol">&amp;quot;</span>%h<span class="hljs-symbol">&amp;quot;</span>,<span class="hljs-symbol">&amp;quot;</span>ClientUser<span class="hljs-symbol">&amp;quot;</span>:<span class="hljs-symbol">&amp;quot;</span>%l<span class="hljs-symbol">&amp;quot;</span>,<span class="hljs-symbol">&amp;quot;</span>authenticated<span class="hljs-symbol">&amp;quot;</span>:<span class="hljs-symbol">&amp;quot;</span>%u<span class="hljs-symbol">&amp;quot;</span>,<span class="hljs-symbol">&amp;quot;</span>AccessTime<span class="hljs-symbol">&amp;quot;</span>:<span class="hljs-symbol">&amp;quot;</span>%t<span class="hljs-symbol">&amp;quot;</span>,<span class="hljs-symbol">&amp;quot;</span>request<span class="hljs-symbol">&amp;quot;</span>:<span class="hljs-symbol">&amp;quot;</span>%r<span class="hljs-symbol">&amp;quot;</span>,<span class="hljs-symbol">&amp;quot;</span>status<span class="hljs-symbol">&amp;quot;</span>:<span class="hljs-symbol">&amp;quot;</span>%s<span class="hljs-symbol">&amp;quot;</span>,<span class="hljs-symbol">&amp;quot;</span>SendBytes<span class="hljs-symbol">&amp;quot;</span>:<span class="hljs-symbol">&amp;quot;</span>%b<span class="hljs-symbol">&amp;quot;</span>,<span class="hljs-symbol">&amp;quot;</span>Query?string<span class="hljs-symbol">&amp;quot;</span>:<span class="hljs-symbol">&amp;quot;</span>%q<span class="hljs-symbol">&amp;quot;</span>,<span class="hljs-symbol">&amp;quot;</span>partner<span class="hljs-symbol">&amp;quot;</span>:<span class="hljs-symbol">&amp;quot;</span>%&#123;Referer&#125;i<span class="hljs-symbol">&amp;quot;</span>,<span class="hljs-symbol">&amp;quot;</span>AgentVersion<span class="hljs-symbol">&amp;quot;</span>:<span class="hljs-symbol">&amp;quot;</span>%&#123;User-Agent&#125;i<span class="hljs-symbol">&amp;quot;</span>&#125;&quot;</span>/&gt;</span><br>...<br># 配置主机解析vim /etc/hosts...<br>19.168.56.132 tomcat.oldboyedu.com<br># 启动tomcat服务catalina.sh start<br># 验证服务	略。<br></code></pre></td></tr></table></figure>
+
+<p>**使用filebeat收集日志\</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">vim ~/conf/project/tomcat01.tomcat-<span class="hljs-keyword">to</span>-es.yamlfilebeat.inputs:- <span class="hljs-keyword">type</span>: <span class="hljs-keyword">log</span>  paths:    - /oldboyedu/softwares/tomcat/logs/tomcat.oldboyedu.com_access_log.*.txt  # <span class="hljs-keyword">false</span>会将<span class="hljs-type">json</span>解析的格式存储至message，改为<span class="hljs-keyword">true</span>则不存储至message  <span class="hljs-type">json</span>.keys_under_root: <span class="hljs-keyword">true</span>  # 为访问日志(&quot;access.log&quot;)打标签  tags: &quot;tomcat-access&quot;<br>output.elasticsearch:  hosts: [&quot;192.168.56.130:9200&quot;,&quot;192.168.56.131:9200&quot;,&quot;192.168.56.132:9200&quot;]  # 注意哈，下面的标签不再是&quot;index&quot;啦~  indices:    - <span class="hljs-keyword">index</span>: &quot;tomcat-access-%&#123;[agent.version]&#125;-%&#123;+yyyy.MM.dd&#125;&quot;      <span class="hljs-keyword">when</span>.contains:        tags: &quot;tomcat-access&quot;<br>setup.ilm.enabled: <span class="hljs-keyword">false</span># 定义模板名称.setup.<span class="hljs-keyword">template</span>.name: &quot;tomcat&quot;# 定义模板的匹配索引名称.setup.<span class="hljs-keyword">template</span>.pattern: &quot;tomcat-*&quot;# 指定索引模板的分片信息setup.<span class="hljs-keyword">template</span>.settings:  <span class="hljs-keyword">index</span>.number_of_shards: <span class="hljs-number">3</span>  <span class="hljs-keyword">index</span>.number_of_replicas: <span class="hljs-number">0</span>[root@oldboy-es03 ~]# <br></code></pre></td></tr></table></figure>
+
+<p>收集错误日志</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">vim  ~/conf/project/tomcat/<span class="hljs-number">03.</span>tomcat-<span class="hljs-keyword">to</span>-es.yamlfilebeat.inputs:- <span class="hljs-keyword">type</span>: <span class="hljs-keyword">log</span>  paths:    - /oldboyedu/softwares/tomcat/logs/tomcat.oldboyedu.com_access_log.*.txt  <span class="hljs-type">json</span>.keys_under_root: <span class="hljs-keyword">true</span>  tags: &quot;tomcat-access&quot;<br>- <span class="hljs-keyword">type</span>: <span class="hljs-keyword">log</span>  paths:    - /oldboyedu/softwares/tomcat/logs/catalina*  tags: &quot;tomcat-error&quot;  multiline.<span class="hljs-keyword">type</span>: pattern  multiline.pattern: <span class="hljs-string">&#x27;^\d&#123;2&#125;&#x27;</span>  multiline.negate: <span class="hljs-keyword">true</span>  multiline.match: <span class="hljs-keyword">after</span>  multiline.max_lines: <span class="hljs-number">1000</span><br>output.elasticsearch:  hosts: [&quot;192.168.56.130:9200&quot;,&quot;192.168.56.131:9200&quot;,&quot;192.168.56.132:9200&quot;]  indices:    - <span class="hljs-keyword">index</span>: &quot;tomcat-access-%&#123;[agent.version]&#125;-%&#123;+yyyy.MM.dd&#125;&quot;      <span class="hljs-keyword">when</span>.contains:        tags: &quot;tomcat-access&quot;<br>    - <span class="hljs-keyword">index</span>: &quot;tomcat-error-%&#123;[agent.version]&#125;-%&#123;+yyyy.MM.dd&#125;&quot;      <span class="hljs-keyword">when</span>.contains:        tags: &quot;tomcat-error&quot;<br>setup.ilm.enabled: falsesetup.<span class="hljs-keyword">template</span>.name: &quot;tomcat&quot;setup.<span class="hljs-keyword">template</span>.pattern: &quot;tomcat-*&quot;setup.<span class="hljs-keyword">template</span>.settings:  <span class="hljs-keyword">index</span>.number_of_shards: <span class="hljs-number">3</span>  <span class="hljs-keyword">index</span>.number_of_replicas: <span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/linux/" class="category-chain-item">linux</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/log/">#log</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>filebeat 日志采集</div>
+      <div>https://liyupin.github.io/2022/08/18/filebeat-日志采集/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Cper Liu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年8月18日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/08/17/k8s%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0-%E8%B0%83%E5%BA%A6%E5%99%A8%E6%A1%86%E6%9E%B6/" title="k8s源码学习--调度器框架">
+                        <span class="hidden-mobile">k8s源码学习--调度器框架</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
