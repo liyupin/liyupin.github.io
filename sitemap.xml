@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://liyupin.github.io/2022/08/22/centos7-%E4%BC%98%E5%8C%96%E8%84%9A%E6%9C%AC/</loc>
+    
+    <lastmod>2022-08-22</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://liyupin.github.io/2022/08/22/python100day-37-SQL-%E5%92%8C-MySQL-%E8%AF%A6%E8%A7%A3/</loc>
     
     <lastmod>2022-08-22</lastmod>
@@ -1436,6 +1445,13 @@
   
   <url>
     <loc>https://liyupin.github.io/tags/python/</loc>
+    <lastmod>2022-08-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/tags/centos7/</loc>
     <lastmod>2022-08-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
