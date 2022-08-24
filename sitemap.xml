@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://liyupin.github.io/2022/07/07/%E9%83%A8%E7%BD%B2%E8%AF%A6%E7%BB%86%E5%AE%89%E8%A3%85%E6%96%87%E6%A1%A3/</loc>
+    
+    <lastmod>2022-08-24</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://liyupin.github.io/2022/08/25/%E8%82%A1%E5%BC%AA/</loc>
     
     <lastmod>2022-08-24</lastmod>
@@ -318,15 +327,6 @@
   
   <url>
     <loc>https://liyupin.github.io/2022/07/12/ansible%20%20%E5%91%BD%E4%BB%A4/</loc>
-    
-    <lastmod>2022-07-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://liyupin.github.io/2022/07/07/Newben3.0%20%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2%E8%AF%A6%E7%BB%86%E5%AE%89%E8%A3%85%E6%96%87%E6%A1%A3/</loc>
     
     <lastmod>2022-07-21</lastmod>
     
@@ -1450,13 +1450,6 @@
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/tags/newben/</loc>
-    <lastmod>2022-08-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://liyupin.github.io/tags/linux/</loc>
     <lastmod>2022-08-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -1500,6 +1493,13 @@
   
   <url>
     <loc>https://liyupin.github.io/tags/mysql/</loc>
+    <lastmod>2022-08-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/tags/newben/</loc>
     <lastmod>2022-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1557,14 +1557,14 @@
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/categories/ubuntu/</loc>
+    <loc>https://liyupin.github.io/categories/shell/</loc>
     <lastmod>2022-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/categories/shell/</loc>
+    <loc>https://liyupin.github.io/categories/ubuntu/</loc>
     <lastmod>2022-08-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

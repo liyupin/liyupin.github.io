@@ -1,3 +1,4 @@
+https://liyupin.github.io/2022/07/07/%E9%83%A8%E7%BD%B2%E8%AF%A6%E7%BB%86%E5%AE%89%E8%A3%85%E6%96%87%E6%A1%A3/
 https://liyupin.github.io/2022/08/25/%E8%82%A1%E5%BC%AA/
 https://liyupin.github.io/2022/08/24/inode-100-%E5%A4%84%E7%90%86/
 https://liyupin.github.io/2022/08/24/python100day-37%E6%B7%B1%E5%85%A5MySQL/
@@ -34,7 +35,6 @@ https://liyupin.github.io/2022/07/22/python100day-5/
 https://liyupin.github.io/2022/07/21/python100day-4/
 https://liyupin.github.io/2022/07/21/Ubuntu18-04-%E6%9B%B4%E6%8D%A2%E5%9B%BD%E5%86%85%E6%BA%90/
 https://liyupin.github.io/2022/07/12/ansible%20%20%E5%91%BD%E4%BB%A4/
-https://liyupin.github.io/2022/07/07/Newben3.0%20%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2%E8%AF%A6%E7%BB%86%E5%AE%89%E8%A3%85%E6%96%87%E6%A1%A3/
 https://liyupin.github.io/2022/07/20/%E6%A0%91%E8%8E%93%E6%B4%BE%E7%83%A7%E5%BD%95%E6%8C%87%E5%8D%97/
 https://liyupin.github.io/2022/07/20/Shell%E8%84%9A%E6%9C%AC%E8%AF%A6%E8%A7%A3-3/
 https://liyupin.github.io/2022/07/19/Shell%E8%84%9A%E6%9C%AC%E8%AF%A6%E8%A7%A3-2/
@@ -160,7 +160,6 @@ https://liyupin.github.io/tags/%E8%82%A1%E7%A5%A8/
 https://liyupin.github.io/tags/ecos-pro/
 https://liyupin.github.io/tags/centos/
 https://liyupin.github.io/tags/kvm/
-https://liyupin.github.io/tags/newben/
 https://liyupin.github.io/tags/linux/
 https://liyupin.github.io/tags/k8s/
 https://liyupin.github.io/tags/python/
@@ -168,6 +167,7 @@ https://liyupin.github.io/tags/centos7/
 https://liyupin.github.io/tags/docker/
 https://liyupin.github.io/tags/log/
 https://liyupin.github.io/tags/mysql/
+https://liyupin.github.io/tags/newben/
 https://liyupin.github.io/tags/python100day/
 https://liyupin.github.io/tags/windows/
 https://liyupin.github.io/tags/shell/
@@ -175,8 +175,8 @@ https://liyupin.github.io/tags/A%E8%82%A1/
 https://liyupin.github.io/tags/openEuler/
 https://liyupin.github.io/categories/linux/
 https://liyupin.github.io/categories/%E6%8A%95%E8%B5%84/
-https://liyupin.github.io/categories/ubuntu/
 https://liyupin.github.io/categories/shell/
+https://liyupin.github.io/categories/ubuntu/
 https://liyupin.github.io/categories/go/
 https://liyupin.github.io/categories/ansible/
 https://liyupin.github.io/categories/centos8/
