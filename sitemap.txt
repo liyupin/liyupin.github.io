@@ -1,3 +1,4 @@
+https://liyupin.github.io/2022/08/25/%E6%B3%A2%E6%B5%AA%E7%90%86%E8%AE%BA/
 https://liyupin.github.io/2022/07/07/%E9%83%A8%E7%BD%B2%E8%AF%A6%E7%BB%86%E5%AE%89%E8%A3%85%E6%96%87%E6%A1%A3/
 https://liyupin.github.io/2022/08/25/%E8%82%A1%E5%BC%AA/
 https://liyupin.github.io/2022/08/24/inode-100-%E5%A4%84%E7%90%86/
@@ -173,6 +174,7 @@ https://liyupin.github.io/tags/windows/
 https://liyupin.github.io/tags/shell/
 https://liyupin.github.io/tags/A%E8%82%A1/
 https://liyupin.github.io/tags/openEuler/
+https://liyupin.github.io/tags/%E6%B3%A2%E6%B5%AA%E7%90%86%E8%AE%BA/
 https://liyupin.github.io/categories/linux/
 https://liyupin.github.io/categories/%E6%8A%95%E8%B5%84/
 https://liyupin.github.io/categories/shell/
