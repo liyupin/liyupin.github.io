@@ -16,21 +16,22 @@
   <meta name="author" content="Cper Liu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="git config –global user.email “&amp;#x34;&amp;#x30;&amp;#50;&amp;#50;&amp;#51;&amp;#57;&amp;#51;&amp;#57;&amp;#57;&amp;#x40;&amp;#x71;&amp;#113;&amp;#46;&amp;#x63;&amp;#111;&amp;#109;“git config –global user.name “liyupin”">
+    <meta name="description" content="linux命令df 中df -hT和df -ih的区别及磁盘爆满的解决方法df 命令：linux中df命令的功能是用来检查linux服务器的文件系统的磁盘空间占用情况。可以利用该命令来获取硬盘被占用了多少空间，目前还剩下多少空间等信息。 1.df -hT 和df -ih的区别如下df -TH 查看磁盘大小，解决：删除比较大无用的文件df -ih 查看inode：文件的字节数，拥有者id，组id，权">
 <meta property="og:type" content="article">
-<meta property="og:title" content="git配置用户">
-<meta property="og:url" content="https://liyupin.github.io/2022/07/12/git%E9%85%8D%E7%BD%AE%E7%94%A8%E6%88%B7/index.html">
+<meta property="og:title" content="inode 100%处理">
+<meta property="og:url" content="https://liyupin.github.io/2022/08/24/inode-100-%E5%A4%84%E7%90%86/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="git config –global user.email “&amp;#x34;&amp;#x30;&amp;#50;&amp;#50;&amp;#51;&amp;#57;&amp;#51;&amp;#57;&amp;#57;&amp;#x40;&amp;#x71;&amp;#113;&amp;#46;&amp;#x63;&amp;#111;&amp;#109;“git config –global user.name “liyupin”">
+<meta property="og:description" content="linux命令df 中df -hT和df -ih的区别及磁盘爆满的解决方法df 命令：linux中df命令的功能是用来检查linux服务器的文件系统的磁盘空间占用情况。可以利用该命令来获取硬盘被占用了多少空间，目前还剩下多少空间等信息。 1.df -hT 和df -ih的区别如下df -TH 查看磁盘大小，解决：删除比较大无用的文件df -ih 查看inode：文件的字节数，拥有者id，组id，权">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-07-12T09:45:14.000Z">
-<meta property="article:modified_time" content="2022-07-12T09:45:22.363Z">
+<meta property="article:published_time" content="2022-08-24T13:57:00.000Z">
+<meta property="article:modified_time" content="2022-08-24T13:57:19.577Z">
 <meta property="article:author" content="Cper Liu">
+<meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>git配置用户 - Hexo</title>
+  <title>inode 100%处理 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -210,7 +211,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="git配置用户"></span>
+            <span id="subtitle" data-typed-text="inode 100%处理"></span>
           
         </div>
 
@@ -221,8 +222,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-07-12 17:45" pubdate>
-          2022年7月12日 下午
+        <time datetime="2022-08-24 21:57" pubdate>
+          2022年8月24日 晚上
         </time>
       </span>
     
@@ -233,7 +234,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          150 字
+          1.4k 字
         
       </span>
     
@@ -244,7 +245,7 @@
         
         
         
-          2 分钟
+          12 分钟
         
       </span>
     
@@ -282,12 +283,30 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">git配置用户</h1>
+            <h1 style="display: none">inode 100%处理</h1>
             
             
               <div class="markdown-body">
                 
-                <p>git config –global user.email “<a href="mailto:&#x34;&#x30;&#50;&#50;&#51;&#57;&#51;&#57;&#57;&#x40;&#x71;&#113;&#46;&#x63;&#111;&#109;">&#x34;&#x30;&#50;&#50;&#51;&#57;&#51;&#57;&#57;&#x40;&#x71;&#113;&#46;&#x63;&#111;&#109;</a>“<br>git config –global user.name “liyupin”</p>
+                <h1 id="linux命令df-中df-hT和df-ih的区别及磁盘爆满的解决方法"><a href="#linux命令df-中df-hT和df-ih的区别及磁盘爆满的解决方法" class="headerlink" title="linux命令df 中df -hT和df -ih的区别及磁盘爆满的解决方法"></a>linux命令df 中df -hT和df -ih的区别及磁盘爆满的解决方法</h1><h2 id="df-命令："><a href="#df-命令：" class="headerlink" title="df 命令："></a>df 命令：</h2><h2 id=""><a href="#" class="headerlink" title=""></a></h2><p>linux中df命令的功能是用来检查linux服务器的文件系统的磁盘空间占用情况。可以利用该命令来获取硬盘被占用了多少空间，目前还剩下多少空间等信息。</p>
+<h3 id="1-df-hT-和df-ih的区别如下"><a href="#1-df-hT-和df-ih的区别如下" class="headerlink" title="1.df -hT 和df -ih的区别如下"></a>1.df -hT 和df -ih的区别如下</h3><p>df -TH 查看磁盘大小，解决：删除比较大无用的文件<br>df -ih 查看inode：文件的字节数，拥有者id，组id，权限，改动时间，链接数，数据block的位置，解决：删除数量过多的小文件</p>
+<h3 id="2-linux-inode已满解决方法"><a href="#2-linux-inode已满解决方法" class="headerlink" title="2.linux inode已满解决方法"></a>2.linux inode已满解决方法</h3><p>服务器tomcat启动起不来，而且连接到服务器上开启服务都开不了，起始以为磁盘空间不足，df -hT看了一下发现空间是足够的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@Linux ~]<span class="hljs-comment"># df -hT</span><br>Filesystem     Type      Size  Used Avail Use% Mounted on<br>/dev/vda1      ext4       40G   21G   17G  57% /<br>devtmpfs       devtmpfs  7.8G     0  7.8G   0% /dev<br>tmpfs          tmpfs     7.8G     0  7.8G   0% /dev/shm<br>tmpfs          tmpfs     7.8G  884K  7.8G   1% /run<br>tmpfs          tmpfs     7.8G     0  7.8G   0% /sys/fs/cgroup<br>tmpfs          tmpfs     1.6G     0  1.6G   0% /run/user/0<br>tmpfs          tmpfs     1.6G     0  1.6G   0% /run/user/1000<br>/dev/vdb1      ext4      493G   61G  407G  14% /data<br>tmpfs          tmpfs     1.6G     0  1.6G   0% /run/user/3011<br>tmpfs          tmpfs     1.6G     0  1.6G   0% /run/user/1002<br></code></pre></td></tr></table></figure>
+
+
+<p>然后df -ih 查看了下inodes，发现根目录下的inodes值使用率为100%了</p>
+<p>然后df -ih 查看了下inodes，发现根目录下的inodes值使用率为100%了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash">Filesystem     Inodes IUsed IFree IUse% Mounted on<br>/dev/vda1        2.5M  2.5M  0    100% /<br>devtmpfs         2.0M   346  2.0M    1% /dev<br>tmpfs            2.0M     1  2.0M    1% /dev/shm<br>tmpfs            2.0M   558  2.0M    1% /run<br>tmpfs            2.0M    16  2.0M    1% /sys/fs/cgroup<br>tmpfs            2.0M     1  2.0M    1% /run/user/0<br>tmpfs            2.0M     1  2.0M    1% /run/user/1000<br>/dev/vdb1         32M  880K   31M    3% /data<br>tmpfs            2.0M     1  2.0M    1% /run/user/3011<br>tmpfs            2.0M     1  2.0M    1% /run/user/1002<br></code></pre></td></tr></table></figure>
+
+
+<p>解决方法：通过以下脚本进行检查，查看到底哪个目录下面的文件最多：</p>
+<p>解决方法：通过以下脚本进行检查，查看到底哪个目录下面的文件最多：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">find / -xdev -<span class="hljs-built_in">printf</span> <span class="hljs-string">&#x27;%h\n&#x27;</span> | <span class="hljs-built_in">sort</span> | <span class="hljs-built_in">uniq</span> -c | <span class="hljs-built_in">sort</span> -k 1 -n<br><br><br><br></code></pre></td></tr></table></figure>
+
+
+<p>最终发现&#x2F;usr&#x2F;local&#x2F;tomcat目录最多。然后又进一步确定是&#x2F;usr&#x2F;local&#x2F;tomcat&#x2F;logs 目录下面有上百万个文件，机器已经无法正常显示了,tomcat每天都会进行自动创建日志文件，由于测试环境没加自动删除，导致累计了好久的日志，删除该目录下所有文件；使用xargs命令来删除数量比较多的文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">ls</span> | xargs -n 10 <span class="hljs-built_in">rm</span> -rf<br></code></pre></td></tr></table></figure>
+
 
                 
               </div>
@@ -296,6 +315,34 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/linux/" class="category-chain-item">linux</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/linux/">#linux</a>
+      
+    </div>
   
 </div>
 
@@ -305,8 +352,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>git配置用户</div>
-      <div>https://liyupin.github.io/2022/07/12/git配置用户/</div>
+      <div>inode 100%处理</div>
+      <div>https://liyupin.github.io/2022/08/24/inode-100-处理/</div>
     </div>
     <div class="license-meta">
       
@@ -318,7 +365,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年7月12日</div>
+          <div>2022年8月24日</div>
         </div>
       
       
@@ -348,18 +395,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/07/12/Linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E8%AE%BF%E9%97%AE%E6%97%A0%E6%8A%A5%E9%94%99%EF%BC%8C%20%E5%9C%A8win10%E4%B8%8B%E8%AE%BF%E9%97%AE%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/" title="Linux服务器上访问无报错， 在win10下访问出现错误">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Linux服务器上访问无报错， 在win10下访问出现错误</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/07/12/%E7%B2%BE%E9%80%9APython%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC-%E8%BF%90%E7%BB%B4%E4%BA%BA%E5%91%98%E5%AE%9D%E5%85%B8/" title="精通Python自动化脚本-运维人员宝典">
-                        <span class="hidden-mobile">精通Python自动化脚本-运维人员宝典</span>
+                      <a href="/2022/08/24/python100day-37%E6%B7%B1%E5%85%A5MySQL/" title="python100day-37深入MySQL">
+                        <span class="hidden-mobile">python100day-37深入MySQL</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
