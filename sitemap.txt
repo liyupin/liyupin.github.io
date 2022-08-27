@@ -1,3 +1,4 @@
+https://liyupin.github.io/2022/08/27/kython100day-40-%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%92%8CHiveSQL/
 https://liyupin.github.io/2022/08/02/20220802%E6%8A%95%E8%B5%84%E6%97%A5%E5%8E%86/
 https://liyupin.github.io/2022/08/25/Python%E7%A8%8B%E5%BA%8F%E6%8E%A5%E5%85%A5MySQL%E6%95%B0%E6%8D%AE%E5%BA%93/
 https://liyupin.github.io/2022/08/24/python100day-37%E6%B7%B1%E5%85%A5MySQL/
@@ -157,9 +158,9 @@ https://liyupin.github.io/2022/07/13/%E8%AE%B0%E4%B8%80%E6%AC%A1centos7.2%20%E6%
 https://liyupin.github.io/2022/07/13/%E9%98%B2%E7%97%85%E6%AF%92%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AF%86%E7%A0%81/
 https://liyupin.github.io/2022/07/13/hello-world/
 https://liyupin.github.io/
+https://liyupin.github.io/tags/openeuler/
 https://liyupin.github.io/tags/%E8%82%A1%E7%A5%A8/
 https://liyupin.github.io/tags/ecos-pro/
-https://liyupin.github.io/tags/openeuler/
 https://liyupin.github.io/tags/centos/
 https://liyupin.github.io/tags/kvm/
 https://liyupin.github.io/tags/python100day/
@@ -176,8 +177,8 @@ https://liyupin.github.io/tags/shell/
 https://liyupin.github.io/tags/A%E8%82%A1/
 https://liyupin.github.io/tags/openEuler/
 https://liyupin.github.io/tags/%E6%B3%A2%E6%B5%AA%E7%90%86%E8%AE%BA/
-https://liyupin.github.io/categories/%E6%8A%95%E8%B5%84/
 https://liyupin.github.io/categories/linux/
+https://liyupin.github.io/categories/%E6%8A%95%E8%B5%84/
 https://liyupin.github.io/categories/python/
 https://liyupin.github.io/categories/shell/
 https://liyupin.github.io/categories/ubuntu/
