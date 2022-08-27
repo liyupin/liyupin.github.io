@@ -16,21 +16,22 @@
   <meta name="author" content="Cper Liu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="1、通过Console口连接交换机，并重启交换机。2、当界面出现以下打印信息时，及时按下快捷键“Ctrl+B”并输入BootROM&#x2F;BootLoad密码，进入BootROM&#x2F;BootLoad主菜单3、密码： &amp;#x41;&amp;#x64;&amp;#109;&amp;#105;&amp;#x6e;&amp;#64;&amp;#x68;&amp;#x75;&amp;#97;&amp;#x77;&amp;#x65;&amp;#105;&amp;#46;&amp;#99;&amp;#111;">
+    <meta name="description" content="Centos7添加静态路由一、ip route显示和设定路由1、显示路由表123[root@centos7 ~]# ip route showdefault via 192.168.150.254 dev enp0s3 proto static metric 1024192.168.150.0&#x2F;24 dev enp0s3 proto kernel scope link src 192.168.15">
 <meta property="og:type" content="article">
-<meta property="og:title" content="华为交换机Console密码重置">
-<meta property="og:url" content="https://liyupin.github.io/2022/07/14/%E5%8D%8E%E4%B8%BA%E4%BA%A4%E6%8D%A2%E6%9C%BAConsole%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE/index.html">
+<meta property="og:title" content="centos7配置静态路由">
+<meta property="og:url" content="https://liyupin.github.io/2022/08/28/centos7%E9%85%8D%E7%BD%AE%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="1、通过Console口连接交换机，并重启交换机。2、当界面出现以下打印信息时，及时按下快捷键“Ctrl+B”并输入BootROM&#x2F;BootLoad密码，进入BootROM&#x2F;BootLoad主菜单3、密码： &amp;#x41;&amp;#x64;&amp;#109;&amp;#105;&amp;#x6e;&amp;#64;&amp;#x68;&amp;#x75;&amp;#97;&amp;#x77;&amp;#x65;&amp;#105;&amp;#46;&amp;#99;&amp;#111;">
+<meta property="og:description" content="Centos7添加静态路由一、ip route显示和设定路由1、显示路由表123[root@centos7 ~]# ip route showdefault via 192.168.150.254 dev enp0s3 proto static metric 1024192.168.150.0&#x2F;24 dev enp0s3 proto kernel scope link src 192.168.15">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-07-14T03:38:36.536Z">
-<meta property="article:modified_time" content="2022-07-14T03:38:36.536Z">
+<meta property="article:published_time" content="2022-08-27T20:25:00.000Z">
+<meta property="article:modified_time" content="2022-08-27T20:25:43.769Z">
 <meta property="article:author" content="Cper Liu">
+<meta property="article:tag" content="centos">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>华为交换机Console密码重置 - Hexo</title>
+  <title>centos7配置静态路由 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -210,7 +211,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="华为交换机Console密码重置"></span>
+            <span id="subtitle" data-typed-text="centos7配置静态路由"></span>
           
         </div>
 
@@ -221,8 +222,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-07-14 11:38" pubdate>
-          2022年7月14日 中午
+        <time datetime="2022-08-28 04:25" pubdate>
+          2022年8月28日 凌晨
         </time>
       </span>
     
@@ -233,7 +234,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          531 字
+          1.7k 字
         
       </span>
     
@@ -244,7 +245,7 @@
         
         
         
-          5 分钟
+          15 分钟
         
       </span>
     
@@ -282,14 +283,48 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">华为交换机Console密码重置</h1>
+            <h1 style="display: none">centos7配置静态路由</h1>
             
             
               <div class="markdown-body">
                 
-                <p>1、通过Console口连接交换机，并重启交换机。<br>2、当界面出现以下打印信息时，及时按下快捷键“Ctrl+B”并输入BootROM&#x2F;BootLoad密码，进入BootROM&#x2F;BootLoad主菜单<br>3、密码： <a href="mailto:&#x41;&#x64;&#109;&#105;&#x6e;&#64;&#x68;&#x75;&#97;&#x77;&#x65;&#105;&#46;&#99;&#111;&#x6d;">&#x41;&#x64;&#109;&#105;&#x6e;&#64;&#x68;&#x75;&#97;&#x77;&#x65;&#105;&#46;&#99;&#111;&#x6d;</a> A必须大写。<br>4、选着7 Clear password for console user （选择清除console用户密码模式）。<br>5、选择1 Boot with default mode（键入1启动默认模式），进入后更改Console 及telnet密码。</p>
-<h3 id="2设备初始化"><a href="#2设备初始化" class="headerlink" title="*2设备初始化"></a>*2设备初始化</h3><p>1、登录华为交换机<br>2、输入：reset saved-configuration 接着问你是否初始化 选择“Y”<br>3、初始化之后，需要重启交换机才能生效 “reboot”</p>
-<h3 id="3-默认用户名和密码"><a href="#3-默认用户名和密码" class="headerlink" title="3.默认用户名和密码"></a>3.默认用户名和密码</h3><p>华为交换机的默认用户名是admin，密码是<a href="mailto:&#65;&#100;&#109;&#x69;&#110;&#x40;&#104;&#117;&#x61;&#x77;&#101;&#x69;&#46;&#99;&#x6f;&#x6d;">&#65;&#100;&#109;&#x69;&#110;&#x40;&#104;&#117;&#x61;&#x77;&#101;&#x69;&#46;&#99;&#x6f;&#x6d;</a></p>
+                <h2 id="Centos7添加静态路由"><a href="#Centos7添加静态路由" class="headerlink" title="Centos7添加静态路由"></a>Centos7添加静态路由</h2><h2 id="一、ip-route显示和设定路由"><a href="#一、ip-route显示和设定路由" class="headerlink" title="一、ip route显示和设定路由"></a>一、ip route显示和设定路由</h2><h3 id="1、显示路由表"><a href="#1、显示路由表" class="headerlink" title="1、显示路由表"></a>1、显示路由表</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@centos7 ~]<span class="hljs-comment"># ip route show</span><br>default via 192.168.150.254 dev enp0s3 proto static metric 1024<br>192.168.150.0/24 dev enp0s3 proto kernel scope <span class="hljs-built_in">link</span> src 192.168.150.110<br></code></pre></td></tr></table></figure>
+
+
+<p>太难看了，格式化一下（显示的是默认网关和局域网路由，两行的内容没有共通性）：</p>
+<p>太难看了，格式化一下（显示的是默认网关和局域网路由，两行的内容没有共通性）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@centos7 tmp]<span class="hljs-comment"># ip route show|column -t</span><br>default via 192.168.150.254 dev enp0s3 proto static metric 1024<br>192.168.150.0/24 dev enp0s3 proto kernel scope <span class="hljs-built_in">link</span> src 192.168.150.110<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="2、添加静态路由"><a href="#2、添加静态路由" class="headerlink" title="2、添加静态路由"></a>2、添加静态路由</h3><p>2、添加静态路由</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@centos7 ~]<span class="hljs-comment"># ip route add 10.15.150.0/24 via 192.168.150.253 dev enp0s3</span><br>[root@centos7 ~]<span class="hljs-comment">#</span><br>[root@centos7 ~]<span class="hljs-comment"># ip route show|column -t</span><br>default via 192.168.150.254 dev enp0s3 proto static metric 1024<br>10.15.150.0/24 via 192.168.150.253 dev enp0s3 proto static metric 1<br>192.168.150.0/24 dev enp0s3 proto kernel scope <span class="hljs-built_in">link</span> src 192.168.150.110<br>[root@centos7 ~]<span class="hljs-comment">#</span><br>[root@centos7 ~]<span class="hljs-comment"># ping 10.15.150.1</span><br>PING 10.15.150.1 (10.15.150.1) 56(84) bytes of data.<br>64 bytes from 10.15.150.1: icmp_seq=1 ttl=63 time=1.77 ms<br>64 bytes from 10.15.150.1: icmp_seq=1 ttl=63 time=1.08 ms<br>64 bytes from 10.15.150.1: icmp_seq=1 ttl=63 time=1.57 ms<br></code></pre></td></tr></table></figure>
+<h3 id="3、删除静态路由"><a href="#3、删除静态路由" class="headerlink" title="3、删除静态路由"></a>3、删除静态路由</h3><p>只需要把 add 替换成 del，或者更简单的只写目标网络</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@centos7 ~]<span class="hljs-comment"># ip route del 10.15.150.0/24</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+<h2 id="二、设置永久的静态路由"><a href="#二、设置永久的静态路由" class="headerlink" title="二、设置永久的静态路由"></a>二、设置永久的静态路由</h2><h3 id="1、添加永久静态路由"><a href="#1、添加永久静态路由" class="headerlink" title="1、添加永久静态路由"></a>1、添加永久静态路由</h3><p>ip route 指令对路由的修改不能保存，重启就没了。把 ip route 指令写到 &#x2F;etc&#x2F;rc.local 也是徒劳的。</p>
+<p>RHEL7官网文档没有提到 &#x2F;etc&#x2F;sysconfig&#x2F;static-routes，经测试此文件已经无效；</p>
+<p>&#x2F;etc&#x2F;sysconfig&#x2F;network 配置文件仅仅可以提供全局默认网关，语法同 Centos6 一样： GATEWAY&#x3D;&gt;《ip address》 ；</p>
+<p>永久静态路由需要写到 &#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;route-interface 文件中，比如添加两条静态路由：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@centos7 ~]<span class="hljs-comment"># vi /etc/sysconfig/network-scripts/route-enp0s3</span><br>10.15.150.0/24 via 192.168.150.253 dev enp0s3<br>10.25.250.0/24 via 192.168.150.253 dev enp0s3<br><br></code></pre></td></tr></table></figure>
+
+
+<p>重启计算机，或者重新启用设备enp0s3才能生效。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">[root@centos7 ~]<span class="hljs-comment"># nmcli dev connect enp0s3</span><br></code></pre></td></tr></table></figure>
+
+
+<p>ifdown —关闭网卡设备<br>例如：</p>
+<p>ifdown —关闭网卡设备<br>例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ifdown eth0<br></code></pre></td></tr></table></figure>
+
+
+<p>ifup —开启网卡设备<br>例如：</p>
+<p>ifup —开启网卡设备<br>例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">ifup eth0<br><br></code></pre></td></tr></table></figure>
+
 
                 
               </div>
@@ -298,6 +333,34 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/linux/" class="category-chain-item">linux</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/centos/">#centos</a>
+      
+    </div>
   
 </div>
 
@@ -307,8 +370,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>华为交换机Console密码重置</div>
-      <div>https://liyupin.github.io/2022/07/14/华为交换机Console密码重置/</div>
+      <div>centos7配置静态路由</div>
+      <div>https://liyupin.github.io/2022/08/28/centos7配置静态路由/</div>
     </div>
     <div class="license-meta">
       
@@ -320,7 +383,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年7月14日</div>
+          <div>2022年8月28日</div>
         </div>
       
       
@@ -350,18 +413,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/07/14/Centos7%20%E4%B8%8B%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/" title="Centos7 下代理配置">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Centos7 下代理配置</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/07/14/%E9%AB%98%E6%95%88%E7%9A%84Nginx%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E5%99%A8/" title="高效的Nginx负载均衡器">
-                        <span class="hidden-mobile">高效的Nginx负载均衡器</span>
+                      <a href="/2022/08/27/python100day-41/" title="python100day-41  NoSQL入门">
+                        <span class="hidden-mobile">python100day-41  NoSQL入门</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
