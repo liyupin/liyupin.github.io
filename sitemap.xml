@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://liyupin.github.io/2022/08/28/k8s/</loc>
+    
+    <lastmod>2022-08-28</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://liyupin.github.io/2022/08/28/%E5%B9%B3Python00day-41/</loc>
     
     <lastmod>2022-08-28</lastmod>
@@ -1469,13 +1478,6 @@
 
   
   <url>
-    <loc>https://liyupin.github.io/tags/openeuler/</loc>
-    <lastmod>2022-08-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://liyupin.github.io/tags/%E8%82%A1%E7%A5%A8/</loc>
     <lastmod>2022-08-28</lastmod>
     <changefreq>weekly</changefreq>
@@ -1491,6 +1493,13 @@
   
   <url>
     <loc>https://liyupin.github.io/tags/centos/</loc>
+    <lastmod>2022-08-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/tags/openeuler/</loc>
     <lastmod>2022-08-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1553,6 +1562,13 @@
   </url>
   
   <url>
+    <loc>https://liyupin.github.io/tags/newben/</loc>
+    <lastmod>2022-08-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://liyupin.github.io/tags/mysql/</loc>
     <lastmod>2022-08-28</lastmod>
     <changefreq>weekly</changefreq>
@@ -1560,7 +1576,7 @@
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/tags/newben/</loc>
+    <loc>https://liyupin.github.io/tags/traefik/</loc>
     <lastmod>2022-08-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1604,14 +1620,14 @@
 
   
   <url>
-    <loc>https://liyupin.github.io/categories/linux/</loc>
+    <loc>https://liyupin.github.io/categories/%E6%8A%95%E8%B5%84/</loc>
     <lastmod>2022-08-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/categories/%E6%8A%95%E8%B5%84/</loc>
+    <loc>https://liyupin.github.io/categories/linux/</loc>
     <lastmod>2022-08-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
