@@ -23,24 +23,24 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="Django快速上手Web开发的早期阶段，开发者需要手动编写每个页面，例如一个新闻门户网站，每天都要修改它的HTML页面，随着网站规模和体量的增大，这种做法一定是非常糟糕的。为了解决这个问题，开发人员想到了用程序来为Web服务器生成动态内容，也就是说网页中的动态内容不再通过手动编写而是通过程序自动生成。最早的时候，这项技术被称为CGI（公共网关接口），当然随着时间的推移，CGI暴露出的问题也越来越">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://liyupin.github.io/res/web-application.png">
-<meta property="og:image" content="https://liyupin.github.io/res/http-request.png">
-<meta property="og:image" content="https://liyupin.github.io/res/http-response.png">
-<meta property="og:image" content="https://liyupin.github.io/res/mvc.png">
-<meta property="og:image" content="https://liyupin.github.io/res/pycharm-django-project.png">
-<meta property="og:image" content="https://liyupin.github.io/res/pycharm-django-virtual-environment.png">
-<meta property="og:image" content="https://liyupin.github.io/res/pycharm-install-django.png">
-<meta property="og:image" content="https://liyupin.github.io/res/pycharm-django-server.png">
-<meta property="og:image" content="https://liyupin.github.io/res/pycharm-python-manage.png">
-<meta property="og:image" content="https://liyupin.github.io/res/django-index-1.png">
-<meta property="og:image" content="https://liyupin.github.io/res/django-index-2.png">
-<meta property="og:image" content="https://liyupin.github.io/res/pycharm-django-template.png">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-94.png">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-95.png">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-96.png">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-97.png">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-98.png">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-99.png">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-101.png">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-102.png">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-105.png">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-106.png">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-107.png">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-108.png">
 <meta property="article:published_time" content="2022-08-28T01:10:00.000Z">
-<meta property="article:modified_time" content="2022-08-28T01:10:54.928Z">
+<meta property="article:modified_time" content="2022-08-28T01:27:11.767Z">
 <meta property="article:author" content="Cper Liu">
 <meta property="article:tag" content="python100day">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://liyupin.github.io/res/web-application.png">
+<meta name="twitter:image" content="https://liyupin.github.io/images/pasted-94.png">
   
   
   
@@ -303,7 +303,7 @@
                 
                 <h2 id="Django快速上手"><a href="#Django快速上手" class="headerlink" title="Django快速上手"></a>Django快速上手</h2><p>Web开发的早期阶段，开发者需要手动编写每个页面，例如一个新闻门户网站，每天都要修改它的HTML页面，随着网站规模和体量的增大，这种做法一定是非常糟糕的。为了解决这个问题，开发人员想到了用程序来为Web服务器生成动态内容，也就是说网页中的动态内容不再通过手动编写而是通过程序自动生成。最早的时候，这项技术被称为CGI（公共网关接口），当然随着时间的推移，CGI暴露出的问题也越来越多，例如大量重复的样板代码，总体性能较为低下等。在时代呼唤新英雄的背景下，PHP、ASP、JSP这类Web应用开发技术在上世纪90年代中后期如雨后春笋般涌现。通常我们说的Web应用是指通过浏览器来访问网络资源的应用程序，因为浏览器的普及性以及易用性，Web应用使用起来方便简单，免除了安装和更新应用程序带来的麻烦；站在开发者的角度，也不用关心用户使用什么样的操作系统，甚至不用区分是PC端还是移动端。</p>
 <h3 id="Web应用机制和术语"><a href="#Web应用机制和术语" class="headerlink" title="Web应用机制和术语"></a>Web应用机制和术语</h3><p>下图向我们展示了Web应用的工作流程，其中涉及到的术语如下表所示。</p>
-<p><img src="/./res/web-application.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/images/pasted-94.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
 <blockquote>
 <p>说明：相信有经验的读者会发现，这张图中其实还少了很多东西，例如反向代理服务器、数据库服务器、防火墙等，而且图中的每个节点在实际项目部署时可能是一组节点组成的集群。当然，如果你对这些没有什么概念也不要紧，继续下去就行了，后面会给大家一一讲解的。</p>
 </blockquote>
@@ -349,15 +349,15 @@
 </tbody></table>
 <h4 id="HTTP协议"><a href="#HTTP协议" class="headerlink" title="HTTP协议"></a>HTTP协议</h4><p>这里我们先费一些笔墨来说说HTTP这个协议。HTTP（超文本传输协议）是构建于TCP（传输控制协议）之上应用级协议，它利用了TCP提供的可靠的传输服务实现了Web应用中的数据交换。按照维基百科上的介绍，设计HTTP最初的目的是为了提供一种发布和接收<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/HTML">HTML</a>页面的方法，也就是说这个协议是浏览器和Web服务器之间传输的数据的载体。关于这个协议的详细信息以及目前的发展状况，大家可以阅读<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2016/08/http.html">《HTTP 协议入门》</a>、<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2012/05/internet_protocol_suite_part_i.html">《互联网协议入门》</a>系列以及<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2014/09/illustration-ssl.html">《图解HTTPS协议》</a>这几篇文章进行了解。下图是我在四川省网络通信技术重点实验室学习和工作期间使用开源协议分析工具Ethereal（抓包工具WireShark的前身）截取的访问百度首页时的HTTP请求和响应的报文（协议数据），由于Ethereal截取的是经过网络适配器的数据，因此可以清晰的看到从物理链路层到应用层的协议数据。</p>
 <p>HTTP请求（请求行+请求头+空行+[消息体]）：</p>
-<p><img src="/./res/http-request.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/images/pasted-95.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
 <p>HTTP响应（响应行+响应头+空行+消息体）：</p>
-<p><img src="/./res/http-response.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/images/pasted-96.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
 <blockquote>
 <p> <strong>说明</strong>：这两张图是在2009年9月10日凌晨获得的，但愿这两张如同泛黄的照片般的截图能帮助你了解HTTP到底是什么样子的。当然，如果没有专业的抓包工具，也可以通过浏览器提供的“开发者工具”来查看HTTP请求和响应的数据格式。</p>
 </blockquote>
 <h3 id="Django概述"><a href="#Django概述" class="headerlink" title="Django概述"></a>Django概述</h3><p>Python的Web框架有上百个，比它的关键字还要多。所谓Web框架，就是用于开发Web服务器端应用的基础设施，说得通俗一点就是一系列封装好的模块和工具。事实上，即便没有Web框架，我们仍然可以通过socket或<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%80%9A%E7%94%A8%E7%BD%91%E5%85%B3%E6%8E%A5%E5%8F%A3">CGI</a>来开发Web服务器端应用，但是这样做的成本和代价在商业项目中通常是不能接受的。通过Web框架，我们可以化繁为简，降低创建、更新、扩展应用程序的工作量。刚才我们说到Python有上百个Web框架，这些框架包括Django、Flask、Tornado、Sanic、Pyramid、Bottle、Web2py、web.py等。</p>
 <p>在上述Python的Web框架中，Django无疑是最有代表性的重量级选手，开发者可以基于Django快速的开发可靠的Web应用程序，因为它减少了Web开发中不必要的开销，对常用的设计和开发模式进行了封装，并对MVC架构提供了支持（Django中称之为MTV架构）。MVC是软件系统开发领域中一种放之四海而皆准的架构，它将系统中的组件分为模型（Model）、视图（View）和控制器（Controller）三个部分并借此实现模型（数据）和视图（显示）的解耦合。由于模型和视图进行了分离，所以需要一个中间人将解耦合的模型和视图联系起来，扮演这个角色的就是控制器。稍具规模的软件系统都会使用MVC架构（或者是从MVC演进出的其他架构），Django项目中我们称之为MTV，MTV中的M跟MVC中的M没有区别，就是代表数据的模型，T代表了网页模板（显示数据的视图），而V代表了视图函数，在Django框架中，视图函数和Django框架本身一起扮演了MVC中C的角色。</p>
-<p><img src="/./res/mvc.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/images/pasted-97.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
 <p>Django框架诞生于2003年，它是一个在真正的应用中成长起来的项目，由劳伦斯出版集团旗下在线新闻网站的内容管理系统（CMS）研发团队（主要是Adrian Holovaty和Simon Willison）开发，以比利时的吉普赛爵士吉他手Django Reinhardt来命名。Django框架在2005年夏天作为开源框架发布，使用Django框架能用很短的时间构建出功能完备的网站，因为它代替程序员完成了那些重复乏味的劳动，剩下真正有意义的核心业务给程序员来开发，这一点就是对DRY（Don’t Repeat Yourself）理念的最好践行。许多成功的网站和应用都是基于Python语言进行开发的，国内比较有代表性的网站包括：知乎、豆瓣网、果壳网、搜狐闪电邮箱、101围棋网、海报时尚网、背书吧、堆糖、手机搜狐网、咕咚、爱福窝、果库等，其中不乏使用了Django框架的产品。</p>
 <h3 id="快速上手"><a href="#快速上手" class="headerlink" title="快速上手"></a>快速上手</h3><h4 id="第一个Django项目"><a href="#第一个Django项目" class="headerlink" title="第一个Django项目"></a>第一个Django项目</h4><ol>
 <li><p>检查Python环境：Django 1.11需要Python 2.7或Python 3.4以上的版本；Django 2.0需要Python 3.4以上的版本；Django 2.1和2.2需要Python 3.5以上的版本；Django 3.0需要Python 3.6以上版本。</p>
@@ -380,8 +380,10 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Shell">django-admin --version<br>django-admin startproject hellodjango<br></code></pre></td></tr></table></figure>
 </li>
 <li><p>用PyCharm打开创建好的Djang项目，并为其添加虚拟环境。</p>
-<p><img src="/res/pycharm-django-project.png" srcset="/img/loading.gif" lazyload></p>
-<p>如上图所示，PyCharm的项目浏览器中，最顶层的文件夹<code>hellodjango</code>是Python项目文件夹，这个文件夹的名字并不重要，Django项目也不关心这个文件夹叫什么名字。该文件夹下有一个同名的文件夹，它是Django项目文件夹，其中包含了<code>__init__.py</code>、<code>settings.py</code>、<code>urls.py</code>、<code>wsgi.py</code>四个文件，与名为<code>hellodjango</code>的Django项目文件夹同级的还有一个名为<code>manage.py</code> 的文件，这些文件的作用如下所示：</p>
+</li>
+</ol>
+<p>  <br><img src="/images/pasted-98.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
+<p>   如上图所示，PyCharm的项目浏览器中，最顶层的文件夹<code>hellodjango</code>是Python项目文件夹，这个文件夹的名字并不重要，Django项目也不关心这个文件夹叫什么名字。该文件夹下有一个同名的文件夹，它是Django项目文件夹，其中包含了<code>__init__.py</code>、<code>settings.py</code>、<code>urls.py</code>、<code>wsgi.py</code>四个文件，与名为<code>hellodjango</code>的Django项目文件夹同级的还有一个名为<code>manage.py</code> 的文件，这些文件的作用如下所示：</p>
 <ul>
 <li><code>hellodjango/__init__.py</code>：空文件，告诉Python解释器这个目录应该被视为一个Python的包。</li>
 <li><code>hellodjango/settings.py</code>：Django项目的配置文件。</li>
@@ -392,9 +394,9 @@
 <blockquote>
 <p>说明：WSGI全称是Web服务器网关接口，维基百科上给出的解释是“为Python语言定义的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%B6%B2%E9%A0%81%E4%BC%BA%E6%9C%8D%E5%99%A8">Web服务器</a>和<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F">Web应用程序</a>或框架之间的一种简单而通用的接口”。</p>
 </blockquote>
-<p>创建虚拟环境的界面如下图所示。</p>
-<p><img src="/res/pycharm-django-virtual-environment.png" srcset="/img/loading.gif" lazyload alt="pycharm-django-virtual-environment"></p>
-</li>
+<p>   创建虚拟环境的界面如下图所示。</p>
+<p>  <br><img src="/images/pasted-99.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
+<ol start="5">
 <li><p>安装项目依赖项。</p>
 <p>方法一：打开PyCharm的终端，在终端中通过<code>pip</code>命令安装Django项目的依赖项。</p>
 <blockquote>
@@ -403,8 +405,10 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">pip install django==2.2.13<br></code></pre></td></tr></table></figure>
 
 <p>方法二：在PyCharm的偏好设置中，可以找到项目的解释器环境和已经安装的三方库，可以通过点击添加按钮来安装新的依赖项，需要提醒大家的是在安装Django依赖项时，需要指定版本号，否则将默认安装更新本文时最新的3.0.7版本。</p>
-<p><img src="/res/pycharm-install-django.png" srcset="/img/loading.gif" lazyload></p>
-<p>下图展示了Django版本和Python版本的对应关系，请大家自行对号入座。</p>
+</li>
+</ol>
+<p>  <br><img src="/images/pasted-101.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
+<p>   下图展示了Django版本和Python版本的对应关系，请大家自行对号入座。</p>
 <table>
 <thead>
 <tr>
@@ -441,20 +445,24 @@
 <td>3.6、3.7、3.8</td>
 </tr>
 </tbody></table>
-</li>
+<ol start="6">
 <li><p>启动Django自带的服务器运行项目。</p>
 <p>方法一：在“Run”菜单选择“Edit Configuration”，配置“Django server”运行项目（适用于专业版PyCharm）。</p>
-<p><img src="/res/pycharm-django-server.png" srcset="/img/loading.gif" lazyload></p>
-<p>方法二：在“Run”菜单选择“Edit Configuration”，配置运行“Python”程序运行项目（适用于专业版和社区版PyCharm）。</p>
-<p><img src="/res/pycharm-python-manage.png" srcset="/img/loading.gif" lazyload></p>
-<p>方法三：在PyCharm的终端（Terminal）中通过命令运行项目（适用于专业版和社区版PyCharm）。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">python manage.py runserver<br></code></pre></td></tr></table></figure>
-</li>
-<li><p>查看运行效果。</p>
 </li>
 </ol>
+<p>  <br><img src="/images/pasted-102.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
+<p>   方法二：在“Run”菜单选择“Edit Configuration”，配置运行“Python”程序运行项目（适用于专业版和社区版PyCharm）。</p>
+<p>   
+  </p>
+<p><img src="/images/pasted-105.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
+<p>   方法三：在PyCharm的终端（Terminal）中通过命令运行项目（适用于专业版和社区版PyCharm）。</p>
+   <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">python manage.py runserver<br></code></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>查看运行效果。</li>
+</ol>
 <p>  在浏览器中输入<code>http://127.0.0.1:8000</code>访问我们的服务器，效果如下图所示。</p>
-<p>   <img src="/./res/django-index-1.png" srcset="/img/loading.gif" lazyload></p>
+<p>  <br><img src="/images/pasted-106.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
 <blockquote>
 <p><strong>说明</strong>：</p>
 <ol>
@@ -475,7 +483,7 @@
    <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Python">LANGUAGE_CODE = <span class="hljs-string">&#x27;zh-hans&#x27;</span><br>TIME_ZONE = <span class="hljs-string">&#x27;Asia/Chongqing&#x27;</span><br></code></pre></td></tr></table></figure>
 
 <p>   刷新刚才的页面，可以看到修改语言代码和时区之后的结果。</p>
-<p>   <img src="/./res/django-index-2.png" srcset="/img/loading.gif" lazyload></p>
+<p>  <br><img src="/images/pasted-107.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
 <h4 id="创建自己的应用"><a href="#创建自己的应用" class="headerlink" title="创建自己的应用"></a>创建自己的应用</h4><p>如果要开发自己的Web应用，需要先在Django项目中创建“应用”，一个Django项目可以包含一个或多个应用。</p>
 <ol>
 <li><p>在PyCharm的终端中执行下面的命令，创建名为<code>first</code>的应用。</p>
@@ -513,9 +521,10 @@
 <p>Django框架中有一个名为<code>render</code>的便捷函数可以来完成渲染模板的操作。所谓的渲染就是用数据替换掉模板页中的模板指令和占位符，当然这里的渲染称为后端渲染，即在服务器端完成页面的渲染再输出到浏览器中。后端渲染的做法在Web应用的访问量较大时，会让服务器承受较大的负担，所以越来越多的Web应用会选择前端渲染的方式，即服务器只提供页面所需的数据（通常是JSON格式），在浏览器中通过JavaScript代码获取这些数据并渲染页面上。关于前端渲染的内容，我们会在后续的课程中为大家讲解，目前我们使用的是通过模板页进行后端渲染的做法，具体步骤如下所示。</p>
 <p>使用模板页的步骤如下所示。</p>
 <ol>
-<li><p>在项目目录下创建名为templates文件夹。</p>
-<p><img src="/res/pycharm-django-template.png" srcset="/img/loading.gif" lazyload></p>
-</li>
+<li>在项目目录下创建名为templates文件夹。</li>
+</ol>
+<p>  <br><img src="/images/pasted-108.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
+<ol start="2">
 <li><p>添加模板页<code>index.html</code>。</p>
 <blockquote>
 <p><strong>说明</strong>：实际项目开发中，静态页由前端开发者提供，后端开发者需要将静态页修改为模板页，以便通过Python程序对其进行渲染，这种做法就是上面提到的后端渲染。</p>
@@ -534,7 +543,7 @@
 <li><p>重新运行项目或直接刷新页面查看结果。</p>
 </li>
 </ol>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>至此，我们已经利用Django框架完成了一个非常小的Web应用，虽然它并没有任何的实际价值，但是可以通过这个项目对Django框架有一个感性的认识。学习Django最好的资料肯定是它的<a target="_blank" rel="noopener" href="https://docs.djangoproject.com/zh-hans/2.0/">官方文档</a>，官方文档提供了对多国语言的支持，而且有新手教程引导初学者学习使用Django框架，建议大家通过阅读Django的官方文档来学习和使用这个框架。当然图灵社区出版的<a target="_blank" rel="noopener" href="http://www.ituring.com.cn/book/2630">《Django基础教程》</a>也是非常适合初学者的入门级读物，有兴趣的读者可以点击链接进行购买。 </p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>至此，我们已经利用Django框架完成了一个非常小的Web应用，虽然它并没有任何的实际价值，但是可以通过这个项目对Django框架有一个感性的认识。学习Django最好的资料肯定是它的<a target="_blank" rel="noopener" href="https://docs.djangoproject.com/zh-hans/2.0/">官方文档</a>，官方文档提供了对多国语言的支持，而且有新手教程引导初学者学习使用Django框架，建议大家通过阅读Django的官方文档来学习和使用这个框架。当然图灵社区出版的<a target="_blank" rel="noopener" href="http://www.ituring.com.cn/book/2630">《Django基础教程》</a>也是非常适合初学者的入门级读物，有兴趣的读者可以点击链接进行购买。</p>
 
                 
               </div>
