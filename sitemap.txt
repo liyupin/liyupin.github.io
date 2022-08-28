@@ -169,7 +169,6 @@ https://liyupin.github.io/tags/centos/
 https://liyupin.github.io/tags/kvm/
 https://liyupin.github.io/tags/python100day/
 https://liyupin.github.io/tags/linux/
-https://liyupin.github.io/tags/python100day/
 https://liyupin.github.io/tags/python/
 https://liyupin.github.io/tags/centos7/
 https://liyupin.github.io/tags/docker/
@@ -188,7 +187,6 @@ https://liyupin.github.io/categories/%E6%8A%95%E8%B5%84/
 https://liyupin.github.io/categories/python/
 https://liyupin.github.io/categories/shell/
 https://liyupin.github.io/categories/ubuntu/
-https://liyupin.github.io/categories/pythonj/
 https://liyupin.github.io/categories/ansible/
 https://liyupin.github.io/categories/centos8/
 https://liyupin.github.io/categories/%E8%BF%90%E7%BB%B4/

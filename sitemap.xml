@@ -1527,13 +1527,6 @@
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/tags/python100day/</loc>
-    <lastmod>2022-08-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://liyupin.github.io/tags/python/</loc>
     <lastmod>2022-08-28</lastmod>
     <changefreq>weekly</changefreq>
@@ -1656,13 +1649,6 @@
   
   <url>
     <loc>https://liyupin.github.io/categories/ubuntu/</loc>
-    <lastmod>2022-08-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://liyupin.github.io/categories/pythonj/</loc>
     <lastmod>2022-08-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

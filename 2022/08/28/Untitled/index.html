@@ -16,32 +16,26 @@
   <meta name="author" content="Cper Liu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="深入模型在上一个章节中，我们提到了Django是基于MVC架构的Web框架，MVC架构追求的是“模型”和“视图”的解耦合。所谓“模型”说得更直白一些就是数据（的表示），所以通常也被称作“数据模型”。在实际的项目中，数据模型通常通过数据库实现持久化操作，而关系型数据库在过去和当下都是持久化的首选方案，下面我们通过完成一个投票项目来讲解和模型相关的知识点。投票项目的首页会展示某在线教育平台所有的学科；">
+    <meta name="description" content="静态资源和Ajax请求加载静态资源如果要在Django项目中使用静态资源，可以先创建一个用于保存静态资源的目录。在vote项目中，我们将静态资源置于名为static的文件夹中，在该文件夹包含了三个子文件夹：css、js和images，分别用来保存外部CSS文件、外部JavaScript文件和图片资源，如下图所示。  为了能够找到保存静态资源的文件夹，我们还需要修改Django项目的配置文件sett">
 <meta property="og:type" content="article">
-<meta property="og:title" content="python100day-42深入模型">
+<meta property="og:title" content="python100day-43 静态资源和Ajax请求">
 <meta property="og:url" content="https://liyupin.github.io/2022/08/28/Untitled/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="深入模型在上一个章节中，我们提到了Django是基于MVC架构的Web框架，MVC架构追求的是“模型”和“视图”的解耦合。所谓“模型”说得更直白一些就是数据（的表示），所以通常也被称作“数据模型”。在实际的项目中，数据模型通常通过数据库实现持久化操作，而关系型数据库在过去和当下都是持久化的首选方案，下面我们通过完成一个投票项目来讲解和模型相关的知识点。投票项目的首页会展示某在线教育平台所有的学科；">
+<meta property="og:description" content="静态资源和Ajax请求加载静态资源如果要在Django项目中使用静态资源，可以先创建一个用于保存静态资源的目录。在vote项目中，我们将静态资源置于名为static的文件夹中，在该文件夹包含了三个子文件夹：css、js和images，分别用来保存外部CSS文件、外部JavaScript文件和图片资源，如下图所示。  为了能够找到保存静态资源的文件夹，我们还需要修改Django项目的配置文件sett">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://liyupin.github.io/res/pycharm-vote-project.png">
-<meta property="og:image" content="https://liyupin.github.io/Users/Hao/Desktop/Python-100-Days/Day41-55/res/django-admin-login.png">
-<meta property="og:image" content="https://liyupin.github.io/res/django-admin-apps.png">
-<meta property="og:image" content="https://liyupin.github.io/res/django-admin-models.png">
-<meta property="og:image" content="https://liyupin.github.io/res/django-admin-add-model.png">
-<meta property="og:image" content="https://liyupin.github.io/res/django-admin-view-models.png">
-<meta property="og:image" content="https://liyupin.github.io/res/django-admin-delete-update-model.png">
-<meta property="og:image" content="https://liyupin.github.io/res/django-admin-view-models-subject.png">
-<meta property="og:image" content="https://liyupin.github.io/res/django-admin-view-models-teacher.png">
-<meta property="article:published_time" content="2022-08-28T04:50:00.000Z">
-<meta property="article:modified_time" content="2022-08-28T04:50:48.206Z">
+<meta property="og:image" content="https://liyupin.github.io/res/pycharm-django-static.png">
+<meta property="og:image" content="https://liyupin.github.io/res/synchronous-web-request.png">
+<meta property="og:image" content="https://liyupin.github.io/res/asynchronous-web-request.png">
+<meta property="article:published_time" content="2022-08-28T12:27:00.000Z">
+<meta property="article:modified_time" content="2022-08-28T12:28:02.304Z">
 <meta property="article:author" content="Cper Liu">
-<meta property="article:tag" content="python100day-">
+<meta property="article:tag" content="python100day">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://liyupin.github.io/res/pycharm-vote-project.png">
+<meta name="twitter:image" content="https://liyupin.github.io/res/pycharm-django-static.png">
   
   
   
-  <title>python100day-42深入模型 - Hexo</title>
+  <title>python100day-43 静态资源和Ajax请求 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -221,7 +215,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="python100day-42深入模型"></span>
+            <span id="subtitle" data-typed-text="python100day-43 静态资源和Ajax请求"></span>
           
         </div>
 
@@ -232,8 +226,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-08-28 12:50" pubdate>
-          2022年8月28日 下午
+        <time datetime="2022-08-28 20:27" pubdate>
+          2022年8月28日 晚上
         </time>
       </span>
     
@@ -244,7 +238,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          16k 字
+          5.3k 字
         
       </span>
     
@@ -255,7 +249,7 @@
         
         
         
-          134 分钟
+          45 分钟
         
       </span>
     
@@ -293,456 +287,41 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">python100day-42深入模型</h1>
+            <h1 style="display: none">python100day-43 静态资源和Ajax请求</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="深入模型"><a href="#深入模型" class="headerlink" title="深入模型"></a>深入模型</h2><p>在上一个章节中，我们提到了Django是基于MVC架构的Web框架，MVC架构追求的是“模型”和“视图”的解耦合。所谓“模型”说得更直白一些就是数据（的表示），所以通常也被称作“数据模型”。在实际的项目中，数据模型通常通过数据库实现持久化操作，而关系型数据库在过去和当下都是持久化的首选方案，下面我们通过完成一个投票项目来讲解和模型相关的知识点。投票项目的首页会展示某在线教育平台所有的学科；点击学科可以查看到该学科的老师及其信息；用户登录后在查看老师的页面为老师投票，可以投赞成票和反对票；未登录的用户可以通过登录页进行登录；尚未注册的用户可以通过注册页输入个人信息进行注册。在这个项目中，我们使用MySQL数据库来实现数据持久化操作。</p>
-<h3 id="创建项目和应用"><a href="#创建项目和应用" class="headerlink" title="创建项目和应用"></a>创建项目和应用</h3><p>我们首先创建Django项目<code>vote</code>并为其添加虚拟环境和依赖项。接下来，在项目下创建名为<code>polls</code>的应用和保存模板页的文件夹<code>tempaltes</code>，项目文件夹的结构如下所示。</p>
-<p><img src="/res/pycharm-vote-project.png" srcset="/img/loading.gif" lazyload></p>
-<p>根据上面描述的项目需求，我们准备了四个静态页面，分别是展示学科的页面<code>subjects.html</code>，显示学科老师的页面<code>teachers.html</code>，登录页面<code>login.html</code>，注册页面<code>register.html</code>，稍后我们会将静态页修改为Django项目所需的模板页。</p>
-<h3 id="配置关系型数据库MySQL"><a href="#配置关系型数据库MySQL" class="headerlink" title="配置关系型数据库MySQL"></a>配置关系型数据库MySQL</h3><ol>
-<li><p>在MySQL中创建数据库，创建用户，授权用户访问该数据库。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs SQL"><span class="hljs-keyword">create</span> database vote <span class="hljs-keyword">default</span> charset utf8;<br><span class="hljs-keyword">create</span> <span class="hljs-keyword">user</span> <span class="hljs-string">&#x27;hellokitty&#x27;</span>@<span class="hljs-string">&#x27;%&#x27;</span> identified <span class="hljs-keyword">by</span> <span class="hljs-string">&#x27;Hellokitty.618&#x27;</span>;<br><span class="hljs-keyword">grant</span> <span class="hljs-keyword">all</span> privileges <span class="hljs-keyword">on</span> vote.<span class="hljs-operator">*</span> <span class="hljs-keyword">to</span> <span class="hljs-string">&#x27;hellokitty&#x27;</span>@<span class="hljs-string">&#x27;%&#x27;</span>;<br>flush privileges;<br></code></pre></td></tr></table></figure>
-</li>
-<li><p>在MySQL中创建保存学科和老师信息的二维表（保存用户信息的表稍后处理）。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs SQL">use vote;<br><br><span class="hljs-comment">-- 创建学科表</span><br><span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> `tb_subject`<br>(<br>	`<span class="hljs-keyword">no</span>` <span class="hljs-type">integer</span> auto_increment comment <span class="hljs-string">&#x27;学科编号&#x27;</span>,<br>    `name` <span class="hljs-type">varchar</span>(<span class="hljs-number">50</span>) <span class="hljs-keyword">not</span> <span class="hljs-keyword">null</span> comment <span class="hljs-string">&#x27;学科名称&#x27;</span>,<br>    `intro` <span class="hljs-type">varchar</span>(<span class="hljs-number">1000</span>) <span class="hljs-keyword">not</span> <span class="hljs-keyword">null</span> <span class="hljs-keyword">default</span> <span class="hljs-string">&#x27;&#x27;</span> comment <span class="hljs-string">&#x27;学科介绍&#x27;</span>,<br>    `is_hot` <span class="hljs-type">boolean</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">null</span> <span class="hljs-keyword">default</span> <span class="hljs-number">0</span> comment <span class="hljs-string">&#x27;是不是热门学科&#x27;</span>,<br>    <span class="hljs-keyword">primary</span> key (`<span class="hljs-keyword">no</span>`)<br>);<br><span class="hljs-comment">-- 创建老师表</span><br><span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> `tb_teacher`<br>(<br>    `<span class="hljs-keyword">no</span>` <span class="hljs-type">integer</span> auto_increment comment <span class="hljs-string">&#x27;老师编号&#x27;</span>,<br>    `name` <span class="hljs-type">varchar</span>(<span class="hljs-number">20</span>) <span class="hljs-keyword">not</span> <span class="hljs-keyword">null</span> comment <span class="hljs-string">&#x27;老师姓名&#x27;</span>,<br>    `sex` <span class="hljs-type">boolean</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">null</span> <span class="hljs-keyword">default</span> <span class="hljs-number">1</span> comment <span class="hljs-string">&#x27;老师性别&#x27;</span>,<br>    `birth` <span class="hljs-type">date</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">null</span> comment <span class="hljs-string">&#x27;出生日期&#x27;</span>,<br>    `intro` <span class="hljs-type">varchar</span>(<span class="hljs-number">1000</span>) <span class="hljs-keyword">not</span> <span class="hljs-keyword">null</span> <span class="hljs-keyword">default</span> <span class="hljs-string">&#x27;&#x27;</span> comment <span class="hljs-string">&#x27;老师介绍&#x27;</span>,<br>    `photo` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">not</span> <span class="hljs-keyword">null</span> <span class="hljs-keyword">default</span> <span class="hljs-string">&#x27;&#x27;</span> comment <span class="hljs-string">&#x27;老师照片&#x27;</span>,<br>    `gcount` <span class="hljs-type">integer</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">null</span> <span class="hljs-keyword">default</span> <span class="hljs-number">0</span> comment <span class="hljs-string">&#x27;好评数&#x27;</span>,<br>    `bcount` <span class="hljs-type">integer</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">null</span> <span class="hljs-keyword">default</span> <span class="hljs-number">0</span> comment <span class="hljs-string">&#x27;差评数&#x27;</span>,<br>    `sno` <span class="hljs-type">integer</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">null</span> comment <span class="hljs-string">&#x27;所属学科&#x27;</span>,<br>    <span class="hljs-keyword">primary</span> key (`<span class="hljs-keyword">no</span>`),<br>    <span class="hljs-keyword">foreign</span> key (`sno`) <span class="hljs-keyword">references</span> `tb_subject` (`<span class="hljs-keyword">no</span>`)<br>);<br></code></pre></td></tr></table></figure>
-</li>
-<li><p>在虚拟环境中安装连接MySQL数据库所需的依赖项。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Bash">pip install mysqlclient<br></code></pre></td></tr></table></figure>
+                <h2 id="静态资源和Ajax请求"><a href="#静态资源和Ajax请求" class="headerlink" title="静态资源和Ajax请求"></a>静态资源和Ajax请求</h2><h3 id="加载静态资源"><a href="#加载静态资源" class="headerlink" title="加载静态资源"></a>加载静态资源</h3><p>如果要在Django项目中使用静态资源，可以先创建一个用于保存静态资源的目录。在<code>vote</code>项目中，我们将静态资源置于名为<code>static</code>的文件夹中，在该文件夹包含了三个子文件夹：css、js和images，分别用来保存外部CSS文件、外部JavaScript文件和图片资源，如下图所示。</p>
+<p><img src="/res/pycharm-django-static.png" srcset="/img/loading.gif" lazyload></p>
+<p>为了能够找到保存静态资源的文件夹，我们还需要修改Django项目的配置文件<code>settings.py</code>，如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Python">STATICFILES_DIRS = [os.path.join(BASE_DIR, <span class="hljs-string">&#x27;static&#x27;</span>), ]<br>STATIC_URL = <span class="hljs-string">&#x27;/static/&#x27;</span><br></code></pre></td></tr></table></figure>
 
-<blockquote>
-<p><strong>说明</strong>：如果因为某些原因无法安装<code>mysqlclient</code>三方库，可以使用它的替代品<code>pymysql</code>，<code>pymysql</code>是用纯Python开发的连接MySQL的Python库，安装更容易成功，但是需要在Django项目文件夹的<code>__init__.py</code>中添加如下所示的代码。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">import</span> pymysql<br><br>pymysql.install_as_MySQLdb()<br></code></pre></td></tr></table></figure>
+<p>配置好静态资源之后，大家可以运行项目，然后看看之前我们写的页面上的图片是否能够正常加载出来。需要说明的是，在项目正式部署到线上环境后，我们通常会把静态资源交给专门的静态资源服务器（如Nginx、Apache）来处理，而不是有运行Python代码的服务器来管理静态资源，所以上面的配置并不适用于生产环境，仅供项目开发阶段测试使用。使用静态资源的正确姿势我们会在后续的章节为大家讲解。</p>
+<h3 id="Ajax概述"><a href="#Ajax概述" class="headerlink" title="Ajax概述"></a>Ajax概述</h3><p>接下来就可以实现“好评”和“差评”的功能了，很明显如果能够在不刷新页面的情况下实现这两个功能会带来更好的用户体验，因此我们考虑使用<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/AJAX">Ajax</a>技术来实现“好评”和“差评”。Ajax是Asynchronous Javascript And XML的缩写 , 简单的说，使用Ajax技术可以在不重新加载整个页面的情况下对页面进行局部刷新。</p>
+<p>对于传统的Web应用，每次页面上需要加载新的内容都需要重新请求服务器并刷新整个页面，如果服务器短时间内无法给予响应或者网络状况并不理想，那么可能会造成浏览器长时间的空白并使得用户处于等待状态，在这个期间用户什么都做不了，如下图所示。很显然，这样的Web应用并不能带来很好的用户体验。</p>
+<p><img src="/res/synchronous-web-request.png" srcset="/img/loading.gif" lazyload></p>
+<p>对于使用Ajax技术的Web应用，浏览器可以向服务器发起异步请求来获取数据。异步请求不会中断用户体验，当服务器返回了新的数据，我们可以通过JavaScript代码进行DOM操作来实现对页面的局部刷新，这样就相当于在不刷新整个页面的情况下更新了页面的内容，如下图所示。</p>
+<p><img src="/res/asynchronous-web-request.png" srcset="/img/loading.gif" lazyload></p>
+<p>在使用Ajax技术时，浏览器跟服务器通常会交换XML或JSON格式的数据，XML是以前使用得非常多的一种数据格式，近年来几乎已经完全被JSON取代，下面是两种数据格式的对比。</p>
+<p>XML格式：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs XML"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;utf-8&quot;</span>?&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">message</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">from</span>&gt;</span>Alice<span class="hljs-tag">&lt;/<span class="hljs-name">from</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">to</span>&gt;</span>Bob<span class="hljs-tag">&lt;/<span class="hljs-name">to</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">content</span>&gt;</span>Dinner is on me!<span class="hljs-tag">&lt;/<span class="hljs-name">content</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">message</span>&gt;</span><br></code></pre></td></tr></table></figure>
 
-<p>如果使用Django 2.2及以上版本，还会遇到PyMySQL跟Django框架的兼容性问题，兼容性问题会导致项目无法运行，需要按照GitHub上PyMySQL仓库<a target="_blank" rel="noopener" href="https://github.com/PyMySQL/PyMySQL/issues/790">Issues</a>中提供的方法进行处理。总体来说，使用<code>pymysql</code>会比较麻烦，强烈建议大家首选安装<code>mysqlclient</code>。</p>
-</blockquote>
-</li>
-<li><p>修改项目的settings.py文件，首先将我们创建的应用<code>polls</code>添加已安装的项目（<code>INSTALLED_APPS</code>）中，然后配置MySQL作为持久化方案。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs Python">INSTALLED_APPS = [<br>    <span class="hljs-string">&#x27;django.contrib.admin&#x27;</span>,<br>    <span class="hljs-string">&#x27;django.contrib.auth&#x27;</span>,<br>    <span class="hljs-string">&#x27;django.contrib.contenttypes&#x27;</span>,<br>    <span class="hljs-string">&#x27;django.contrib.sessions&#x27;</span>,<br>    <span class="hljs-string">&#x27;django.contrib.messages&#x27;</span>,<br>    <span class="hljs-string">&#x27;django.contrib.staticfiles&#x27;</span>,<br>    <span class="hljs-string">&#x27;polls&#x27;</span>,<br>]<br><br>DATABASES = &#123;<br>    <span class="hljs-string">&#x27;default&#x27;</span>: &#123;<br>        <span class="hljs-comment"># 数据库引擎配置</span><br>        <span class="hljs-string">&#x27;ENGINE&#x27;</span>: <span class="hljs-string">&#x27;django.db.backends.mysql&#x27;</span>,<br>        <span class="hljs-comment"># 数据库的名字</span><br>        <span class="hljs-string">&#x27;NAME&#x27;</span>: <span class="hljs-string">&#x27;vote&#x27;</span>,<br>        <span class="hljs-comment"># 数据库服务器的IP地址（本机可以写localhost或127.0.0.1）</span><br>        <span class="hljs-string">&#x27;HOST&#x27;</span>: <span class="hljs-string">&#x27;localhost&#x27;</span>,<br>        <span class="hljs-comment"># 启动MySQL服务的端口号</span><br>        <span class="hljs-string">&#x27;PORT&#x27;</span>: <span class="hljs-number">3306</span>,<br>        <span class="hljs-comment"># 数据库用户名和口令</span><br>        <span class="hljs-string">&#x27;USER&#x27;</span>: <span class="hljs-string">&#x27;hellokitty&#x27;</span>,<br>        <span class="hljs-string">&#x27;PASSWORD&#x27;</span>: <span class="hljs-string">&#x27;Hellokitty.618&#x27;</span>,<br>        <span class="hljs-comment"># 数据库使用的字符集</span><br>        <span class="hljs-string">&#x27;CHARSET&#x27;</span>: <span class="hljs-string">&#x27;utf8&#x27;</span>,<br>        <span class="hljs-comment"># 数据库时间日期的时区设定</span><br>        <span class="hljs-string">&#x27;TIME_ZONE&#x27;</span>: <span class="hljs-string">&#x27;Asia/Chongqing&#x27;</span>,<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>JSON格式：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs JSON"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;from&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Alice&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;to&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Bob&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;content&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Dinner is on me!&quot;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
 
-<p>在配置ENGINE属性时，常用的可选值包括：</p>
-<ul>
-<li><code>&#39;django.db.backends.sqlite3&#39;</code>：SQLite嵌入式数据库。</li>
-<li><code>&#39;django.db.backends.postgresql&#39;</code>：BSD许可证下发行的开源关系型数据库产品。</li>
-<li><code>&#39;django.db.backends.mysql&#39;</code>：甲骨文公司经济高效的数据库产品。</li>
-<li><code>&#39;django.db.backends.oracle&#39;</code>：甲骨文公司关系型数据库旗舰产品。</li>
-</ul>
-<p>其他的配置可以参考官方文档中<a target="_blank" rel="noopener" href="https://docs.djangoproject.com/zh-hans/2.0/ref/databases/#third-party-notes">数据库配置</a>的部分。</p>
-</li>
-<li><p>Django框架提供了ORM来解决数据持久化问题，ORM翻译成中文叫“对象关系映射”。因为Python是面向对象的编程语言，我们在Python程序中使用对象模型来保存数据，而关系型数据库使用关系模型，用二维表来保存数据，这两种模型并不匹配。使用ORM是为了实现对象模型到关系模型的<strong>双向转换</strong>，这样就不用在Python代码中书写SQL语句和游标操作，因为这些都会由ORM自动完成。利用Django的ORM，我们可以直接将刚才创建的学科表和老师表变成Django中的模型类。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Bash">python manage.py inspectdb &gt; polls/models.py<br></code></pre></td></tr></table></figure>
+<p>通过上面的对比，明显JSON格式的数据要紧凑得多，所以传输效率更高，而且JSON本身也是JavaScript中的一种对象表达式语法，在JavaScript代码中处理JSON格式的数据更加方便。</p>
+<h3 id="用Ajax实现投票功能"><a href="#用Ajax实现投票功能" class="headerlink" title="用Ajax实现投票功能"></a>用Ajax实现投票功能</h3><p>下面，我们使用Ajax技术来实现投票的功能，首先修改项目的<code>urls.py</code>文件，为“好评”和“差评”功能映射对应的URL。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">from</span> django.contrib <span class="hljs-keyword">import</span> admin<br><span class="hljs-keyword">from</span> django.urls <span class="hljs-keyword">import</span> path<br><br><span class="hljs-keyword">from</span> vote <span class="hljs-keyword">import</span> views<br><br>urlpatterns = [<br>    path(<span class="hljs-string">&#x27;&#x27;</span>, views.show_subjects),<br>    path(<span class="hljs-string">&#x27;teachers/&#x27;</span>, views.show_teachers),<br>    path(<span class="hljs-string">&#x27;praise/&#x27;</span>, views.praise_or_criticize),<br>    path(<span class="hljs-string">&#x27;criticize/&#x27;</span>, views.praise_or_criticize),<br>    path(<span class="hljs-string">&#x27;admin/&#x27;</span>, admin.site.urls),<br>]<br></code></pre></td></tr></table></figure>
 
-<p>我们可以对自动生成的模型类稍作调整，代码如下所示。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">from</span> django.db <span class="hljs-keyword">import</span> models<br><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Subject</span>(models.Model):<br>    no = models.AutoField(primary_key=<span class="hljs-literal">True</span>, verbose_name=<span class="hljs-string">&#x27;编号&#x27;</span>)<br>    name = models.CharField(max_length=<span class="hljs-number">50</span>, verbose_name=<span class="hljs-string">&#x27;名称&#x27;</span>)<br>    intro = models.CharField(max_length=<span class="hljs-number">1000</span>, verbose_name=<span class="hljs-string">&#x27;介绍&#x27;</span>)<br>    is_hot = models.BooleanField(verbose_name=<span class="hljs-string">&#x27;是否热门&#x27;</span>)<br><br>    <span class="hljs-keyword">class</span> <span class="hljs-title class_">Meta</span>:<br>        managed = <span class="hljs-literal">False</span><br>        db_table = <span class="hljs-string">&#x27;tb_subject&#x27;</span><br><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Teacher</span>(models.Model):<br>    no = models.AutoField(primary_key=<span class="hljs-literal">True</span>, verbose_name=<span class="hljs-string">&#x27;编号&#x27;</span>)<br>    name = models.CharField(max_length=<span class="hljs-number">20</span>, verbose_name=<span class="hljs-string">&#x27;姓名&#x27;</span>)<br>    sex = models.BooleanField(default=<span class="hljs-literal">True</span>, verbose_name=<span class="hljs-string">&#x27;性别&#x27;</span>)<br>    birth = models.DateField(verbose_name=<span class="hljs-string">&#x27;出生日期&#x27;</span>)<br>    intro = models.CharField(max_length=<span class="hljs-number">1000</span>, verbose_name=<span class="hljs-string">&#x27;个人介绍&#x27;</span>)<br>    photo = models.ImageField(max_length=<span class="hljs-number">255</span>, verbose_name=<span class="hljs-string">&#x27;照片&#x27;</span>)<br>    good_count = models.IntegerField(default=<span class="hljs-number">0</span>, db_column=<span class="hljs-string">&#x27;gcount&#x27;</span>, verbose_name=<span class="hljs-string">&#x27;好评数&#x27;</span>)<br>    bad_count = models.IntegerField(default=<span class="hljs-number">0</span>, db_column=<span class="hljs-string">&#x27;bcount&#x27;</span>, verbose_name=<span class="hljs-string">&#x27;差评数&#x27;</span>)<br>    subject = models.ForeignKey(Subject, models.DO_NOTHING, db_column=<span class="hljs-string">&#x27;sno&#x27;</span>)<br><br>    <span class="hljs-keyword">class</span> <span class="hljs-title class_">Meta</span>:<br>        managed = <span class="hljs-literal">False</span><br>        db_table = <span class="hljs-string">&#x27;tb_teacher&#x27;</span><br></code></pre></td></tr></table></figure>
+<p>设计视图函数<code>praise_or_criticize</code>来支持“好评”和“差评”功能，该视图函数通过Django封装的JsonResponse类将字典序列化成JSON字符串作为返回给浏览器的响应内容。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">praise_or_criticize</span>(<span class="hljs-params">request</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;好评&quot;&quot;&quot;</span><br>    <span class="hljs-keyword">try</span>:<br>        tno = <span class="hljs-built_in">int</span>(request.GET.get(<span class="hljs-string">&#x27;tno&#x27;</span>))<br>        teacher = Teacher.objects.get(no=tno)<br>        <span class="hljs-keyword">if</span> request.path.startswith(<span class="hljs-string">&#x27;/praise&#x27;</span>):<br>            teacher.good_count += <span class="hljs-number">1</span><br>            count = teacher.good_count<br>        <span class="hljs-keyword">else</span>:<br>            teacher.bad_count += <span class="hljs-number">1</span><br>            count = teacher.bad_count<br>        teacher.save()<br>        data = &#123;<span class="hljs-string">&#x27;code&#x27;</span>: <span class="hljs-number">20000</span>, <span class="hljs-string">&#x27;mesg&#x27;</span>: <span class="hljs-string">&#x27;操作成功&#x27;</span>, <span class="hljs-string">&#x27;count&#x27;</span>: count&#125;<br>    <span class="hljs-keyword">except</span> (ValueError, Teacher.DoseNotExist):<br>        data = &#123;<span class="hljs-string">&#x27;code&#x27;</span>: <span class="hljs-number">20001</span>, <span class="hljs-string">&#x27;mesg&#x27;</span>: <span class="hljs-string">&#x27;操作失败&#x27;</span>&#125;<br>    <span class="hljs-keyword">return</span> JsonResponse(data)<br></code></pre></td></tr></table></figure>
 
-<blockquote>
-<p><strong>说明</strong>：模型类都直接或间接继承自<code>Model</code>类，模型类跟关系型数据库的二维表对应，模型对象跟表中的记录对应，模型对象的属性跟表中的字段对应。如果对上面模型类的属性定义不是特别理解，可以看看本文后面提供的“模型定义参考”部分的内容。</p>
-</blockquote>
-</li>
-</ol>
-<h3 id="使用ORM完成模型的CRUD操作"><a href="#使用ORM完成模型的CRUD操作" class="headerlink" title="使用ORM完成模型的CRUD操作"></a>使用ORM完成模型的CRUD操作</h3><p>有了Django框架的ORM，我们可以直接使用面向对象的方式来实现对数据的CRUD（增删改查）操作。我们可以在PyCharm的终端中输入下面的命令进入到Django项目的交互式环境，然后尝试对模型的操作。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Bash">python manage.py shell<br></code></pre></td></tr></table></figure>
+<p>修改显示老师信息的模板页，引入jQuery库来实现事件处理、Ajax请求和DOM操作。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><code class="hljs HTML"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>老师信息<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span><br><span class="language-css">        <span class="hljs-selector-id">#container</span> &#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">80%</span>;</span><br><span class="language-css">            <span class="hljs-attribute">margin</span>: <span class="hljs-number">10px</span> auto;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.teacher</span> &#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;</span><br><span class="language-css">            <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span> auto;</span><br><span class="language-css">            <span class="hljs-attribute">padding</span>: <span class="hljs-number">10px</span> <span class="hljs-number">0</span>;</span><br><span class="language-css">            <span class="hljs-attribute">border-bottom</span>: <span class="hljs-number">1px</span> dashed gray;</span><br><span class="language-css">            <span class="hljs-attribute">overflow</span>: auto;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.teacher</span>&gt;<span class="hljs-selector-tag">div</span> &#123;</span><br><span class="language-css">            <span class="hljs-attribute">float</span>: left;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.photo</span> &#123;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">140px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">75px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">overflow</span>: hidden;</span><br><span class="language-css">            <span class="hljs-attribute">margin-left</span>: <span class="hljs-number">20px</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.info</span> &#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">75%</span>;</span><br><span class="language-css">            <span class="hljs-attribute">margin-left</span>: <span class="hljs-number">30px</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.info</span> <span class="hljs-selector-tag">div</span> &#123;</span><br><span class="language-css">            <span class="hljs-attribute">clear</span>: both;</span><br><span class="language-css">            <span class="hljs-attribute">margin</span>: <span class="hljs-number">5px</span> <span class="hljs-number">10px</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.info</span> <span class="hljs-selector-tag">span</span> &#123;</span><br><span class="language-css">            <span class="hljs-attribute">margin-right</span>: <span class="hljs-number">25px</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.info</span> <span class="hljs-selector-tag">a</span> &#123;</span><br><span class="language-css">            <span class="hljs-attribute">text-decoration</span>: none;</span><br><span class="language-css">            <span class="hljs-attribute">color</span>: darkcyan;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;container&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>&#123;&#123; subject.name &#125;&#125;学科的老师信息<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">hr</span>&gt;</span><br>        &#123;% if not teachers %&#125;<br>            <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>暂无该学科老师信息<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span><br>        &#123;% endif %&#125;<br>        &#123;% for teacher in teachers %&#125;<br>        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;teacher&quot;</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;photo&quot;</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/static/images/&#123;&#123; teacher.photo &#125;&#125;&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;140&quot;</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">&quot;&quot;</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;info&quot;</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span><br>                    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>姓名：&#123;&#123; teacher.name &#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><br>                    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>性别：&#123;&#123; teacher.sex | yesno:&#x27;男,女&#x27; &#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><br>                    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>出生日期：&#123;&#123; teacher.birth &#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><br>                <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;intro&quot;</span>&gt;</span>&#123;&#123; teacher.intro &#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;comment&quot;</span>&gt;</span><br>                    <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;/praise/?tno=&#123;&#123; teacher.no &#125;&#125;&quot;</span>&gt;</span>好评<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-symbol">&amp;nbsp;</span><span class="hljs-symbol">&amp;nbsp;</span><br>                    (<span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>&#123;&#123; teacher.good_count &#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span>)<br>                    <span class="hljs-symbol">&amp;nbsp;</span><span class="hljs-symbol">&amp;nbsp;</span><span class="hljs-symbol">&amp;nbsp;</span><span class="hljs-symbol">&amp;nbsp;</span><br>                    <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;/criticize/?tno=&#123;&#123; teacher.no &#125;&#125;&quot;</span>&gt;</span>差评<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-symbol">&amp;nbsp;</span><span class="hljs-symbol">&amp;nbsp;</span><br>                    (<span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>&#123;&#123; teacher.bad_count &#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span>)<br>                <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>        &#123;% endfor %&#125;<br>        <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;/&quot;</span>&gt;</span>返回首页<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript">        $(() =&gt; &#123;</span><br><span class="language-javascript">            $(<span class="hljs-string">&#x27;.comment&gt;a&#x27;</span>).<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;click&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">evt</span>) =&gt;</span> &#123;</span><br><span class="language-javascript">                evt.<span class="hljs-title function_">preventDefault</span>()</span><br><span class="language-javascript">                <span class="hljs-keyword">let</span> url = $(evt.<span class="hljs-property">target</span>).<span class="hljs-title function_">attr</span>(<span class="hljs-string">&#x27;href&#x27;</span>)</span><br><span class="language-javascript">                $.<span class="hljs-title function_">getJSON</span>(url, <span class="hljs-function">(<span class="hljs-params">json</span>) =&gt;</span> &#123;</span><br><span class="language-javascript">                    <span class="hljs-keyword">if</span> (json.<span class="hljs-property">code</span> == <span class="hljs-number">20000</span>) &#123;</span><br><span class="language-javascript">                        $(evt.<span class="hljs-property">target</span>).<span class="hljs-title function_">next</span>().<span class="hljs-title function_">text</span>(json.<span class="hljs-property">count</span>)</span><br><span class="language-javascript">                    &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="language-javascript">                        <span class="hljs-title function_">alert</span>(json.<span class="hljs-property">mesg</span>)</span><br><span class="language-javascript">                    &#125;</span><br><span class="language-javascript">                &#125;)</span><br><span class="language-javascript">            &#125;)</span><br><span class="language-javascript">        &#125;)</span><br><span class="language-javascript">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
 
-<h4 id="新增"><a href="#新增" class="headerlink" title="新增"></a>新增</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">from</span> polls.models <span class="hljs-keyword">import</span> Subject<br><br>subject1 = Subject(name=<span class="hljs-string">&#x27;Python全栈开发&#x27;</span>, intro=<span class="hljs-string">&#x27;当下最热门的学科&#x27;</span>, is_hot=<span class="hljs-literal">True</span>)<br>subject1.save()<br>subject2 = Subject(name=<span class="hljs-string">&#x27;全栈软件测试&#x27;</span>, intro=<span class="hljs-string">&#x27;学习自动化测试的学科&#x27;</span>, is_hot=<span class="hljs-literal">False</span>)<br>subject2.save()<br>subject3 = Subject(name=<span class="hljs-string">&#x27;JavaEE分布式开发&#x27;</span>, intro=<span class="hljs-string">&#x27;基于Java语言的服务器应用开发&#x27;</span>, is_hot=<span class="hljs-literal">True</span>)<br></code></pre></td></tr></table></figure>
-
-<h4 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Python">subject = Subject.objects.get(no=<span class="hljs-number">2</span>)<br>subject.delete()<br></code></pre></td></tr></table></figure>
-
-<h4 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs Shell">subject = Subject.objects.get(no=1)<br>subject.name = &#x27;Python全栈+人工智能&#x27;<br>subject.save()<br></code></pre></td></tr></table></figure>
-
-<h4 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h4><ol>
-<li>查询所有对象。</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">Subjects.objects.all()<br></code></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>过滤数据。</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs Shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">查询名称为“Python全栈+人工智能”的学科</span><br>Subject.objects.filter(name=&#x27;Python全栈+人工智能&#x27;)<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">查询名称包含“全栈”的学科（模糊查询）</span><br>Subject.objects.filter(name__contains=&#x27;全栈&#x27;)<br>Subject.objects.filter(name__startswith=&#x27;全栈&#x27;)<br>Subject.objects.filter(name__endswith=&#x27;全栈&#x27;)<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">查询所有热门学科</span><br>Subject.objects.filter(is_hot=True)<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">查询编号大于3小于10的学科</span><br>Subject.objects.filter(no__gt=3).filter(no__lt=10)<br>Subject.objects.filter(no__gt=3, no__lt=10)<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">查询编号在3到7之间的学科</span><br>Subject.objects.filter(no__ge=3, no__le=7)<br>Subject.objects.filter(no__range=(3, 7))<br></code></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>查询单个对象。</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">查询主键为1的学科</span><br>Subject.objects.get(pk=1)<br>Subject.objects.get(no=1)<br>Subject.objects.filter(no=1).first()<br>Subject.objects.filter(no=1).last()<br></code></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>排序。</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">查询所有学科按编号升序排列</span><br>Subject.objects.order_by(&#x27;no&#x27;)<br><span class="hljs-meta prompt_"># </span><span class="language-bash">查询所有部门按部门编号降序排列</span><br>Subject.objects.order_by(&#x27;-no&#x27;)<br></code></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>切片（分页查询）。</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">按编号从小到大查询前3个学科</span><br>Subject.objects.order_by(&#x27;no&#x27;)[:3]<br></code></pre></td></tr></table></figure>
-
-<ol start="6">
-<li>计数。</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-comment"># 查询一共有多少个学科</span><br>Subject.objects.count()<br></code></pre></td></tr></table></figure>
-
-<ol start="7">
-<li>高级查询。</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">查询编号为1的学科的老师</span><br>Teacher.objects.filter(subject__no=1)<br>Subject.objects.get(pk=1).teacher_set.all() <br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">查询学科名称有“全栈”二字的学科的老师</span><br>Teacher.objects.filter(subject__name__contains=&#x27;全栈&#x27;) <br></code></pre></td></tr></table></figure>
-
-<blockquote>
-<p><strong>说明1</strong>：由于老师与学科之间存在多对一外键关联，所以能通过学科反向查询到该学科的老师（从一对多关系中“一”的一方查询“多”的一方），反向查询属性默认的名字是<code>类名小写_set</code>（如上面例子中的<code>teacher_set</code>），当然也可以在创建模型时通过<code>ForeingKey</code>的<code>related_name</code>属性指定反向查询属性的名字。如果不希望执行反向查询可以将<code>related_name</code>属性设置为<code>&#39;+&#39;</code>或者以<code>&#39;+&#39;</code>开头的字符串。</p>
-</blockquote>
-<blockquote>
-<p><strong>说明2</strong>：ORM查询多个对象时会返回QuerySet对象，QuerySet使用了惰性查询，即在创建QuerySet对象的过程中不涉及任何数据库活动，等真正用到对象时（对QuerySet求值）才向数据库发送SQL语句并获取对应的结果，这一点在实际开发中需要引起注意！</p>
-</blockquote>
-<blockquote>
-<p><strong>说明3</strong>：如果希望更新多条数据，不用先逐一获取模型对象再修改对象属性，可以直接使用QuerySet对象的<code>update()</code>方法一次性更新多条数据。</p>
-</blockquote>
-<h3 id="利用Django后台管理模型"><a href="#利用Django后台管理模型" class="headerlink" title="利用Django后台管理模型"></a>利用Django后台管理模型</h3><p>在创建好模型类之后，可以通过Django框架自带的后台管理应用（<code>admin</code>应用）实现对模型的管理。虽然实际应用中，这个后台可能并不能满足我们的需求，但是在学习Django框架时，我们可以利用<code>admin</code>应用来管理我们的模型，同时也通过它来了解一个项目的后台管理系统需要哪些功能。使用Django自带的<code>admin</code>应用步骤如下所示。</p>
-<ol>
-<li><p>将<code>admin</code>应用所需的表迁移到数据库中。<code>admin</code>应用本身也需要数据库的支持，而且在<code>admin</code>应用中已经定义好了相关的数据模型类，我们只需要通过模型迁移操作就能自动在数据库中生成所需的二维表。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Bash">python manage.py migrate<br></code></pre></td></tr></table></figure>
-</li>
-<li><p>创建访问<code>admin</code>应用的超级用户账号，这里需要输入用户名、邮箱和口令。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Shell">python manage.py createsuperuser<br></code></pre></td></tr></table></figure>
-
-<blockquote>
-<p><strong>说明</strong>：输入口令时没有回显也不能退格，需要一气呵成完成输入。</p>
-</blockquote>
-</li>
-<li><p>运行项目，在浏览器中访问<code>http://127.0.0.1:8000/admin</code>，输入刚才创建的超级用户账号和密码进行登录。</p>
-<p><img src="/Users/Hao/Desktop/Python-100-Days/Day41-55/res/django-admin-login.png" srcset="/img/loading.gif" lazyload></p>
-<p>登录后进入管理员操作平台。</p>
-<p><img src="/res/django-admin-apps.png" srcset="/img/loading.gif" lazyload></p>
-<p>注意，我们暂时还没能在<code>admin</code>应用中看到之前创建的模型类，为此需要在<code>polls</code>应用的<code>admin.py</code>文件中对需要管理的模型进行注册。</p>
-</li>
-<li><p>注册模型类。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">from</span> django.contrib <span class="hljs-keyword">import</span> admin<br><br><span class="hljs-keyword">from</span> polls.models <span class="hljs-keyword">import</span> Subject, Teacher<br><br>admin.site.register(Subject)<br>admin.site.register(Teacher)<br></code></pre></td></tr></table></figure>
-
-<p>注册模型类后，就可以在后台管理系统中看到它们。</p>
-<p><img src="/./res/django-admin-models.png" srcset="/img/loading.gif" lazyload></p>
-</li>
-<li><p>对模型进行CRUD操作。</p>
-<p>可以在管理员平台对模型进行C（新增）、R（查看）、U（更新）、D（删除）操作，如下图所示。</p>
-<ul>
-<li><p>添加学科。</p>
-<p>  <img src="/res/django-admin-add-model.png" srcset="/img/loading.gif" lazyload></p>
-</li>
-<li><p>查看所有学科。</p>
-<p>  <img src="/res/django-admin-view-models.png" srcset="/img/loading.gif" lazyload></p>
-</li>
-<li><p>删除和更新学科。</p>
-<p>  <img src="/res/django-admin-delete-update-model.png" srcset="/img/loading.gif" lazyload></p>
-</li>
-</ul>
-</li>
-<li><p>注册模型管理类。</p>
-<p>可能大家已经注意到了，刚才在后台查看部门信息的时候，显示的部门信息并不直观，为此我们再修改<code>admin.py</code>文件，通过注册模型管理类，可以在后台管理系统中更好的管理模型。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">from</span> django.contrib <span class="hljs-keyword">import</span> admin<br><br><span class="hljs-keyword">from</span> polls.models <span class="hljs-keyword">import</span> Subject, Teacher<br><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SubjectModelAdmin</span>(admin.ModelAdmin):<br>    list_display = (<span class="hljs-string">&#x27;no&#x27;</span>, <span class="hljs-string">&#x27;name&#x27;</span>, <span class="hljs-string">&#x27;intro&#x27;</span>, <span class="hljs-string">&#x27;is_hot&#x27;</span>)<br>    search_fields = (<span class="hljs-string">&#x27;name&#x27;</span>, )<br>    ordering = (<span class="hljs-string">&#x27;no&#x27;</span>, )<br><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">TeacherModelAdmin</span>(admin.ModelAdmin):<br>    list_display = (<span class="hljs-string">&#x27;no&#x27;</span>, <span class="hljs-string">&#x27;name&#x27;</span>, <span class="hljs-string">&#x27;sex&#x27;</span>, <span class="hljs-string">&#x27;birth&#x27;</span>, <span class="hljs-string">&#x27;good_count&#x27;</span>, <span class="hljs-string">&#x27;bad_count&#x27;</span>, <span class="hljs-string">&#x27;subject&#x27;</span>)<br>    search_fields = (<span class="hljs-string">&#x27;name&#x27;</span>, )<br>    ordering = (<span class="hljs-string">&#x27;no&#x27;</span>, )<br><br><br>admin.site.register(Subject, SubjectModelAdmin)<br>admin.site.register(Teacher, TeacherModelAdmin)<br></code></pre></td></tr></table></figure>
-
-<p><img src="/res/django-admin-view-models-subject.png" srcset="/img/loading.gif" lazyload></p>
-<p><img src="/res/django-admin-view-models-teacher.png" srcset="/img/loading.gif" lazyload></p>
-<p>为了更好的查看模型，我们为<code>Subject</code>类添加<code>__str__</code>魔法方法，并在该方法中返回学科名字。这样在如上图所示的查看老师的页面上显示老师所属学科时，就不再是<code>Subject object(1)</code>这样晦涩的信息，而是学科的名称。</p>
-</li>
-</ol>
-<h3 id="实现学科页和老师页效果"><a href="#实现学科页和老师页效果" class="headerlink" title="实现学科页和老师页效果"></a>实现学科页和老师页效果</h3><ol>
-<li><p>修改<code>polls/views.py</code>文件，编写视图函数实现对学科页和老师页的渲染。</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">from</span> django.shortcuts <span class="hljs-keyword">import</span> render, redirect<br><br><span class="hljs-keyword">from</span> polls.models <span class="hljs-keyword">import</span> Subject, Teacher<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">show_subjects</span>(<span class="hljs-params">request</span>):<br>    subjects = Subject.objects.<span class="hljs-built_in">all</span>().order_by(<span class="hljs-string">&#x27;no&#x27;</span>)<br>    <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">&#x27;subjects.html&#x27;</span>, &#123;<span class="hljs-string">&#x27;subjects&#x27;</span>: subjects&#125;)<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">show_teachers</span>(<span class="hljs-params">request</span>):<br>    <span class="hljs-keyword">try</span>:<br>        sno = <span class="hljs-built_in">int</span>(request.GET.get(<span class="hljs-string">&#x27;sno&#x27;</span>))<br>        teachers = []<br>        <span class="hljs-keyword">if</span> sno:<br>            subject = Subject.objects.only(<span class="hljs-string">&#x27;name&#x27;</span>).get(no=sno)<br>            teachers = Teacher.objects.<span class="hljs-built_in">filter</span>(subject=subject).order_by(<span class="hljs-string">&#x27;no&#x27;</span>)<br>        <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">&#x27;teachers.html&#x27;</span>, &#123;<br>            <span class="hljs-string">&#x27;subject&#x27;</span>: subject,<br>            <span class="hljs-string">&#x27;teachers&#x27;</span>: teachers<br>        &#125;)<br>    <span class="hljs-keyword">except</span> (ValueError, Subject.DoesNotExist):<br>        <span class="hljs-keyword">return</span> redirect(<span class="hljs-string">&#x27;/&#x27;</span>)<br></code></pre></td></tr></table></figure>
-</li>
-<li><p>修改<code>templates/subjects.html</code>和<code>templates/teachers.html</code>模板页。</p>
-<p> <code>subjects.html</code></p>
-  <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><code class="hljs HTML"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>学科信息<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span><br><span class="language-css">        <span class="hljs-selector-id">#container</span> &#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">80%</span>;</span><br><span class="language-css">            <span class="hljs-attribute">margin</span>: <span class="hljs-number">10px</span> auto;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.user</span> &#123;</span><br><span class="language-css">            <span class="hljs-attribute">float</span>: right;</span><br><span class="language-css">            <span class="hljs-attribute">margin-right</span>: <span class="hljs-number">10px</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.user</span>&gt;<span class="hljs-selector-tag">a</span> &#123;</span><br><span class="language-css">            <span class="hljs-attribute">margin-right</span>: <span class="hljs-number">10px</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-id">#main</span>&gt;<span class="hljs-selector-tag">dl</span>&gt;<span class="hljs-selector-tag">dt</span> &#123;</span><br><span class="language-css">            <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1.5em</span>;</span><br><span class="language-css">            <span class="hljs-attribute">font-weight</span>: bold;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-id">#main</span>&gt;<span class="hljs-selector-tag">dl</span>&gt;<span class="hljs-selector-tag">dd</span> &#123;</span><br><span class="language-css">            <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1.2em</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-tag">a</span> &#123;</span><br><span class="language-css">            <span class="hljs-attribute">text-decoration</span>: none;</span><br><span class="language-css">            <span class="hljs-attribute">color</span>: darkcyan;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;container&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;user&quot;</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;login.html&quot;</span>&gt;</span>用户登录<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;register.html&quot;</span>&gt;</span>快速注册<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>扣丁学堂所有学科<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">hr</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;main&quot;</span>&gt;</span><br>            &#123;% for subject in subjects %&#125;<br>            <span class="hljs-tag">&lt;<span class="hljs-name">dl</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">dt</span>&gt;</span><br>                    <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;/teachers/?sno=&#123;&#123; subject.no &#125;&#125;&quot;</span>&gt;</span>&#123;&#123; subject.name &#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br>                    &#123;% if subject.is_hot %&#125;<br>                    <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/static/images/hot-icon-small.png&quot;</span>&gt;</span><br>                    &#123;% endif %&#125;<br>                <span class="hljs-tag">&lt;/<span class="hljs-name">dt</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">dd</span>&gt;</span>&#123;&#123; subject.intro &#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">dd</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">dl</span>&gt;</span><br>            &#123;% endfor %&#125;<br>        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
-
-<p> <code>teachers.html</code></p>
- <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><code class="hljs HTML"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>老师信息<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span><br><span class="language-css">        <span class="hljs-selector-id">#container</span> &#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">80%</span>;</span><br><span class="language-css">            <span class="hljs-attribute">margin</span>: <span class="hljs-number">10px</span> auto;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.teacher</span> &#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;</span><br><span class="language-css">            <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span> auto;</span><br><span class="language-css">            <span class="hljs-attribute">padding</span>: <span class="hljs-number">10px</span> <span class="hljs-number">0</span>;</span><br><span class="language-css">            <span class="hljs-attribute">border-bottom</span>: <span class="hljs-number">1px</span> dashed gray;</span><br><span class="language-css">            <span class="hljs-attribute">overflow</span>: auto;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.teacher</span>&gt;<span class="hljs-selector-tag">div</span> &#123;</span><br><span class="language-css">            <span class="hljs-attribute">float</span>: left;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.photo</span> &#123;</span><br><span class="language-css">            <span class="hljs-attribute">height</span>: <span class="hljs-number">140px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">75px</span>;</span><br><span class="language-css">            <span class="hljs-attribute">overflow</span>: hidden;</span><br><span class="language-css">            <span class="hljs-attribute">margin-left</span>: <span class="hljs-number">20px</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.info</span> &#123;</span><br><span class="language-css">            <span class="hljs-attribute">width</span>: <span class="hljs-number">75%</span>;</span><br><span class="language-css">            <span class="hljs-attribute">margin-left</span>: <span class="hljs-number">30px</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.info</span> <span class="hljs-selector-tag">div</span> &#123;</span><br><span class="language-css">            <span class="hljs-attribute">clear</span>: both;</span><br><span class="language-css">            <span class="hljs-attribute">margin</span>: <span class="hljs-number">5px</span> <span class="hljs-number">10px</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.info</span> <span class="hljs-selector-tag">span</span> &#123;</span><br><span class="language-css">            <span class="hljs-attribute">margin-right</span>: <span class="hljs-number">25px</span>;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">        <span class="hljs-selector-class">.info</span> <span class="hljs-selector-tag">a</span> &#123;</span><br><span class="language-css">            <span class="hljs-attribute">text-decoration</span>: none;</span><br><span class="language-css">            <span class="hljs-attribute">color</span>: darkcyan;</span><br><span class="language-css">        &#125;</span><br><span class="language-css">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;container&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>&#123;&#123; subject.name &#125;&#125;学科的老师信息<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">hr</span>&gt;</span><br>        &#123;% if not teachers %&#125;<br>            <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>暂无该学科老师信息<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span><br>        &#123;% endif %&#125;<br>        &#123;% for teacher in teachers %&#125;<br>        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;teacher&quot;</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;photo&quot;</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/static/images/&#123;&#123; teacher.photo &#125;&#125;&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;140&quot;</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">&quot;&quot;</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;info&quot;</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span><br>                    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>姓名：&#123;&#123; teacher.name &#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><br>                    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>性别：&#123;&#123; teacher.sex | yesno:&#x27;男,女&#x27; &#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><br>                    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>出生日期：&#123;&#123; teacher.birth | date:&#x27;Y年n月j日&#x27;&#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><br>                <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;intro&quot;</span>&gt;</span>&#123;&#123; teacher.intro &#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;comment&quot;</span>&gt;</span><br>                    <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;&quot;</span>&gt;</span>好评<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-symbol">&amp;nbsp;</span>(<span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>&#123;&#123; teacher.good_count &#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span>)<br>                    <span class="hljs-symbol">&amp;nbsp;</span><span class="hljs-symbol">&amp;nbsp;</span><span class="hljs-symbol">&amp;nbsp;</span><span class="hljs-symbol">&amp;nbsp;</span><br>                    <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;&quot;</span>&gt;</span>差评<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-symbol">&amp;nbsp;</span><span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>&#123;&#123; teacher.bad_count &#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span>)<br>                <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>        &#123;% endfor %&#125;<br>        <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;/&quot;</span>&gt;</span>返回首页<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
-</li>
-<li><p>修改<code>vote/urls.py</code>文件，实现映射URL。</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs Python"><span class="hljs-keyword">from</span> django.contrib <span class="hljs-keyword">import</span> admin<br><span class="hljs-keyword">from</span> django.urls <span class="hljs-keyword">import</span> path<br><br><span class="hljs-keyword">from</span> polls.views <span class="hljs-keyword">import</span> show_subjects, show_teachers<br><br>urlpatterns = [<br>    path(<span class="hljs-string">&#x27;admin/&#x27;</span>, admin.site.urls),<br>    path(<span class="hljs-string">&#x27;&#x27;</span>, show_subjects),<br>    path(<span class="hljs-string">&#x27;teachers/&#x27;</span>, show_teachers),<br>]<br></code></pre></td></tr></table></figure></li>
-</ol>
-<p>到此为止，页面上需要的图片（静态资源）还没有能够正常展示，我们在下一章节中为大家介绍如何处理模板页上的需要的静态资源。</p>
-<h3 id="补充内容"><a href="#补充内容" class="headerlink" title="补充内容"></a>补充内容</h3><h4 id="Django模型最佳实践"><a href="#Django模型最佳实践" class="headerlink" title="Django模型最佳实践"></a>Django模型最佳实践</h4><ol>
-<li>正确的为模型和关系字段命名。</li>
-<li>设置适当的<code>related_name</code>属性。</li>
-<li>用<code>OneToOneField</code>代替<code>ForeignKeyField(unique=True)</code>。</li>
-<li>通过“迁移操作”（migrate）来添加模型。</li>
-<li>用NoSQL来应对需要降低范式级别的场景。</li>
-<li>如果布尔类型可以为空要使用<code>NullBooleanField</code>。</li>
-<li>在模型中放置业务逻辑。</li>
-<li>用<code>&lt;ModelName&gt;.DoesNotExists</code>取代<code>ObjectDoesNotExists</code>。</li>
-<li>在数据库中不要出现无效数据。</li>
-<li>不要对<code>QuerySet</code>调用<code>len()</code>函数。</li>
-<li>将<code>QuerySet</code>的<code>exists()</code>方法的返回值用于<code>if</code>条件。</li>
-<li>用<code>DecimalField</code>来存储货币相关数据而不是<code>FloatField</code>。</li>
-<li>定义<code>__str__</code>方法。</li>
-<li>不要将数据文件放在同一个目录中。</li>
-</ol>
-<blockquote>
-<p><strong>说明</strong>：以上内容来自于STEELKIWI网站的<a target="_blank" rel="noopener" href="https://steelkiwi.com/blog/best-practices-working-django-models-python/"><em>Best Practice working with Django models in Python</em></a>，有兴趣的小伙伴可以阅读原文。</p>
-</blockquote>
-<h4 id="模型定义参考"><a href="#模型定义参考" class="headerlink" title="模型定义参考"></a>模型定义参考</h4><h5 id="字段"><a href="#字段" class="headerlink" title="字段"></a>字段</h5><p>对字段名称的限制</p>
-<ul>
-<li>字段名不能是Python的保留字，否则会导致语法错误</li>
-<li>字段名不能有多个连续下划线，否则影响ORM查询操作</li>
-</ul>
-<p>Django模型字段类</p>
-<table>
-<thead>
-<tr>
-<th>字段类</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>AutoField</code></td>
-<td>自增ID字段</td>
-</tr>
-<tr>
-<td><code>BigIntegerField</code></td>
-<td>64位有符号整数</td>
-</tr>
-<tr>
-<td><code>BinaryField</code></td>
-<td>存储二进制数据的字段，对应Python的<code>bytes</code>类型</td>
-</tr>
-<tr>
-<td><code>BooleanField</code></td>
-<td>存储<code>True</code>或<code>False</code></td>
-</tr>
-<tr>
-<td><code>CharField</code></td>
-<td>长度较小的字符串</td>
-</tr>
-<tr>
-<td><code>DateField</code></td>
-<td>存储日期，有<code>auto_now</code>和<code>auto_now_add</code>属性</td>
-</tr>
-<tr>
-<td><code>DateTimeField</code></td>
-<td>存储日期和日期，两个附加属性同上</td>
-</tr>
-<tr>
-<td><code>DecimalField</code></td>
-<td>存储固定精度小数，有<code>max_digits</code>（有效位数）和<code>decimal_places</code>（小数点后面）两个必要的参数</td>
-</tr>
-<tr>
-<td><code>DurationField</code></td>
-<td>存储时间跨度</td>
-</tr>
-<tr>
-<td><code>EmailField</code></td>
-<td>与<code>CharField</code>相同，可以用<code>EmailValidator</code>验证</td>
-</tr>
-<tr>
-<td><code>FileField</code></td>
-<td>文件上传字段</td>
-</tr>
-<tr>
-<td><code>FloatField</code></td>
-<td>存储浮点数</td>
-</tr>
-<tr>
-<td><code>ImageField</code></td>
-<td>其他同<code>FileFiled</code>，要验证上传的是不是有效图像</td>
-</tr>
-<tr>
-<td><code>IntegerField</code></td>
-<td>存储32位有符号整数。</td>
-</tr>
-<tr>
-<td><code>GenericIPAddressField</code></td>
-<td>存储IPv4或IPv6地址</td>
-</tr>
-<tr>
-<td><code>NullBooleanField</code></td>
-<td>存储<code>True</code>、<code>False</code>或<code>null</code>值</td>
-</tr>
-<tr>
-<td><code>PositiveIntegerField</code></td>
-<td>存储无符号整数（只能存储正数）</td>
-</tr>
-<tr>
-<td><code>SlugField</code></td>
-<td>存储slug（简短标注）</td>
-</tr>
-<tr>
-<td><code>SmallIntegerField</code></td>
-<td>存储16位有符号整数</td>
-</tr>
-<tr>
-<td><code>TextField</code></td>
-<td>存储数据量较大的文本</td>
-</tr>
-<tr>
-<td><code>TimeField</code></td>
-<td>存储时间</td>
-</tr>
-<tr>
-<td><code>URLField</code></td>
-<td>存储URL的<code>CharField</code></td>
-</tr>
-<tr>
-<td><code>UUIDField</code></td>
-<td>存储全局唯一标识符</td>
-</tr>
-</tbody></table>
-<h5 id="字段属性"><a href="#字段属性" class="headerlink" title="字段属性"></a>字段属性</h5><p>通用字段属性</p>
-<table>
-<thead>
-<tr>
-<th>选项</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>null</code></td>
-<td>数据库中对应的字段是否允许为<code>NULL</code>，默认为<code>False</code></td>
-</tr>
-<tr>
-<td><code>blank</code></td>
-<td>后台模型管理验证数据时，是否允许为<code>NULL</code>，默认为<code>False</code></td>
-</tr>
-<tr>
-<td><code>choices</code></td>
-<td>设定字段的选项，各元组中的第一个值是设置在模型上的值，第二值是人类可读的值</td>
-</tr>
-<tr>
-<td><code>db_column</code></td>
-<td>字段对应到数据库表中的列名，未指定时直接使用字段的名称</td>
-</tr>
-<tr>
-<td><code>db_index</code></td>
-<td>设置为<code>True</code>时将在该字段创建索引</td>
-</tr>
-<tr>
-<td><code>db_tablespace</code></td>
-<td>为有索引的字段设置使用的表空间，默认为<code>DEFAULT_INDEX_TABLESPACE</code></td>
-</tr>
-<tr>
-<td><code>default</code></td>
-<td>字段的默认值</td>
-</tr>
-<tr>
-<td><code>editable</code></td>
-<td>字段在后台模型管理或<code>ModelForm</code>中是否显示，默认为<code>True</code></td>
-</tr>
-<tr>
-<td><code>error_messages</code></td>
-<td>设定字段抛出异常时的默认消息的字典，其中的键包括<code>null</code>、<code>blank</code>、<code>invalid</code>、<code>invalid_choice</code>、<code>unique</code>和<code>unique_for_date</code></td>
-</tr>
-<tr>
-<td><code>help_text</code></td>
-<td>表单小组件旁边显示的额外的帮助文本。</td>
-</tr>
-<tr>
-<td><code>primary_key</code></td>
-<td>将字段指定为模型的主键，未指定时会自动添加<code>AutoField</code>用于主键，只读。</td>
-</tr>
-<tr>
-<td><code>unique</code></td>
-<td>设置为<code>True</code>时，表中字段的值必须是唯一的</td>
-</tr>
-<tr>
-<td><code>verbose_name</code></td>
-<td>字段在后台模型管理显示的名称，未指定时使用字段的名称</td>
-</tr>
-</tbody></table>
-<p><code>ForeignKey</code>属性</p>
-<ol>
-<li><code>limit_choices_to</code>：值是一个Q对象或返回一个Q对象，用于限制后台显示哪些对象。</li>
-<li><code>related_name</code>：用于获取关联对象的关联管理器对象（反向查询），如果不允许反向，该属性应该被设置为<code>&#39;+&#39;</code>，或者以<code>&#39;+&#39;</code>结尾。</li>
-<li><code>to_field</code>：指定关联的字段，默认关联对象的主键字段。</li>
-<li><code>db_constraint</code>：是否为外键创建约束，默认值为<code>True</code>。</li>
-<li><code>on_delete</code>：外键关联的对象被删除时对应的动作，可取的值包括<code>django.db.models</code>中定义的：<ul>
-<li><code>CASCADE</code>：级联删除。</li>
-<li><code>PROTECT</code>：抛出<code>ProtectedError</code>异常，阻止删除引用的对象。</li>
-<li><code>SET_NULL</code>：把外键设置为<code>null</code>，当<code>null</code>属性被设置为<code>True</code>时才能这么做。</li>
-<li><code>SET_DEFAULT</code>：把外键设置为默认值，提供了默认值才能这么做。</li>
-</ul>
-</li>
-</ol>
-<p><code>ManyToManyField</code>属性</p>
-<ol>
-<li><code>symmetrical</code>：是否建立对称的多对多关系。</li>
-<li><code>through</code>：指定维持多对多关系的中间表的Django模型。</li>
-<li><code>throughfields</code>：定义了中间模型时可以指定建立多对多关系的字段。</li>
-<li><code>db_table</code>：指定维持多对多关系的中间表的表名。</li>
-</ol>
-<h5 id="模型元数据选项"><a href="#模型元数据选项" class="headerlink" title="模型元数据选项"></a>模型元数据选项</h5><table>
-<thead>
-<tr>
-<th>选项</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>abstract</code></td>
-<td>设置为True时模型是抽象父类</td>
-</tr>
-<tr>
-<td><code>app_label</code></td>
-<td>如果定义模型的应用不在INSTALLED_APPS中可以用该属性指定</td>
-</tr>
-<tr>
-<td><code>db_table</code></td>
-<td>模型使用的数据表名称</td>
-</tr>
-<tr>
-<td><code>db_tablespace</code></td>
-<td>模型使用的数据表空间</td>
-</tr>
-<tr>
-<td><code>default_related_name</code></td>
-<td>关联对象回指这个模型时默认使用的名称，默认为<model_name>_set</td>
-</tr>
-<tr>
-<td><code>get_latest_by</code></td>
-<td>模型中可排序字段的名称。</td>
-</tr>
-<tr>
-<td><code>managed</code></td>
-<td>设置为True时，Django在迁移中创建数据表并在执行flush管理命令时把表移除</td>
-</tr>
-<tr>
-<td><code>order_with_respect_to</code></td>
-<td>标记对象为可排序的</td>
-</tr>
-<tr>
-<td><code>ordering</code></td>
-<td>对象的默认排序</td>
-</tr>
-<tr>
-<td><code>permissions</code></td>
-<td>创建对象时写入权限表的额外权限</td>
-</tr>
-<tr>
-<td><code>default_permissions</code></td>
-<td>默认为<code>(&#39;add&#39;, &#39;change&#39;, &#39;delete&#39;)</code></td>
-</tr>
-<tr>
-<td><code>unique_together</code></td>
-<td>设定组合在一起时必须独一无二的字段名</td>
-</tr>
-<tr>
-<td><code>index_together</code></td>
-<td>设定一起建立索引的多个字段名</td>
-</tr>
-<tr>
-<td><code>verbose_name</code></td>
-<td>为对象设定人类可读的名称</td>
-</tr>
-<tr>
-<td><code>verbose_name_plural</code></td>
-<td>设定对象的复数名称</td>
-</tr>
-</tbody></table>
-<h4 id="查询参考"><a href="#查询参考" class="headerlink" title="查询参考"></a>查询参考</h4><h5 id="按字段查找可以用的条件"><a href="#按字段查找可以用的条件" class="headerlink" title="按字段查找可以用的条件"></a>按字段查找可以用的条件</h5><ol>
-<li><code>exact</code> &#x2F; <code>iexact</code>：精确匹配&#x2F;忽略大小写的精确匹配查询</li>
-<li><code>contains</code> &#x2F; <code>icontains</code> &#x2F; <code>startswith</code> &#x2F; <code>istartswith</code> &#x2F; <code>endswith</code> &#x2F; <code>iendswith</code>：基于<code>like</code>的模糊查询</li>
-<li><code>in</code> ：集合运算</li>
-<li><code>gt</code> &#x2F; <code>gte</code> &#x2F; <code>lt</code> &#x2F; <code>lte</code>：大于&#x2F;大于等于&#x2F;小于&#x2F;小于等于关系运算</li>
-<li><code>range</code>：指定范围查询（SQL中的<code>between…and…</code>）</li>
-<li><code>year</code> &#x2F; <code>month</code> &#x2F; <code>day</code> &#x2F; <code>week_day</code> &#x2F; <code>hour</code> &#x2F; <code>minute</code> &#x2F; <code>second</code>：查询时间日期</li>
-<li><code>isnull</code>：查询空值（True）或非空值（False）</li>
-<li><code>search</code>：基于全文索引的全文检索（一般很少使用）</li>
-<li><code>regex</code> &#x2F; <code>iregex</code>：基于正则表达式的模糊匹配查询</li>
-</ol>
+<p>上面的前端代码中，使用了jQuery库封装的<code>getJSON</code>方法向服务器发送异步请求，如果不熟悉前端的jQuery库，可以参考<a target="_blank" rel="noopener" href="https://www.runoob.com/manual/jquery/">《jQuery API手册》</a>。</p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>到此为止，这个投票项目的核心功能已然完成，在下面的章节中我们会要求用户必须登录才能投票，没有账号的用户可以通过注册功能注册一个账号。</p>
 
                 
               </div>
@@ -761,7 +340,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/pythonj/" class="category-chain-item">pythonj</a>
+  <a href="/categories/python/" class="category-chain-item">python</a>
   
   
 
@@ -776,7 +355,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/python100day/">#python100day-</a>
+        <a href="/tags/python100day/">#python100day</a>
       
     </div>
   
@@ -788,7 +367,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>python100day-42深入模型</div>
+      <div>python100day-43 静态资源和Ajax请求</div>
       <div>https://liyupin.github.io/2022/08/28/Untitled/</div>
     </div>
     <div class="license-meta">
