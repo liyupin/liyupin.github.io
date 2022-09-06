@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://liyupin.github.io/2022/09/06/python100day-43-%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E5%92%8CAjax%E8%AF%B7%E6%B1%82/</loc>
+    
+    <lastmod>2022-09-06</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/09/06/python100day-42-%E6%B7%B1%E5%85%A5%E6%A8%A1%E5%9E%8B/</loc>
+    
+    <lastmod>2022-09-06</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://liyupin.github.io/2022/09/06/Untitled/</loc>
     
     <lastmod>2022-09-06</lastmod>
@@ -1548,14 +1566,14 @@
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/tags/k8s/</loc>
+    <loc>https://liyupin.github.io/tags/traefik/</loc>
     <lastmod>2022-09-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/tags/traefik/</loc>
+    <loc>https://liyupin.github.io/tags/k8s/</loc>
     <lastmod>2022-09-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1676,14 +1694,14 @@
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/categories/go/</loc>
+    <loc>https://liyupin.github.io/categories/k8s/</loc>
     <lastmod>2022-09-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/categories/k8s/</loc>
+    <loc>https://liyupin.github.io/categories/go/</loc>
     <lastmod>2022-09-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

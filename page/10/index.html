@@ -238,6 +238,72 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2022/07/13/%E7%B3%BB%E7%BB%9F%E6%9C%80%E5%A4%A7%E6%89%93%E5%BC%80%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6%E6%95%B0/" target="_self">
+          系统最大打开文件描述符数
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/13/%E7%B3%BB%E7%BB%9F%E6%9C%80%E5%A4%A7%E6%89%93%E5%BC%80%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6%E6%95%B0/" target="_self">
+        <div>
+          查看系统的配置1ulimit -a | grep open    查看程序服务的打开文件限制1cat &#x2F;proc&#x2F;40636&#x2F;limits  查看docker打开文件数限制 1ansible all -m shell -a &quot;pid&#x3D;$(pgrep -f dockerd);grep open &#x2F;proc&#x2F;$(pgrep -f dockerd)&#x2F;limits;lsof -p $(pgrep
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-07-13 14:34" pubdate>
+              2022-07-13
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/07/13/%E7%94%9F%E4%BA%A7docker%20run%20%E5%8D%A1%E4%BD%8F%E6%B2%A1%E5%8F%8D%E5%BA%94%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5%E6%80%9D%E8%B7%AF/" target="_self">
+          生产docker run 卡住没反应故障排查思路
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/13/%E7%94%9F%E4%BA%A7docker%20run%20%E5%8D%A1%E4%BD%8F%E6%B2%A1%E5%8F%8D%E5%BA%94%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5%E6%80%9D%E8%B7%AF/" target="_self">
+        <div>
+          参考文献：docker run hangs问题排查记录https:&#x2F;&#x2F;www.cnblogs.com&#x2F;edenlong&#x2F;p&#x2F;10972876.html阿里巴巴 Kubernetes 集群问题排查思路和方法https:&#x2F;&#x2F;www.infoq.cn&#x2F;article&#x2F;t_ZQeWjJLGWGT8BmmiU4 1.首先确认docker version一致2.查看&#x2F;var&#x2F;log&amp;#x2
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-07-13 14:34" pubdate>
+              2022-07-13
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2022/07/13/%E5%B0%BE%E7%9B%98%E4%B8%8D%E8%83%BD%E4%B9%B0%E7%9A%84%E7%A5%A8%EF%BC%9A/" target="_self">
           尾盘不能买的票：
         </a>
@@ -478,72 +544,6 @@
       <a class="index-excerpt index-excerpt__noimg" href="/2022/07/13/venus%E5%AE%89%E8%A3%85%E5%90%8E%E7%BB%AD/" target="_self">
         <div>
           venus安装后续设置存储类lables,添加本地存储类的标签 123 kubectl edit sc openebs-hostpath labels:    ghostcloud.cn&#x2F;storage-type: local
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-13 14:34" pubdate>
-              2022-07-13
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/07/13/ubuntu20.4/" target="_self">
-          windows远程登录Ubuntu系统-----黑屏解决方案
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/13/ubuntu20.4/" target="_self">
-        <div>
-          ubuntu20.4常用配置 安装ssh12345sudo apt update sudo apt install openssh-serversudo systemctl status sshsudo ufw allow sshssh username@ip_address  windows远程登录Ubuntu系统—–黑屏解决方案此前曾经写一篇文章《Ubuntu 20.04系统中安装vncser
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-13 14:34" pubdate>
-              2022-07-13
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/07/13/ubuntu20.04%20%E4%BD%BF%E7%94%A8root%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95%E7%B3%BB%E7%BB%9F/" target="_self">
-          ubuntu20 配置root用户远程登录
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/13/ubuntu20.04%20%E4%BD%BF%E7%94%A8root%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95%E7%B3%BB%E7%BB%9F/" target="_self">
-        <div>
-          配置网络地址123456789101112131415161718192021#!&#x2F;bin&#x2F;sh# set networkecho No.1 set networkread -p &amp;#x27;pls input IPADDRESS netmask gateway :  &amp;#x27; ip netmask gateway dnsecho -e &quot;$ip $netmask $gateway
         </div>
       </a>
 
