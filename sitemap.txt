@@ -1,3 +1,4 @@
+https://liyupin.github.io/2022/08/27/kython100day-40-%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%92%8CHiveSQL/
 https://liyupin.github.io/2022/09/06/python100day-43-%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E5%92%8CAjax%E8%AF%B7%E6%B1%82/
 https://liyupin.github.io/2022/09/06/python100day-42-%E6%B7%B1%E5%85%A5%E6%A8%A1%E5%9E%8B/
 https://liyupin.github.io/2022/09/06/Untitled/
@@ -6,7 +7,6 @@ https://liyupin.github.io/2022/08/28/%E5%B9%B3Python00day-41/
 https://liyupin.github.io/2022/08/28/k8s/
 https://liyupin.github.io/2022/08/28/centos7%E9%85%8D%E7%BD%AE%E9%9D%99%E6%80%81%E8%B7%AF%E7%94%B1/
 https://liyupin.github.io/2022/08/27/python100day-41/
-https://liyupin.github.io/2022/08/27/kython100day-40-%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%92%8CHiveSQL/
 https://liyupin.github.io/2022/08/02/20220802%E6%8A%95%E8%B5%84%E6%97%A5%E5%8E%86/
 https://liyupin.github.io/2022/08/24/python100day-37%E6%B7%B1%E5%85%A5MySQL/
 https://liyupin.github.io/2022/08/22/python100day-37-SQL-%E5%92%8C-MySQL-%E8%AF%A6%E8%A7%A3/
@@ -174,11 +174,11 @@ https://liyupin.github.io/tags/linux/
 https://liyupin.github.io/tags/centos7/
 https://liyupin.github.io/tags/docker/
 https://liyupin.github.io/tags/log/
-https://liyupin.github.io/tags/traefik/
 https://liyupin.github.io/tags/k8s/
-https://liyupin.github.io/tags/python100day/
+https://liyupin.github.io/tags/traefik/
 https://liyupin.github.io/tags/mysql/
 https://liyupin.github.io/tags/newben/
+https://liyupin.github.io/tags/python100day/
 https://liyupin.github.io/tags/windows/
 https://liyupin.github.io/tags/shell/
 https://liyupin.github.io/tags/A%E8%82%A1/
@@ -192,8 +192,8 @@ https://liyupin.github.io/categories/ubuntu/
 https://liyupin.github.io/categories/ansible/
 https://liyupin.github.io/categories/centos8/
 https://liyupin.github.io/categories/%E8%BF%90%E7%BB%B4/
-https://liyupin.github.io/categories/k8s/
 https://liyupin.github.io/categories/go/
-https://liyupin.github.io/categories/python/
+https://liyupin.github.io/categories/k8s/
 https://liyupin.github.io/categories/docker/
+https://liyupin.github.io/categories/python/
 https://liyupin.github.io/categories/windows/
