@@ -16,15 +16,15 @@
   <meta name="author" content="Cper Liu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="etcd备份恢复原理详解及踩坑实录1. 备份恢复流程  12345678910111213141516171819202122232425262728291. 备份需要使用etcdctl工具：ETCDCTL_API&#x3D;3 etcdctl --endpoints $ENDPOINT snapshot save snapshot.db1恢复时使用etcdutl工具，旧版本的恢复功能也集成在etcdctl">
+    <meta name="description" content="etcd备份恢复原理详解及踩坑实录1. 备份恢复流程 备份需要使用etcdctl工具：  1ETCDCTL_API&#x3D;3 etcdctl --endpoints $ENDPOINT snapshot save snapshot.db   恢复时使用etcdutl工具，旧版本的恢复功能也集成在etcdctl中，使用如下指令，就可以从snapshot.db文件上恢复起来一个新的etcd集群  12345">
 <meta property="og:type" content="article">
 <meta property="og:title" content="etcd备份恢复原理详解及踩坑实录">
 <meta property="og:url" content="https://liyupin.github.io/2022/09/21/etcd%E5%A4%87%E4%BB%BD%E6%81%A2%E5%A4%8D%E5%8E%9F%E7%90%86%E8%AF%A6%E8%A7%A3%E5%8F%8A%E8%B8%A9%E5%9D%91%E5%AE%9E%E5%BD%95/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="etcd备份恢复原理详解及踩坑实录1. 备份恢复流程  12345678910111213141516171819202122232425262728291. 备份需要使用etcdctl工具：ETCDCTL_API&#x3D;3 etcdctl --endpoints $ENDPOINT snapshot save snapshot.db1恢复时使用etcdutl工具，旧版本的恢复功能也集成在etcdctl">
+<meta property="og:description" content="etcd备份恢复原理详解及踩坑实录1. 备份恢复流程 备份需要使用etcdctl工具：  1ETCDCTL_API&#x3D;3 etcdctl --endpoints $ENDPOINT snapshot save snapshot.db   恢复时使用etcdutl工具，旧版本的恢复功能也集成在etcdctl中，使用如下指令，就可以从snapshot.db文件上恢复起来一个新的etcd集群  12345">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-09-21T10:47:00.000Z">
-<meta property="article:modified_time" content="2022-09-21T10:47:57.160Z">
+<meta property="article:modified_time" content="2022-09-21T14:30:38.802Z">
 <meta property="article:author" content="Cper Liu">
 <meta property="article:tag" content="etcd">
 <meta name="twitter:card" content="summary_large_image">
@@ -234,7 +234,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          7.7k 字
+          7.8k 字
         
       </span>
     
@@ -245,7 +245,7 @@
         
         
         
-          65 分钟
+          66 分钟
         
       </span>
     
@@ -288,8 +288,10 @@
             
               <div class="markdown-body">
                 
-                <h1 id="etcd备份恢复原理详解及踩坑实录"><a href="#etcd备份恢复原理详解及踩坑实录" class="headerlink" title="etcd备份恢复原理详解及踩坑实录"></a>etcd备份恢复原理详解及踩坑实录</h1><h2 id="1-备份恢复流程"><a href="#1-备份恢复流程" class="headerlink" title="1. 备份恢复流程"></a>1. 备份恢复流程</h2>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs bash">1. 备份需要使用etcdctl工具：<br><br>ETCDCTL_API=3 etcdctl --endpoints <span class="hljs-variable">$ENDPOINT</span> snapshot save snapshot.db<br>1<br>恢复时使用etcdutl工具，旧版本的恢复功能也集成在etcdctl中，使用如下指令，就可以从snapshot.db文件上恢复起来一个新的etcd集群<br><br>$ etcdutl snapshot restore snapshot.db \<br>  --name m1 \<br>  --initial-cluster m1=http://host1:2380,m2=http://host2:2380,m3=http://host3:2380 \<br>  --initial-cluster-token etcd-cluster-1 \<br>  --initial-advertise-peer-urls http://host1:2380<br>  --data-dir <br>$ etcdutl snapshot restore snapshot.db \<br>  --name m2 \<br>  --initial-cluster m1=http://host1:2380,m2=http://host2:2380,m3=http://host3:2380 \<br>  --initial-cluster-token etcd-cluster-1 \<br>  --initial-advertise-peer-urls http://host2:2380<br>$ etcdutl snapshot restore snapshot.db \<br>  --name m3 \<br>  --initial-cluster m1=http://host1:2380,m2=http://host2:2380,m3=http://host3:2380 \<br>  --initial-cluster-token etcd-cluster-1 \<br>  --initial-advertise-peer-urls http://host3:2380<br><br>name是etcd节点的name，集群中name必须不同<br>initial-cluster是恢复集群的配置<br>initial-cluster-token 会影响计算cluster member <span class="hljs-built_in">id</span>，不是必须的参数<br>initial-advertise-peer-urls节点本身的数据信息<br>data-dir 将备份信息恢复到指定路径<br><br></code></pre></td></tr></table></figure>
-
+                <h1 id="etcd备份恢复原理详解及踩坑实录"><a href="#etcd备份恢复原理详解及踩坑实录" class="headerlink" title="etcd备份恢复原理详解及踩坑实录"></a>etcd备份恢复原理详解及踩坑实录</h1><h2 id="1-备份恢复流程"><a href="#1-备份恢复流程" class="headerlink" title="1. 备份恢复流程"></a>1. 备份恢复流程</h2><ol>
+<li>备份需要使用etcdctl工具：  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ETCDCTL_API=3 etcdctl --endpoints <span class="hljs-variable">$ENDPOINT</span> snapshot save snapshot.db<br></code></pre></td></tr></table></figure>
+  恢复时使用etcdutl工具，旧版本的恢复功能也集成在etcdctl中，使用如下指令，就可以从snapshot.db文件上恢复起来一个新的etcd集群  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ etcdutl snapshot restore snapshot.db \<br>  --name m1 \<br>  --initial-cluster m1=http://host1:2380,m2=http://host2:2380,m3=http://host3:2380 \<br>  --initial-cluster-token etcd-cluster-1 \<br>  --initial-advertise-peer-urls http://host1:2380<br>  --data-dir <br>$ etcdutl snapshot restore snapshot.db \<br>  --name m2 \<br>  --initial-cluster m1=http://host1:2380,m2=http://host2:2380,m3=http://host3:2380 \<br>  --initial-cluster-token etcd-cluster-1 \<br>  --initial-advertise-peer-urls http://host2:2380<br>$ etcdutl snapshot restore snapshot.db \<br>  --name m3 \<br>  --initial-cluster m1=http://host1:2380,m2=http://host2:2380,m3=http://host3:2380 \<br>  --initial-cluster-token etcd-cluster-1 \<br>  --initial-advertise-peer-urls http://host3:2380<br><br>name是etcd节点的name，集群中name必须不同<br>initial-cluster是恢复集群的配置<br>initial-cluster-token 会影响计算cluster member <span class="hljs-built_in">id</span>，不是必须的参数<br>initial-advertise-peer-urls节点本身的数据信息<br>data-dir 将备份信息恢复到指定路径<br><br></code></pre></td></tr></table></figure></li>
+</ol>
 <h2 id="2-原理介绍"><a href="#2-原理介绍" class="headerlink" title="2. 原理介绍"></a>2. 原理介绍</h2><h3 id="2-1-备份原理"><a href="#2-1-备份原理" class="headerlink" title="2.1 备份原理"></a>2.1 备份原理</h3><p>etcd server 收到snapshot请求后，将调用backend存储引擎的snapshot接口，获得一份snapshot数据，然后将snapshot数据写入到pipe中，释放掉snapshot（防止长时间ping住snapshot导致过期page无法被释放），后面的发送逻辑会从pipe中读取数据发送回给客户端。</p>
 <pre><code class="hljs">func (ms *maintenanceServer) Snapshot(sr *pb.SnapshotRequest, srv pb.Maintenance_SnapshotServer) error &#123;
     snap := ms.bg.Backend().Snapshot()
@@ -326,100 +328,14 @@ return &amp;snapshot&#123;tx, stopc, donec&#125;
 &#125;
 </code></pre>
 <h3 id="2-2-恢复原理"><a href="#2-2-恢复原理" class="headerlink" title="2.2 恢复原理"></a>2.2 恢复原理</h3><p>恢复的功能是有etcdutl工具独立完成的，核心函数为restore，除去大量的参数校验和准备工作外，最核心的就是剩下的这三个函数。</p>
-<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs stata"><span class="hljs-comment">// Restore restores a new etcd data directory from given snapshot file.</span><br>func (s *v3Manager) <span class="hljs-keyword">Restore</span>(cfg RestoreConfig) <span class="hljs-keyword">error</span> &#123;<br>	...<br>	...<br>	<span class="hljs-comment">// 清理备份文件中的raft元信息</span><br>	<span class="hljs-keyword">if</span> <span class="hljs-keyword">err</span> = s.saveDB(); <span class="hljs-keyword">err</span> != nil &#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-keyword">err</span><br>	&#125;<br>	<span class="hljs-comment">// 将备份文件恢复为raft启动需要的wal和snapshot文件</span><br>	hardstate, <span class="hljs-keyword">err</span> := s.saveWALAndSnap()<br>	<span class="hljs-keyword">if</span> <span class="hljs-keyword">err</span> != nil &#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-keyword">err</span><br>	&#125;<br>	<span class="hljs-comment">// 更新index信息到boltdb中</span><br>	<span class="hljs-keyword">if</span> <span class="hljs-keyword">err</span> := s.updateCIndex(hardstate.Commit, hardstate.Term); <span class="hljs-keyword">err</span> != nil &#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-keyword">err</span><br>	&#125;<br>	...<br>	...<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">// Restore restores a new etcd data directory from given snapshot file.</span><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *v3Manager)</span></span> Restore(cfg RestoreConfig) <span class="hljs-type">error</span> &#123;<br>	...<br>	...<br>	<span class="hljs-comment">// 清理备份文件中的raft元信息</span><br>	<span class="hljs-keyword">if</span> err = s.saveDB(); err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span> err<br>	&#125;<br>	<span class="hljs-comment">// 将备份文件恢复为raft启动需要的wal和snapshot文件</span><br>	hardstate, err := s.saveWALAndSnap()<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span> err<br>	&#125;<br>	<span class="hljs-comment">// 更新index信息到boltdb中</span><br>	<span class="hljs-keyword">if</span> err := s.updateCIndex(hardstate.Commit, hardstate.Term); err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span> err<br>	&#125;<br>	...<br>	...<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>咱们一个一个函数看，在saveDB函数中会将备份数据拷贝到对应目录中，然后删除备份数据中的raft元信息。备份恢复的目的是在当前数据集上恢复一个新的raft集群起来，所以只需要备份数据中的用户数据，raft元数据相关的信息直接抹除即可。</p>
-<pre><code class="hljs">func (s *v3Manager) saveDB() error &#123;
-    // 将备份数据放到对应目录中
-    err := s.copyAndVerifyDB()
-    if err != nil &#123;
-        return err
-    &#125;
-be := backend.NewDefaultBackend(s.lg, s.outDbPath())
-defer be.Close()
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs go"><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *v3Manager)</span></span> saveDB() <span class="hljs-type">error</span> &#123;<br>    <span class="hljs-comment">// 将备份数据放到对应目录中</span><br>	err := s.copyAndVerifyDB()<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span> err<br>	&#125;<br>be := backend.NewDefaultBackend(s.lg, s.outDbPath())<br><span class="hljs-keyword">defer</span> be.Close()<br><br><span class="hljs-comment">// 删除备份数据中的raft元信息</span><br>err = schema.NewMembershipBackend(s.lg, be).TrimMembershipFromBackend()<br><span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>	<span class="hljs-keyword">return</span> err<br>&#125;<br><br><span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
-// 删除备份数据中的raft元信息
-err = schema.NewMembershipBackend(s.lg, be).TrimMembershipFromBackend()
-if err != nil &#123;
-    return err
-&#125;
-
-return nil
-&#125;
-</code></pre>
 <p>来看下一个函数，最终要的过程，如何从备份数据上恢复出来对应的wal文件和snapshot文件。简单来看，这个函数就干了几件事儿：</p>
 <p>将新的raft信息写入到boltdb中<br>创建wal并写入node的meta数据，包括node id和cluster id(这个会在后续详细介绍)<br>为准备恢复出的集群中的每个节点配置创建一个raft 配置变更log<br>将日志信息和raft hard state信息写到wal中<br>为当前的状态机（恢复出的数据集）创建一份快照（思考：为什么需要为新集群创建快照呢？启动一个新的raft节点不可以吗？）</p>
-<pre><code class="hljs">func (s *v3Manager) saveWALAndSnap() (*raftpb.HardState, error) &#123;
-    ...
-    ...
-    // 将raft信息写入到boltdb中
-    for _, m := range s.cl.Members() &#123;
-        s.cl.AddMember(m, true)
-    &#125;
-// 初始化集群的meta信息，nodeID和clusterID，创建wal文件并写入meta信息
-m := s.cl.MemberByName(s.name)
-md := &amp;etcdserverpb.Metadata&#123;NodeID: uint64(m.ID), ClusterID: uint64(s.cl.ID())&#125;
-metadata, merr := md.Marshal()
-w, walerr := wal.Create(s.lg, s.walDir, metadata)
-
-// 为每个节点初始化配置变更日志
-ents := make([]raftpb.Entry, len(peers))
-nodeIDs := make([]uint64, len(peers))
-for i, p := range peers &#123;
-    nodeIDs[i] = p.ID
-    cc := raftpb.ConfChange&#123;
-        Type:    raftpb.ConfChangeAddNode,
-        NodeID:  p.ID,
-        Context: p.Context,
-    &#125;
-    d, err := cc.Marshal()
-    if err != nil &#123;
-        return nil, err
-    &#125;
-    ents[i] = raftpb.Entry&#123;
-        Type:  raftpb.EntryConfChange,
-        Term:  1,
-        Index: uint64(i + 1),
-        Data:  d,
-    &#125;
-&#125;
-
-// 初始化raft 的term和日志提交信息，并保存到hardState中
-commit, term := uint64(len(ents)), uint64(1)
-hardState := raftpb.HardState&#123;
-    Term:   term,
-    Vote:   peers[0].ID,
-    Commit: commit,
-&#125;
-// 将日志和hard state持久化到wal中
-if err := w.Save(hardState, ents); err != nil &#123;
-    return nil, err
-&#125;
-
-// 为当前的状态机（恢复出的数据）创建一份raft snapshot，并将对应的snapshot信息写入到wal日志中。
-b, berr := st.Save()
-if berr != nil &#123;
-    return nil, berr
-&#125;
-confState := raftpb.ConfState&#123;
-    Voters: nodeIDs,
-&#125;
-raftSnap := raftpb.Snapshot&#123;
-    Data: b,
-    Metadata: raftpb.SnapshotMetadata&#123;
-        Index:     commit,
-        Term:      term,
-        ConfState: confState,
-    &#125;,
-&#125;
-sn := snap.New(s.lg, s.snapDir)
-if err := sn.SaveSnap(raftSnap); err != nil &#123;
-    return nil, err
-&#125;
-snapshot := walpb.Snapshot&#123;Index: commit, Term: term, ConfState: &amp;confState&#125;
-return &amp;hardState, w.SaveSnapshot(snapshot)
-&#125;
-</code></pre>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *v3Manager)</span></span> saveWALAndSnap() (*raftpb.HardState, <span class="hljs-type">error</span>) &#123;<br>	...<br>	...<br>	<span class="hljs-comment">// 将raft信息写入到boltdb中</span><br>	<span class="hljs-keyword">for</span> _, m := <span class="hljs-keyword">range</span> s.cl.Members() &#123;<br>		s.cl.AddMember(m, <span class="hljs-literal">true</span>)<br>	&#125;<br><span class="hljs-comment">// 初始化集群的meta信息，nodeID和clusterID，创建wal文件并写入meta信息</span><br>m := s.cl.MemberByName(s.name)<br>md := &amp;etcdserverpb.Metadata&#123;NodeID: <span class="hljs-type">uint64</span>(m.ID), ClusterID: <span class="hljs-type">uint64</span>(s.cl.ID())&#125;<br>metadata, merr := md.Marshal()<br>w, walerr := wal.Create(s.lg, s.walDir, metadata)<br><br><span class="hljs-comment">// 为每个节点初始化配置变更日志</span><br>ents := <span class="hljs-built_in">make</span>([]raftpb.Entry, <span class="hljs-built_in">len</span>(peers))<br>nodeIDs := <span class="hljs-built_in">make</span>([]<span class="hljs-type">uint64</span>, <span class="hljs-built_in">len</span>(peers))<br><span class="hljs-keyword">for</span> i, p := <span class="hljs-keyword">range</span> peers &#123;<br>	nodeIDs[i] = p.ID<br>	cc := raftpb.ConfChange&#123;<br>		Type:    raftpb.ConfChangeAddNode,<br>		NodeID:  p.ID,<br>		Context: p.Context,<br>	&#125;<br>	d, err := cc.Marshal()<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, err<br>	&#125;<br>	ents[i] = raftpb.Entry&#123;<br>		Type:  raftpb.EntryConfChange,<br>		Term:  <span class="hljs-number">1</span>,<br>		Index: <span class="hljs-type">uint64</span>(i + <span class="hljs-number">1</span>),<br>		Data:  d,<br>	&#125;<br>&#125;<br><br><span class="hljs-comment">// 初始化raft 的term和日志提交信息，并保存到hardState中</span><br>commit, term := <span class="hljs-type">uint64</span>(<span class="hljs-built_in">len</span>(ents)), <span class="hljs-type">uint64</span>(<span class="hljs-number">1</span>)<br>hardState := raftpb.HardState&#123;<br>	Term:   term,<br>	Vote:   peers[<span class="hljs-number">0</span>].ID,<br>	Commit: commit,<br>&#125;<br><span class="hljs-comment">// 将日志和hard state持久化到wal中</span><br><span class="hljs-keyword">if</span> err := w.Save(hardState, ents); err != <span class="hljs-literal">nil</span> &#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, err<br>&#125;<br><br><span class="hljs-comment">// 为当前的状态机（恢复出的数据）创建一份raft snapshot，并将对应的snapshot信息写入到wal日志中。</span><br>b, berr := st.Save()<br><span class="hljs-keyword">if</span> berr != <span class="hljs-literal">nil</span> &#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, berr<br>&#125;<br>confState := raftpb.ConfState&#123;<br>	Voters: nodeIDs,<br>&#125;<br>raftSnap := raftpb.Snapshot&#123;<br>	Data: b,<br>	Metadata: raftpb.SnapshotMetadata&#123;<br>		Index:     commit,<br>		Term:      term,<br>		ConfState: confState,<br>	&#125;,<br>&#125;<br>sn := snap.New(s.lg, s.snapDir)<br><span class="hljs-keyword">if</span> err := sn.SaveSnap(raftSnap); err != <span class="hljs-literal">nil</span> &#123;<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, err<br>&#125;<br>snapshot := walpb.Snapshot&#123;Index: commit, Term: term, ConfState: &amp;confState&#125;<br><span class="hljs-keyword">return</span> &amp;hardState, w.SaveSnapshot(snapshot)<br>&#125;<br><br></code></pre></td></tr></table></figure>
 <h3 id="2-3-cluster-member-id"><a href="#2-3-cluster-member-id" class="headerlink" title="2.3 cluster member id"></a>2.3 cluster member id</h3><p>在上述备份恢复的过程中，中间有个步骤会为集群生成一个cluster id。在某些时候错误部署etcd集群后，经常也能看到一个报错信息，“remote cluster member id mismatch”。我们来具体看看这个cluster id到底是什么。根据官网的解释，cluster id是一个集群的标识符，每个集群都有一个cluster id，如果两个节点间的cluster id不一致，说明他们不是一个集群的。下面来看看这个cluster id是怎么生成的</p>
 <h4 id="2-3-1-新集群"><a href="#2-3-1-新集群" class="headerlink" title="2.3.1 新集群"></a>2.3.1 新集群</h4><p>新集群的cluster id生成非常简单，直接看代码，首先会根据用户的配置信息生成集群member信息，然后根据集群member信息生成一个hash值作为cluster id，所以多个机器上，以同一个集群配置启动多节点etcd，他们之间的cluster id是一样的，所以他们之间是可以通信并且组成raft集群的。<br>参数中还有个token参数，在创建集群时由–initial-cluster-token参数指定，如不指定会使用默认值，这个参数相当于在hash计算cluster id时加盐，即最终：clusterID &#x3D; hash（集群初始配置… , initial-cluster-token）<br>这个逻辑和上述备份恢复时etcdutl工具的逻辑是一样的，恢复工具也会用参数中的集群配置生成cluster id。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">NewClusterFromURLsMap</span><span class="hljs-params">(lg *zap.Logger, token <span class="hljs-type">string</span>, urlsmap types.URLsMap, opts ...ClusterOption)</span></span> (*RaftCluster, <span class="hljs-type">error</span>) &#123;<br>	c := NewCluster(lg, opts...)<br>	<span class="hljs-comment">// 根据配置信息初始化集群信息</span><br>	<span class="hljs-keyword">for</span> name, urls := <span class="hljs-keyword">range</span> urlsmap &#123;<br>		...<br>		...<br>		c.members[m.ID] = m<br>	&#125;<br>	<span class="hljs-comment">// 根据集群信息生成一个hash值作为member id</span><br>	c.genID()<br>	<span class="hljs-keyword">return</span> c, <span class="hljs-literal">nil</span><br>&#125;<br></code></pre></td></tr></table></figure>
@@ -519,6 +435,12 @@ return &amp;hardState, w.SaveSnapshot(snapshot)
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2022/09/21/python100day-46-%E6%97%A5%E5%BF%97%E5%92%8C%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E6%A0%8F/" title="python100day-46  日志和调试工具栏">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">python100day-46  日志和调试工具栏</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
