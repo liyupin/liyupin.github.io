@@ -1,0 +1,788 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Cper Liu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="redhat 7.6 server 离线搭建Ceph集群环境说明需要去客户现场部署centos7.6三节点newben和ceph，这里把整个部署方案都介绍了    主机名 配置 ip 操作系统 说明    ceph-mon1 4核8G 192.168.30.51 RedHat7.6server ceph引导节点                 离线安装包1234[root@node-30-51 ~">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redhat 离线安装ceph">
+<meta property="og:url" content="https://liyupin.github.io/2022/09/28/redhat-%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85ceph/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="redhat 7.6 server 离线搭建Ceph集群环境说明需要去客户现场部署centos7.6三节点newben和ceph，这里把整个部署方案都介绍了    主机名 配置 ip 操作系统 说明    ceph-mon1 4核8G 192.168.30.51 RedHat7.6server ceph引导节点                 离线安装包1234[root@node-30-51 ~">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-112.png">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-113.png">
+<meta property="og:image" content="c:/Users/liyupi/AppData/Roaming/Typora/typora-user-images/image-20221018090014086.png">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-114.png">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-116.png">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-117.png">
+<meta property="og:image" content="https://liyupin.github.io/images/pasted-118.png">
+<meta property="article:published_time" content="2022-09-27T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-09-27T16:04:44.536Z">
+<meta property="article:author" content="Cper Liu">
+<meta property="article:tag" content="ceph">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://liyupin.github.io/images/pasted-112.png">
+  
+  
+  
+  <title>redhat 离线安装ceph - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="redhat 离线安装ceph"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-09-28 00:00" pubdate>
+          2022年9月28日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          52 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">redhat 离线安装ceph</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="redhat-7-6-server-离线搭建Ceph集群"><a href="#redhat-7-6-server-离线搭建Ceph集群" class="headerlink" title="redhat 7.6 server 离线搭建Ceph集群"></a>redhat 7.6 server 离线搭建Ceph集群</h1><h2 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a><strong>环境说明</strong></h2><p>需要去客户现场部署centos7.6三节点newben和ceph，这里把整个部署方案都介绍了</p>
+<table>
+<thead>
+<tr>
+<th>主机名</th>
+<th>配置</th>
+<th>ip</th>
+<th>操作系统</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ceph-mon1</td>
+<td>4核8G</td>
+<td>192.168.30.51</td>
+<td>RedHat7.6server</td>
+<td>ceph引导节点</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="离线安装包"><a href="#离线安装包" class="headerlink" title="离线安装包"></a><strong>离线安装包</strong></h2><figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs tap">[root@node-30-51 ~]<span class="hljs-comment"># ll</span><br>总用量 805100<br>-rw-------.<span class="hljs-number"> 1 </span>root root     <span class="hljs-number"> 1530 </span>10月<span class="hljs-number"> 15 </span>09:33 anaconda-ks.cfg<br>-rw-r--r--.<span class="hljs-number"> 1 </span>root root<span class="hljs-number"> 824414754 </span>10月<span class="hljs-number"> 15 </span>16:29 ceph-local-redhat7.6-server.tgz<br></code></pre></td></tr></table></figure>
+
+<p>[root@node-5-40 ceph]#</p>
+<p>cephadm从官网下载后由于需要离线安装，进行了代码修改：</p>
+<p>1、把默认镜像和版本修改准备的离线安装包镜像和版本</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">DEFAULT_IMAGE</span> = <span class="hljs-string">&#x27;quay.io/ceph/ceph:v15&#x27;</span><br><br><span class="hljs-attr">DEFAULT_IMAGE_RELEASE</span> = <span class="hljs-string">&#x27;octopus&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p>2、注释掉部分拉镜像的代码，避免去官网拉去镜像</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><code class="hljs livescript">def _pull_image(ctx, image, insecure=False)不要全部屏蔽了，屏蔽部分即可<br><br>def _pull_image(ctx, image, insecure=False):<br><br>  <span class="hljs-string">\#</span> type: <span class="hljs-function"><span class="hljs-params">(CephadmContext, str, bool)</span> -&gt;</span> None<br><br>  logger.info(<span class="hljs-string">&#x27;Pulling container image %s...&#x27;</span> % image)<br><br> <br><br>  ignorelist = [<br><br>​    <span class="hljs-string">&#x27;error creating read-write layer with ID&#x27;</span>,<br><br>​    <span class="hljs-string">&#x27;net/http: TLS handshake timeout&#x27;</span>,<br><br>​    <span class="hljs-string">&#x27;Digest did not match, expected&#x27;</span>,<br><br>  ]<br><br> <br><br><span class="hljs-string">\#</span>  cmd = [ctx.container_engine.path, <span class="hljs-string">&#x27;images&#x27;</span>, image]<br><br><span class="hljs-string">\#</span>  <span class="hljs-keyword">if</span> isinstance(ctx.container_engine, Podman):<br><br><span class="hljs-string">\#</span>    <span class="hljs-keyword">if</span> insecure:<br><br><span class="hljs-string">\#</span>      cmd.append(<span class="hljs-string">&#x27;--tls-verify=false&#x27;</span>)<br><br> <br><br><span class="hljs-string">\#</span>    <span class="hljs-keyword">if</span> os.path.exists(<span class="hljs-string">&#x27;/etc/ceph/podman-auth.json&#x27;</span>):<br><br><span class="hljs-string">\#</span>      cmd.append(<span class="hljs-string">&#x27;--authfile=/etc/ceph/podman-auth.json&#x27;</span>)<br><br><span class="hljs-string">\#</span>  cmd_str = <span class="hljs-string">&#x27; &#x27;</span>.join(cmd)<br><br> <br><br><span class="hljs-string">\#</span>  <span class="hljs-keyword">for</span> sleep_secs <span class="hljs-keyword">in</span> [<span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">25</span>]:<br><br><span class="hljs-string">\#</span>    out, err, ret = call(ctx, cmd)<br><br><span class="hljs-string">\#</span>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> ret:<br><br><span class="hljs-string">\#</span>      <span class="hljs-keyword">return</span><br><br> <br><br><span class="hljs-string">\#</span>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> any(pattern <span class="hljs-keyword">in</span> err <span class="hljs-keyword">for</span> pattern <span class="hljs-keyword">in</span> ignorelist):<br><br><span class="hljs-string">\#</span>      raise <span class="hljs-built_in">Error</span>(<span class="hljs-string">&#x27;Failed command: %s&#x27;</span> % cmd_str)<br><br> <br><br><span class="hljs-string">\#</span>    logger.info(<span class="hljs-string">&#x27;`%s` failed transiently. Retrying. waiting %s seconds...&#x27;</span> % (cmd_str, sleep_secs))<br><br><span class="hljs-string">\#</span>    time.sleep(sleep_secs)<br><br> <br><br><span class="hljs-string">\#</span>  raise <span class="hljs-built_in">Error</span>(<span class="hljs-string">&#x27;Failed command: %s: maximum retries reached&#x27;</span> % cmd_str)<br></code></pre></td></tr></table></figure>
+
+<p>ceph.tgz是离线镜像包，镜像列表如下：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs awk">quay.io<span class="hljs-regexp">/ceph/</span>ceph:v15 <br><br>quay.io<span class="hljs-regexp">/ceph/</span>ceph-grafana:<span class="hljs-number">6.7</span>.<span class="hljs-number">4</span> <br><br>quay.io<span class="hljs-regexp">/prometheus/</span>prometheus:v2.<span class="hljs-number">18.1</span> <br><br>quay.io<span class="hljs-regexp">/prometheus/</span>alertmanager:v0.<span class="hljs-number">20.0</span> <br><br>quay.io<span class="hljs-regexp">/prometheus/</span>node-exporter:v0.<span class="hljs-number">18.1</span><br></code></pre></td></tr></table></figure>
+
+<p>local-repo.tgz为离线镜像源，主要有python3和ceph-common的离线镜像</p>
+<h2 id="配置域名解析"><a href="#配置域名解析" class="headerlink" title="配置域名解析"></a><strong>配置域名解析</strong></h2><p>先在三台机器上，修改 &#x2F;etc&#x2F;hosts 文件，添加下面内容：</p>
+<p># ceph 集群节点主机名对应的 ip，每个节点都需要添加</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">192.168.30.51</span> ceph-mon1<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="关闭防火墙"><a href="#关闭防火墙" class="headerlink" title="关闭防火墙"></a><strong>关闭防火墙</strong></h2><p># 关闭防火墙 且 禁止防火墙开机自起</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gauss">systemctl <span class="hljs-keyword">stop</span> firewalld &amp;&amp; systemctl <span class="hljs-keyword">disable</span> firewalld<br></code></pre></td></tr></table></figure>
+
+<h2 id="安装导入镜像"><a href="#安装导入镜像" class="headerlink" title="安装导入镜像"></a><strong>安装导入镜像</strong></h2><p>说明：所有节点需要执行</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css">docker load -<span class="hljs-selector-tag">i</span> ceph<span class="hljs-selector-class">.tgz</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="安装python3和ceph-common"><a href="#安装python3和ceph-common" class="headerlink" title="安装python3和ceph-common"></a><strong>安装python3和ceph-common</strong></h2><p>说明：所有节点需要执行</p>
+<h3 id="解压local-repo-tgz文件"><a href="#解压local-repo-tgz文件" class="headerlink" title="解压local-repo.tgz文件"></a><strong>解压local-repo.tgz文件</strong></h3><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">tar -zxvf ceph-<span class="hljs-keyword">local</span>-redhat7<span class="hljs-number">.6</span>-<span class="hljs-keyword">server</span>.tgz<br></code></pre></td></tr></table></figure>
+
+<p>安装</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">cd ceph-<span class="hljs-keyword">local</span>-redhat7<span class="hljs-number">.6</span>-<span class="hljs-keyword">server</span><br>systemctl <span class="hljs-keyword">start</span> NetworkManager<br>./deploy.sh<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="开机加载rbd和ceph命令"><a href="#开机加载rbd和ceph命令" class="headerlink" title="开机加载rbd和ceph命令"></a><strong>开机加载rbd和ceph命令</strong></h3><p>在&#x2F;etc&#x2F;profile.d&#x2F;目录下新建modprobe.sh文件，文件内容为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cat</span>&lt;&lt;<span class="hljs-string">EOF&gt;modprobe.sh</span><br><span class="hljs-string"></span><br><span class="hljs-string">\#!/bin/sh</span><br><span class="hljs-string"></span><br><span class="hljs-string">modprobe rbd</span><br><span class="hljs-string"></span><br><span class="hljs-string">modprobe ceph</span><br><span class="hljs-string"></span><br><span class="hljs-string">EOF</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="安装cephadm"><a href="#安装cephadm" class="headerlink" title="安装cephadm"></a><strong>安装cephadm</strong></h2><p>说明：只需要在引导节点执行</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk">cp cephadm <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/bin/</span><br><br>chmod +x <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/bin/</span>cephadm<br></code></pre></td></tr></table></figure>
+
+<h2 id="引导集群"><a href="#引导集群" class="headerlink" title="引导集群"></a><strong>引导集群</strong></h2><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">cephadm</span> bootstrap --mon-ip <span class="hljs-number">192.168.5.40</span><br></code></pre></td></tr></table></figure>
+
+<p># UI登录密码</p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs gams"><span class="hljs-function"><span class="hljs-title">Creating</span></span> initial admin user...<br><br><span class="hljs-function"><span class="hljs-title">Fetching</span></span> dashboard port number...<br><br>Ceph Dashboard is now available at:<br><br> <br><br>​       URL: https:<span class="hljs-comment">//node-5-42:8443/</span><br><br>​      User: admin<br><br>​    Password: nhvep2vucg<br></code></pre></td></tr></table></figure>
+
+<h2 id="登录到UI管理界面"><a href="#登录到UI管理界面" class="headerlink" title="登录到UI管理界面"></a><strong>登录到UI管理界面</strong></h2><p><img src="/images/pasted-112.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
+<h2 id="配置节点免密"><a href="#配置节点免密" class="headerlink" title="配置节点免密"></a><strong>配置节点免密</strong></h2><p>说明：只需要在引导节点执行</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">ssh-copy-id -f -i /etc/ceph/ceph.pub root@<span class="hljs-keyword">node</span><span class="hljs-title">-5-41</span><br><br>ssh-copy-id -f -i /etc/ceph/ceph.pub root@<span class="hljs-keyword">node</span><span class="hljs-title">-5-40</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="加入节点"><a href="#加入节点" class="headerlink" title="加入节点"></a><strong>加入节点</strong></h2><p>说明：只需要在引导节点执行</p>
+<p>添加成功后需要等待一段时间，待其它主机上的容器起来</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">[root@<span class="hljs-keyword">node</span><span class="hljs-title">-5-42</span> /]<span class="hljs-comment"># ceph orch host add node-5-41 192.168.5.41</span><br><br>Added host &#x27;<span class="hljs-keyword">node</span><span class="hljs-title">-5-41</span>&#x27;<br><br>[root@<span class="hljs-keyword">node</span><span class="hljs-title">-5-42</span> /]<span class="hljs-comment"># ceph orch host add node-5-40 192.168.5.40</span><br><br>Added host &#x27;<span class="hljs-keyword">node</span><span class="hljs-title">-5-40</span>&#x27;<br><br>[root@<span class="hljs-keyword">node</span><span class="hljs-title">-5-42</span> /]<span class="hljs-comment">#</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="部署OSD"><a href="#部署OSD" class="headerlink" title="部署OSD"></a><strong>部署OSD</strong></h2><p>说明：在引导节点执行</p>
+<p>ceph-volume 会不时扫描集群中的每个主机，以确定存在哪些设备以及这些设备是否可用做 OSD。要查看 cephadm 发现的设备列表，可运行以下命令：</p>
+<p># ceph orch device ls [–hostname&#x3D;…] [–wide] [–refresh]</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ceph orch device <span class="hljs-built_in">ls</span><br></code></pre></td></tr></table></figure>
+
+<p>输出类似如下：</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">[root@<span class="hljs-keyword">node</span><span class="hljs-title">-5-50</span> ~]<span class="hljs-comment"># ceph orch device ls</span><br><br>Hostname  Path   <span class="hljs-keyword">Type</span> Serial Size  Health  Ident Fault Available<br><br><span class="hljs-keyword">node</span><span class="hljs-title">-5-50</span> /dev/sdb hdd      <span class="hljs-number">214</span>G Unknown N/A  N/A  Yes<br><br><span class="hljs-keyword">node</span><span class="hljs-title">-5-51</span> /dev/sdb hdd      <span class="hljs-number">214</span>G Unknown N/A  N/A  Yes<br><br><span class="hljs-keyword">node</span><span class="hljs-title">-5-52</span> /dev/sdb hdd      <span class="hljs-number">214</span>G Unknown N/A  N/A  Yes<br></code></pre></td></tr></table></figure>
+
+<p>说明：使用 –wide 选项提供与设备相关的所有详细信息，包括设备可能不适合用作 OSD 的任何原因</p>
+<p>如果满足以下所有条件，则认为存储设备可用：</p>
+<p>1）设备必须没有分区</p>
+<p>2）设备不得具有任何 LVM 状态</p>
+<p>3）设备必须没有被挂载</p>
+<p>4）设备必须没有包含任何文件系统</p>
+<p>5）设备不得包含 Ceph BlueStore OSD</p>
+<p>6）设备必须大于 5GB</p>
+<p>注意：Ceph的数据盘必须满足以上的6个条件才能在ceph orch device ls执行后显示出来，虚拟机可以直接使用vcenter给各个节点加一块磁盘即可，加盘后需要一定时间才能识别</p>
+<p>指定主机指定设备创建OSD</p>
+<p># ceph orch daemon add osd <em><host></em>:<em><device-path></em></p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs elixir">ceph orch daemon add osd node<span class="hljs-number">-5</span><span class="hljs-number">-50</span><span class="hljs-symbol">:/dev/sdb</span><br><br>ceph orch daemon add osd node<span class="hljs-number">-5</span><span class="hljs-number">-51</span><span class="hljs-symbol">:/dev/sdb</span><br><br>ceph orch daemon add osd node<span class="hljs-number">-5</span><span class="hljs-number">-52</span><span class="hljs-symbol">:/dev/sdb</span><br></code></pre></td></tr></table></figure>
+
+<p>检查OSD的状态，up即为正常</p>
+<p><img src="/images/pasted-113.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
+<h2 id="使用Ceph提供对象存储"><a href="#使用Ceph提供对象存储" class="headerlink" title="使用Ceph提供对象存储"></a><strong>使用Ceph提供对象存储</strong></h2><h3 id="创建pool"><a href="#创建pool" class="headerlink" title="创建pool"></a><strong>创建pool</strong></h3><p><img src="C:\Users\liyupi\AppData\Roaming\Typora\typora-user-images\image-20221018090014086.png" srcset="/img/loading.gif" lazyload alt="image-20221018090014086"></p>
+<p>备注：建议使用命令创建，上面页面创建会存在告警</p>
+<p># ceph osd pool create <poolname> <pg_num> <pgp_num></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">ceph</span> osd pool create chj-new <span class="hljs-number">32</span> <span class="hljs-number">32</span><br></code></pre></td></tr></table></figure>
+
+<p># ceph osd pool application enable <poolname> <appname></p>
+<p># <app-name> is ‘cephfs’, ‘rbd’, ‘rgw’, or freeform for custom applications</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span>application <span class="hljs-built_in">enable</span> chj-new rbd<br></code></pre></td></tr></table></figure>
+
+<h3 id="newben-使用CephRBD"><a href="#newben-使用CephRBD" class="headerlink" title="newben****使用CephRBD"></a><strong>newben****使用CephRBD</strong></h3><p>1、创建CephRBD存储池</p>
+<p><img src="/images/pasted-114.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
+<p>参数填写信息可以在ceph集群后台通过命令查看</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">[root@<span class="hljs-keyword">node</span><span class="hljs-title">-5-50</span> ceph]<span class="hljs-comment"># pwd</span><br><br>/etc/ceph<br><br>[root@<span class="hljs-keyword">node</span><span class="hljs-title">-5-50</span> ceph]<span class="hljs-comment"># ll</span><br><br>total <span class="hljs-number">16</span><br><br>-rw------- <span class="hljs-number">1</span> root root <span class="hljs-number">63</span> Dec <span class="hljs-number">7</span> <span class="hljs-number">15</span>:<span class="hljs-number">53</span> ceph.client.admin.keyring<br><br>-rw-r--r-- <span class="hljs-number">1</span> root root <span class="hljs-number">175</span> Dec <span class="hljs-number">7</span> <span class="hljs-number">15</span>:<span class="hljs-number">53</span> ceph.conf<br><br>-rw-r--r-- <span class="hljs-number">1</span> root root <span class="hljs-number">595</span> Dec <span class="hljs-number">7</span> <span class="hljs-number">15</span>:<span class="hljs-number">53</span> ceph.pub<br><br>-rw-r--r-- <span class="hljs-number">1</span> root root <span class="hljs-number">92</span> Oct <span class="hljs-number">20</span> <span class="hljs-number">22</span>:<span class="hljs-number">50</span> rbdmap<br><br>[root@<span class="hljs-keyword">node</span><span class="hljs-title">-5-50</span> ceph]<span class="hljs-comment"># cat ceph.client.admin.keyring</span><br><br>[client.admin]<br><br>​    key = <span class="hljs-attr">AQDhEq9hgPHtARAAZTCsINCYiqBdFD4E5HnPQA=</span>=<br><br>[root@<span class="hljs-keyword">node</span><span class="hljs-title">-5-50</span> ceph]<span class="hljs-comment"># cat ceph.conf</span><br><br>\<span class="hljs-comment"># minimal ceph.conf for 7b9103f0-5732-11ec-8377-0050568823ff</span><br><br>[global]<br><br>​    fsid = <span class="hljs-number">7</span>b9103f0-<span class="hljs-number">5732</span>-<span class="hljs-number">11</span>ec-<span class="hljs-number">8377</span>-<span class="hljs-number">0050568823</span>ff<br><br>​    mon_host = [v2:<span class="hljs-number">192.168</span>.<span class="hljs-number">5.50</span>:<span class="hljs-number">3300</span>/<span class="hljs-number">0</span>,v1:<span class="hljs-number">192.168</span>.<span class="hljs-number">5.50</span>:<span class="hljs-number">6789</span>/<span class="hljs-number">0</span>]<br><br>[root@<span class="hljs-keyword">node</span><span class="hljs-title">-5-50</span> ceph]<span class="hljs-comment">#</span><br></code></pre></td></tr></table></figure>
+
+<p>2、创建CephRBD存储卷</p>
+<p><img src="/images/pasted-116.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
+<p>3、newben集群节点安装和Ceph集群同版本的ceph-common</p>
+<p>使用yum install ceph-commom安装的版本为10版本，和实际不匹配，可以直接使用cephadm进行安装</p>
+<p>具体参考安装“安装Cephadm”和“添加Ceph命令”章节，安装出来如下或者为16版本即可：</p>
+<p>ceph version 15.2.15 (2dfb18841cfecc2f7eb7eb2afd65986ca4d95985) octopus (stable)</p>
+<p>4、节点加载ceph和rbd模块：modprobe ceph和modprobe rbd</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">[root@<span class="hljs-keyword">node</span><span class="hljs-title">-5-50</span> ~]<span class="hljs-comment"># lsmod | grep ceph</span><br><br>[root@<span class="hljs-keyword">node</span><span class="hljs-title">-5-50</span> ~]<span class="hljs-comment"># lsmod | grep rbd</span><br><br>[root@<span class="hljs-keyword">node</span><span class="hljs-title">-5-50</span> ~]<span class="hljs-comment"># modprobe ceph</span><br><br>[root@<span class="hljs-keyword">node</span><span class="hljs-title">-5-50</span> ~]<span class="hljs-comment"># lsmod | grep ceph</span><br><br>ceph         <span class="hljs-number">358802</span> <span class="hljs-number">0</span><br><br>libceph        <span class="hljs-number">306625</span> <span class="hljs-number">1</span> ceph<br><br>dns_resolver      <span class="hljs-number">13140</span> <span class="hljs-number">1</span> libceph<br><br>libcrc32c       <span class="hljs-number">12644</span> <span class="hljs-number">2</span> xfs,libceph<br><br>[root@<span class="hljs-keyword">node</span><span class="hljs-title">-5-50</span> ~]<span class="hljs-comment"># modprobe rbd</span><br><br>[root@<span class="hljs-keyword">node</span><span class="hljs-title">-5-50</span> ~]<span class="hljs-comment"># lsmod | grep rbd</span><br><br>rbd          <span class="hljs-number">83640</span> <span class="hljs-number">0</span><br><br>libceph        <span class="hljs-number">306625</span> <span class="hljs-number">2</span> rbd,ceph<br></code></pre></td></tr></table></figure>
+
+<p>5、创建应用使用Cephrbd存储卷</p>
+<h3 id="使用Ceph提供文件存储"><a href="#使用Ceph提供文件存储" class="headerlink" title="使用Ceph提供文件存储"></a><strong>使用Ceph提供文件存储</strong></h3><p>说明：操作在引导节点执行</p>
+<h3 id="创建文件系统"><a href="#创建文件系统" class="headerlink" title="创建文件系统"></a><strong>创建文件系统</strong></h3><p>1、使用 CEPHFS 文件系统需要一个或多个 MDS 守护进程</p>
+<p>2、创建两个存储池，cephfs_metadata 用于存文件系统元数据，cephfs_data 用于存文件系统数据</p>
+<p># ceph osd pool create <poolname> <pg_num> <pgp_num></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">ceph</span> osd pool create cephfs_metadata <span class="hljs-number">32</span> <span class="hljs-number">32</span><br><br><span class="hljs-attribute">ceph</span> osd pool create cephfs_data <span class="hljs-number">32</span> <span class="hljs-number">32</span><br></code></pre></td></tr></table></figure>
+
+<p># ceph osd pool application enable <poolname> <appname></p>
+<p># <app-name> is ‘cephfs’, ‘rbd’, ‘rgw’, or freeform for custom applications</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs routeros">ceph osd<span class="hljs-built_in"> pool </span>application <span class="hljs-built_in">enable</span> cephfs_metadata cephfs<br><br>ceph osd<span class="hljs-built_in"> pool </span>application <span class="hljs-built_in">enable</span> cephfs_data cephfs<br></code></pre></td></tr></table></figure>
+
+<p>3、创建文件系统</p>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs haxe">ceph fs <span class="hljs-keyword">new</span> <span class="hljs-type">chjfs</span> cephfs_metadata cephfs_data<br></code></pre></td></tr></table></figure>
+
+<p>4、部署MDS</p>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs subunit">ceph orch apply mds chjfs --placement=&quot;3 node<span class="hljs-string">-5</span><span class="hljs-string">-50</span> node<span class="hljs-string">-5</span><span class="hljs-string">-51</span> node<span class="hljs-string">-5</span><span class="hljs-string">-52</span>&quot;<br></code></pre></td></tr></table></figure>
+
+<p>5、查看文件系统和MDS状态</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">[root@<span class="hljs-keyword">node</span><span class="hljs-title">-5-50</span> ceph]<span class="hljs-comment"># ceph fs ls</span><br><br>name: koenlifs, metadata pool: cephfs_metadata, data pools: [cephfs_data ]<br><br>[root@<span class="hljs-keyword">node</span><span class="hljs-title">-5-50</span> ceph]<span class="hljs-comment"># ceph mds stat</span><br><br>koenlifs:<span class="hljs-number">1</span> &#123;<span class="hljs-number">0</span>=koenlifs.node-<span class="hljs-number">5</span>-<span class="hljs-number">51</span>.<span class="hljs-attr">pmmwla=</span>up:active&#125; <span class="hljs-number">2</span> up:standby<br><br>[root@<span class="hljs-keyword">node</span><span class="hljs-title">-5-50</span> ceph]<span class="hljs-comment">#</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>newben****使用CephFS</strong></p>
+<p>1、创建CephFS存储池</p>
+<p><img src="/images/pasted-117.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
+<p>2、创建cephFS存储卷</p>
+<p><img src="/images/pasted-118.png" srcset="/img/loading.gif" lazyload alt="upload successful"></p>
+<p>3、其它步骤CephRBD的使用差不多，这里不再介绍。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/redhat/" class="category-chain-item">redhat</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/ceph/">#ceph</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>redhat 离线安装ceph</div>
+      <div>https://liyupin.github.io/2022/09/28/redhat-离线安装ceph/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Cper Liu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年9月28日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/09/27/%E8%B5%84%E9%87%91%E6%B5%81%E5%85%A5%E6%A6%9C/" title="资金流入榜-20220927">
+                        <span class="hidden-mobile">资金流入榜-20220927</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
