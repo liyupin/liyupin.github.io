@@ -183,8 +183,8 @@ https://liyupin.github.io/tags/docker/
 https://liyupin.github.io/tags/etcd/
 https://liyupin.github.io/tags/log/
 https://liyupin.github.io/tags/k8s/
-https://liyupin.github.io/tags/mysql/
 https://liyupin.github.io/tags/newben/
+https://liyupin.github.io/tags/mysql/
 https://liyupin.github.io/tags/traefik/
 https://liyupin.github.io/tags/python100day/
 https://liyupin.github.io/tags/ceph/
