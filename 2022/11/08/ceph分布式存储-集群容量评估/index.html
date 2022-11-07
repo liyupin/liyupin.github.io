@@ -1,0 +1,801 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Cper Liu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="ceph分布式存储-集群容量评估发布于2020-07-20 11:37:09阅读 7410 本文被 1 个清单收录，推荐清单ceph 1. 环境介绍1.1 软件环境ceph集群：  mon：ceph-xxx-osd02.ys,ceph-xxx-osd03.ys,ceph-xxx-osd01.ys osd: 36 mds：ceph-xxx-osd04.ys&#x3D;up:active  ceph版">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://liyupin.github.io/2022/11/08/ceph%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8-%E9%9B%86%E7%BE%A4%E5%AE%B9%E9%87%8F%E8%AF%84%E4%BC%B0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="ceph分布式存储-集群容量评估发布于2020-07-20 11:37:09阅读 7410 本文被 1 个清单收录，推荐清单ceph 1. 环境介绍1.1 软件环境ceph集群：  mon：ceph-xxx-osd02.ys,ceph-xxx-osd03.ys,ceph-xxx-osd01.ys osd: 36 mds：ceph-xxx-osd04.ys&#x3D;up:active  ceph版">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-11-07T16:44:47.272Z">
+<meta property="article:modified_time" content="2022-11-07T16:44:47.272Z">
+<meta property="article:author" content="Cper Liu">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-11-08 00:44" pubdate>
+          2022年11月8日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          18k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          149 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="ceph分布式存储-集群容量评估"><a href="#ceph分布式存储-集群容量评估" class="headerlink" title="ceph分布式存储-集群容量评估"></a>ceph分布式存储-集群容量评估</h1><p>发布于2020-07-20 11:37:09阅读 7410</p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/inventory/15150">本文被 1 个清单收录，推荐清单ceph</a></p>
+<h1 id="1-环境介绍"><a href="#1-环境介绍" class="headerlink" title="1. 环境介绍"></a>1. 环境介绍</h1><h2 id="1-1-软件环境"><a href="#1-1-软件环境" class="headerlink" title="1.1 软件环境"></a>1.1 软件环境</h2><p><strong>ceph集群：</strong></p>
+<ul>
+<li>mon：ceph-xxx-osd02.ys,ceph-xxx-osd03.ys,ceph-xxx-osd01.ys</li>
+<li>osd: 36</li>
+<li>mds：ceph-xxx-osd04.ys&#x3D;up:active</li>
+</ul>
+<p><strong>ceph版本：</strong></p>
+<ul>
+<li>ceph version 12.2.2.3 (277c813c8cdeb79eba8a11bfe08faf1bf7809f07) luminous (stable)</li>
+</ul>
+<p><strong>os系统：</strong></p>
+<ul>
+<li>CentOS Linux release 7.2.1511 (Core)</li>
+<li>3.10.0-514.16.1.el7.x86_64</li>
+</ul>
+<h2 id="1-2-硬件环境"><a href="#1-2-硬件环境" class="headerlink" title="1.2 硬件环境"></a>1.2 硬件环境</h2><p><strong>cpu型号：</strong> Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz <strong>cpu核数：</strong> 40 <strong>硬盘：</strong> hdd</p>
+<h2 id="2-测试场景"><a href="#2-测试场景" class="headerlink" title="2. 测试场景"></a>2. 测试场景</h2><h3 id="2-1-单个磁盘的能力"><a href="#2-1-单个磁盘的能力" class="headerlink" title="2.1 单个磁盘的能力"></a>2.1 单个磁盘的能力</h3><p>下表以测试随机写IOPS的命令为例，说明命令中各种参数的含义。</p>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">-direct&#x3D;1</td>
+<td align="left">表示测试时忽略I&#x2F;O缓存，数据直写。</td>
+</tr>
+<tr>
+<td align="left">-iodepth&#x3D;128</td>
+<td align="left">表示使用AIO时，同时发出I&#x2F;O数的上限为128。</td>
+</tr>
+<tr>
+<td align="left">-rw&#x3D;randwrite</td>
+<td align="left">表示测试时的读写策略为随机写（random writes）。作其它测试时可以设置为：1. randread（随机读random reads） 2. read（顺序读sequential reads） 3. write（顺序写sequential writes  4. randrw（混合随机读写mixed random reads and writes）</td>
+</tr>
+<tr>
+<td align="left">-ioengine&#x3D;libaio</td>
+<td align="left">表示测试方式为libaio（Linux AIO，异步I&#x2F;O）。应用使用I&#x2F;O通常有二种方式：同步和异步。同步的I&#x2F;O一次只能发出一个I&#x2F;O请求，等待内核完成才返回。这样对于单个线程iodepth总是小于1，但是可以透过多个线程并发执行来解决。通常会用 16−32 根线程同时工作将iodepth塞满。异步则通常使用libaio这样的方式一次提交一批I&#x2F;O请求，然后等待一批的完成，减少交互的次数，会更有效率。</td>
+</tr>
+<tr>
+<td align="left">-bs&#x3D;4k</td>
+<td align="left">表示单次I&#x2F;O的块文件大小为4k。未指定该参数时的默认大小也是4k。测试IOPS时，建议将bs设置为一个比较小的值，如本示例中的4k。测试吞吐量时，建议将bs设置为一个较大的值，如本示例中的1024k。</td>
+</tr>
+<tr>
+<td align="left">-size&#x3D;1G</td>
+<td align="left">表示测试文件大小为1G。</td>
+</tr>
+<tr>
+<td align="left">-numjobs&#x3D;1</td>
+<td align="left">表示测试线程数为1。</td>
+</tr>
+<tr>
+<td align="left">-runtime&#x3D;1000</td>
+<td align="left">表示测试时间为1000秒。如果未配置，则持续将前述-size指定大小的文件，以每次-bs值为分块大小写完。</td>
+</tr>
+<tr>
+<td align="left">-group_reporting</td>
+<td align="left">表示测试结果里汇总每个进程的统计信息，而非以不同job汇总展示信息。</td>
+</tr>
+<tr>
+<td align="left">-name&#x3D;Rand_Write_Testing</td>
+<td align="left">表示测试任务名称为Rand_Write_Testing，可以随意设定。</td>
+</tr>
+</tbody></table>
+<h3 id="2-1-1-顺序读-block-size-4M"><a href="#2-1-1-顺序读-block-size-4M" class="headerlink" title="2.1.1 顺序读(block size 4M)"></a>2.1.1 顺序读(block size 4M)</h3><p>&#x2F;&#x2F;block size是4M, 30个线程并发，持续时间200s 测试结果：带宽：377MB&#x2F;s  平均IOPS： 89  运行时长：2848ms   耗时：1249ms</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs javascript">$ fio -direct=<span class="hljs-number">1</span> -iodepth=<span class="hljs-number">128</span> -rw=read -ioengine=libaio -bs=4M -size=1G -numjobs=<span class="hljs-number">1</span> -runtime=<span class="hljs-number">1000</span> -group_reporting -filename=<span class="hljs-regexp">/var/</span>lib/ceph/osd/ceph-<span class="hljs-number">3</span>/test0012 -name=<span class="hljs-title class_">Read</span>_PPS_Testing<br><span class="hljs-title class_">Read</span><span class="hljs-attr">_PPS_Testing</span>: (g=<span class="hljs-number">0</span>): rw=read, bs=(R) 4096KiB-4096KiB, (W) 4096KiB-4096KiB, (T) 4096KiB-4096KiB, ioengine=libaio, iodepth=<span class="hljs-number">128</span><br>fio-<span class="hljs-number">3.1</span><br><span class="hljs-title class_">Starting</span> <span class="hljs-number">1</span> process<br><span class="hljs-title class_">Jobs</span>: <span class="hljs-number">1</span> (f=<span class="hljs-number">1</span>): [<span class="hljs-title function_">R</span>(<span class="hljs-number">1</span>)][<span class="hljs-number">30.0</span>%][r=232MiB/s,w=0KiB/s][r=<span class="hljs-number">58</span>,w=<span class="hljs-number">0</span> <span class="hljs-variable constant_">IOPS</span>][eta 00<span class="hljs-attr">m</span>:07s]<br><span class="hljs-title class_">Read</span><span class="hljs-attr">_PPS_Testing</span>: (groupid=<span class="hljs-number">0</span>, jobs=<span class="hljs-number">1</span>): err= <span class="hljs-number">0</span>: pid=<span class="hljs-number">26652</span>: <span class="hljs-title class_">Thu</span> <span class="hljs-title class_">Jun</span>  <span class="hljs-number">7</span> <span class="hljs-number">16</span>:<span class="hljs-number">34</span>:<span class="hljs-number">27</span> <span class="hljs-number">2018</span><br>   <span class="hljs-attr">read</span>: <span class="hljs-variable constant_">IOPS</span>=<span class="hljs-number">89</span>, <span class="hljs-variable constant_">BW</span>=360MiB/s (377MB/s)(1024MiB/2848msec)<br>    slat (usec): min=<span class="hljs-number">623</span>, max=<span class="hljs-number">54269</span>, avg=<span class="hljs-number">10938.52</span>, stdev=<span class="hljs-number">8604.56</span><br>    clat (msec): min=<span class="hljs-number">46</span>, max=<span class="hljs-number">2750</span>, avg=<span class="hljs-number">1238.56</span>, stdev=<span class="hljs-number">741.72</span><br>     lat (msec): min=<span class="hljs-number">47</span>, max=<span class="hljs-number">2751</span>, avg=<span class="hljs-number">1249.50</span>, stdev=<span class="hljs-number">743.03</span><br>    clat percentiles (msec):<br>     |  <span class="hljs-number">1.</span>00th=[   <span class="hljs-number">48</span>],  <span class="hljs-number">5.</span>00th=[   <span class="hljs-number">56</span>], <span class="hljs-number">10.</span>00th=[   <span class="hljs-number">65</span>], <span class="hljs-number">20.</span>00th=[  <span class="hljs-number">342</span>],<br>     | <span class="hljs-number">30.</span>00th=[  <span class="hljs-number">802</span>], <span class="hljs-number">40.</span>00th=[ <span class="hljs-number">1200</span>], <span class="hljs-number">50.</span>00th=[ <span class="hljs-number">1401</span>], <span class="hljs-number">60.</span>00th=[ <span class="hljs-number">1586</span>],<br>     | <span class="hljs-number">70.</span>00th=[ <span class="hljs-number">1787</span>], <span class="hljs-number">80.</span>00th=[ <span class="hljs-number">1972</span>], <span class="hljs-number">90.</span>00th=[ <span class="hljs-number">2140</span>], <span class="hljs-number">95.</span>00th=[ <span class="hljs-number">2165</span>],<br>     | <span class="hljs-number">99.</span>00th=[ <span class="hljs-number">2198</span>], <span class="hljs-number">99.</span>50th=[ <span class="hljs-number">2198</span>], <span class="hljs-number">99.</span>90th=[ <span class="hljs-number">2735</span>], <span class="hljs-number">99.</span>95th=[ <span class="hljs-number">2735</span>],<br>     | <span class="hljs-number">99.</span>99th=[ <span class="hljs-number">2735</span>]<br>   bw (  <span class="hljs-title class_">KiB</span>/s): min=<span class="hljs-number">155648</span>, max=<span class="hljs-number">253952</span>, per=<span class="hljs-number">57.11</span>%, avg=<span class="hljs-number">210261.33</span>, stdev=<span class="hljs-number">50053.95</span>, samples=<span class="hljs-number">3</span><br>   iops        : min=   <span class="hljs-number">38</span>, max=   <span class="hljs-number">62</span>, avg=<span class="hljs-number">51.33</span>, stdev=<span class="hljs-number">12.22</span>, samples=<span class="hljs-number">3</span><br>  lat (msec)   : <span class="hljs-number">50</span>=<span class="hljs-number">1.95</span>%, <span class="hljs-number">100</span>=<span class="hljs-number">13.67</span>%, <span class="hljs-number">250</span>=<span class="hljs-number">3.12</span>%, <span class="hljs-number">500</span>=<span class="hljs-number">5.08</span>%, <span class="hljs-number">750</span>=<span class="hljs-number">5.08</span>%<br>  lat (msec)   : <span class="hljs-number">1000</span>=<span class="hljs-number">5.86</span>%, <span class="hljs-number">2000</span>=<span class="hljs-number">46.48</span>%, &gt;=<span class="hljs-number">2000</span>=<span class="hljs-number">18.75</span>%<br>  cpu          : usr=<span class="hljs-number">0.00</span>%, sys=<span class="hljs-number">9.41</span>%, ctx=<span class="hljs-number">188</span>, majf=<span class="hljs-number">0</span>, minf=<span class="hljs-number">802</span><br>  <span class="hljs-variable constant_">IO</span> depths    : <span class="hljs-number">1</span>=<span class="hljs-number">0.4</span>%, <span class="hljs-number">2</span>=<span class="hljs-number">0.8</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">1.6</span>%, <span class="hljs-number">8</span>=<span class="hljs-number">3.1</span>%, <span class="hljs-number">16</span>=<span class="hljs-number">6.2</span>%, <span class="hljs-number">32</span>=<span class="hljs-number">12.5</span>%, &gt;=<span class="hljs-number">64</span>=<span class="hljs-number">75.4</span>%<br>     submit    : <span class="hljs-number">0</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">100.0</span>%, <span class="hljs-number">8</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">16</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">32</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">64</span>=<span class="hljs-number">0.0</span>%, &gt;=<span class="hljs-number">64</span>=<span class="hljs-number">0.0</span>%<br>     complete  : <span class="hljs-number">0</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">99.2</span>%, <span class="hljs-number">8</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">16</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">32</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">64</span>=<span class="hljs-number">0.0</span>%, &gt;=<span class="hljs-number">64</span>=<span class="hljs-number">0.8</span>%<br>     issued <span class="hljs-attr">rwt</span>: total=<span class="hljs-number">256</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>, short=<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>, dropped=<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span><br>     latency   : target=<span class="hljs-number">0</span>, <span class="hljs-variable language_">window</span>=<span class="hljs-number">0</span>, percentile=<span class="hljs-number">100.00</span>%, depth=<span class="hljs-number">128</span><br><span class="hljs-title class_">Run</span> status group <span class="hljs-number">0</span> (all jobs):<br>   <span class="hljs-attr">READ</span>: bw=360MiB/s (377MB/s), 360MiB/s-360MiB/s (377MB/s-377MB/s), io=1024MiB (1074MB), run=<span class="hljs-number">2848</span>-2848msec<br><span class="hljs-title class_">Disk</span> stats (read/write):<br>  <span class="hljs-attr">sde</span>: ios=<span class="hljs-number">6616</span>/<span class="hljs-number">0</span>, merge=<span class="hljs-number">0</span>/<span class="hljs-number">0</span>, ticks=<span class="hljs-number">359717</span>/<span class="hljs-number">0</span>, in_queue=<span class="hljs-number">366490</span>, util=<span class="hljs-number">96.03</span>%<br></code></pre></td></tr></table></figure>
+
+<p>复制</p>
+<h3 id="2-1-2-随机读-block-size-4M"><a href="#2-1-2-随机读-block-size-4M" class="headerlink" title="2.1.2 随机读(block size 4M)"></a>2.1.2 随机读(block size 4M)</h3><p>&#x2F;&#x2F;block size是4M, 30个线程并发，持续时间200s 测试结果：带宽：289MB&#x2F;s  平均IOPS： 68  运行时长：3717ms   耗时：1423ms</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs javascript">$ fio -direct=<span class="hljs-number">1</span> -iodepth=<span class="hljs-number">128</span> -rw=randread -ioengine=libaio -bs=4M -size=1G -numjobs=<span class="hljs-number">1</span> -runtime=<span class="hljs-number">1000</span> -group_reporting -filename=<span class="hljs-regexp">/var/</span>lib/ceph/osd/ceph-<span class="hljs-number">3</span>/test0012 -name=<span class="hljs-title class_">Rand</span>_Read_Testing<br><span class="hljs-title class_">Rand</span><span class="hljs-attr">_Read_Testing</span>: (g=<span class="hljs-number">0</span>): rw=randread, bs=(R) 4096KiB-4096KiB, (W) 4096KiB-4096KiB, (T) 4096KiB-4096KiB, ioengine=libaio, iodepth=<span class="hljs-number">128</span><br>fio-<span class="hljs-number">3.1</span><br><span class="hljs-title class_">Starting</span> <span class="hljs-number">1</span> process<br><span class="hljs-title class_">Jobs</span>: <span class="hljs-number">1</span> (f=<span class="hljs-number">1</span>): [<span class="hljs-title function_">r</span>(<span class="hljs-number">1</span>)][<span class="hljs-number">30.0</span>%][r=272MiB/s,w=0KiB/s][r=<span class="hljs-number">68</span>,w=<span class="hljs-number">0</span> <span class="hljs-variable constant_">IOPS</span>][eta 00<span class="hljs-attr">m</span>:07s]<br><span class="hljs-title class_">Rand</span><span class="hljs-attr">_Read_Testing</span>: (groupid=<span class="hljs-number">0</span>, jobs=<span class="hljs-number">1</span>): err= <span class="hljs-number">0</span>: pid=<span class="hljs-number">29439</span>: <span class="hljs-title class_">Thu</span> <span class="hljs-title class_">Jun</span>  <span class="hljs-number">7</span> <span class="hljs-number">16</span>:<span class="hljs-number">36</span>:<span class="hljs-number">49</span> <span class="hljs-number">2018</span><br>   <span class="hljs-attr">read</span>: <span class="hljs-variable constant_">IOPS</span>=<span class="hljs-number">68</span>, <span class="hljs-variable constant_">BW</span>=275MiB/s (289MB/s)(1024MiB/3717msec)<br>    slat (usec): min=<span class="hljs-number">764</span>, max=<span class="hljs-number">41253</span>, avg=<span class="hljs-number">14163.74</span>, stdev=<span class="hljs-number">9476.51</span><br>    clat (msec): min=<span class="hljs-number">90</span>, max=<span class="hljs-number">2159</span>, avg=<span class="hljs-number">1409.08</span>, stdev=<span class="hljs-number">569.89</span><br>     lat (msec): min=<span class="hljs-number">106</span>, max=<span class="hljs-number">2166</span>, avg=<span class="hljs-number">1423.24</span>, stdev=<span class="hljs-number">570.40</span><br>    clat percentiles (msec):<br>     |  <span class="hljs-number">1.</span>00th=[  <span class="hljs-number">123</span>],  <span class="hljs-number">5.</span>00th=[  <span class="hljs-number">347</span>], <span class="hljs-number">10.</span>00th=[  <span class="hljs-number">523</span>], <span class="hljs-number">20.</span>00th=[  <span class="hljs-number">768</span>],<br>     | <span class="hljs-number">30.</span>00th=[ <span class="hljs-number">1062</span>], <span class="hljs-number">40.</span>00th=[ <span class="hljs-number">1418</span>], <span class="hljs-number">50.</span>00th=[ <span class="hljs-number">1703</span>], <span class="hljs-number">60.</span>00th=[ <span class="hljs-number">1770</span>],<br>     | <span class="hljs-number">70.</span>00th=[ <span class="hljs-number">1854</span>], <span class="hljs-number">80.</span>00th=[ <span class="hljs-number">1905</span>], <span class="hljs-number">90.</span>00th=[ <span class="hljs-number">1938</span>], <span class="hljs-number">95.</span>00th=[ <span class="hljs-number">2005</span>],<br>     | <span class="hljs-number">99.</span>00th=[ <span class="hljs-number">2056</span>], <span class="hljs-number">99.</span>50th=[ <span class="hljs-number">2056</span>], <span class="hljs-number">99.</span>90th=[ <span class="hljs-number">2165</span>], <span class="hljs-number">99.</span>95th=[ <span class="hljs-number">2165</span>],<br>     | <span class="hljs-number">99.</span>99th=[ <span class="hljs-number">2165</span>]<br>   bw (  <span class="hljs-title class_">KiB</span>/s): min=<span class="hljs-number">90112</span>, max=<span class="hljs-number">327680</span>, per=<span class="hljs-number">88.57</span>%, avg=<span class="hljs-number">249856.00</span>, stdev=<span class="hljs-number">110414.87</span>, samples=<span class="hljs-number">4</span><br>   iops        : min=   <span class="hljs-number">22</span>, max=   <span class="hljs-number">80</span>, avg=<span class="hljs-number">61.00</span>, stdev=<span class="hljs-number">26.96</span>, samples=<span class="hljs-number">4</span><br>  lat (msec)   : <span class="hljs-number">100</span>=<span class="hljs-number">0.39</span>%, <span class="hljs-number">250</span>=<span class="hljs-number">2.73</span>%, <span class="hljs-number">500</span>=<span class="hljs-number">6.25</span>%, <span class="hljs-number">750</span>=<span class="hljs-number">9.38</span>%, <span class="hljs-number">1000</span>=<span class="hljs-number">8.20</span>%<br>  lat (msec)   : <span class="hljs-number">2000</span>=<span class="hljs-number">67.97</span>%, &gt;=<span class="hljs-number">2000</span>=<span class="hljs-number">5.08</span>%<br>  cpu          : usr=<span class="hljs-number">0.03</span>%, sys=<span class="hljs-number">7.56</span>%, ctx=<span class="hljs-number">255</span>, majf=<span class="hljs-number">0</span>, minf=<span class="hljs-number">801</span><br>  <span class="hljs-variable constant_">IO</span> depths    : <span class="hljs-number">1</span>=<span class="hljs-number">0.4</span>%, <span class="hljs-number">2</span>=<span class="hljs-number">0.8</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">1.6</span>%, <span class="hljs-number">8</span>=<span class="hljs-number">3.1</span>%, <span class="hljs-number">16</span>=<span class="hljs-number">6.2</span>%, <span class="hljs-number">32</span>=<span class="hljs-number">12.5</span>%, &gt;=<span class="hljs-number">64</span>=<span class="hljs-number">75.4</span>%<br>     submit    : <span class="hljs-number">0</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">100.0</span>%, <span class="hljs-number">8</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">16</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">32</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">64</span>=<span class="hljs-number">0.0</span>%, &gt;=<span class="hljs-number">64</span>=<span class="hljs-number">0.0</span>%<br>     complete  : <span class="hljs-number">0</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">99.2</span>%, <span class="hljs-number">8</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">16</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">32</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">64</span>=<span class="hljs-number">0.0</span>%, &gt;=<span class="hljs-number">64</span>=<span class="hljs-number">0.8</span>%<br>     issued <span class="hljs-attr">rwt</span>: total=<span class="hljs-number">256</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>, short=<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>, dropped=<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span><br>     latency   : target=<span class="hljs-number">0</span>, <span class="hljs-variable language_">window</span>=<span class="hljs-number">0</span>, percentile=<span class="hljs-number">100.00</span>%, depth=<span class="hljs-number">128</span><br><span class="hljs-title class_">Run</span> status group <span class="hljs-number">0</span> (all jobs):<br>   <span class="hljs-attr">READ</span>: bw=275MiB/s (289MB/s), 275MiB/s-275MiB/s (289MB/s-289MB/s), io=1024MiB (1074MB), run=<span class="hljs-number">3717</span>-3717msec<br><span class="hljs-title class_">Disk</span> stats (read/write):<br>  <span class="hljs-attr">sde</span>: ios=<span class="hljs-number">8064</span>/<span class="hljs-number">0</span>, merge=<span class="hljs-number">0</span>/<span class="hljs-number">0</span>, ticks=<span class="hljs-number">508040</span>/<span class="hljs-number">0</span>, in_queue=<span class="hljs-number">515960</span>, util=<span class="hljs-number">97.27</span>%<br></code></pre></td></tr></table></figure>
+
+<p>复制</p>
+<h3 id="2-1-3-顺序写-block-size-4M"><a href="#2-1-3-顺序写-block-size-4M" class="headerlink" title="2.1.3 顺序写(block size 4M)"></a>2.1.3 顺序写(block size 4M)</h3><p>&#x2F;&#x2F;block size是4M, 30个线程并发，持续时间200s 测试结果：带宽：224MB&#x2F;s  平均IOPS： 53  运行时长：4785ms   耗时：1819ms</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs javascript">$ fio -direct=<span class="hljs-number">1</span> -iodepth=<span class="hljs-number">128</span> -rw=write -ioengine=libaio -bs=4M -size=1G -numjobs=<span class="hljs-number">1</span> -runtime=<span class="hljs-number">1000</span> -group_reporting -filename=<span class="hljs-regexp">/var/</span>lib/ceph/osd/ceph-<span class="hljs-number">3</span>/test00123 -name=<span class="hljs-title class_">Write</span>_PPS_Testing<br><span class="hljs-title class_">Write</span><span class="hljs-attr">_PPS_Testing</span>: (g=<span class="hljs-number">0</span>): rw=write, bs=(R) 4096KiB-4096KiB, (W) 4096KiB-4096KiB, (T) 4096KiB-4096KiB, ioengine=libaio, iodepth=<span class="hljs-number">128</span><br>fio-<span class="hljs-number">3.1</span><br><span class="hljs-title class_">Starting</span> <span class="hljs-number">1</span> process<br><span class="hljs-title class_">Write</span><span class="hljs-attr">_PPS_Testing</span>: <span class="hljs-title class_">Laying</span> out <span class="hljs-variable constant_">IO</span> file (<span class="hljs-number">1</span> file / 1024MiB)<br><span class="hljs-title class_">Jobs</span>: <span class="hljs-number">1</span> (f=<span class="hljs-number">1</span>): [<span class="hljs-title function_">W</span>(<span class="hljs-number">1</span>)][<span class="hljs-number">50.0</span>%][r=0KiB/s,w=228MiB/s][r=<span class="hljs-number">0</span>,w=<span class="hljs-number">57</span> <span class="hljs-variable constant_">IOPS</span>][eta 00<span class="hljs-attr">m</span>:05s]<br><span class="hljs-title class_">Write</span><span class="hljs-attr">_PPS_Testing</span>: (groupid=<span class="hljs-number">0</span>, jobs=<span class="hljs-number">1</span>): err= <span class="hljs-number">0</span>: pid=<span class="hljs-number">3653</span>: <span class="hljs-title class_">Thu</span> <span class="hljs-title class_">Jun</span>  <span class="hljs-number">7</span> <span class="hljs-number">16</span>:<span class="hljs-number">50</span>:<span class="hljs-number">53</span> <span class="hljs-number">2018</span><br>  <span class="hljs-attr">write</span>: <span class="hljs-variable constant_">IOPS</span>=<span class="hljs-number">53</span>, <span class="hljs-variable constant_">BW</span>=214MiB/s (224MB/s)(1024MiB/4785msec)<br>    slat (usec): min=<span class="hljs-number">544</span>, max=<span class="hljs-number">41043</span>, avg=<span class="hljs-number">18384.66</span>, stdev=<span class="hljs-number">3151.59</span><br>    clat (msec): min=<span class="hljs-number">77</span>, max=<span class="hljs-number">2476</span>, avg=<span class="hljs-number">1801.54</span>, stdev=<span class="hljs-number">762.46</span><br>     lat (msec): min=<span class="hljs-number">95</span>, max=<span class="hljs-number">2496</span>, avg=<span class="hljs-number">1819.93</span>, stdev=<span class="hljs-number">762.97</span><br>    clat percentiles (msec):<br>     |  <span class="hljs-number">1.</span>00th=[  <span class="hljs-number">113</span>],  <span class="hljs-number">5.</span>00th=[  <span class="hljs-number">288</span>], <span class="hljs-number">10.</span>00th=[  <span class="hljs-number">518</span>], <span class="hljs-number">20.</span>00th=[  <span class="hljs-number">978</span>],<br>     | <span class="hljs-number">30.</span>00th=[ <span class="hljs-number">1418</span>], <span class="hljs-number">40.</span>00th=[ <span class="hljs-number">1888</span>], <span class="hljs-number">50.</span>00th=[ <span class="hljs-number">2299</span>], <span class="hljs-number">60.</span>00th=[ <span class="hljs-number">2333</span>],<br>     | <span class="hljs-number">70.</span>00th=[ <span class="hljs-number">2400</span>], <span class="hljs-number">80.</span>00th=[ <span class="hljs-number">2433</span>], <span class="hljs-number">90.</span>00th=[ <span class="hljs-number">2467</span>], <span class="hljs-number">95.</span>00th=[ <span class="hljs-number">2467</span>],<br>     | <span class="hljs-number">99.</span>00th=[ <span class="hljs-number">2467</span>], <span class="hljs-number">99.</span>50th=[ <span class="hljs-number">2467</span>], <span class="hljs-number">99.</span>90th=[ <span class="hljs-number">2467</span>], <span class="hljs-number">99.</span>95th=[ <span class="hljs-number">2467</span>],<br>     | <span class="hljs-number">99.</span>99th=[ <span class="hljs-number">2467</span>]<br>   bw (  <span class="hljs-title class_">KiB</span>/s): min=<span class="hljs-number">49152</span>, max=<span class="hljs-number">237568</span>, per=<span class="hljs-number">87.48</span>%, avg=<span class="hljs-number">191692.80</span>, stdev=<span class="hljs-number">80181.23</span>, samples=<span class="hljs-number">5</span><br>   iops        : min=   <span class="hljs-number">12</span>, max=   <span class="hljs-number">58</span>, avg=<span class="hljs-number">46.80</span>, stdev=<span class="hljs-number">19.58</span>, samples=<span class="hljs-number">5</span><br>  lat (msec)   : <span class="hljs-number">100</span>=<span class="hljs-number">0.78</span>%, <span class="hljs-number">250</span>=<span class="hljs-number">3.12</span>%, <span class="hljs-number">500</span>=<span class="hljs-number">5.47</span>%, <span class="hljs-number">750</span>=<span class="hljs-number">5.86</span>%, <span class="hljs-number">1000</span>=<span class="hljs-number">5.47</span>%<br>  lat (msec)   : <span class="hljs-number">2000</span>=<span class="hljs-number">21.88</span>%, &gt;=<span class="hljs-number">2000</span>=<span class="hljs-number">57.42</span>%<br>  cpu          : usr=<span class="hljs-number">1.28</span>%, sys=<span class="hljs-number">2.72</span>%, ctx=<span class="hljs-number">260</span>, majf=<span class="hljs-number">0</span>, minf=<span class="hljs-number">30</span><br>  <span class="hljs-variable constant_">IO</span> depths    : <span class="hljs-number">1</span>=<span class="hljs-number">0.4</span>%, <span class="hljs-number">2</span>=<span class="hljs-number">0.8</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">1.6</span>%, <span class="hljs-number">8</span>=<span class="hljs-number">3.1</span>%, <span class="hljs-number">16</span>=<span class="hljs-number">6.2</span>%, <span class="hljs-number">32</span>=<span class="hljs-number">12.5</span>%, &gt;=<span class="hljs-number">64</span>=<span class="hljs-number">75.4</span>%<br>     submit    : <span class="hljs-number">0</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">100.0</span>%, <span class="hljs-number">8</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">16</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">32</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">64</span>=<span class="hljs-number">0.0</span>%, &gt;=<span class="hljs-number">64</span>=<span class="hljs-number">0.0</span>%<br>     complete  : <span class="hljs-number">0</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">99.2</span>%, <span class="hljs-number">8</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">16</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">32</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">64</span>=<span class="hljs-number">0.0</span>%, &gt;=<span class="hljs-number">64</span>=<span class="hljs-number">0.8</span>%<br>     issued <span class="hljs-attr">rwt</span>: total=<span class="hljs-number">0</span>,<span class="hljs-number">256</span>,<span class="hljs-number">0</span>, short=<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>, dropped=<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span><br>     latency   : target=<span class="hljs-number">0</span>, <span class="hljs-variable language_">window</span>=<span class="hljs-number">0</span>, percentile=<span class="hljs-number">100.00</span>%, depth=<span class="hljs-number">128</span><br><span class="hljs-title class_">Run</span> status group <span class="hljs-number">0</span> (all jobs):<br>  <span class="hljs-attr">WRITE</span>: bw=214MiB/s (224MB/s), 214MiB/s-214MiB/s (224MB/s-224MB/s), io=1024MiB (1074MB), run=<span class="hljs-number">4785</span>-4785msec<br><span class="hljs-title class_">Disk</span> stats (read/write):<br>  <span class="hljs-attr">sde</span>: ios=<span class="hljs-number">0</span>/<span class="hljs-number">7899</span>, merge=<span class="hljs-number">0</span>/<span class="hljs-number">0</span>, ticks=<span class="hljs-number">0</span>/<span class="hljs-number">652613</span>, in_queue=<span class="hljs-number">658268</span>, util=<span class="hljs-number">92.57</span>%<br></code></pre></td></tr></table></figure>
+
+<p>复制</p>
+<h3 id="2-1-4-随机写-block-size-4M"><a href="#2-1-4-随机写-block-size-4M" class="headerlink" title="2.1.4 随机写(block size 4M)"></a>2.1.4 随机写(block size 4M)</h3><p>&#x2F;&#x2F;block size是4M, 30个线程并发，持续时间200s 测试结果：带宽：197MB&#x2F;s  平均IOPS： 46   运行时长：5454ms 耗时：ss50ms</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs javascript">$ fio -direct=<span class="hljs-number">1</span> -iodepth=<span class="hljs-number">128</span> -rw=randwrite -ioengine=libaio -bs=4M -size=1G -numjobs=<span class="hljs-number">1</span> -runtime=<span class="hljs-number">1000</span> -group_reporting -filename=<span class="hljs-regexp">/var/</span>lib/ceph/osd/ceph-<span class="hljs-number">3</span>/test001234 -name=<span class="hljs-title class_">Rand</span>_Write_Testing<br><span class="hljs-title class_">Rand</span><span class="hljs-attr">_Write_Testing</span>: (g=<span class="hljs-number">0</span>): rw=randwrite, bs=(R) 4096KiB-4096KiB, (W) 4096KiB-4096KiB, (T) 4096KiB-4096KiB, ioengine=libaio, iodepth=<span class="hljs-number">128</span><br>fio-<span class="hljs-number">3.1</span><br><span class="hljs-title class_">Starting</span> <span class="hljs-number">1</span> process<br><span class="hljs-title class_">Rand</span><span class="hljs-attr">_Write_Testing</span>: <span class="hljs-title class_">Laying</span> out <span class="hljs-variable constant_">IO</span> file (<span class="hljs-number">1</span> file / 1024MiB)<br><span class="hljs-title class_">Jobs</span>: <span class="hljs-number">1</span> (f=<span class="hljs-number">1</span>): [<span class="hljs-title function_">w</span>(<span class="hljs-number">1</span>)][<span class="hljs-number">54.5</span>%][r=0KiB/s,w=144MiB/s][r=<span class="hljs-number">0</span>,w=<span class="hljs-number">36</span> <span class="hljs-variable constant_">IOPS</span>][eta 00<span class="hljs-attr">m</span>:05s]<br><span class="hljs-title class_">Rand</span><span class="hljs-attr">_Write_Testing</span>: (groupid=<span class="hljs-number">0</span>, jobs=<span class="hljs-number">1</span>): err= <span class="hljs-number">0</span>: pid=<span class="hljs-number">6773</span>: <span class="hljs-title class_">Thu</span> <span class="hljs-title class_">Jun</span>  <span class="hljs-number">7</span> <span class="hljs-number">16</span>:<span class="hljs-number">53</span>:<span class="hljs-number">28</span> <span class="hljs-number">2018</span><br>  <span class="hljs-attr">write</span>: <span class="hljs-variable constant_">IOPS</span>=<span class="hljs-number">46</span>, <span class="hljs-variable constant_">BW</span>=188MiB/s (197MB/s)(1024MiB/5454msec)<br>    slat (usec): min=<span class="hljs-number">539</span>, max=<span class="hljs-number">100202</span>, avg=<span class="hljs-number">20492.25</span>, stdev=<span class="hljs-number">15576.03</span><br>    clat (msec): min=<span class="hljs-number">206</span>, max=<span class="hljs-number">3281</span>, avg=<span class="hljs-number">2230.30</span>, stdev=<span class="hljs-number">822.98</span><br>     lat (msec): min=<span class="hljs-number">211</span>, max=<span class="hljs-number">3291</span>, avg=<span class="hljs-number">2250.79</span>, stdev=<span class="hljs-number">821.50</span><br>    clat percentiles (msec):<br>     |  <span class="hljs-number">1.</span>00th=[  <span class="hljs-number">247</span>],  <span class="hljs-number">5.</span>00th=[  <span class="hljs-number">531</span>], <span class="hljs-number">10.</span>00th=[  <span class="hljs-number">768</span>], <span class="hljs-number">20.</span>00th=[ <span class="hljs-number">1452</span>],<br>     | <span class="hljs-number">30.</span>00th=[ <span class="hljs-number">2005</span>], <span class="hljs-number">40.</span>00th=[ <span class="hljs-number">2366</span>], <span class="hljs-number">50.</span>00th=[ <span class="hljs-number">2534</span>], <span class="hljs-number">60.</span>00th=[ <span class="hljs-number">2635</span>],<br>     | <span class="hljs-number">70.</span>00th=[ <span class="hljs-number">2769</span>], <span class="hljs-number">80.</span>00th=[ <span class="hljs-number">2937</span>], <span class="hljs-number">90.</span>00th=[ <span class="hljs-number">3037</span>], <span class="hljs-number">95.</span>00th=[ <span class="hljs-number">3071</span>],<br>     | <span class="hljs-number">99.</span>00th=[ <span class="hljs-number">3205</span>], <span class="hljs-number">99.</span>50th=[ <span class="hljs-number">3239</span>], <span class="hljs-number">99.</span>90th=[ <span class="hljs-number">3272</span>], <span class="hljs-number">99.</span>95th=[ <span class="hljs-number">3272</span>],<br>     | <span class="hljs-number">99.</span>99th=[ <span class="hljs-number">3272</span>]<br>   bw (  <span class="hljs-title class_">KiB</span>/s): min=<span class="hljs-number">114688</span>, max=<span class="hljs-number">188416</span>, per=<span class="hljs-number">83.80</span>%, avg=<span class="hljs-number">161109.33</span>, stdev=<span class="hljs-number">26248.51</span>, samples=<span class="hljs-number">6</span><br>   iops        : min=   <span class="hljs-number">28</span>, max=   <span class="hljs-number">46</span>, avg=<span class="hljs-number">39.33</span>, stdev= <span class="hljs-number">6.41</span>, samples=<span class="hljs-number">6</span><br>  lat (msec)   : <span class="hljs-number">250</span>=<span class="hljs-number">1.17</span>%, <span class="hljs-number">500</span>=<span class="hljs-number">3.52</span>%, <span class="hljs-number">750</span>=<span class="hljs-number">5.08</span>%, <span class="hljs-number">1000</span>=<span class="hljs-number">3.52</span>%, <span class="hljs-number">2000</span>=<span class="hljs-number">16.41</span>%<br>  lat (msec)   : &gt;=<span class="hljs-number">2000</span>=<span class="hljs-number">70.31</span>%<br>  cpu          : usr=<span class="hljs-number">1.23</span>%, sys=<span class="hljs-number">2.38</span>%, ctx=<span class="hljs-number">262</span>, majf=<span class="hljs-number">0</span>, minf=<span class="hljs-number">30</span><br>  <span class="hljs-variable constant_">IO</span> depths    : <span class="hljs-number">1</span>=<span class="hljs-number">0.4</span>%, <span class="hljs-number">2</span>=<span class="hljs-number">0.8</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">1.6</span>%, <span class="hljs-number">8</span>=<span class="hljs-number">3.1</span>%, <span class="hljs-number">16</span>=<span class="hljs-number">6.2</span>%, <span class="hljs-number">32</span>=<span class="hljs-number">12.5</span>%, &gt;=<span class="hljs-number">64</span>=<span class="hljs-number">75.4</span>%<br>     submit    : <span class="hljs-number">0</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">100.0</span>%, <span class="hljs-number">8</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">16</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">32</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">64</span>=<span class="hljs-number">0.0</span>%, &gt;=<span class="hljs-number">64</span>=<span class="hljs-number">0.0</span>%<br>     complete  : <span class="hljs-number">0</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">99.2</span>%, <span class="hljs-number">8</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">16</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">32</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">64</span>=<span class="hljs-number">0.0</span>%, &gt;=<span class="hljs-number">64</span>=<span class="hljs-number">0.8</span>%<br>     issued <span class="hljs-attr">rwt</span>: total=<span class="hljs-number">0</span>,<span class="hljs-number">256</span>,<span class="hljs-number">0</span>, short=<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>, dropped=<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span><br>     latency   : target=<span class="hljs-number">0</span>, <span class="hljs-variable language_">window</span>=<span class="hljs-number">0</span>, percentile=<span class="hljs-number">100.00</span>%, depth=<span class="hljs-number">128</span><br><span class="hljs-title class_">Run</span> status group <span class="hljs-number">0</span> (all jobs):<br>  <span class="hljs-attr">WRITE</span>: bw=188MiB/s (197MB/s), 188MiB/s-188MiB/s (197MB/s-197MB/s), io=1024MiB (1074MB), run=<span class="hljs-number">5454</span>-5454msec<br><span class="hljs-title class_">Disk</span> stats (read/write):<br>  <span class="hljs-attr">sde</span>: ios=<span class="hljs-number">0</span>/<span class="hljs-number">8140</span>, merge=<span class="hljs-number">0</span>/<span class="hljs-number">0</span>, ticks=<span class="hljs-number">0</span>/<span class="hljs-number">717641</span>, in_queue=<span class="hljs-number">725290</span>, util=<span class="hljs-number">93.59</span>%<br></code></pre></td></tr></table></figure>
+
+<p>复制</p>
+<h3 id="2-1-5-顺序读-block-size-4k"><a href="#2-1-5-顺序读-block-size-4k" class="headerlink" title="2.1.5 顺序读(block size 4k)"></a>2.1.5 顺序读(block size 4k)</h3><p>&#x2F;&#x2F;block size是4M, 30个线程并发，持续时间200s 测试结果：带宽：264MB&#x2F;s  平均IOPS： 64.4k  运行时长：4068ms 耗时：1.9ms</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs javascript">$ fio -direct=<span class="hljs-number">1</span> -iodepth=<span class="hljs-number">128</span> -rw=read -ioengine=libaio -bs=4k -size=1G -numjobs=<span class="hljs-number">1</span> -runtime=<span class="hljs-number">1000</span> -group_reporting -filename=<span class="hljs-regexp">/var/</span>lib/ceph/osd/ceph-<span class="hljs-number">3</span>/test0012 -name=<span class="hljs-title class_">Read</span>_PPS_Testing<br><span class="hljs-title class_">Read</span><span class="hljs-attr">_PPS_Testing</span>: (g=<span class="hljs-number">0</span>): rw=read, bs=(R) 4096B-4096B, (W) 4096B-4096B, (T) 4096B-4096B, ioengine=libaio, iodepth=<span class="hljs-number">128</span><br>fio-<span class="hljs-number">3.1</span><br><span class="hljs-title class_">Starting</span> <span class="hljs-number">1</span> process<br><span class="hljs-title class_">Jobs</span>: <span class="hljs-number">1</span> (f=<span class="hljs-number">1</span>): [<span class="hljs-title function_">R</span>(<span class="hljs-number">1</span>)][<span class="hljs-number">100.0</span>%][r=269MiB/s,w=0KiB/s][r=<span class="hljs-number">68.</span>9k,w=<span class="hljs-number">0</span> <span class="hljs-variable constant_">IOPS</span>][eta 00<span class="hljs-attr">m</span>:00s]<br><span class="hljs-title class_">Read</span><span class="hljs-attr">_PPS_Testing</span>: (groupid=<span class="hljs-number">0</span>, jobs=<span class="hljs-number">1</span>): err= <span class="hljs-number">0</span>: pid=<span class="hljs-number">20688</span>: <span class="hljs-title class_">Thu</span> <span class="hljs-title class_">Jun</span>  <span class="hljs-number">7</span> <span class="hljs-number">16</span>:<span class="hljs-number">28</span>:<span class="hljs-number">49</span> <span class="hljs-number">2018</span><br>   <span class="hljs-attr">read</span>: <span class="hljs-variable constant_">IOPS</span>=<span class="hljs-number">64.</span>4k, <span class="hljs-variable constant_">BW</span>=252MiB/s (264MB/s)(1024MiB/4068msec)<br>    slat (usec): min=<span class="hljs-number">2</span>, max=<span class="hljs-number">571</span>, avg= <span class="hljs-number">3.75</span>, stdev= <span class="hljs-number">3.81</span><br>    clat (usec): min=<span class="hljs-number">136</span>, max=<span class="hljs-number">1011.</span>5k, avg=<span class="hljs-number">1981.49</span>, stdev=<span class="hljs-number">17975.31</span><br>     lat (usec): min=<span class="hljs-number">140</span>, max=<span class="hljs-number">1011.</span>5k, avg=<span class="hljs-number">1985.32</span>, stdev=<span class="hljs-number">17975.32</span><br>    clat percentiles (usec):<br>     |  <span class="hljs-number">1.</span>00th=[    <span class="hljs-number">338</span>],  <span class="hljs-number">5.</span>00th=[    <span class="hljs-number">429</span>], <span class="hljs-number">10.</span>00th=[    <span class="hljs-number">603</span>],<br>     | <span class="hljs-number">20.</span>00th=[    <span class="hljs-number">898</span>], <span class="hljs-number">30.</span>00th=[    <span class="hljs-number">979</span>], <span class="hljs-number">40.</span>00th=[   <span class="hljs-number">1844</span>],<br>     | <span class="hljs-number">50.</span>00th=[   <span class="hljs-number">1926</span>], <span class="hljs-number">60.</span>00th=[   <span class="hljs-number">1942</span>], <span class="hljs-number">70.</span>00th=[   <span class="hljs-number">1975</span>],<br>     | <span class="hljs-number">80.</span>00th=[   <span class="hljs-number">2024</span>], <span class="hljs-number">90.</span>00th=[   <span class="hljs-number">2442</span>], <span class="hljs-number">95.</span>00th=[   <span class="hljs-number">2507</span>],<br>     | <span class="hljs-number">99.</span>00th=[   <span class="hljs-number">2835</span>], <span class="hljs-number">99.</span>50th=[   <span class="hljs-number">5211</span>], <span class="hljs-number">99.</span>90th=[  <span class="hljs-number">13173</span>],<br>     | <span class="hljs-number">99.</span>95th=[  <span class="hljs-number">34866</span>], <span class="hljs-number">99.</span>99th=[<span class="hljs-number">1002439</span>]<br>   bw (  <span class="hljs-title class_">KiB</span>/s): min=<span class="hljs-number">203744</span>, max=<span class="hljs-number">359656</span>, per=<span class="hljs-number">98.11</span>%, avg=<span class="hljs-number">252880.00</span>, stdev=<span class="hljs-number">46299.89</span>, samples=<span class="hljs-number">8</span><br>   iops        : min=<span class="hljs-number">50936</span>, max=<span class="hljs-number">89914</span>, avg=<span class="hljs-number">63219.75</span>, stdev=<span class="hljs-number">11575.00</span>, samples=<span class="hljs-number">8</span><br>  lat (usec)   : <span class="hljs-number">250</span>=<span class="hljs-number">0.01</span>%, <span class="hljs-number">500</span>=<span class="hljs-number">8.59</span>%, <span class="hljs-number">750</span>=<span class="hljs-number">2.98</span>%, <span class="hljs-number">1000</span>=<span class="hljs-number">19.20</span>%<br>  lat (msec)   : <span class="hljs-number">2</span>=<span class="hljs-number">47.72</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">20.85</span>%, <span class="hljs-number">10</span>=<span class="hljs-number">0.46</span>%, <span class="hljs-number">20</span>=<span class="hljs-number">0.10</span>%, <span class="hljs-number">50</span>=<span class="hljs-number">0.05</span>%<br>  lat (msec)   : <span class="hljs-number">2000</span>=<span class="hljs-number">0.03</span>%<br>  cpu          : usr=<span class="hljs-number">4.25</span>%, sys=<span class="hljs-number">26.01</span>%, ctx=<span class="hljs-number">43067</span>, majf=<span class="hljs-number">0</span>, minf=<span class="hljs-number">163</span><br>  <span class="hljs-variable constant_">IO</span> depths    : <span class="hljs-number">1</span>=<span class="hljs-number">0.1</span>%, <span class="hljs-number">2</span>=<span class="hljs-number">0.1</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">0.1</span>%, <span class="hljs-number">8</span>=<span class="hljs-number">0.1</span>%, <span class="hljs-number">16</span>=<span class="hljs-number">0.1</span>%, <span class="hljs-number">32</span>=<span class="hljs-number">0.1</span>%, &gt;=<span class="hljs-number">64</span>=<span class="hljs-number">100.0</span>%<br>     submit    : <span class="hljs-number">0</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">100.0</span>%, <span class="hljs-number">8</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">16</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">32</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">64</span>=<span class="hljs-number">0.0</span>%, &gt;=<span class="hljs-number">64</span>=<span class="hljs-number">0.0</span>%<br>     complete  : <span class="hljs-number">0</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">100.0</span>%, <span class="hljs-number">8</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">16</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">32</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">64</span>=<span class="hljs-number">0.0</span>%, &gt;=<span class="hljs-number">64</span>=<span class="hljs-number">0.1</span>%<br>     issued <span class="hljs-attr">rwt</span>: total=<span class="hljs-number">262144</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>, short=<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>, dropped=<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span><br>     latency   : target=<span class="hljs-number">0</span>, <span class="hljs-variable language_">window</span>=<span class="hljs-number">0</span>, percentile=<span class="hljs-number">100.00</span>%, depth=<span class="hljs-number">128</span><br><span class="hljs-title class_">Run</span> status group <span class="hljs-number">0</span> (all jobs):<br>   <span class="hljs-attr">READ</span>: bw=252MiB/s (264MB/s), 252MiB/s-252MiB/s (264MB/s-264MB/s), io=1024MiB (1074MB), run=<span class="hljs-number">4068</span>-4068msec<br><span class="hljs-title class_">Disk</span> stats (read/write):<br>  <span class="hljs-attr">sde</span>: ios=<span class="hljs-number">239348</span>/<span class="hljs-number">0</span>, merge=<span class="hljs-number">0</span>/<span class="hljs-number">0</span>, ticks=<span class="hljs-number">490468</span>/<span class="hljs-number">0</span>, in_queue=<span class="hljs-number">490489</span>, util=<span class="hljs-number">97.52</span>%<br></code></pre></td></tr></table></figure>
+
+<p>复制</p>
+<h3 id="2-1-6-随机读-block-size-4k"><a href="#2-1-6-随机读-block-size-4k" class="headerlink" title="2.1.6 随机读(block size 4k)"></a>2.1.6 随机读(block size 4k)</h3><p>&#x2F;&#x2F;block size是4M, 30个线程并发，持续时间200s 测试结果：带宽：2900kB&#x2F;s  平均IOPS： 707  运行时长：370303ms   耗时：180ms</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs javascript">fio -direct=<span class="hljs-number">1</span> -iodepth=<span class="hljs-number">128</span> -rw=randread -ioengine=libaio -bs=4k -size=1G -numjobs=<span class="hljs-number">1</span> -runtime=<span class="hljs-number">1000</span> -group_reporting -filename=<span class="hljs-regexp">/var/</span>lib/ceph/osd/ceph-<span class="hljs-number">3</span>/test00 -name=<span class="hljs-title class_">Rand</span>_Read_Testing<br><span class="hljs-title class_">Rand</span><span class="hljs-attr">_Read_Testing</span>: (g=<span class="hljs-number">0</span>): rw=randread, bs=(R) 4096B-4096B, (W) 4096B-4096B, (T) 4096B-4096B, ioengine=libaio, iodepth=<span class="hljs-number">128</span><br>fio-<span class="hljs-number">3.1</span><br><span class="hljs-title class_">Starting</span> <span class="hljs-number">1</span> process<br><span class="hljs-title class_">Jobs</span>: <span class="hljs-number">1</span> (f=<span class="hljs-number">1</span>): [<span class="hljs-title function_">r</span>(<span class="hljs-number">1</span>)][<span class="hljs-number">99.7</span>%][r=8072KiB/s,w=0KiB/s][r=<span class="hljs-number">2018</span>,w=<span class="hljs-number">0</span> <span class="hljs-variable constant_">IOPS</span>][eta 00<span class="hljs-attr">m</span>:01s]<br><span class="hljs-title class_">Rand</span><span class="hljs-attr">_Read_Testing</span>: (groupid=<span class="hljs-number">0</span>, jobs=<span class="hljs-number">1</span>): err= <span class="hljs-number">0</span>: pid=<span class="hljs-number">38517</span>: <span class="hljs-title class_">Thu</span> <span class="hljs-title class_">Jun</span>  <span class="hljs-number">7</span> <span class="hljs-number">16</span>:<span class="hljs-number">15</span>:<span class="hljs-number">43</span> <span class="hljs-number">2018</span><br>   <span class="hljs-attr">read</span>: <span class="hljs-variable constant_">IOPS</span>=<span class="hljs-number">707</span>, <span class="hljs-variable constant_">BW</span>=2832KiB/s (2900kB/s)(1024MiB/370303msec)<br>    slat (usec): min=<span class="hljs-number">2</span>, max=<span class="hljs-number">855</span>, avg= <span class="hljs-number">3.61</span>, stdev= <span class="hljs-number">2.17</span><br>    clat (msec): min=<span class="hljs-number">11</span>, max=<span class="hljs-number">962</span>, avg=<span class="hljs-number">180.81</span>, stdev=<span class="hljs-number">55.54</span><br>     lat (msec): min=<span class="hljs-number">11</span>, max=<span class="hljs-number">962</span>, avg=<span class="hljs-number">180.81</span>, stdev=<span class="hljs-number">55.54</span><br>    clat percentiles (msec):<br>     |  <span class="hljs-number">1.</span>00th=[   <span class="hljs-number">66</span>],  <span class="hljs-number">5.</span>00th=[  <span class="hljs-number">133</span>], <span class="hljs-number">10.</span>00th=[  <span class="hljs-number">140</span>], <span class="hljs-number">20.</span>00th=[  <span class="hljs-number">148</span>],<br>     | <span class="hljs-number">30.</span>00th=[  <span class="hljs-number">153</span>], <span class="hljs-number">40.</span>00th=[  <span class="hljs-number">159</span>], <span class="hljs-number">50.</span>00th=[  <span class="hljs-number">167</span>], <span class="hljs-number">60.</span>00th=[  <span class="hljs-number">176</span>],<br>     | <span class="hljs-number">70.</span>00th=[  <span class="hljs-number">188</span>], <span class="hljs-number">80.</span>00th=[  <span class="hljs-number">207</span>], <span class="hljs-number">90.</span>00th=[  <span class="hljs-number">245</span>], <span class="hljs-number">95.</span>00th=[  <span class="hljs-number">284</span>],<br>     | <span class="hljs-number">99.</span>00th=[  <span class="hljs-number">393</span>], <span class="hljs-number">99.</span>50th=[  <span class="hljs-number">443</span>], <span class="hljs-number">99.</span>90th=[  <span class="hljs-number">558</span>], <span class="hljs-number">99.</span>95th=[  <span class="hljs-number">609</span>],<br>     | <span class="hljs-number">99.</span>99th=[  <span class="hljs-number">726</span>]<br>   bw (  <span class="hljs-title class_">KiB</span>/s): min= <span class="hljs-number">1704</span>, max= <span class="hljs-number">8384</span>, per=<span class="hljs-number">99.80</span>%, avg=<span class="hljs-number">2825.44</span>, stdev=<span class="hljs-number">400.58</span>, samples=<span class="hljs-number">740</span><br>   iops        : min=  <span class="hljs-number">426</span>, max= <span class="hljs-number">2096</span>, avg=<span class="hljs-number">706.35</span>, stdev=<span class="hljs-number">100.15</span>, samples=<span class="hljs-number">740</span><br>  lat (msec)   : <span class="hljs-number">20</span>=<span class="hljs-number">0.01</span>%, <span class="hljs-number">50</span>=<span class="hljs-number">0.49</span>%, <span class="hljs-number">100</span>=<span class="hljs-number">1.75</span>%, <span class="hljs-number">250</span>=<span class="hljs-number">88.63</span>%, <span class="hljs-number">500</span>=<span class="hljs-number">8.90</span>%<br>  lat (msec)   : <span class="hljs-number">750</span>=<span class="hljs-number">0.22</span>%, <span class="hljs-number">1000</span>=<span class="hljs-number">0.01</span>%<br>  cpu          : usr=<span class="hljs-number">0.08</span>%, sys=<span class="hljs-number">0.31</span>%, ctx=<span class="hljs-number">65772</span>, majf=<span class="hljs-number">0</span>, minf=<span class="hljs-number">162</span><br>  <span class="hljs-variable constant_">IO</span> depths    : <span class="hljs-number">1</span>=<span class="hljs-number">0.1</span>%, <span class="hljs-number">2</span>=<span class="hljs-number">0.1</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">0.1</span>%, <span class="hljs-number">8</span>=<span class="hljs-number">0.1</span>%, <span class="hljs-number">16</span>=<span class="hljs-number">0.1</span>%, <span class="hljs-number">32</span>=<span class="hljs-number">0.1</span>%, &gt;=<span class="hljs-number">64</span>=<span class="hljs-number">100.0</span>%<br>     submit    : <span class="hljs-number">0</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">100.0</span>%, <span class="hljs-number">8</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">16</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">32</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">64</span>=<span class="hljs-number">0.0</span>%, &gt;=<span class="hljs-number">64</span>=<span class="hljs-number">0.0</span>%<br>     complete  : <span class="hljs-number">0</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">100.0</span>%, <span class="hljs-number">8</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">16</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">32</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">64</span>=<span class="hljs-number">0.0</span>%, &gt;=<span class="hljs-number">64</span>=<span class="hljs-number">0.1</span>%<br>     issued <span class="hljs-attr">rwt</span>: total=<span class="hljs-number">262144</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>, short=<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>, dropped=<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span><br>     latency   : target=<span class="hljs-number">0</span>, <span class="hljs-variable language_">window</span>=<span class="hljs-number">0</span>, percentile=<span class="hljs-number">100.00</span>%, depth=<span class="hljs-number">128</span><br><span class="hljs-title class_">Run</span> status group <span class="hljs-number">0</span> (all jobs):<br>   <span class="hljs-attr">READ</span>: bw=2832KiB/s (2900kB/s), 2832KiB/s-2832KiB/s (2900kB/s-2900kB/s), io=1024MiB (1074MB), run=<span class="hljs-number">370303</span>-370303msec<br><span class="hljs-title class_">Disk</span> stats (read/write):<br>  <span class="hljs-attr">sde</span>: ios=<span class="hljs-number">261680</span>/<span class="hljs-number">152</span>, merge=<span class="hljs-number">0</span>/<span class="hljs-number">1</span>, ticks=<span class="hljs-number">47370387</span>/<span class="hljs-number">6</span>, in_queue=<span class="hljs-number">47374260</span>, util=<span class="hljs-number">100.00</span>%<br></code></pre></td></tr></table></figure>
+
+<p>复制</p>
+<h3 id="2-1-7-顺序写-block-size-4k"><a href="#2-1-7-顺序写-block-size-4k" class="headerlink" title="2.1.7 顺序写(block size 4k)"></a>2.1.7 顺序写(block size 4k)</h3><p>&#x2F;&#x2F;block size是4M, 30个线程并发，持续时间200s 测试结果：带宽：349MB&#x2F;s  平均IOPS： 85.3k  运行时长：3073ms  耗时：1.4ms</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs javascript"> fio -direct=<span class="hljs-number">1</span> -iodepth=<span class="hljs-number">128</span> -rw=write -ioengine=libaio -bs=4k -size=1G -numjobs=<span class="hljs-number">1</span> -runtime=<span class="hljs-number">1000</span> -group_reporting -filename=<span class="hljs-regexp">/var/</span>lib/ceph/osd/ceph-<span class="hljs-number">3</span>/test0012 -name=<span class="hljs-title class_">Write</span>_PPS_Testing<br><span class="hljs-title class_">Write</span><span class="hljs-attr">_PPS_Testing</span>: (g=<span class="hljs-number">0</span>): rw=write, bs=(R) 4096B-4096B, (W) 4096B-4096B, (T) 4096B-4096B, ioengine=libaio, iodepth=<span class="hljs-number">128</span><br>fio-<span class="hljs-number">3.1</span><br><span class="hljs-title class_">Starting</span> <span class="hljs-number">1</span> process<br><span class="hljs-title class_">Write</span><span class="hljs-attr">_PPS_Testing</span>: <span class="hljs-title class_">Laying</span> out <span class="hljs-variable constant_">IO</span> file (<span class="hljs-number">1</span> file / 1024MiB)<br><span class="hljs-title class_">Jobs</span>: <span class="hljs-number">1</span> (f=<span class="hljs-number">1</span>): [<span class="hljs-title function_">W</span>(<span class="hljs-number">1</span>)][-.-%][r=0KiB/s,w=330MiB/s][r=<span class="hljs-number">0</span>,w=<span class="hljs-number">84.</span>4k <span class="hljs-variable constant_">IOPS</span>][eta 00<span class="hljs-attr">m</span>:00s]<br><span class="hljs-title class_">Write</span><span class="hljs-attr">_PPS_Testing</span>: (groupid=<span class="hljs-number">0</span>, jobs=<span class="hljs-number">1</span>): err= <span class="hljs-number">0</span>: pid=<span class="hljs-number">17836</span>: <span class="hljs-title class_">Thu</span> <span class="hljs-title class_">Jun</span>  <span class="hljs-number">7</span> <span class="hljs-number">16</span>:<span class="hljs-number">26</span>:<span class="hljs-number">45</span> <span class="hljs-number">2018</span><br>  <span class="hljs-attr">write</span>: <span class="hljs-variable constant_">IOPS</span>=<span class="hljs-number">85.</span>3k, <span class="hljs-variable constant_">BW</span>=333MiB/s (349MB/s)(1024MiB/3073msec)<br>    slat (usec): min=<span class="hljs-number">3</span>, max=<span class="hljs-number">337</span>, avg= <span class="hljs-number">6.05</span>, stdev= <span class="hljs-number">4.49</span><br>    clat (usec): min=<span class="hljs-number">655</span>, max=<span class="hljs-number">4742</span>, avg=<span class="hljs-number">1493.19</span>, stdev=<span class="hljs-number">573.07</span><br>     lat (usec): min=<span class="hljs-number">660</span>, max=<span class="hljs-number">4774</span>, avg=<span class="hljs-number">1499.35</span>, stdev=<span class="hljs-number">572.69</span><br>    clat percentiles (usec):<br>     |  <span class="hljs-number">1.</span>00th=[  <span class="hljs-number">775</span>],  <span class="hljs-number">5.</span>00th=[  <span class="hljs-number">824</span>], <span class="hljs-number">10.</span>00th=[  <span class="hljs-number">873</span>], <span class="hljs-number">20.</span>00th=[ <span class="hljs-number">1020</span>],<br>     | <span class="hljs-number">30.</span>00th=[ <span class="hljs-number">1074</span>], <span class="hljs-number">40.</span>00th=[ <span class="hljs-number">1123</span>], <span class="hljs-number">50.</span>00th=[ <span class="hljs-number">1205</span>], <span class="hljs-number">60.</span>00th=[ <span class="hljs-number">1647</span>],<br>     | <span class="hljs-number">70.</span>00th=[ <span class="hljs-number">1893</span>], <span class="hljs-number">80.</span>00th=[ <span class="hljs-number">2040</span>], <span class="hljs-number">90.</span>00th=[ <span class="hljs-number">2278</span>], <span class="hljs-number">95.</span>00th=[ <span class="hljs-number">2507</span>],<br>     | <span class="hljs-number">99.</span>00th=[ <span class="hljs-number">2999</span>], <span class="hljs-number">99.</span>50th=[ <span class="hljs-number">3228</span>], <span class="hljs-number">99.</span>90th=[ <span class="hljs-number">3654</span>], <span class="hljs-number">99.</span>95th=[ <span class="hljs-number">3785</span>],<br>     | <span class="hljs-number">99.</span>99th=[ <span class="hljs-number">4015</span>]<br>   bw (  <span class="hljs-title class_">KiB</span>/s): min=<span class="hljs-number">276064</span>, max=<span class="hljs-number">444488</span>, per=<span class="hljs-number">100.00</span>%, avg=<span class="hljs-number">341630.67</span>, stdev=<span class="hljs-number">55834.75</span>, samples=<span class="hljs-number">6</span><br>   iops        : min=<span class="hljs-number">69016</span>, max=<span class="hljs-number">111122</span>, avg=<span class="hljs-number">85407.67</span>, stdev=<span class="hljs-number">13958.69</span>, samples=<span class="hljs-number">6</span><br>  lat (usec)   : <span class="hljs-number">750</span>=<span class="hljs-number">0.41</span>%, <span class="hljs-number">1000</span>=<span class="hljs-number">16.84</span>%<br>  lat (msec)   : <span class="hljs-number">2</span>=<span class="hljs-number">59.88</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">22.86</span>%, <span class="hljs-number">10</span>=<span class="hljs-number">0.01</span>%<br>  cpu          : usr=<span class="hljs-number">8.04</span>%, sys=<span class="hljs-number">50.75</span>%, ctx=<span class="hljs-number">103073</span>, majf=<span class="hljs-number">0</span>, minf=<span class="hljs-number">31</span><br>  <span class="hljs-variable constant_">IO</span> depths    : <span class="hljs-number">1</span>=<span class="hljs-number">0.1</span>%, <span class="hljs-number">2</span>=<span class="hljs-number">0.1</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">0.1</span>%, <span class="hljs-number">8</span>=<span class="hljs-number">0.1</span>%, <span class="hljs-number">16</span>=<span class="hljs-number">0.1</span>%, <span class="hljs-number">32</span>=<span class="hljs-number">0.1</span>%, &gt;=<span class="hljs-number">64</span>=<span class="hljs-number">100.0</span>%<br>     submit    : <span class="hljs-number">0</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">100.0</span>%, <span class="hljs-number">8</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">16</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">32</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">64</span>=<span class="hljs-number">0.0</span>%, &gt;=<span class="hljs-number">64</span>=<span class="hljs-number">0.0</span>%<br>     complete  : <span class="hljs-number">0</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">100.0</span>%, <span class="hljs-number">8</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">16</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">32</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">64</span>=<span class="hljs-number">0.0</span>%, &gt;=<span class="hljs-number">64</span>=<span class="hljs-number">0.1</span>%<br>     issued <span class="hljs-attr">rwt</span>: total=<span class="hljs-number">0</span>,<span class="hljs-number">262144</span>,<span class="hljs-number">0</span>, short=<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>, dropped=<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span><br>     latency   : target=<span class="hljs-number">0</span>, <span class="hljs-variable language_">window</span>=<span class="hljs-number">0</span>, percentile=<span class="hljs-number">100.00</span>%, depth=<span class="hljs-number">128</span><br><span class="hljs-title class_">Run</span> status group <span class="hljs-number">0</span> (all jobs):<br>  <span class="hljs-attr">WRITE</span>: bw=333MiB/s (349MB/s), 333MiB/s-333MiB/s (349MB/s-349MB/s), io=1024MiB (1074MB), run=<span class="hljs-number">3073</span>-3073msec<br><span class="hljs-title class_">Disk</span> stats (read/write):<br>  <span class="hljs-attr">sde</span>: ios=<span class="hljs-number">0</span>/<span class="hljs-number">247342</span>, merge=<span class="hljs-number">0</span>/<span class="hljs-number">0</span>, ticks=<span class="hljs-number">0</span>/<span class="hljs-number">309854</span>, in_queue=<span class="hljs-number">310008</span>, util=<span class="hljs-number">96.66</span>%<br></code></pre></td></tr></table></figure>
+
+<p>复制</p>
+<h3 id="2-1-8-随机写-block-size-4k"><a href="#2-1-8-随机写-block-size-4k" class="headerlink" title="2.1.8 随机写(block size 4k)"></a>2.1.8 随机写(block size 4k)</h3><p>&#x2F;&#x2F;block size是4M, 30个线程并发，持续时间200s 测试结果：带宽：11.2MB&#x2F;s  平均IOPS： 2730  运行时长：95995ms   平均耗时：46ms</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs javascript">$ fio -direct=<span class="hljs-number">1</span> -iodepth=<span class="hljs-number">128</span> -rw=randwrite -ioengine=libaio -bs=4k -size=1G -numjobs=<span class="hljs-number">1</span> -runtime=<span class="hljs-number">1000</span> -group_reporting -filename=<span class="hljs-regexp">/var/</span>lib/ceph/osd/ceph-<span class="hljs-number">3</span>/test00 -name=<span class="hljs-title class_">Rand</span>_Write_Testing<br><span class="hljs-title class_">Rand</span><span class="hljs-attr">_Write_Testing</span>: (g=<span class="hljs-number">0</span>): rw=randwrite, bs=(R) 4096B-4096B, (W) 4096B-4096B, (T) 4096B-4096B, ioengine=libaio, iodepth=<span class="hljs-number">128</span><br>fio-<span class="hljs-number">3.1</span><br><span class="hljs-title class_">Starting</span> <span class="hljs-number">1</span> process<br><span class="hljs-title class_">Jobs</span>: <span class="hljs-number">1</span> (f=<span class="hljs-number">1</span>): [<span class="hljs-title function_">w</span>(<span class="hljs-number">1</span>)][<span class="hljs-number">100.0</span>%][r=0KiB/s,w=<span class="hljs-number">17.</span>1MiB/s][r=<span class="hljs-number">0</span>,w=<span class="hljs-number">4368</span> <span class="hljs-variable constant_">IOPS</span>][eta 00<span class="hljs-attr">m</span>:00s]<br><span class="hljs-title class_">Rand</span><span class="hljs-attr">_Write_Testing</span>: (groupid=<span class="hljs-number">0</span>, jobs=<span class="hljs-number">1</span>): err= <span class="hljs-number">0</span>: pid=<span class="hljs-number">29959</span>: <span class="hljs-title class_">Thu</span> <span class="hljs-title class_">Jun</span>  <span class="hljs-number">7</span> <span class="hljs-number">16</span>:<span class="hljs-number">03</span>:<span class="hljs-number">16</span> <span class="hljs-number">2018</span><br>  <span class="hljs-attr">write</span>: <span class="hljs-variable constant_">IOPS</span>=<span class="hljs-number">2730</span>, <span class="hljs-variable constant_">BW</span>=<span class="hljs-number">10.</span>7MiB/s (<span class="hljs-number">11.</span>2MB/s)(1024MiB/95995msec)<br>    slat (usec): min=<span class="hljs-number">3</span>, max=<span class="hljs-number">8086</span>, avg= <span class="hljs-number">5.42</span>, stdev=<span class="hljs-number">21.91</span><br>    clat (usec): min=<span class="hljs-number">781</span>, max=<span class="hljs-number">176463</span>, avg=<span class="hljs-number">46865.68</span>, stdev=<span class="hljs-number">21344.90</span><br>     lat (usec): min=<span class="hljs-number">786</span>, max=<span class="hljs-number">176468</span>, avg=<span class="hljs-number">46871.22</span>, stdev=<span class="hljs-number">21344.98</span><br>    clat percentiles (usec):<br>     |  <span class="hljs-number">1.</span>00th=[  <span class="hljs-number">1500</span>],  <span class="hljs-number">5.</span>00th=[ <span class="hljs-number">15926</span>], <span class="hljs-number">10.</span>00th=[ <span class="hljs-number">22938</span>], <span class="hljs-number">20.</span>00th=[ <span class="hljs-number">30278</span>],<br>     | <span class="hljs-number">30.</span>00th=[ <span class="hljs-number">35390</span>], <span class="hljs-number">40.</span>00th=[ <span class="hljs-number">40109</span>], <span class="hljs-number">50.</span>00th=[ <span class="hljs-number">44827</span>], <span class="hljs-number">60.</span>00th=[ <span class="hljs-number">50070</span>],<br>     | <span class="hljs-number">70.</span>00th=[ <span class="hljs-number">55837</span>], <span class="hljs-number">80.</span>00th=[ <span class="hljs-number">63177</span>], <span class="hljs-number">90.</span>00th=[ <span class="hljs-number">73925</span>], <span class="hljs-number">95.</span>00th=[ <span class="hljs-number">84411</span>],<br>     | <span class="hljs-number">99.</span>00th=[<span class="hljs-number">107480</span>], <span class="hljs-number">99.</span>50th=[<span class="hljs-number">120062</span>], <span class="hljs-number">99.</span>90th=[<span class="hljs-number">145753</span>], <span class="hljs-number">99.</span>95th=[<span class="hljs-number">156238</span>],<br>     | <span class="hljs-number">99.</span>99th=[<span class="hljs-number">173016</span>]<br>   bw (  <span class="hljs-title class_">KiB</span>/s): min= <span class="hljs-number">5864</span>, max=<span class="hljs-number">61248</span>, per=<span class="hljs-number">99.73</span>%, avg=<span class="hljs-number">10893.37</span>, stdev=<span class="hljs-number">4353.23</span>, samples=<span class="hljs-number">191</span><br>   iops        : min= <span class="hljs-number">1466</span>, max=<span class="hljs-number">15312</span>, avg=<span class="hljs-number">2723.34</span>, stdev=<span class="hljs-number">1088.31</span>, samples=<span class="hljs-number">191</span><br>  lat (usec)   : <span class="hljs-number">1000</span>=<span class="hljs-number">0.46</span>%<br>  lat (msec)   : <span class="hljs-number">2</span>=<span class="hljs-number">2.48</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">0.23</span>%, <span class="hljs-number">10</span>=<span class="hljs-number">0.31</span>%, <span class="hljs-number">20</span>=<span class="hljs-number">3.75</span>%, <span class="hljs-number">50</span>=<span class="hljs-number">52.98</span>%<br>  lat (msec)   : <span class="hljs-number">100</span>=<span class="hljs-number">38.14</span>%, <span class="hljs-number">250</span>=<span class="hljs-number">1.65</span>%<br>  cpu          : usr=<span class="hljs-number">0.70</span>%, sys=<span class="hljs-number">1.92</span>%, ctx=<span class="hljs-number">236086</span>, majf=<span class="hljs-number">0</span>, minf=<span class="hljs-number">31</span><br>  <span class="hljs-variable constant_">IO</span> depths    : <span class="hljs-number">1</span>=<span class="hljs-number">0.1</span>%, <span class="hljs-number">2</span>=<span class="hljs-number">0.1</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">0.1</span>%, <span class="hljs-number">8</span>=<span class="hljs-number">0.1</span>%, <span class="hljs-number">16</span>=<span class="hljs-number">0.1</span>%, <span class="hljs-number">32</span>=<span class="hljs-number">0.1</span>%, &gt;=<span class="hljs-number">64</span>=<span class="hljs-number">100.0</span>%<br>     submit    : <span class="hljs-number">0</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">100.0</span>%, <span class="hljs-number">8</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">16</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">32</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">64</span>=<span class="hljs-number">0.0</span>%, &gt;=<span class="hljs-number">64</span>=<span class="hljs-number">0.0</span>%<br>     complete  : <span class="hljs-number">0</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">4</span>=<span class="hljs-number">100.0</span>%, <span class="hljs-number">8</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">16</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">32</span>=<span class="hljs-number">0.0</span>%, <span class="hljs-number">64</span>=<span class="hljs-number">0.0</span>%, &gt;=<span class="hljs-number">64</span>=<span class="hljs-number">0.1</span>%<br>     issued <span class="hljs-attr">rwt</span>: total=<span class="hljs-number">0</span>,<span class="hljs-number">262144</span>,<span class="hljs-number">0</span>, short=<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>, dropped=<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span><br>     latency   : target=<span class="hljs-number">0</span>, <span class="hljs-variable language_">window</span>=<span class="hljs-number">0</span>, percentile=<span class="hljs-number">100.00</span>%, depth=<span class="hljs-number">128</span><br><span class="hljs-title class_">Run</span> status group <span class="hljs-number">0</span> (all jobs):<br>  <span class="hljs-attr">WRITE</span>: bw=<span class="hljs-number">10.</span>7MiB/s (<span class="hljs-number">11.</span>2MB/s), <span class="hljs-number">10.</span>7MiB/s-<span class="hljs-number">10.</span>7MiB/s (<span class="hljs-number">11.</span>2MB/s-<span class="hljs-number">11.</span>2MB/s), io=1024MiB (1074MB), run=<span class="hljs-number">95995</span>-95995msec<br><span class="hljs-title class_">Disk</span> stats (read/write):<br>  <span class="hljs-attr">sde</span>: ios=<span class="hljs-number">4</span>/<span class="hljs-number">261751</span>, merge=<span class="hljs-number">0</span>/<span class="hljs-number">0</span>, ticks=<span class="hljs-number">334</span>/<span class="hljs-number">12270799</span>, in_queue=<span class="hljs-number">12272756</span>, util=<span class="hljs-number">99.93</span>%<br></code></pre></td></tr></table></figure>
+
+<p>复制</p>
+<h1 id="3-测试结论"><a href="#3-测试结论" class="headerlink" title="3. 测试结论"></a>3. 测试结论</h1><table>
+<thead>
+<tr>
+<th align="left">操作</th>
+<th align="left">block size</th>
+<th align="left">吞吐量</th>
+<th align="left">IOPS</th>
+<th align="left">耗时</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">顺序读</td>
+<td align="left">4M</td>
+<td align="left">377MB&#x2F;s</td>
+<td align="left">89</td>
+<td align="left">1249ms</td>
+</tr>
+<tr>
+<td align="left">随机读</td>
+<td align="left">4M</td>
+<td align="left">289MB&#x2F;s</td>
+<td align="left">68</td>
+<td align="left">1423ms</td>
+</tr>
+<tr>
+<td align="left">顺序写</td>
+<td align="left">4M</td>
+<td align="left">224MB&#x2F;s</td>
+<td align="left">53</td>
+<td align="left">1819ms</td>
+</tr>
+<tr>
+<td align="left">随机写</td>
+<td align="left">4M</td>
+<td align="left">197MB&#x2F;s</td>
+<td align="left">46</td>
+<td align="left">2250ms</td>
+</tr>
+<tr>
+<td align="left">顺序读</td>
+<td align="left">4k</td>
+<td align="left">164MB&#x2F;s</td>
+<td align="left">64.4k</td>
+<td align="left">1.9ms</td>
+</tr>
+<tr>
+<td align="left">随机读</td>
+<td align="left">4k</td>
+<td align="left">2900kB&#x2F;s</td>
+<td align="left">707</td>
+<td align="left">180ms</td>
+</tr>
+<tr>
+<td align="left">顺序写</td>
+<td align="left">4k</td>
+<td align="left">349MB&#x2F;s</td>
+<td align="left">85.3k</td>
+<td align="left">1.4ms</td>
+</tr>
+<tr>
+<td align="left">随机写</td>
+<td align="left">4k</td>
+<td align="left">11.2MB&#x2F;s</td>
+<td align="left">2730</td>
+<td align="left">46ms</td>
+</tr>
+</tbody></table>
+<h1 id="4-集群能力评估"><a href="#4-集群能力评估" class="headerlink" title="4. 集群能力评估"></a>4. 集群能力评估</h1><p><strong>参考：</strong></p>
+<ul>
+<li>由于Ceph存储结构不同于物理硬件，所以影响其IOPS的因素主要有网络、副本数量、日志、OSD(硬盘)数量、OSD<a target="_blank" rel="noopener" href="https://cloud.tencent.com/product/cvm?from=10680">服务器</a>数量、OSD IOPS等。</li>
+<li>这里给出一个来自Mirantis的经验公式： </li>
+<li>IOPS &#x3D; 硬盘IOPS * 硬盘数量 * 0.88 &#x2F; 副本数量</li>
+<li>其中0.88为4-8k随机读操作占比(88%)，如果OSD不是以硬盘为单位而是RAID组，则替换公式中对应参数。</li>
+<li>关于Ceph的IOPS计算仅供参考，计算结果可能会跟物理环境实测有较大偏差。</li>
+</ul>
+<h2 id="4-1-IOPS估算"><a href="#4-1-IOPS估算" class="headerlink" title="4.1 IOPS估算"></a>4.1 IOPS估算</h2><p>参考上述公式，结合测试报告，推算公式如下：</p>
+<ul>
+<li>IOPS &#x3D; 硬盘IOPS * 硬盘数量  &#x2F; 副本数量(只针对写)</li>
+<li>随机读写： <ul>
+<li>磁盘IOPS &#x3D; (随机读+随机写）&#x2F;  2   (按照平均值计算)</li>
+<li>副本数量 &#x3D;  1~3  (按照读写计算)</li>
+</ul>
+</li>
+</ul>
+<p><strong>根据公式估算测试集群rbdbench(36个osd) iops：</strong></p>
+<ul>
+<li>4M块大小：IOPS &#x3D; （68+46)&#x2F;2 * 36  &#x2F; 3 &#x3D; （最小值：684 ~ 最高值：2052）</li>
+<li>4k块大小： IOPS &#x3D; (707+2730)&#x2F;2 * 36  &#x2F; 3  &#x3D;  （最小值：61866 ~ 最高值：20622)</li>
+</ul>
+<h2 id="4-2-吞吐量估算"><a href="#4-2-吞吐量估算" class="headerlink" title="4.2 吞吐量估算"></a>4.2 吞吐量估算</h2><p>参考上述公式，结合测试报告，推算公式如下：</p>
+<ul>
+<li>IOPS &#x3D; 硬盘吞吐量 * 硬盘数量  &#x2F; 副本数量(只针对写)</li>
+<li>顺序读写： <ul>
+<li>硬盘吞吐量 &#x3D; (顺序读+顺序写）&#x2F;  2   (按照平均值计算)</li>
+<li>副本数量 &#x3D;  1~3  (按照读写计算)</li>
+</ul>
+</li>
+</ul>
+<p><strong>根据公式估算测试集群rbdbench(36个osd) 吞吐量：</strong></p>
+<ul>
+<li>4M块大小：IOPS &#x3D; （377+224)&#x2F;2 * 36  &#x2F; 3 &#x3D;(最小值： 3606MB&#x2F;s ~  最高值：10818MB&#x2F;s)</li>
+<li>4k块大小： IOPS &#x3D; （164+349)&#x2F;2 * 36  &#x2F; 3  &#x3D;  (最小值： 3078MB&#x2F;s ~  最高值：9234MB&#x2F;s)</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>https://liyupin.github.io/2022/11/08/ceph分布式存储-集群容量评估/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Cper Liu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年11月8日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/11/08/devop%205.26%20%E5%BF%AB%E9%80%9F%E5%AE%89%E8%A3%85/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/11/08/centosredhat%E6%90%AD%E5%BB%BA%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

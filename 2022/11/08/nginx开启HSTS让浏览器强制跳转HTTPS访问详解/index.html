@@ -1,0 +1,678 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Cper Liu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="nginx开启HSTS让浏览器强制跳转HTTPS访问详解2021-10-18 05:39:03分类：站长技巧 &#x2F; 服务器阅读(5936)评论(0)  这篇文章主要介绍了nginx开启HSTS让浏览器强制跳转HTTPS访问详解，小编觉得挺不错的，现在分享给大家，也给大家做个参考。一起跟随小编过来看看吧  在上一篇文章中我们已经实现了本地node服务使用https访问了，看上一篇文章效果可以">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://liyupin.github.io/2022/11/08/nginx%E5%BC%80%E5%90%AFHSTS%E8%AE%A9%E6%B5%8F%E8%A7%88%E5%99%A8%E5%BC%BA%E5%88%B6%E8%B7%B3%E8%BD%ACHTTPS%E8%AE%BF%E9%97%AE%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="nginx开启HSTS让浏览器强制跳转HTTPS访问详解2021-10-18 05:39:03分类：站长技巧 &#x2F; 服务器阅读(5936)评论(0)  这篇文章主要介绍了nginx开启HSTS让浏览器强制跳转HTTPS访问详解，小编觉得挺不错的，现在分享给大家，也给大家做个参考。一起跟随小编过来看看吧  在上一篇文章中我们已经实现了本地node服务使用https访问了，看上一篇文章效果可以">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ss.html.cn/article/de/98/8e/de988ecc759761f340b344f10735ea91.jpg-600">
+<meta property="og:image" content="https://ss.html.cn/article/e2/0f/31/e20f31051057188888ce5da4f65e461b.jpg-600">
+<meta property="og:image" content="https://ss.html.cn/article/24/3e/34/243e34839e567af0a9dd56648388c33a.jpg-600">
+<meta property="og:image" content="https://ss.html.cn/article/3e/e0/f4/3ee0f4028e8c78ec6ff23b7b60e352b2.jpg-600">
+<meta property="og:image" content="https://ss.html.cn/article/40/b4/49/40b449f85589cd5e9c649f60f280bb4a.jpg-600">
+<meta property="og:image" content="https://ss.html.cn/article/3a/8f/6d/3a8f6d76cd81942a60597fc9dcba9ed2.jpg-600">
+<meta property="og:image" content="https://ss.html.cn/article/3e/d0/91/3ed091816fc7b1f4b3bd0552c8ae19cf.jpg-600">
+<meta property="og:image" content="https://ss.html.cn/article/af/67/64/af67646320df4eda25e94d54d526c98e.jpg-600">
+<meta property="og:image" content="https://ss.html.cn/article/fa/7d/dc/fa7ddc34385d20360237a9f8fe4128d0.jpg-600">
+<meta property="og:image" content="https://ss.html.cn/article/dd/cb/22/ddcb221fe6af5f85d0036d92b979db8d.jpg-600">
+<meta property="article:published_time" content="2022-11-07T16:44:48.806Z">
+<meta property="article:modified_time" content="2022-11-07T16:44:48.806Z">
+<meta property="article:author" content="Cper Liu">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ss.html.cn/article/de/98/8e/de988ecc759761f340b344f10735ea91.jpg-600">
+  
+  
+  
+  <title>Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-11-08 00:44" pubdate>
+          2022年11月8日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          39 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="nginx开启HSTS让浏览器强制跳转HTTPS访问详解"><a href="#nginx开启HSTS让浏览器强制跳转HTTPS访问详解" class="headerlink" title="nginx开启HSTS让浏览器强制跳转HTTPS访问详解"></a>nginx开启HSTS让浏览器强制跳转HTTPS访问详解</h1><p>2021-10-18 05:39:03分类：<a target="_blank" rel="noopener" href="https://www.html.cn/site/">站长技巧</a> &#x2F; <a target="_blank" rel="noopener" href="https://www.html.cn/site/server/">服务器</a>阅读(5936)评论(0)</p>
+<blockquote>
+<p>这篇文章主要介绍了nginx开启HSTS让浏览器强制跳转HTTPS访问详解，小编觉得挺不错的，现在分享给大家，也给大家做个参考。一起跟随小编过来看看吧</p>
+</blockquote>
+<p>在上一篇文章中我们已经实现了本地node服务使用https访问了，看<a target="_blank" rel="noopener" href="https://www.html.cn/article/162303.htm">上一篇文章</a>效果可以看如下：</p>
+<p><img src="https://ss.html.cn/article/de/98/8e/de988ecc759761f340b344f10735ea91.jpg-600" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>但是如果我们现在使用http来访问的话，访问不了。如下图所示：</p>
+<p><img src="https://ss.html.cn/article/e2/0f/31/e20f31051057188888ce5da4f65e461b.jpg-600" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>因此我现在首先要做的是使用nginx配置下，当用户在浏览器下输入http请求的时候使用nginx重定向到https下即可。因此我们现在需要做一个简单的nginx重定向功能。</p>
+<p>因此在我们的nginx中需要加如下重定向配置：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-section">server</span> &#123; <span class="hljs-attribute">listen</span> xxx.abc.com; <span class="hljs-attribute">server_name</span> xxx.abc.com; <span class="hljs-attribute">rewrite</span><span class="hljs-regexp"> ^/(.*)$</span> https://<span class="hljs-variable">$host</span><span class="hljs-variable">$1</span> <span class="hljs-literal">permanent</span>; &#125;<br></code></pre></td></tr></table></figure>
+
+<p>因此nginx主要的配置代码如下：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-section">server</span> &#123; <span class="hljs-attribute">listen</span> xxx.abc.com; <span class="hljs-attribute">server_name</span> xxx.abc.com; <span class="hljs-attribute">rewrite</span><span class="hljs-regexp"> ^/(.*)$</span> https://<span class="hljs-variable">$host</span><span class="hljs-variable">$1</span> <span class="hljs-literal">permanent</span>; &#125; <span class="hljs-section">server</span> &#123; <span class="hljs-attribute">listen</span>  <span class="hljs-number">443</span> ssl; <span class="hljs-attribute">server_name</span> xxx.abc.com; <span class="hljs-attribute">ssl_certificate</span>  cert/server.crt; <span class="hljs-attribute">ssl_certificate_key</span> cert/server.key; <span class="hljs-attribute">ssl_session_cache</span> shared:SSL:<span class="hljs-number">1m</span>; <span class="hljs-attribute">ssl_session_timeout</span> <span class="hljs-number">5m</span>; <span class="hljs-attribute">ssl_ciphers</span> HIGH:!aNULL:!MD5; <span class="hljs-attribute">ssl_prefer_server_ciphers</span> <span class="hljs-literal">on</span>; <span class="hljs-section">location</span> / &#123; <span class="hljs-attribute">proxy_pass</span> http://localhost:3001; &#125; &#125;<br></code></pre></td></tr></table></figure>
+
+<p>如上配置后，我们需要重新启动下nginx即可生效，我们在浏览器下输入域名 <a target="_blank" rel="noopener" href="http://xxx.abc.com/">http://xxx.abc.com</a> 后 会自动重定向到 <a target="_blank" rel="noopener" href="https://xxx.abc.com/">https://xxx.abc.com/</a> 了，我们再来看下 我们网络上的请求有2个请求，如下所示：</p>
+<p><img src="https://ss.html.cn/article/24/3e/34/243e34839e567af0a9dd56648388c33a.jpg-600" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="https://ss.html.cn/article/3e/e0/f4/3ee0f4028e8c78ec6ff23b7b60e352b2.jpg-600" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>如上请求可以看到，浏览器首先会向网站发起一次http请求(<a target="_blank" rel="noopener" href="http://xxx.abc.com/">http://xxx.abc.com</a>), 在得到一个重定向响应后，再会发起一次https请求并得到最终的响应内容。对用户来讲，它的操作是透明的，用户体验也是不错的，但是在https链接之前会存在一次明文的http请求和重定向。那么攻击者可以以中间人的方式劫持http请求。来进行后续的攻击。比如窃听数据。篡改请求或响应、跳转到钓鱼网站等操作。因此http请求是不够安全的，所以最近几年所有的网站都要以https来访问的。</p>
+<p>那么以劫持http请求并跳转到钓鱼网站类为列子，来看看大致的劫持流程是如下这个样子的。</p>
+<p><img src="https://ss.html.cn/article/40/b4/49/40b449f85589cd5e9c649f60f280bb4a.jpg-600" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>操作步骤如下：<br>\1. 浏览器会发起一次http请求(比如<a target="_blank" rel="noopener" href="http://xxx.abc.com/">http://xxx.abc.com</a>). 发出请求后，攻击者会以中间人的身份来劫持该http请求。<br>\2. 攻击者劫持该http请求后，会把当前请求转发给钓鱼网站(比如 <a target="_blank" rel="noopener" href="http://xxx.yyy.com)./">http://xxx.yyy.com)。</a><br>\3. 钓鱼网站会返回假冒的网页内容。<br>\4. 最后攻击者把假冒的网页内容返回给浏览器。</p>
+<p>如上http请求根本就没有重定向到https网站到，而是攻击者直接劫持了http请求，最终把钓鱼网站返回给浏览器了。因此如果直接http重定向的话，会存在一次http请求明文的问题，因此直接使用http重定向是不安全的，因此就出现了HSTS来解决这个问题。下面我们来认识下HSTS吧。</p>
+<p><strong>2. 认识下HSTS</strong></p>
+<p>如上使用重定向的方式，把http重定向到https存在安全性问题，因为在重定向https之前会存在一次http明文的请求，那么攻击者很容易劫持http请求，因此现在我们想当用户浏览器发起http请求的时候，浏览器直接转换成https请求。然后通过https请求页面，这样的话，攻击者就一般很难进行攻击了。我们可以请看如下示意图，如下所示：</p>
+<p><img src="https://ss.html.cn/article/3a/8f/6d/3a8f6d76cd81942a60597fc9dcba9ed2.jpg-600" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>步骤可以理解为如下：</p>
+<p>\1. 用户在浏览器输入 <a target="_blank" rel="noopener" href="http://xxx.abc.com/">http://xxx.abc.com</a> 的时候，浏览器知道该域名需要使用https来进行通信。<br>\2. 因此浏览器直接向网站发起https请求(比如<a target="_blank" rel="noopener" href="https://xxx.abc.com/">https://xxx.abc.com</a>) 这样的。<br>\3. 网站返回响应的内容。</p>
+<p>那么现在的问题就是说，浏览器怎么知道该域名需要使用https呢？因此这个时候我们出现了HSTS了。</p>
+<p><strong>HSTS是啥？</strong></p>
+<p>HSTS的全称是 HTTP Strict-Transport-Security. 它是国际互联网工程组织IETF发布的一种互联网安全策略机制。采用HSTS策略的网站将保证浏览器始终链接到该网站的https加密版本。不需要用户手动在URI地址栏中输入加密地址，来减少会话被劫持的风险。</p>
+<p><strong>HSTS的基本语法如下：</strong></p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs scss">Strict-Transport-Security: max-age=expireTime [; includeSubDomains] <span class="hljs-selector-attr">[; preload]</span><br></code></pre></td></tr></table></figure>
+
+<p>max-age 是必须的参数，它是一个以秒为单位的数值，它代表着HSTS Header的过期时间，一般设置为1年，即 31536000秒。<br>includeSubDomains 是可选参数，如果设置该参数的话，那么意味着当前域名及其子域名均开启HSTS的保护。<br>preload是可选参数，只有当你申请将自己的域名加入到浏览器内置列表的时候才需要使用到它。</p>
+<p>下面我们先来看下百度的也是这样处理的，我们先在浏览器URI输入 <a target="_blank" rel="noopener" href="http://www.baidu.com/">http://www.baidu.com/</a> 后回车，浏览器会自动转化成 <a target="_blank" rel="noopener" href="https://www.baidu.com/">https://www.baidu.com/</a> 这样的请求了，但是我们使用chrome浏览器看网络下的请求可以看到如下会发送2次请求，如下所示：</p>
+<p><img src="https://ss.html.cn/article/3e/d0/91/3ed091816fc7b1f4b3bd0552c8ae19cf.jpg-600" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>第二次是https请求，如下所示：</p>
+<p><img src="https://ss.html.cn/article/af/67/64/af67646320df4eda25e94d54d526c98e.jpg-600" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>我们可以看到如上，第一次请求状态码是307，并且请求头有这样的标识 “Provisional headers are shown”, 具体的含义可以理解为浏览器拦截了该请求，并且该请求并没有发送出去。因此浏览器发现该域名需要使用https来请求，所以就发了第二次https请求了。</p>
+<p><strong>nginx下配置HSTS</strong></p>
+<p>在nginx配置文件上设置HSTS响应头部，代码如下：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">add_header <span class="hljs-keyword">Strict</span>-Transport-<span class="hljs-keyword">Security</span> &quot;max-age=172800; includeSubDomains&quot;<br></code></pre></td></tr></table></figure>
+
+<p>因此nginx的配置如下：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-section">server</span> &#123; <span class="hljs-attribute">listen</span> xxx.abc.com; <span class="hljs-attribute">server_name</span> xxx.abc.com; <span class="hljs-attribute">rewrite</span><span class="hljs-regexp"> ^/(.*)$</span> https://<span class="hljs-variable">$host</span><span class="hljs-variable">$1</span> <span class="hljs-literal">permanent</span>; &#125; <span class="hljs-section">server</span> &#123; <span class="hljs-attribute">listen</span>  <span class="hljs-number">443</span> ssl; <span class="hljs-attribute">server_name</span> xxx.abc.com; <span class="hljs-attribute">add_header</span> Strict-Transport-Security <span class="hljs-string">&quot;max-age=172800; includeSubDomains&quot;</span>; <span class="hljs-attribute">ssl_certificate</span>  cert/server.crt; <span class="hljs-attribute">ssl_certificate_key</span> cert/server.key; <span class="hljs-attribute">ssl_session_cache</span> shared:SSL:<span class="hljs-number">1m</span>; <span class="hljs-attribute">ssl_session_timeout</span> <span class="hljs-number">5m</span>; <span class="hljs-attribute">ssl_ciphers</span> HIGH:!aNULL:!MD5; <span class="hljs-attribute">ssl_prefer_server_ciphers</span> <span class="hljs-literal">on</span>; <span class="hljs-section">location</span> / &#123; <span class="hljs-attribute">proxy_pass</span> http://localhost:3001; &#125; &#125;<br></code></pre></td></tr></table></figure>
+
+<p>然后nginx配置保存，然后重启。</p>
+<p>当我重启后，第一次使用https方式访问我的网站，nginx会告诉客户端浏览器，以后如果用户输入的是http，也要让浏览器以https来访问我的nginx服务器，如下所示：</p>
+<p><img src="https://ss.html.cn/article/fa/7d/dc/fa7ddc34385d20360237a9f8fe4128d0.jpg-600" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><img src="https://ss.html.cn/article/dd/cb/22/ddcb221fe6af5f85d0036d92b979db8d.jpg-600" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>但是如果nginx重启后，第一次使用http访问的话，虽然跳转了，但是并没有使用HSTS了，因为要跳转到https，才会使用HSTS。但是当我再输入http了就会有307状态码，并且有 “Provisional headers are shown” 这样的提示。</p>
+<p><strong>理解HSTS Preload List</strong></p>
+<p>HSTS虽然可以解决HTTPS的降级攻击，但是对于HSTS生效前首次的http请求，依然是无法避免http请求被劫持的问题，比如我们第一次浏览器清除缓存，然后第一次使用http请求的话，第一次http也是明文传输的，当跳转到https后会使用HSTS的，以后只要浏览器缓存不清除的话，nginx不重启的话，都会使用HSTS保护的。因此为了解决第一次http请求的问题，浏览器厂商们为了解决这个问题，提出了 HSTS Preload List 的方案，内置一份可以定期更新的表，对于列表中的域名，即使用户之前没有访问过，也会使用https协议请求的。</p>
+<p>目前这个Preload List由Google Chrome维护，Chrome、Firefox、Safari、IE 11和Microsoft Edge都在使用。如果要想把自己的域名加进这个列表，首先需要满足以下条件：</p>
+<p>\1. 拥有合法的证书(如果使用SHA-1证书，过期时间必须早于2016年)；</p>
+<p>\2. 将所有HTTP流量重定向到HTTPS；<br>\3. 确保所有子域名都启用了HTTPS；<br>\4. 输出HSTS响应头：<br>\5. max-age不能低于18周(10886400秒)；<br>\6. 必须指定includeSubdomains参数；<br>\7. 必须指定preload参数；</p>
+<p>即便满足了上述所有条件，也不一定能进入HSTS Preload List，更多信息可以查看：<a target="_blank" rel="noopener" href="https://hstspreload.org/%E3%80%82">https://hstspreload.org/。</a></p>
+<p>通过Chrome的chrome:&#x2F;&#x2F;net-internals&#x2F;#hsts工具，可以查询某个网站是否在PreloadList之中，还可以手动把某个域名加到本机Preload List。</p>
+<p><strong>HSTS缺点</strong></p>
+<p>HSTS并不是HTTP会话劫持的完美解决方案。用户首次访问某网站是不受HSTS保护的。这是因为首次访问时，浏览器还未收到HSTS，所以仍有可能通过明文HTTP来访问。</p>
+<p>如果用户通过HTTP访问HSTS保护的网站时，以下几种情况存在降级劫持可能：</p>
+<p>\1. 以前从未访问过该网站。<br>\2. 最近重新安装了其操作系统。<br>\3. 最近重新安装了其浏览器。<br>\4. 切换到新的浏览器。<br>\5. 删除浏览器的缓存。<br>\6. 最近没访问过该站并且max-age过期了。<br>那么解决该问题的方法，可以使用上面介绍的 HSTS Preload List 方法。</p>
+<p><strong>支持HSTS浏览器</strong></p>
+<p>目前主流浏览器都已经支持HSTS特性，具体可参考下面列表：</p>
+<p>Google Chrome 4及以上版本<br>Firefox 4及以上版本<br>Opera 12及以上版本<br>Safari从OS X Mavericks起<br>Internet Explorer及以上版本</p>
+<p>以上就是本文的全部内容，希望对大家的学习有所帮助，也希望大家多多支持html中文网。</p>
+<p>以上就是nginx开启HSTS让浏览器强制跳转HTTPS访问详解的详细内容，更多请关注html中文网其它相关文章！</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>https://liyupin.github.io/2022/11/08/nginx开启HSTS让浏览器强制跳转HTTPS访问详解/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Cper Liu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年11月8日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/11/08/ovirt-4.3.10%20hosted%20engine%20%E9%83%A8%E7%BD%B2/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/11/08/Nessus%E6%8F%92%E4%BB%B6%E6%9B%B4%E6%96%B0/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

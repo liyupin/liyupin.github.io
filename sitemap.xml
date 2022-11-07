@@ -2,6 +2,321 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://liyupin.github.io/2022/11/08/%E9%94%99%E8%AF%AF%E6%80%BB%E7%BB%93/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/ubuntu%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/redhat%20%E9%80%82%E9%85%8Dceph%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/Python%20%E6%A8%A1%E6%9D%BF/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/paramiko/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/ovirt-4.3.10%20hosted%20engine%20%E9%83%A8%E7%BD%B2/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/nginx%E5%BC%80%E5%90%AFHSTS%E8%AE%A9%E6%B5%8F%E8%A7%88%E5%99%A8%E5%BC%BA%E5%88%B6%E8%B7%B3%E8%BD%ACHTTPS%E8%AE%BF%E9%97%AE%E8%AF%A6%E8%A7%A3/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/Nessus%E6%8F%92%E4%BB%B6%E6%9B%B4%E6%96%B0/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/KubeEdge%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/kubeEdge%20install/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/jupyter%20notebook%20%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE%E9%85%8D%E7%BD%AE/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/Hjj%E8%B4%BA%E5%85%B0%E5%B1%B1%E6%BC%94%E7%A4%BA%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E4%BF%A1%E6%81%AF/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/fio%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/etcd%E9%9B%86%E7%BE%A4%E5%A4%87%E4%BB%BD%E5%92%8C%E6%95%B0%E6%8D%AE%E6%81%A2%E5%A4%8D/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/etcd%E5%A4%87%E4%BB%BD%E6%81%A2%E5%A4%8D%E5%8E%9F%E7%90%86%E8%AF%A6%E8%A7%A3%E5%8F%8A%E8%B8%A9%E5%9D%91%E5%AE%9E%E5%BD%95/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/docker/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/docker%20%E5%AE%89%E8%A3%85/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/docker%20file%20debain%20%E7%B3%BB%E7%BB%9F%E6%8D%A2%E6%BA%90/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/devop%205.26%20%E5%BF%AB%E9%80%9F%E5%AE%89%E8%A3%85/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/ceph%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8-%E9%9B%86%E7%BE%A4%E5%AE%B9%E9%87%8F%E8%AF%84%E4%BC%B0/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/centosredhat%E6%90%AD%E5%BB%BA%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/centOS7%E5%AE%89%E8%A3%85go(golang)/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/centos%20%E6%A0%B9%E7%9B%AE%E5%BD%95%E6%89%A9%E5%AE%B9/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/CentOS%207%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96%E8%84%9A%E6%9C%AC/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/20221102/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/%E6%9C%80%E8%BF%91%E6%A6%9C/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/%E5%9C%A8windows%E9%85%8D%E7%BD%AEApache%20httpd%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/%E9%93%B6%E6%B2%B3%E9%BA%92%E9%BA%9F%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%89%88%E6%9C%AC%E6%90%AD%E5%BB%BA%E6%9C%AC%E5%9C%B0%E6%BA%902.0/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/%E9%80%89%E8%82%A1%E7%AD%96%E7%95%A5/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/%E4%BF%A1%E8%9E%8D%E9%80%9A%E7%BB%B4%E6%8A%A4%E6%93%8D%E4%BD%9C%E8%AE%B0%E5%BD%95/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/%E4%B8%8B%E4%B8%80%E5%91%A8%E9%87%8D%E7%82%B9%E5%85%B3%E6%B3%A8/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/%E9%85%8D%E7%BD%AEdocker%E4%BD%BF%E7%94%A8%20proxy/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/%E4%BA%A4%E6%98%93%E4%BD%93%E7%B3%BB/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/11/08/%E7%9C%8B%E5%9B%BE%E8%AF%B4%E8%AF%9D/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/2022/07/20/k8s%E6%8A%A5user-forbidden/</loc>
+    
+    <lastmod>2022-11-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://liyupin.github.io/2022/09/28/redhat-%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85ceph/</loc>
     
     <lastmod>2022-09-27</lastmod>
@@ -39,15 +354,6 @@
   
   <url>
     <loc>https://liyupin.github.io/2022/09/21/python100day-46-%E6%97%A5%E5%BF%97%E5%92%8C%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7%E6%A0%8F/</loc>
-    
-    <lastmod>2022-09-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://liyupin.github.io/2022/09/21/etcd%E5%A4%87%E4%BB%BD%E6%81%A2%E5%A4%8D%E5%8E%9F%E7%90%86%E8%AF%A6%E8%A7%A3%E5%8F%8A%E8%B8%A9%E5%9D%91%E5%AE%9E%E5%BD%95/</loc>
     
     <lastmod>2022-09-21</lastmod>
     
@@ -1433,15 +1739,6 @@
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/2022/07/13/%E9%80%89%E8%82%A1%E7%AD%96%E7%95%A5/</loc>
-    
-    <lastmod>2022-07-07</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://liyupin.github.io/2022/07/13/%E7%B3%BB%E7%BB%9F%E6%9C%80%E5%A4%A7%E6%89%93%E5%BC%80%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6%E6%95%B0/</loc>
     
     <lastmod>2022-07-07</lastmod>
@@ -1552,7 +1849,7 @@
 
   <url>
     <loc>https://liyupin.github.io/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -1560,161 +1857,161 @@
   
   <url>
     <loc>https://liyupin.github.io/tags/openeuler/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/%E8%82%A1%E7%A5%A8/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/ecos-pro/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/centos/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/kvm/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/python/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/linux/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/centos7/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/docker/</loc>
-    <lastmod>2022-09-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://liyupin.github.io/tags/etcd/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/log/</loc>
-    <lastmod>2022-09-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://liyupin.github.io/tags/k8s/</loc>
-    <lastmod>2022-09-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://liyupin.github.io/tags/newben/</loc>
-    <lastmod>2022-09-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://liyupin.github.io/tags/mysql/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/traefik/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/tags/k8s/</loc>
+    <lastmod>2022-11-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/tags/mysql/</loc>
+    <lastmod>2022-11-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/tags/newben/</loc>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/python100day/</loc>
-    <lastmod>2022-09-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://liyupin.github.io/tags/ceph/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/windows/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/tags/%E6%8A%95%E8%B5%84/</loc>
+    <lastmod>2022-11-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/tags/ceph/</loc>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/apace2-4/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/shell/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/A%E8%82%A1/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/openEuler/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/tags/%E6%B3%A2%E6%B5%AA%E7%90%86%E8%AE%BA/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -1723,98 +2020,98 @@
   
   <url>
     <loc>https://liyupin.github.io/categories/linux/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/categories/%E6%8A%95%E8%B5%84/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/categories/python100day/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/categories/shell/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/categories/ubuntu/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/categories/ansible/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/categories/centos8/</loc>
-    <lastmod>2022-09-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://liyupin.github.io/categories/k8s/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/categories/%E8%BF%90%E7%BB%B4/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/categories/k8s/</loc>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/categories/go/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/categories/docker/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/categories/python/</loc>
-    <lastmod>2022-09-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://liyupin.github.io/categories/redhat/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://liyupin.github.io/categories/windows/</loc>
-    <lastmod>2022-09-27</lastmod>
+    <lastmod>2022-11-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/categories/redhat/</loc>
+    <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>

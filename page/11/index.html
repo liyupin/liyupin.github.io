@@ -238,15 +238,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/07/13/%E5%BC%80%E5%90%AF%E5%8C%BF%E5%90%8D%E7%99%BB%E5%BD%95/" target="_self">
-          修改grafana configmap的配置开启Grafana匿名登录
+        <a href="/2022/07/14/%E4%BD%BF%E7%94%A8nexus%E6%90%AD%E5%BB%BAnpm%E7%A7%81%E6%9C%8D/" target="_self">
+          使用nexus搭建npm私服
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/13/%E5%BC%80%E5%90%AF%E5%8C%BF%E5%90%8D%E7%99%BB%E5%BD%95/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/14/%E4%BD%BF%E7%94%A8nexus%E6%90%AD%E5%BB%BAnpm%E7%A7%81%E6%9C%8D/" target="_self">
         <div>
-          1kubectl -n venus-plugin edit cm grafana-configmap-conf   12345678910111213141516171819要为匿名用户设置登录，需要在defult.ini &#x2F; grafana.ini文件（Grafana \ conf）中进行这些小配置。修改1. 如果要隐藏登录页面，请执行此配置 [auth] # Set to true to di
+          第一步，下载nexus 下载链接： https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;1GOYi2M3nT4Wcy7JEYmnqdA 提取码: a9hf  第二步，解压缩 我下载的是nexus-3.16.1-02-win64.zip这个版本，解压缩后，进入\nexus-3.16.1-02\bin  再次目录下，用cmd命令行执行：nexus.exe &#x2F;run 启动之后默认地址为 localhost:
         </div>
       </a>
 
@@ -254,8 +254,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-13 14:34" pubdate>
-              2022-07-13
+            <time datetime="2022-07-14 13:49" pubdate>
+              2022-07-14
             </time>
           </div>
         
@@ -271,15 +271,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/07/13/%E5%91%BD%E4%BB%A4%E8%A1%A5%E5%85%A8/" target="_self">
-          命令补全
+        <a href="/2022/07/14/%E5%9C%A8Vim%E4%B8%AD%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%BC%96%E7%A0%81/" target="_self">
+          在Vim中查看文件编码
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/13/%E5%91%BD%E4%BB%A4%E8%A1%A5%E5%85%A8/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/14/%E5%9C%A8Vim%E4%B8%AD%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%BC%96%E7%A0%81/" target="_self">
         <div>
-          source &lt;(kubectl completion bash) source &lt;(helm completion bash)
+          1:set fileencoding  即可显示文件编码格式。 如果你只是想查看其它编码格式的文件或者想解决 用Vim查看文件乱码的问题，那么在 ~&#x2F;.vimrc 文件中添加以下内容： 1set encoding&#x3D;utf-8 fileencodings&#x3D;utf-8  这样，就可以让vim自动识别文件编码（可以自动识别UTF-8或 者GBK编码的文件），其实就是依照fileencoding
         </div>
       </a>
 
@@ -287,8 +287,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-13 14:34" pubdate>
-              2022-07-13
+            <time datetime="2022-07-14 13:49" pubdate>
+              2022-07-14
             </time>
           </div>
         
@@ -304,15 +304,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/07/13/%E4%BD%BF%E7%94%A8docker%E6%90%AD%E5%BB%BAminio%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/" target="_self">
-          使用docker搭建minio集群搭建
+        <a href="/2022/07/14/%E6%90%AD%E5%BB%BANginx%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1/" target="_self">
+          搭建Nginx正向代理服务
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/13/%E4%BD%BF%E7%94%A8docker%E6%90%AD%E5%BB%BAminio%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/14/%E6%90%AD%E5%BB%BANginx%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1/" target="_self">
         <div>
-          工作中需要搭建单独的图像服务器，经过在fastDFS和Minio之间选型，最终选择了Minio，因为是Apache的开源项目，而且实现了Amazon S3协议。以下是搭建的过程，以及可能碰到的坑，做一个备忘： 第一步，当然是要在虚拟机上安装好docker以及docker-compose。1、安装docker比较简单，网络上资料太多，但在Yunos7上面还是会碰到selinux的坑——报错“Err
+          需求背景：   前段时间公司因为业务需求需要部署一个正向代理，需要内网服务通过正向代理访问到外网移动端厂商域名通道等效果，之前一直用nginx做四层或者七层的反向代理，正向代理还是第一次配置，配置的过程也遇到些小坑，今天就分享出来。 安装环境准备: ​     nginx本身是不支持https协议请求转发，为了让nginx能达到这一效果需要借助第三方模块ngx_http_proxy_connect
         </div>
       </a>
 
@@ -320,8 +320,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-13 14:34" pubdate>
-              2022-07-13
+            <time datetime="2022-07-14 13:46" pubdate>
+              2022-07-14
             </time>
           </div>
         
@@ -337,15 +337,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/07/13/%E4%BD%BF%E7%94%A8docker-compose%E9%83%A8%E7%BD%B2confluence%EF%BC%8C%E8%87%AA%E5%B7%B1%E7%9A%84wiki/" target="_self">
-          使用docker-compose部署confluence，自己的wiki
+        <a href="/2022/07/14/%E7%BD%91%E7%BB%9C%E6%8E%92%E9%94%99%E5%BF%85%E5%A4%87/" target="_self">
+          网络排错必备
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/13/%E4%BD%BF%E7%94%A8docker-compose%E9%83%A8%E7%BD%B2confluence%EF%BC%8C%E8%87%AA%E5%B7%B1%E7%9A%84wiki/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/14/%E7%BD%91%E7%BB%9C%E6%8E%92%E9%94%99%E5%BF%85%E5%A4%87/" target="_self">
         <div>
-          一、搭建过程1.1 基础准备1.1.1 拉取docker镜像，我们选择的版本是 6.15.1-alpine1234mkdir  .&#x2F;confluencecd .&#x2F;confluencedocker  pull  atlassian&#x2F;confluence-server:6.15.1-alpine123  1.1.2 准备好mysql的驱动，我们使用的mysql版本是5.71234wget  https
+          为什么还要必备条件？因为这里所讲的网络排错并不仅仅是停留在某一个小小命令的使用上，而是一套系统的方法，如果没有这些条件，难以在项目中灵活运用，所以还是先看看这些基础的条件吧。 1.了解网络通信的基础设备和其对应的OSI层次像交换机、三层交换机、路由器、防火墙这些最基本的网络设备应该要有些了解，尤其是它们对应的OSI层次以及作用，比如普通的二层交换机对应OSI七层模型中的数据链路层，它可以隔绝冲突域
         </div>
       </a>
 
@@ -353,8 +353,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-13 14:34" pubdate>
-              2022-07-13
+            <time datetime="2022-07-14 11:39" pubdate>
+              2022-07-14
             </time>
           </div>
         
@@ -370,15 +370,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/07/13/%E4%B8%BB%E5%8A%9B%E5%85%A5%E5%9C%BA%E7%9A%84%E5%8F%98%E7%8E%B0/" target="_self">
-          主力入场的变现
+        <a href="/2022/07/14/%E9%80%9A%E8%BF%87docker-compose%E5%AE%89%E8%A3%85wordpress/" target="_self">
+          通过docker-compose安装wordpress
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/13/%E4%B8%BB%E5%8A%9B%E5%85%A5%E5%9C%BA%E7%9A%84%E5%8F%98%E7%8E%B0/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/14/%E9%80%9A%E8%BF%87docker-compose%E5%AE%89%E8%A3%85wordpress/" target="_self">
         <div>
-          下跌反抗    强反弹   大阳线形成条件  快速发现股票主力 主力作用       好股票洗盘都不深，洗盘时间都不长 小阳建仓选股 12345IF(CLOSE[2]&gt;OPEN[2] AND CLOSE[1]&gt;OPEN[1] AND CLOSE&gt;OPEN AND CLOSE[1]&gt;CLOSE[2] AND CLOSE&gt;CLOSE[1]) &amp;#123;RETURN B
+          一、安装docker1、配置源 12345678cat &lt;&lt;END &gt;&#x2F;etc&#x2F;yum.repos.d&#x2F;repo.repo[repo]name&#x3D;repobaseurl &#x3D; https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;docker-ce&#x2F;linux&#x2F;centos&#x2F;7&#x2F;x86_64&#x2F;stable&#x2F;enabled&#x3D;1gpgcheck&#x3D;0END1234567
         </div>
       </a>
 
@@ -386,8 +386,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-13 14:34" pubdate>
-              2022-07-13
+            <time datetime="2022-07-14 11:39" pubdate>
+              2022-07-14
             </time>
           </div>
         
@@ -403,15 +403,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/07/13/%E4%BB%80%E4%B9%88%E6%98%AF%E5%BE%AE%E6%9C%8D%E5%8A%A1/" target="_self">
-          什么是微服务
+        <a href="/2022/07/14/Centos7%20%E4%B8%8B%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/" target="_self">
+          Centos7 下代理配置
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/13/%E4%BB%80%E4%B9%88%E6%98%AF%E5%BE%AE%E6%9C%8D%E5%8A%A1/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/14/Centos7%20%E4%B8%8B%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/" target="_self">
         <div>
-          微服务是一种架构模式 微服务基本介绍DDD常用概念领域：领域是有范围界限的，也可以说是有边界的 核心域：核心域是业务系统的核心价值 通用子域：所有子域的消费者，提供着通用服务 支撑子域：专注于业务系统的某一重要的业务 ![](C:\Users\liyupi\AppData\Roaming\Typora\typora-user-images\image-20211025105816764.png 微
+          Centos7 下代理配置目录  添加代理 查询配置的代理 临时删除代理   对于提供服务的服务器来说，一般都配置在内网环境中，而在内网下公司处于安全的考虑，一般不开放外网的访问权限。这时如果想要访问外网，一般需要配置公司提供的代理服务器再进行使用。下面介绍几种配置代理的方法： Top 添加代理方式一：在 &#x2F;etc&#x2F;environment 下进行配置 在 &#x2F;etc&#x2F;environment 添加代理
         </div>
       </a>
 
@@ -419,8 +419,69 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-13 14:34" pubdate>
-              2022-07-13
+            <time datetime="2022-07-14 11:39" pubdate>
+              2022-07-14
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/linux/" class="category-chain-item">linux</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/centos/">#centos</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2022/07/14/%E5%8D%8E%E4%B8%BA%E4%BA%A4%E6%8D%A2%E6%9C%BAConsole%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE/" target="_self">
+          华为交换机Console密码重置
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/14/%E5%8D%8E%E4%B8%BA%E4%BA%A4%E6%8D%A2%E6%9C%BAConsole%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE/" target="_self">
+        <div>
+          1、通过Console口连接交换机，并重启交换机。2、当界面出现以下打印信息时，及时按下快捷键“Ctrl+B”并输入BootROM&#x2F;BootLoad密码，进入BootROM&#x2F;BootLoad主菜单3、密码： &amp;#65;&amp;#100;&amp;#x6d;&amp;#x69;&amp;#110;&amp;#x40;&amp;#104;&amp;#x75;&amp;#97;&amp;#x77;&amp;#x65;&amp;#105;&amp;#46;&amp;#x63;&amp;#x6f
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-07-14 11:38" pubdate>
+              2022-07-14
             </time>
           </div>
         
@@ -436,15 +497,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/07/13/venus%E5%AE%89%E8%A3%85%E5%90%8E%E7%BB%AD/" target="_self">
-          venus安装后续
+        <a href="/2022/07/14/%E9%AB%98%E6%95%88%E7%9A%84Nginx%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E5%99%A8/" target="_self">
+          高效的Nginx负载均衡器
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/13/venus%E5%AE%89%E8%A3%85%E5%90%8E%E7%BB%AD/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/14/%E9%AB%98%E6%95%88%E7%9A%84Nginx%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E5%99%A8/" target="_self">
         <div>
-          venus安装后续设置存储类lables,添加本地存储类的标签 123 kubectl edit sc openebs-hostpath labels:    ghostcloud.cn&#x2F;storage-type: local
+          1、编译安装Nginx 1234shell &gt; yum -y install gcc gcc-c++ make wget zlib-devel pcre-devel openssl-develshell &gt; wget http:&#x2F;&#x2F;nginx.org&#x2F;download&#x2F;nginx-1.12.2.tar.gzshell &gt; tar zxf nginx-1.12.2.tar.gz;
         </div>
       </a>
 
@@ -452,8 +513,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-13 14:34" pubdate>
-              2022-07-13
+            <time datetime="2022-07-14 11:38" pubdate>
+              2022-07-14
             </time>
           </div>
         
@@ -469,15 +530,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/07/13/ubuntu20.4/" target="_self">
-          windows远程登录Ubuntu系统-----黑屏解决方案
+        <a href="/2022/07/14/ZooKeeper%20%E7%AE%80%E4%BB%8B/" target="_self">
+          ZooKeeper 简介
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/13/ubuntu20.4/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/14/ZooKeeper%20%E7%AE%80%E4%BB%8B/" target="_self">
         <div>
-          ubuntu20.4常用配置 安装ssh12345sudo apt update sudo apt install openssh-serversudo systemctl status sshsudo ufw allow sshssh username@ip_address  windows远程登录Ubuntu系统—–黑屏解决方案此前曾经写一篇文章《Ubuntu 20.04系统中安装vncser
+          ZooKeeper 简介ZooKeeper是一个开放源码的分布式应用程序协调服务，它包含一个简单的原语集，分布式应用程序可以基于它实现同步服务，配置维护和命名服务等。  ZooKeeper 设计目的\1. 最终一致性：client不论连接到哪个Server，展示给它都是同一个视图，这是zookeeper最重要的性能。 \2. 可靠性：具有简单、健壮、良好的性能，如果消息m被到一台服务器接受，那么它
         </div>
       </a>
 
@@ -485,8 +546,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-13 14:34" pubdate>
-              2022-07-13
+            <time datetime="2022-07-14 11:37" pubdate>
+              2022-07-14
             </time>
           </div>
         
@@ -502,15 +563,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2022/07/13/ubuntu20.04%20%E4%BD%BF%E7%94%A8root%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95%E7%B3%BB%E7%BB%9F/" target="_self">
-          ubuntu20 配置root用户远程登录
+        <a href="/2022/07/14/windows%20server%202012%20%E5%BC%80%E5%90%AF%20hyper-v%20%E5%B9%B6%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E6%9C%BA/" target="_self">
+          windows server 2012 开启 hyper-v 并创建虚拟机
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/13/ubuntu20.04%20%E4%BD%BF%E7%94%A8root%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95%E7%B3%BB%E7%BB%9F/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/14/windows%20server%202012%20%E5%BC%80%E5%90%AF%20hyper-v%20%E5%B9%B6%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E6%9C%BA/" target="_self">
         <div>
-          配置网络地址123456789101112131415161718192021#!&#x2F;bin&#x2F;sh# set networkecho No.1 set networkread -p &amp;#x27;pls input IPADDRESS netmask gateway :  &amp;#x27; ip netmask gateway dnsecho -e &quot;$ip $netmask $gateway
+          windows server 2012 开启 hyper-v 并创建虚拟机新的windows server 2012 服务器的时候，默认hyper-v是没有开启的，如果我们要在windows server上面创建虚拟机，那么我们也就需要开启hyper-v。 　　开启 hyper-v :  **服务器管理器-–\》管理\—\》添加角色和功能\   然后一路下一步后，我们可以看到服务器角色里有个Hyp
         </div>
       </a>
 
@@ -518,41 +579,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-13 14:34" pubdate>
-              2022-07-13
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/07/13/ubuntu20.04%E9%85%8D%E7%BD%AE%E9%9D%99%E6%80%81ip,ubuntu%E8%AE%BE%E7%BD%AE%E9%9D%99%E6%80%81ip%E6%96%B9%E6%B3%95/" target="_self">
-          ubuntu20.04配置静态ip,ubuntu设置静态ip方法
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/13/ubuntu20.04%E9%85%8D%E7%BD%AE%E9%9D%99%E6%80%81ip,ubuntu%E8%AE%BE%E7%BD%AE%E9%9D%99%E6%80%81ip%E6%96%B9%E6%B3%95/" target="_self">
-        <div>
-          ubuntu20.04配置静态ip,ubuntu设置静态ip方法ubuntu 20.04 设置静态ip方法1. 前言本教程将会演示如何设置Ubuntu16.04 Server版和Ubuntu18.04 Server版系统的静态固定IP地址。 2. 确认你要修改的网卡号先确认你要修改的网卡号，假设你的服务器有多张网卡： 1ubuntu2004:~$ ip addr  我的服务器配置如下： 11: l
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-13 14:34" pubdate>
-              2022-07-13
+            <time datetime="2022-07-14 11:37" pubdate>
+              2022-07-14
             </time>
           </div>
         
@@ -566,7 +594,7 @@
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/10/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/#board">9</a><a class="page-number" href="/page/10/#board">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/#board">12</a><a class="page-number" href="/page/13/#board">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/#board">18</a><a class="extend next" rel="next" href="/page/12/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/10/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/#board">9</a><a class="page-number" href="/page/10/#board">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/#board">12</a><a class="page-number" href="/page/13/#board">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/#board">21</a><a class="extend next" rel="next" href="/page/12/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

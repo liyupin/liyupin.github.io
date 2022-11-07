@@ -1,0 +1,714 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Cper Liu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="etcd集群备份和数据恢复openthings 图形图像与三维 2018&#x2F;12&#x2F;11 13:27 阅读数 3.1W  本文被收录于专区 开发技能 进入专区参与更多专题讨论  etcd是一个分布式k-v数据库，在kubernetes中使用其管理集群的元数据。这里介绍etcd集群数据的备份和数据恢复的方法和步骤。  本文来自于：https:&#x2F;&#x2F;www.maideliang.com&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://liyupin.github.io/2022/11/08/etcd%E9%9B%86%E7%BE%A4%E5%A4%87%E4%BB%BD%E5%92%8C%E6%95%B0%E6%8D%AE%E6%81%A2%E5%A4%8D/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="etcd集群备份和数据恢复openthings 图形图像与三维 2018&#x2F;12&#x2F;11 13:27 阅读数 3.1W  本文被收录于专区 开发技能 进入专区参与更多专题讨论  etcd是一个分布式k-v数据库，在kubernetes中使用其管理集群的元数据。这里介绍etcd集群数据的备份和数据恢复的方法和步骤。  本文来自于：https:&#x2F;&#x2F;www.maideliang.com&#x2F;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://static.oschina.net/uploads/img/202008/31180731_vRmf.png">
+<meta property="article:published_time" content="2022-11-07T16:44:47.958Z">
+<meta property="article:modified_time" content="2022-11-07T16:44:47.958Z">
+<meta property="article:author" content="Cper Liu">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://static.oschina.net/uploads/img/202008/31180731_vRmf.png">
+  
+  
+  
+  <title>Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-11-08 00:44" pubdate>
+          2022年11月8日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          83 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="etcd集群备份和数据恢复"><a href="#etcd集群备份和数据恢复" class="headerlink" title="etcd集群备份和数据恢复"></a><a target="_blank" rel="noopener" href="https://my.oschina.net/u/2306127/blog/2986736">etcd集群备份和数据恢复</a></h1><p><a target="_blank" rel="noopener" href="https://my.oschina.net/u/2306127">openthings</a></p>
+<p><a target="_blank" rel="noopener" href="https://my.oschina.net/u/2306127?tab=newest&catalogId=3264626">图形图像与三维</a></p>
+<p>2018&#x2F;12&#x2F;11 13:27</p>
+<p>阅读数 3.1W</p>
+<p><a target="_blank" rel="noopener" href="https://www.oschina.net/group/skill"><img src="https://static.oschina.net/uploads/img/202008/31180731_vRmf.png" srcset="/img/loading.gif" lazyload alt="img"></a></p>
+<p>本文被收录于专区</p>
+<p><a target="_blank" rel="noopener" href="https://www.oschina.net/group/skill">开发技能</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.oschina.net/group/skill">进入专区参与更多专题讨论 </a></p>
+<p>etcd是一个分布式k-v数据库，在kubernetes中使用其管理集群的元数据。这里介绍etcd集群数据的备份和数据恢复的方法和步骤。</p>
+<ul>
+<li>本文来自于：<a target="_blank" rel="noopener" href="https://www.oschina.net/action/GoToLink?url=https://www.maideliang.com/index.php/archives/25/">https://www.maideliang.com/index.php/archives/25/</a></li>
+<li>参考：<a target="_blank" rel="noopener" href="https://my.oschina.net/u/2306127/blog/2990359">Kubernetes 1.13.1的etcd集群扩容实战技巧</a></li>
+</ul>
+<h3 id="快照定期备份"><a href="#快照定期备份" class="headerlink" title="快照定期备份"></a>快照定期备份</h3><p>crontab定期执行备份脚本，每半小时备份一次，本地、异地都备份（暂定：本地备份保留最近10个备份，异地保留一个月的备份）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-comment">#</span><br>ETCDCTL_PATH=<span class="hljs-string">&#x27;/usr/etcd/bin/etcdctl&#x27;</span><br>ENDPOINTS=<span class="hljs-string">&#x27;1.1.1.1:2379,1.1.1.2:2379,1.1.1.3:2379&#x27;</span><br>BACKUP_DIR=<span class="hljs-string">&#x27;/home/apps/backup&#x27;</span><br>DATE=`<span class="hljs-built_in">date</span> +%Y%m%d-%H%M%S`<br>[ ! -d <span class="hljs-variable">$BACKUP_DIR</span> ] &amp;&amp; <span class="hljs-built_in">mkdir</span> -p <span class="hljs-variable">$BACKUP_DIR</span><br><span class="hljs-built_in">export</span> ETCDCTL_API=3;<span class="hljs-variable">$ETCDCTL_PATH</span> --endpoints=<span class="hljs-variable">$ENDPOINTS</span> snapshot save <span class="hljs-variable">$BACKUP_DIR</span>/snapshot-<span class="hljs-variable">$DATE</span>\.db<br><span class="hljs-built_in">cd</span> <span class="hljs-variable">$BACKUP_DIR</span>;<span class="hljs-built_in">ls</span> -lt <span class="hljs-variable">$BACKUP_DIR</span>|awk <span class="hljs-string">&#x27;&#123;if(NR&gt;11)&#123;print &quot;rm -rf &quot;$9&#125;&#125;&#x27;</span>|sh<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="镜像集群备份"><a href="#镜像集群备份" class="headerlink" title="镜像集群备份"></a>镜像集群备份</h3><p>提前准备部署好镜像集群</p>
+<h4 id="实时全量数据同步"><a href="#实时全量数据同步" class="headerlink" title="实时全量数据同步"></a>实时全量数据同步</h4><figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">nohup etcdctl make-mirror &lt;destination&gt;  &amp;&gt; <span class="hljs-regexp">/apps/</span>logs/etcdmirror.<span class="hljs-built_in">log</span> &amp;<br></code></pre></td></tr></table></figure>
+
+<p>&#x2F;apps&#x2F;logs&#x2F;etcdmirror.log会保存已经同步的key数量，每30s打印一次</p>
+<h4 id="定期数据同步"><a href="#定期数据同步" class="headerlink" title="定期数据同步"></a>定期数据同步</h4><p>crontab定期数据同步，为避免数据遭到误删除清空造成灾难性影响，可恢复上一个同步周期之前的数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/bash</span><br><span class="hljs-comment">#</span><br>ETCDCTL_PATH=<span class="hljs-string">&#x27;/apps/svr/etcd/bin/etcdctl&#x27;</span><br>ENDPOINTS=<span class="hljs-string">&#x27;1.1.1.1:2379,1.1.1.2:2379,1.1.1.3:2379&#x27;</span><br>DEST_ENDPOINT=<span class="hljs-string">&#x27;1.1.1.1:2389&#x27;</span><br>CMD=<span class="hljs-string">&quot;<span class="hljs-variable">$ETCDCTL_PATH</span> make-mirror --endpoints=<span class="hljs-variable">$ENDPOINTS</span> <span class="hljs-variable">$DEST_ENDPOINT</span>&quot;</span><br>BaseName=$(<span class="hljs-built_in">basename</span> <span class="hljs-variable">$BASH_SOURCE</span>)<br><span class="hljs-built_in">export</span> ETCDCTL_API=3<br><span class="hljs-variable">$CMD</span> &amp; <span class="hljs-built_in">echo</span> $! &gt; /tmp/<span class="hljs-variable">$BaseName</span>\.pid<br><span class="hljs-built_in">sleep</span> 90<br><span class="hljs-built_in">kill</span> `<span class="hljs-built_in">cat</span> /tmp/<span class="hljs-variable">$BaseName</span>\.pid`<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="etcd集群恢复"><a href="#etcd集群恢复" class="headerlink" title="etcd集群恢复"></a>etcd集群恢复</h2><p>etcd集群与zk集群相似，建议采用基数设备来搭建集群，可用性为(N-1)&#x2F;2，假设集群数量N是3台设备，可最多可故障1台设备，而不影响集群使用。</p>
+<h3 id="leader故障"><a href="#leader故障" class="headerlink" title="leader故障"></a>leader故障</h3><p>当leader故障时，etcd集群会自动选择一个新leader，由于失败检测模型是基于超时的（heartbeat-interval），因此选举新leader需要大约选举超时。<br>在leader选举期间，集群不能处理任何写入操作。在选举期间发送的写入请求排队等待处理，直到选出新的leader。<br>已经发送给old leader但尚未提交的文字可能会丢失。新leader有权重写old leader的任何未提交的条目。从用户的角度来看，一些写入请求可能会超时，但是，没有提交的写入会丢失。</p>
+<ul>
+<li>查看现时集群情况</li>
+</ul>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">[root<span class="hljs-meta">@ETCD-CLUSTER-001</span> bin]<span class="hljs-comment"># export ETCDCTL_API=3;./etcdctl --write-out=&quot;table&quot; --endpoints=&#x27;10.201.46.112:2379,10.201.46.113:2379,10.201.46.114:2379&#x27; endpoint status </span><br>+--------------------+------------------+---------+---------+-----------+-----------+------------+<br>|<span class="hljs-string">      ENDPOINT      </span>|<span class="hljs-string">        ID        </span>|<span class="hljs-string"> VERSION </span>|<span class="hljs-string"> DB SIZE </span>|<span class="hljs-string"> IS LEADER </span>|<span class="hljs-string"> RAFT TERM </span>|<span class="hljs-string"> RAFT INDEX </span>|<br>+--------------------+------------------+---------+---------+-----------+-----------+------------+<br>|<span class="hljs-string"> 10.201.46.112:2379 </span>|<span class="hljs-string"> fd86741fb271523a </span>|<span class="hljs-string"> 3.1.10  </span>|<span class="hljs-string"> 25 kB   </span>|<span class="hljs-string"> false     </span>|<span class="hljs-string">         2 </span>|<span class="hljs-string">         10 </span>|<br>|<span class="hljs-string"> 10.201.46.113:2379 </span>|<span class="hljs-string"> fe2dd3624258de7  </span>|<span class="hljs-string"> 3.1.10  </span>|<span class="hljs-string"> 25 kB   </span>|<span class="hljs-string"> false     </span>|<span class="hljs-string">         2 </span>|<span class="hljs-string">         10 </span>|<br>|<span class="hljs-string"> 10.201.46.114:2379 </span>|<span class="hljs-string"> c649fd5192da5ca1 </span>|<span class="hljs-string"> 3.1.10  </span>|<span class="hljs-string"> 25 kB   </span>|<span class="hljs-string"> true      </span>|<span class="hljs-string">         2 </span>|<span class="hljs-string">         10 </span>|<br>+--------------------+------------------+---------+---------+-----------+-----------+------------+<br>[root<span class="hljs-meta">@ETCD-CLUSTER-001</span> bin]<span class="hljs-comment"># export ETCDCTL_API=3;./etcdctl put hello nihao    </span><br>OK<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p>停止leader</p>
+</li>
+<li><p>查看日志，在第3个选举周期的时候已经选举了新的leader</p>
+</li>
+<li><p>集群可以正常工作</p>
+</li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs routeros">[root@ETCD-CLUSTER-001 bin]# <span class="hljs-built_in">export</span> <span class="hljs-attribute">ETCDCTL_API</span>=3;./etcdctl <span class="hljs-built_in">get</span> hello nihao   <br>hello<br>nihao<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="follower故障"><a href="#follower故障" class="headerlink" title="follower故障"></a>follower故障</h3><ul>
+<li>查看现时集群情况</li>
+<li>停掉一台followe</li>
+</ul>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stata">[root@ETCD-<span class="hljs-keyword">CLUSTER</span>-003 ~]# <span class="hljs-keyword">sh</span> /apps/<span class="hljs-keyword">sh</span>/etcd.<span class="hljs-keyword">sh</span> stop<br>Stopping etcd:                                             [  OK  ]<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>集群正常工作</li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs routeros">[root@ETCD-CLUSTER-001 bin]# <span class="hljs-built_in">export</span> <span class="hljs-attribute">ETCDCTL_API</span>=3;./etcdctl <span class="hljs-built_in">get</span> hello nihao<br>hello<br>nihao<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="集群故障恢复"><a href="#集群故障恢复" class="headerlink" title="集群故障恢复"></a>集群故障恢复</h3><p>为了从灾难性故障中恢复，etcd v3提供了快照和恢复功能，以便在没有v3密钥数据丢失的情况下重新创建群集.<br>要恢复集群，只需要一个快照“db”文件。集群恢复将etcdctl snapshot restore创建新的etcd数据目录; 所有成员应该使用相同的快照进行恢复。恢复会覆盖某些快照元数据（特别是成员ID和群集ID）; 该成员失去了其以前的身份。此元数据覆盖可防止新成员无意中加入现有群集。因此，为了从快照启动集群，还原必须启动新的逻辑集群。</p>
+<p>在还原时可以选择验证快照完整性。如果使用快照etcdctl snapshot save，它将具有通过检查的完整性散列etcdctl snapshot restore。如果快照是从数据目录复制的(配置文件中的data-dir)，则不存在完整性哈希，并且只能使用恢复–skip-hash-check。</p>
+<h4 id="保存快照键空间"><a href="#保存快照键空间" class="headerlink" title="保存快照键空间"></a>保存快照键空间</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">[root@ETCD-CLUSTER-001 bin]# <span class="hljs-built_in">export</span> <span class="hljs-attribute">ETCDCTL_API</span>=3;./etcdctl  <span class="hljs-attribute">--endpoints</span>=<span class="hljs-string">&#x27;10.201.46.112:2379,10.201.46.113:2379,10.201.46.114:2379&#x27;</span> snapshot save ~/.snapshot.db<br>Snapshot saved at /root/.snapshot.db<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="恢复快照信息"><a href="#恢复快照信息" class="headerlink" title="恢复快照信息"></a>恢复快照信息</h4><p>每台机器上执行,</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs awk">$ etcdctl snapshot restore snapshot.db \<br>  --name ETCD-CLUSTER-<span class="hljs-number">001</span> \<br>  --initial-cluster ETCD-CLUSTER-<span class="hljs-number">001</span>=http:<span class="hljs-regexp">//</span><span class="hljs-number">10.201</span>.<span class="hljs-number">46.112</span>:<span class="hljs-number">2380</span>,ETCD-CLUSTER-<span class="hljs-number">002</span>=http:<span class="hljs-regexp">//</span><span class="hljs-number">10.201</span>.<span class="hljs-number">46.113</span>:<span class="hljs-number">2380</span>,ETCD-CLUSTER-<span class="hljs-number">003</span>=http:<span class="hljs-regexp">//</span><span class="hljs-number">10.201</span>.<span class="hljs-number">46.114</span>:<span class="hljs-number">2380</span> \<br>  --initial-advertise-peer-urls http:<span class="hljs-regexp">//</span><span class="hljs-number">10.201</span>.<span class="hljs-number">46.112</span>:<span class="hljs-number">2380</span><br>$ etcdctl snapshot restore snapshot.db \<br>  --name ETCD-CLUSTER-<span class="hljs-number">002</span> \<br>  --initial-cluster ETCD-CLUSTER-<span class="hljs-number">001</span>=http:<span class="hljs-regexp">//</span><span class="hljs-number">10.201</span>.<span class="hljs-number">46.112</span>:<span class="hljs-number">2380</span>,ETCD-CLUSTER-<span class="hljs-number">002</span>=http:<span class="hljs-regexp">//</span><span class="hljs-number">10.201</span>.<span class="hljs-number">46.113</span>:<span class="hljs-number">2380</span>,ETCD-CLUSTER-<span class="hljs-number">003</span>=http:<span class="hljs-regexp">//</span><span class="hljs-number">10.201</span>.<span class="hljs-number">46.114</span>:<span class="hljs-number">2380</span> \<br>  --initial-advertise-peer-urls http:<span class="hljs-regexp">//</span><span class="hljs-number">10.201</span>.<span class="hljs-number">46.113</span>:<span class="hljs-number">2380</span><br>$ etcdctl snapshot restore snapshot.db \<br>  --name ETCD-CLUSTER-<span class="hljs-number">003</span> \<br>  --initial-cluster ETCD-CLUSTER-<span class="hljs-number">001</span>=http:<span class="hljs-regexp">//</span><span class="hljs-number">10.201</span>.<span class="hljs-number">46.112</span>:<span class="hljs-number">2380</span>,ETCD-CLUSTER-<span class="hljs-number">002</span>=http:<span class="hljs-regexp">//</span><span class="hljs-number">10.201</span>.<span class="hljs-number">46.113</span>:<span class="hljs-number">2380</span>,ETCD-CLUSTER-<span class="hljs-number">003</span>=http:<span class="hljs-regexp">//</span><span class="hljs-number">10.201</span>.<span class="hljs-number">46.114</span>:<span class="hljs-number">2380</span> \<br>  --initial-advertise-peer-urls http:<span class="hljs-regexp">//</span><span class="hljs-number">10.201</span>.<span class="hljs-number">46.114</span>:<span class="hljs-number">2380</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="启动etcd机器"><a href="#启动etcd机器" class="headerlink" title="启动etcd机器"></a>启动etcd机器</h4><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stata">sudo <span class="hljs-keyword">sh</span> /apps/<span class="hljs-keyword">sh</span>/etcd.<span class="hljs-keyword">sh</span> start<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="集群维护"><a href="#集群维护" class="headerlink" title="集群维护"></a>集群维护</h2><h3 id="剔除、新增成员"><a href="#剔除、新增成员" class="headerlink" title="剔除、新增成员"></a>剔除、新增成员</h3><ul>
+<li>查看现有成员</li>
+</ul>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">[root<span class="hljs-meta">@ETCD-CLUSTER-001</span> etcd-v3.2.17-linux-amd64]<span class="hljs-comment"># export ETCDCTL_API=3;/apps/svr/etcd/bin/etcdctl --write-out=&quot;table&quot; --endpoints=&#x27;1.1.1.1:2379,1.1.1.2:2379,1.1.1.3:2379&#x27; member list</span><br>+------------------+---------+------------------+---------------------------+-----------------------+<br>|<span class="hljs-string">        ID        </span>|<span class="hljs-string"> STATUS  </span>|<span class="hljs-string">       NAME       </span>|<span class="hljs-string">        PEER ADDRS         </span>|<span class="hljs-string">     CLIENT ADDRS      </span>|<br>+------------------+---------+------------------+---------------------------+-----------------------+<br>|<span class="hljs-string"> 28c987fd1ef634f8 </span>|<span class="hljs-string"> started </span>|<span class="hljs-string"> ETCD-CLUSTER-003 </span>|<span class="hljs-string"> http://1.1.1.3:2380 </span>|<span class="hljs-string"> http://localhost:2379 </span>|<br>|<span class="hljs-string"> 635b8eabdf3280ef </span>|<span class="hljs-string"> started </span>|<span class="hljs-string"> ETCD-CLUSTER-002 </span>|<span class="hljs-string"> http://1.1.1.2:2380 </span>|<span class="hljs-string"> http://localhost:2379 </span>|<br>|<span class="hljs-string"> e9a434659e36d3bc </span>|<span class="hljs-string"> started </span>|<span class="hljs-string"> ETCD-CLUSTER-001 </span>|<span class="hljs-string"> http://1.1.1.1:2380 </span>|<span class="hljs-string"> http://localhost:2379 </span>|<br>+------------------+---------+------------------+---------------------------+-----------------------+<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>剔除成员</li>
+</ul>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">[root<span class="hljs-meta">@ETCD-CLUSTER-001</span> etcd-v3.2.17-linux-amd64]<span class="hljs-comment"># export ETCDCTL_API=3;/apps/svr/etcd/bin/etcdctl  --endpoints=&#x27;1.1.1.1:2379,1.1.1.2:2379,1.1.1.3:2379&#x27; member remove e9a434659e36d3bc</span><br>Member e9a434659e36d3bc removed from cluster 7055108fef63cdab<br>[root<span class="hljs-meta">@ETCD-CLUSTER-001</span> etcd-v3.2.17-linux-amd64]<span class="hljs-comment"># export ETCDCTL_API=3;/apps/svr/etcd/bin/etcdctl --write-out=&quot;table&quot; --endpoints=&#x27;1.1.1.1:2379,1.1.1.2:2379,1.1.1.3:2379&#x27; member list</span><br>+------------------+---------+------------------+---------------------------+-----------------------+<br>|<span class="hljs-string">        ID        </span>|<span class="hljs-string"> STATUS  </span>|<span class="hljs-string">       NAME       </span>|<span class="hljs-string">        PEER ADDRS         </span>|<span class="hljs-string">     CLIENT ADDRS      </span>|<br>+------------------+---------+------------------+---------------------------+-----------------------+<br>|<span class="hljs-string"> 28c987fd1ef634f8 </span>|<span class="hljs-string"> started </span>|<span class="hljs-string"> ETCD-CLUSTER-003 </span>|<span class="hljs-string"> http://1.1.1.3:2380 </span>|<span class="hljs-string"> http://localhost:2379 </span>|<br>|<span class="hljs-string"> 635b8eabdf3280ef </span>|<span class="hljs-string"> started </span>|<span class="hljs-string"> ETCD-CLUSTER-002 </span>|<span class="hljs-string"> http://1.1.1.2:2380 </span>|<span class="hljs-string"> http://localhost:2379 </span>|<br>+------------------+---------+------------------+---------------------------+-----------------------+<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="新增成员至集群"><a href="#新增成员至集群" class="headerlink" title="新增成员至集群"></a>新增成员至集群</h3><blockquote>
+<p><em>注意步骤顺序</em></p>
+</blockquote>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">[root<span class="hljs-meta">@ETCD-CLUSTER-001</span> ]<span class="hljs-comment"># export ETCDCTL_API=3;/apps/svr/etcd/bin/etcdctl  --endpoints=&#x27;1.1.1.2:2379,1.1.1.3:2379&#x27; member add ETCD-CLUSTER-001  --peer-urls=http://1.1.1.1:2380</span><br>Member 433fd69a958b8432 added to cluster 7055108fef63cdab<br>ETCD_NAME=<span class="hljs-string">&quot;ETCD-CLUSTER-001&quot;</span><br>ETCD_INITIAL_CLUSTER=<span class="hljs-string">&quot;ETCD-CLUSTER-003=http://1.1.1.3:2380,ETCD-CLUSTER-001=http://1.1.1.1:2380,ETCD-CLUSTER-002=http://1.1.1.2:2380&quot;</span><br>ETCD_INITIAL_CLUSTER_STATE=<span class="hljs-string">&quot;existing&quot;</span><br>[root<span class="hljs-meta">@ETCD-CLUSTER-001</span> ]<span class="hljs-comment"># export ETCDCTL_API=3;/apps/svr/etcd/bin/etcdctl --write-out=&quot;table&quot; --endpoints=&#x27;1.1.1.2:2379,1.1.1.3:2379&#x27; member list            </span><br>+------------------+-----------+------------------+---------------------------+-----------------------+<br>|<span class="hljs-string">        ID        </span>|<span class="hljs-string">  STATUS   </span>|<span class="hljs-string">       NAME       </span>|<span class="hljs-string">        PEER ADDRS         </span>|<span class="hljs-string">     CLIENT ADDRS      </span>|<br>+------------------+-----------+------------------+---------------------------+-----------------------+<br>|<span class="hljs-string"> 28c987fd1ef634f8 </span>|<span class="hljs-string"> started   </span>|<span class="hljs-string"> ETCD-CLUSTER-003 </span>|<span class="hljs-string"> http://1.1.1.3:2380 </span>|<span class="hljs-string"> http://localhost:2379 </span>|<br>|<span class="hljs-string"> 433fd69a958b8432 </span>|<span class="hljs-string"> unstarted </span>|<span class="hljs-string">                  </span>|<span class="hljs-string"> http://1.1.1.1:2380 </span>|<span class="hljs-string">                       </span>|<br>|<span class="hljs-string"> 635b8eabdf3280ef </span>|<span class="hljs-string"> started   </span>|<span class="hljs-string"> ETCD-CLUSTER-002 </span>|<span class="hljs-string"> http://1.1.1.2:2380 </span>|<span class="hljs-string"> http://localhost:2379 </span>|<br>+------------------+-----------+------------------+---------------------------+-----------------------+<br></code></pre></td></tr></table></figure>
+
+<p>删除新增成员旧数据目录，并且启动新增成员etcd服务，加入集群时要改下配置文件，把初始化集群状态由new改成existing</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">[root<span class="hljs-meta">@ETCD-CLUSTER-001</span> ~]<span class="hljs-comment"># vim /apps/conf/etcd/etcd.conf </span><br>initial-cluster-state: <span class="hljs-string">&quot;existing&quot;</span><br><br><br>[root<span class="hljs-meta">@ETCD-CLUSTER-001</span> ~]<span class="hljs-comment"># export ETCDCTL_API=3;/apps/svr/etcd/bin/etcdctl --write-out=&quot;table&quot; --endpoints=&#x27;1.1.1.2:2379,1.1.1.3:2379&#x27; member list</span><br>+------------------+---------+------------------+---------------------------+-----------------------+<br>|<span class="hljs-string">        ID        </span>|<span class="hljs-string"> STATUS  </span>|<span class="hljs-string">       NAME       </span>|<span class="hljs-string">        PEER ADDRS         </span>|<span class="hljs-string">     CLIENT ADDRS      </span>|<br>+------------------+---------+------------------+---------------------------+-----------------------+<br>|<span class="hljs-string"> 28c987fd1ef634f8 </span>|<span class="hljs-string"> started </span>|<span class="hljs-string"> ETCD-CLUSTER-003 </span>|<span class="hljs-string"> http://1.1.1.3:2380 </span>|<span class="hljs-string"> http://localhost:2379 </span>|<br>|<span class="hljs-string"> 433fd69a958b8432 </span>|<span class="hljs-string"> started </span>|<span class="hljs-string"> ETCD-CLUSTER-001 </span>|<span class="hljs-string"> http://1.1.1.1:2380 </span>|<span class="hljs-string"> http://localhost:2379 </span>|<br>|<span class="hljs-string"> 635b8eabdf3280ef </span>|<span class="hljs-string"> started </span>|<span class="hljs-string"> ETCD-CLUSTER-002 </span>|<span class="hljs-string"> http://1.1.1.2:2380 </span>|<span class="hljs-string"> http://localhost:2379 </span>|<br>+------------------+---------+------------------+---------------------------+-----------------------+<br> <br>[root<span class="hljs-meta">@ETCD-CLUSTER-001</span> ~]<span class="hljs-comment"># export ETCDCTL_API=3;/apps/svr/etcd/bin/etcdctl --write-out=&quot;table&quot; --endpoints=&#x27;1.1.1.1:2379,1.1.1.2:2379,1.1.1.3:2379&#x27; endpoint status</span><br>+--------------------+------------------+---------+---------+-----------+-----------+------------+<br>|<span class="hljs-string">      ENDPOINT      </span>|<span class="hljs-string">        ID        </span>|<span class="hljs-string"> VERSION </span>|<span class="hljs-string"> DB SIZE </span>|<span class="hljs-string"> IS LEADER </span>|<span class="hljs-string"> RAFT TERM </span>|<span class="hljs-string"> RAFT INDEX </span>|<br>+--------------------+------------------+---------+---------+-----------+-----------+------------+<br>|<span class="hljs-string"> 1.1.1.1:2379 </span>|<span class="hljs-string"> 433fd69a958b8432 </span>|<span class="hljs-string"> 3.1.10  </span>|<span class="hljs-string"> 98 kB   </span>|<span class="hljs-string"> false     </span>|<span class="hljs-string">         3 </span>|<span class="hljs-string">         13 </span>|<br>|<span class="hljs-string"> 1.1.1.2:2379 </span>|<span class="hljs-string"> 635b8eabdf3280ef </span>|<span class="hljs-string"> 3.1.10  </span>|<span class="hljs-string"> 98 kB   </span>|<span class="hljs-string"> false     </span>|<span class="hljs-string">         3 </span>|<span class="hljs-string">         13 </span>|<br>|<span class="hljs-string"> 1.1.1.3:2379 </span>|<span class="hljs-string"> 28c987fd1ef634f8 </span>|<span class="hljs-string"> 3.1.10  </span>|<span class="hljs-string"> 98 kB   </span>|<span class="hljs-string"> true      </span>|<span class="hljs-string">         3 </span>|<span class="hljs-string">         13 </span>|<br>+--------------------+------------------+---------+---------+-----------+-----------+------------+<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="etcd-v2数据迁移到v3版本"><a href="#etcd-v2数据迁移到v3版本" class="headerlink" title="etcd v2数据迁移到v3版本"></a>etcd v2数据迁移到v3版本</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment"># 迁移前，需要逐台服务停止</span><br>sh /apps/sh/etcd.sh stop<br><span class="hljs-comment"># 迁移数据,数据目录根据实际填写</span><br><span class="hljs-built_in">export</span> <span class="hljs-attribute">ETCDCTL_API</span>=3<br>etcdctl <span class="hljs-attribute">--endpoints</span>=<span class="hljs-variable">$ENDPOINT</span> migrate <span class="hljs-attribute">--data-dir</span>=<span class="hljs-string">&quot;default.etcd&quot;</span> <span class="hljs-attribute">--wal-dir</span>=<span class="hljs-string">&quot;default.etcd/member/wal&quot;</span><br><br><span class="hljs-comment"># 逐台服务启动</span><br>sh /apps/sh/etcd.sh start<br><span class="hljs-comment"># 检查确认数据已经迁移</span><br><span class="hljs-built_in">export</span> <span class="hljs-attribute">ETCDCTL_API</span>=3;etcdctl <span class="hljs-attribute">--endpoints</span>=<span class="hljs-variable">$ENDPOINTS</span> <span class="hljs-built_in">get</span> /foo<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="快照条目数量调整"><a href="#快照条目数量调整" class="headerlink" title="快照条目数量调整"></a>快照条目数量调整</h3><blockquote>
+<p>–snapshot-count：指定有多少事务（transaction）被提交时，触发截取快照保存到磁盘，在v3.2之前的版本，默认的参数是10000条，3.2之后调整为100000条</p>
+<p>这个条目数量不能配置过高或者过低，过低会导致频繁的io压力，过高会导致占用高内存以及会导致etcd GC过慢。建议设置为10W-20W条。</p>
+</blockquote>
+<h3 id="历史数据压缩"><a href="#历史数据压缩" class="headerlink" title="历史数据压缩"></a>历史数据压缩</h3><p>key空间长期的时候，如果没有做压缩清理，到达上限的阈值时，集群会处于一个只能删除和读的状态，无法进行写操作。因此对集群的历史日志做一个压缩清理是很有必要。</p>
+<p>数据压缩并不是清理现有数据，只是对数据的历史版本进行清理，清理后数据的历史版本将不能访问，但不会影响现有最新数据的访问。</p>
+<h4 id="手动压缩"><a href="#手动压缩" class="headerlink" title="手动压缩"></a>手动压缩</h4><p>使用客户端工具进行清理</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment">#压缩清理revision为10之前的历史数据</span><br>[apps@test ~]$ <span class="hljs-built_in">export</span> <span class="hljs-attribute">ETCDCTL_API</span>=3;/apps/svr/etcd/bin/etcdctl compaction 10<br>compacted revision 10<br> <br><span class="hljs-comment">#访问revision10之前的数据会提示已经不存在</span><br>[apps@test ~]$ <span class="hljs-built_in">export</span> <span class="hljs-attribute">ETCDCTL_API</span>=3;/apps/svr/etcd/bin/etcdctl <span class="hljs-built_in">get</span> aa <span class="hljs-attribute">--rev</span>=9<br>Error:  etcdserver: mvcc: required revision has been compacted<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="自动压缩"><a href="#自动压缩" class="headerlink" title="自动压缩"></a>自动压缩</h4><p>使用–auto-compaction-retention&#x3D;1，表示每小时进行一次数据压缩。</p>
+<h3 id="碎片清理"><a href="#碎片清理" class="headerlink" title="碎片清理"></a>碎片清理</h3><p>进行compaction操作之后，旧的revision被压缩，会产生内部的碎片，内部碎片是指空闲状态的，能被后端使用但是仍然消耗存储空间的磁盘空间。去碎片化实际上是将存储空间还给文件系统。</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crystal">[apps<span class="hljs-variable">@test</span> ~]<span class="hljs-variable">$ </span>etcdctl defrag<br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>https://liyupin.github.io/2022/11/08/etcd集群备份和数据恢复/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Cper Liu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年11月8日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/11/08/fio%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/11/08/etcd%E5%A4%87%E4%BB%BD%E6%81%A2%E5%A4%8D%E5%8E%9F%E7%90%86%E8%AF%A6%E8%A7%A3%E5%8F%8A%E8%B8%A9%E5%9D%91%E5%AE%9E%E5%BD%95/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,960 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Cper Liu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="精通Python自动化脚本-运维人员宝典Python 模板python 模版库 jinjia2 使用 在工作中经常需要用到模版，使用参数来动态生成文件，例如：我们在k8s中，一些相似的deployment ,service ,我就使用yaml定义简单的属性，再定义两个deployment和service的模版，然后使用yaml库读取yaml定义的属性再使用jinjia2动态生成各个应用的部署模版。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://liyupin.github.io/2022/11/08/Python%20%E6%A8%A1%E6%9D%BF/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="精通Python自动化脚本-运维人员宝典Python 模板python 模版库 jinjia2 使用 在工作中经常需要用到模版，使用参数来动态生成文件，例如：我们在k8s中，一些相似的deployment ,service ,我就使用yaml定义简单的属性，再定义两个deployment和service的模版，然后使用yaml库读取yaml定义的属性再使用jinjia2动态生成各个应用的部署模版。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-11-07T16:44:49.138Z">
+<meta property="article:modified_time" content="2022-11-07T16:44:49.138Z">
+<meta property="article:author" content="Cper Liu">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-11-08 00:44" pubdate>
+          2022年11月8日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          18k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          147 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none"></h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="精通Python自动化脚本-运维人员宝典"><a href="#精通Python自动化脚本-运维人员宝典" class="headerlink" title="精通Python自动化脚本-运维人员宝典"></a><a href="">精通Python自动化脚本-运维人员宝典</a></h1><h1 id="Python-模板"><a href="#Python-模板" class="headerlink" title="Python 模板"></a><a href="">Python 模板</a></h1><p>python 模版库 jinjia2 使用</p>
+<p>在工作中经常需要用到模版，使用参数来动态生成文件，例如：我们在k8s中，一些相似的deployment ,service ,我就使用yaml定义简单的属性，再定义两个deployment和service的模版，然后使用yaml库读取yaml定义的属性再使用jinjia2动态生成各个应用的部署模版。</p>
+<ol>
+<li>安装</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">pip install Jinja2<br></code></pre></td></tr></table></figure>
+
+
+
+<ol start="2">
+<li>简单使用</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> jinja2 <span class="hljs-keyword">import</span> Template<br><br>tpl = Template(<span class="hljs-string">&#x27;my name is : &#123;&#123; name &#125;&#125;&#x27;</span>)<br>text = tpl.render(name=<span class="hljs-string">&#x27;jack&#x27;</span>)<br><span class="hljs-built_in">print</span> text<br></code></pre></td></tr></table></figure>
+
+<p>运行后：</p>
+<p>$ python .&#x2F;jinjia2-simple.py<br>my name is : jack<br>3. 使用说明：</p>
+<p>1.配置模板文件搜索路径 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">TemplateLoader = jinja2.FileSystemLoader(searchpath=’/xxx’)<br></code></pre></td></tr></table></figure>
+
+<p>2.创建环境变量 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">TemplateEnv = jinja2.Environment(loader=TemplateLoader)<br></code></pre></td></tr></table></figure>
+
+<p>3.加载模板，渲染数据 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">template = TemplateEnv.get_template(template_name) <br>html = template.render(**kw)<br></code></pre></td></tr></table></figure>
+
+
+
+<ol start="4">
+<li>读取yaml文件，并使用模版，生成文件：</li>
+</ol>
+<p>4.1 定义yaml文件(etc&#x2F;userInfo.yaml)</p>
+<ul>
+<li><p>&#96;&#96;&#96;yaml<br>username: zxx<br>age: 18<br>orther :<br>  height: “175CM”<br>  weitht: “107KG”<br>JobHistory: </p>
+<ul>
+<li>name : “IBM”<br>date : “2015-2017”</li>
+<li>name : “GA”<br>date : “2017-now”<figure class="highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs handlebars"><span class="language-xml"></span><br><span class="language-xml">4.2 定义模版文件（templates/config.tpl）</span><br><span class="language-xml"></span><br><span class="language-xml">```html</span><br><span class="language-xml">  - </span><br><span class="language-xml"></span><br><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>username: </span><span class="hljs-template-variable">&#123;&#123; <span class="hljs-name">username</span> &#125;&#125;</span><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span><br><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>age: </span><span class="hljs-template-variable">&#123;&#123; <span class="hljs-name">age</span> &#125;&#125;</span><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span><br><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>other.height: </span><span class="hljs-template-variable">&#123;&#123; <span class="hljs-name">other</span>[&#x27;height&#x27;] &#125;&#125;</span><span class="language-xml"> <span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span><br><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>other.height: </span><span class="hljs-template-variable">&#123;&#123; <span class="hljs-name">other</span>[&#x27;weight&#x27;] &#125;&#125;</span><span class="language-xml"> <span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span><br><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>JobHistory:<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span><br><span class="language-xml"></span><br><span class="language-xml">   &#123;% for key in JobHistory %&#125;</span><br><span class="language-xml"></span><br><span class="language-xml">   <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span></span><br><span class="language-xml">       name: </span><span class="hljs-template-variable">&#123;&#123; <span class="hljs-name">key</span> &#125;&#125;</span><span class="language-xml"> , </span><br><span class="language-xml">       value: &quot;</span><span class="hljs-template-variable">&#123;&#123; <span class="hljs-name">JobHistory</span>[key] &#125;&#125;</span><span class="language-xml">&quot;</span><br><span class="language-xml">   <span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span><br><span class="language-xml"></span><br><span class="language-xml">   &#123;% endfor %&#125;</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<p>4.3 编写执行文件(test.py)：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#! /usr/bin/env python</span><br><br><span class="hljs-comment"># -*- coding: utf-8 -*-</span><br><br><span class="hljs-keyword">from</span> jinja2 <span class="hljs-keyword">import</span> Environment, FileSystemLoader<br><span class="hljs-keyword">import</span> os<br><span class="hljs-keyword">import</span> yaml<br><span class="hljs-keyword">import</span> codecs<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">generatefile</span>(<span class="hljs-params">srcfile,tplpath,tplfile</span>):<br>  <span class="hljs-comment">#Load data from YAML into Python dictionary</span><br>  config_data = yaml.load(<span class="hljs-built_in">open</span>(srcfile))<br><br>  <span class="hljs-comment">#Load Jinja2 template</span><br>  env = Environment(loader = FileSystemLoader(tplpath), trim_blocks=<span class="hljs-literal">True</span>, lstrip_blocks=<span class="hljs-literal">True</span>)<br>  template = env.get_template(tplfile)<br><br>  <span class="hljs-comment">#Render the template with data and print the output</span><br>  <span class="hljs-keyword">return</span> template.render(config_data)<br><br>content = generatefile(<span class="hljs-string">&#x27;./etc/userInfo.yaml&#x27;</span>,<span class="hljs-string">&#x27;./templates&#x27;</span>,<span class="hljs-string">&#x27;config.tpl&#x27;</span>)<br><span class="hljs-built_in">print</span> content<br></code></pre></td></tr></table></figure>
+
+<p>4.4 运行结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ ./test.py <br><br>&lt;h1&gt;username: zxx&lt;/h1&gt;<br>&lt;h1&gt;age: 18&lt;/h1&gt;<br>&lt;h1&gt;other.height: 175CM &lt;/h1&gt;<br>&lt;h1&gt;other.height:  &lt;/h1&gt;<br>&lt;h1&gt;JobHistory:&lt;/h1&gt;<br>   &lt;h2&gt;<br>       name: &#123;<span class="hljs-string">&#x27;date&#x27;</span>: <span class="hljs-string">&#x27;2015-2017&#x27;</span>, <span class="hljs-string">&#x27;name&#x27;</span>: <span class="hljs-string">&#x27;IBM&#x27;</span>&#125; , <br>       value: <span class="hljs-string">&quot;&quot;</span><br>   &lt;/h2&gt;<br>   &lt;h2&gt;<br>       name: &#123;<span class="hljs-string">&#x27;date&#x27;</span>: <span class="hljs-string">&#x27;2017-now&#x27;</span>, <span class="hljs-string">&#x27;name&#x27;</span>: <span class="hljs-string">&#x27;GA&#x27;</span>&#125; , <br>       value: <span class="hljs-string">&quot;&quot;</span><br>   &lt;/h2&gt;<br><br><br></code></pre></td></tr></table></figure>
+
+<h1 id="第四章-自动化常规运维活动"><a href="#第四章-自动化常规运维活动" class="headerlink" title="第四章 自动化常规运维活动"></a><strong><a target="_blank" rel="noopener" href="https://alanhou.org/automating-regular-administrative-activities/">第四章 自动化常规运维活动</a></strong></h1><p>系统管理员有需要执行的各种各样管理活动。这些活动可能包含文件处理、日志、管理CPU和内存、密码处理以及最为重要的进行备份。需要自动化这些活动。本章中，我们将学习使用Python来自动化这些活动。</p>
+<p>本章中，我们将讨论如下课题：</p>
+<ul>
+<li>通过重定向、管道和输入文件来接收输入</li>
+<li>脚本中运行时密码处理</li>
+<li>执行外部命令并获取输出</li>
+<li>在运行时和验证时弹出密码输入</li>
+<li>读取配置文件</li>
+<li>在脚本中添加日志和警告代码</li>
+<li>为CPU和内存使用设置上限</li>
+<li>启动网页浏览器</li>
+<li>使用os模块处理目录和文件</li>
+<li>（使用 rsync）创建备份</li>
+</ul>
+<h2 id="通过重定向、管道和输入文件来接收输入"><a href="#通过重定向、管道和输入文件来接收输入" class="headerlink" title="通过重定向、管道和输入文件来接收输入"></a>通过重定向、管道和输入文件来接收输入</h2><p>在这部分中，我们将学习如何让用户接收通过重定向、管道和外部输入文件的输入。</p>
+<p>对于接收重定向的输入，我们使用stdin。管道是另一种形式的重定向。这个概念是指将一个程序的输出作为另一个程序的输入。我们可以通过外部文件以及使用Python来接收输入。</p>
+<h3 id="通过重定向输入"><a href="#通过重定向输入" class="headerlink" title="通过重定向输入"></a>通过重定向输入</h3><p>stdin和stdout是由os模块创建的对象。我们将编写一个脚本来使用到stdin和stdout。</p>
+<p>创建一个名为redirection.py的脚本并编写如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> sys<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Redirection</span>(<span class="hljs-title class_ inherited__">object</span>):<br>	<span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, in_obj, out_obj</span>):<br>		self.<span class="hljs-built_in">input</span> = in_obj<br>		self.output = out_obj<br>	<span class="hljs-keyword">def</span> <span class="hljs-title function_">read_line</span>(<span class="hljs-params">self</span>):<br>		res = self.<span class="hljs-built_in">input</span>.readline()<br>		self.output.write(res)<br>		<span class="hljs-keyword">return</span> res<br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>	<span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> sys.stdin.isatty():<br>		sys.stdin = Redirection(in_obj=sys.stdin, out_obj=sys.stdout)<br>	a = <span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Enter a string: &quot;</span>)<br>	b = <span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;Enter another string: &quot;</span>)<br>	<span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Entered strings are:&#x27;</span>, <span class="hljs-built_in">repr</span>(a), <span class="hljs-string">&#x27;and&#x27;</span>, <span class="hljs-built_in">repr</span>(b))<br><br></code></pre></td></tr></table></figure>
+
+<p>运行以上程序如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">Enter a string: aaa<br>Enter another string: bbb<br>Entered strings are: <span class="hljs-string">&#x27;aaa&#x27;</span> and <span class="hljs-string">&#x27;bbb&#x27;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>我们将得到如下的输出：</p>
+<p>程序在交互会话中运行时，stdin是键盘输入，stdout是用户的终端。input()函数用于从用户接收输入，print()是一种写到终端(stdout)的方式。</p>
+<h3 id="通过管道输入"><a href="#通过管道输入" class="headerlink" title="通过管道输入"></a>通过管道输入</h3><p>管道（pipe）是另一种形式的重定向。 这一技术用于从一个程序向另一个程序传递信息。符号 | 表示管道。通过使用管道技术，我们可以使用两个以上的命令，将一个命令的输出作为下一个命令的输入。</p>
+<p>下面我们来看看如何使用管道来接收输入。首先我们要写一个返回向下整除的简单脚本。创建一个名为accept_by_pipe.py的脚本并加入如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> sys<br><br><span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> sys.stdin:<br>	<span class="hljs-built_in">print</span>(<span class="hljs-built_in">int</span>(n.strip())//<span class="hljs-number">2</span>)<br><br></code></pre></td></tr></table></figure>
+
+<p>运行脚本，我们将得到如下输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> 15|python3 accept_by_pipe.py <br>7<br></code></pre></td></tr></table></figure>
+
+<p>在以上脚本中，stdin是一个键盘输入。我们执行对运行时中所输入的数字进行向下整除。向下整除仅返回商的整数部分。运行程序时，我们通过管道符号 | 传入了15，然后接我们的脚本名称。因此，我们将15作为脚本的输入。因此执行了向下整除，我们得到的结果是7。</p>
+<p>我们可以向脚本传入多个输入。下面一个执行中，我们传入了多个输入值：15, 45和20。为处理多个输入值，我们在脚本中编写了一个 for 循环。因此首先将15作为输入，接着是45，然后是20。每个输入的输出会在新行中打印，因为我们在输入值之间加了\n。为开启对反斜线的解释，我们传入了-e 标记：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> -e <span class="hljs-string">&#x27;15\n45\n20&#x27;</span> | python3 accept_by_pipe.py <br>7<br>22<br>10<br></code></pre></td></tr></table></figure>
+
+
+
+<p>进行这个运行后，我们分别得到了15, 45和20向下整除的结果7, 22和10，每个结果另起一行。</p>
+<h3 id="通过输入文件输入"><a href="#通过输入文件输入" class="headerlink" title="通过输入文件输入"></a>通过输入文件输入</h3><p>在这一部分中，我们将学习如何从输入文件中接收输入。Python中接收输入文件来作为输入更为容易。我们将通过示例来进行查看。但首先要创建一个名为 sample.txt 的 简单文本文件，并写入如下代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">Hello WorldHello Python<br></code></pre></td></tr></table></figure>
+
+<p>下面创建一个名为accept_by_input_file.py的脚本并编写如下的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/bin/env python</span><br><span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> datetime<br><span class="hljs-keyword">from</span> genericpath <span class="hljs-keyword">import</span> samefile<br><span class="hljs-keyword">import</span> os<br><span class="hljs-keyword">if</span>  os.path.exists(<span class="hljs-string">&quot;sample.txt&quot;</span>):<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;sample file is exist&quot;</span>)<br><span class="hljs-keyword">else</span>:<br>    os.system(<span class="hljs-string">&quot;touch sample_output.txt sample.txt&quot;</span>)<br>i = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;sample.txt&#x27;</span>, <span class="hljs-string">&#x27;r&#x27;</span>)<br>o = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;sample_output.txt&#x27;</span>, <span class="hljs-string">&#x27;w&#x27;</span>)<br><br>a = i.read()<br>o.write(a)<br><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<p>运行程序，我们将得到如下输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">python3 accept_by_input_file.py<br>sample file is exist<br>[liyupi@localhost Chapter04]$ <span class="hljs-built_in">cat</span> sample_output.txt <br> Hello WorldHello Python[liyupi@localhost Chapter04]$ <br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h2 id="脚本中运行时密码处理"><a href="#脚本中运行时密码处理" class="headerlink" title="脚本中运行时密码处理"></a>脚本中运行时密码处理</h2><p>在这一部分中，我们来看看一个脚本中处理密码的简单示例。我们将创建一个名为handling_password.py的脚本并编写如下内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> sys<br><span class="hljs-keyword">import</span> paramiko<br><span class="hljs-keyword">import</span> time<br><br>ip_address = <span class="hljs-string">&quot;192.168.10.241&quot;</span><br>username = <span class="hljs-string">&quot;liyupi&quot;</span><br>password = <span class="hljs-string">&quot;liyupi&quot;</span><br>ssh_client = paramiko.SSHClient()<br>ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())<br>ssh_client.load_system_host_keys()<br>ssh_client.connect(hostname=ip_address, username=username, password=password)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Successful connection&quot;</span>, ip_address)<br>ssh_client.invoke_shell()<br>remote_connection = ssh_client.exec_command(<span class="hljs-string">&#x27;cd Desktop; mkdir work\n&#x27;</span>)<br>remote_connnection = ssh_client.exec_command(<span class="hljs-string">&#x27;mkdir test_folder\n&#x27;</span>)<br><span class="hljs-comment"># print(remote_connection.read())</span><br>ssh_client.close<br><br></code></pre></td></tr></table></figure>
+
+
+
+<p>运行以上脚本，将得到如下输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">python3 handling_password.py <br></code></pre></td></tr></table></figure>
+
+<p>输出结果:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">Successful connection 192.168.2.106<br></code></pre></td></tr></table></figure>
+
+<p>在上述脚本中，我们使用了paramiko模块。这个paramiko模块是一个ssh的Python实现，提供了客户端的功能。安装paramiko命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">pip3 install paramiko<br></code></pre></td></tr></table></figure>
+
+
+
+<p>在前面的脚本中，我们远程连接了主机192.168.2.106。在脚本中提供了主机的用户名和密码。</p>
+<p>在运行脚本之后，192.168.2.106的桌面上，可在192.168.2.106的home&#x2F;目录内找到work和test_folder两个文件夹。</p>
+<p><strong>译者注：</strong><br>1、IP、用户名、密码等相关信息请自行修改，包括 cd 进入的目录也请根据实际进行修改<br>2、解决运行中的警告</p>
+<p># 警告信息</p>
+<p>CryptographyDeprecationWarning: encode_point has been deprecated on EllipticCurvePublicNumbers and will be removed in a future version. Please use EllipticCurvePublicKey.public_bytes to obtain both compressed and uncompressed point encoding.</p>
+<p> # 原因：</p>
+<p>这在 GitHub 是一个已知 issue，主要原因是默认安装的cryptography&#x3D;&#x3D;2.5弃用了一些 API</p>
+<p># 解决方法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">pip3 uninstall cryptography<br><br>pip3 install cryptography==2.4.2<br><br> <br><br><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="执行外部命令并获取输出"><a href="#执行外部命令并获取输出" class="headerlink" title="执行外部命令并获取输出"></a>执行外部命令并获取输出</h2><p>在这一部分中，我们将学习Python的子进程模块。使用subprocess，可以很容易地生成新的进程并获取它们的返回码，执行外部命令和启用新的应用。</p>
+<p>我们来看看如何通过subprocess模块执行外部命令并获取它们的输出。我们将创建一个名为execute_external_commands.py的脚本并编写如下脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> subprocess<br>subprocess.call([<span class="hljs-string">&quot;touch&quot;</span>, <span class="hljs-string">&quot;sample.txt&quot;</span>])<br>subprocess.call([<span class="hljs-string">&quot;ls&quot;</span>])<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Sample file created&quot;</span>)<br>subprocess.call([<span class="hljs-string">&quot;rm&quot;</span>, <span class="hljs-string">&quot;sample.txt&quot;</span>])<br>subprocess.call([<span class="hljs-string">&quot;ls&quot;</span>])<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Sample file deleted&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+
+
+<p>运行程序，我们将得到如下输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ python3 execute_external_commands.py<br>accept_by_input_file.py       handling_password.py  sample.txt<br>accept_by_pipe.py	      redirection.py<br>execute_external_commands.py  sample_output.txt<br>Sample file created<br>accept_by_input_file.py  execute_external_commands.py  redirection.py<br>accept_by_pipe.py	 handling_password.py	       sample_output.txt<br>Sample file deleted<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="使用子进程模块捕获输出"><a href="#使用子进程模块捕获输出" class="headerlink" title="使用子进程模块捕获输出"></a>使用子进程模块捕获输出</h2><p>在这一部分中，我们将学习如何捕获输出。我们可以传递PIPE作为标准输出stdout的参数来捕获输出。。编写名为capture_output.py的脚本并添加如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><br><span class="hljs-keyword">import</span> subprocess<br>res = subprocess.run([<span class="hljs-string">&#x27;ls&#x27;</span>, <span class="hljs-string">&#x27;-l&#x27;</span>], stdout=subprocess.PIPE,)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;returncode:&#x27;</span>, res.returncode)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;&#123;&#125; bytes in stdout:\n&#123;&#125;&#x27;</span>.<span class="hljs-built_in">format</span>(<span class="hljs-built_in">len</span>(res.stdout), res.stdout.decode(<span class="hljs-string">&#x27;utf-8&#x27;</span>)))<br></code></pre></td></tr></table></figure>
+
+
+
+<p>执行如下命令运行脚本：</p>
+<p>python3 capture_output.py</p>
+<p>通过执行，将得到如下输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">python3 capture_output.py<br>returncode: 0<br>1491 bytes <span class="hljs-keyword">in</span> stdout:<br>total 92<br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>译者注：</strong>考虑版面以及与原书一致，以上在运行时去除了代码中的-l 参数</p>
+<p>在以上脚本中，我们导入了Python的subprocess模块，有助于输出的捕获。子进程模块用于创建新的进程。它还有且于连接输入&#x2F;输出管道并获取返回码。subprocess.run()运行作为参数传入的命令。returncode 是子进程的返回状态。在输出中，如果得到了返回码0，表示成功运行。</p>
+<h2 id="在运行时和验证时弹出密码输入"><a href="#在运行时和验证时弹出密码输入" class="headerlink" title="在运行时和验证时弹出密码输入"></a>在运行时和验证时弹出密码输入</h2><p>这一部分我们将学习getpass模块来在运行时处理密码。Python中的getpass()模块弹出让用户输入密码并不进行打印。getpass模块用于终端中程序需要处理密码弹出的用户交互。</p>
+<p>我们来看看一些有关如何使用getpass模块的示例：</p>
+<p>1、创建名为no_prompt.py的脚本并编写如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><br><br><span class="hljs-keyword">import</span> getpass<br><span class="hljs-keyword">try</span>:<br>        p = getpass.getpass()<br><span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> error:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;ERROR&#x27;</span>, error)<br><span class="hljs-keyword">else</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Password entered:&#x27;</span>, p)<br></code></pre></td></tr></table></figure>
+
+
+
+<p>这个脚本中，我们没为用户提供提示文件。因此默认的提示内容为Password。</p>
+<p>运行脚本如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">python3 no_prompt.py <br>Password: <br>Password entered: aaa<br></code></pre></td></tr></table></figure>
+
+
+
+<p>2、我们将为密码输出添加提示文本。创建一个名为with_prompt.py的脚本并编写如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> getpass<br><span class="hljs-keyword">try</span>:<br>	p = getpass.getpass(<span class="hljs-string">&quot;Enter your password:&quot;</span>)<br><span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> error:<br>	<span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;ERROR&#x27;</span>, error)<br><span class="hljs-keyword">else</span>:<br>	<span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Password entered:&#x27;</span>, p)<br><br></code></pre></td></tr></table></figure>
+
+
+
+<p>这样我们就编写了一个带有密码输入提示文本的脚本。运行程序如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">python3 with_prompt.py <br>Enter your password:<br>Password entered: abcd<br></code></pre></td></tr></table></figure>
+
+
+
+<p>这里，我们为用户提供了一个Enter your password 的提示。</p>
+<p>现在我们来编写一个脚本，如果密码输入错误，将打印一条普通消息，并不再弹出输入正确密码的提示。</p>
+<p>3、编写一个名为getpass_example.py的脚本并添加如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> getpass<br>passwd = getpass.getpass(prompt=<span class="hljs-string">&#x27;Enter your password:&#x27;</span>)<br><span class="hljs-keyword">if</span> passwd.lower() == <span class="hljs-string">&#x27;#pythonworld&#x27;</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Welcome!!&#x27;</span>)<br><span class="hljs-keyword">else</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;The password entered is incorrect!!&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+
+
+<p>运行程序如下（此处我们输入正确的密码，即#pythonworld）：</p>
+<p>.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">python getpass_example.py<br>Enter your password:<br>The password entered is incorrect!!<br></code></pre></td></tr></table></figure>
+
+<p>如果我们输入一个错误的密码，查看得到的消息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">python getpass_example.py<br>Enter your password:<br>Welcome!!<br></code></pre></td></tr></table></figure>
+
+<p>这里我们编写的脚本在密码输入错误时不会再要求重新输入密码。</p>
+<p>下面我们再来编写一个脚本，在密码输入错误时要求重新输入正确的密码。为获取登录用户，我们使用了getuser()。getuser()函数将返回系统登录的用户。创建一个名为password_prompt_again.py的脚本并编写如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> getpass<br>user_name = getpass.getuser()<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;User Name : %s&#x27;</span> % user_name)<br><span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>        passwd = getpass.getpass(<span class="hljs-string">&#x27;Enter your password : &#x27;</span>)<br>        <span class="hljs-keyword">if</span> passwd == <span class="hljs-string">&#x27;#pythonworld&#x27;</span>:<br>                <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Welcome!!!&#x27;</span>)<br>                <span class="hljs-keyword">break</span><br>        <span class="hljs-keyword">else</span>:<br>                <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;The password you entered is incorrect.&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>运行程序，将得到如下输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ python3 password_prompt_again.py<br>User Name : student<br>Enter your password :<br>The password you entered is incorrect.<br>Enter your password :<br>Welcome!!!<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="读取配置文件"><a href="#读取配置文件" class="headerlink" title="读取配置文件"></a>读取配置文件</h2><p>这一部分中我们将学习Python中的configparser模块。通过使用configparser模块，我们可以管理应用的用户可编辑配置文件。</p>
+<p>这些配置文件常用于用户或系统管理人员通过普通文本编辑器来编辑文件设置应用的一些默认值，然后应用会读取并解析文件，根据文件中写入的内容来进行运行。</p>
+<p>读取配置文件可使用configparser中的read()方法。下面我们编写一个名为read_config_file.py的普通脚本。在这之前，编写一个名为read_simple.ini 的.ini文件并加入如下内容：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-section">[bug_tracker]</span><br><span class="hljs-attr">url</span> = https://www.baidu.com/<br></code></pre></td></tr></table></figure>
+
+
+
+<p>创建 read_config_file.py并添加如下内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> configparser <span class="hljs-keyword">import</span> ConfigParser<br>p = ConfigParser()<br>p.read(<span class="hljs-string">&#x27;read_simple.ini&#x27;</span>)<br><span class="hljs-built_in">print</span>(p.get(<span class="hljs-string">&#x27;bug_tracker&#x27;</span>, <span class="hljs-string">&#x27;url&#x27;</span>))<br></code></pre></td></tr></table></figure>
+
+<p>运行read_config_file.py，我们将得到如下输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ python3 read_config_file.py<br> <br><span class="hljs-comment"># 输出结果：</span><br>https://www.baidu.com/<br></code></pre></td></tr></table></figure>
+
+
+
+<p>read()方法可接收一个以上的文件名。对每个文件名进行扫描并且该文件存在时，就会打开并读取。下面我们编写脚本来读取一个以上的文件名。创建名为read_many_config_file.py的脚本并编写如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> configparser <span class="hljs-keyword">import</span> ConfigParser<br><span class="hljs-keyword">import</span> glob<br> <br>p = ConfigParser()<br>files = [<span class="hljs-string">&#x27;hello.ini&#x27;</span>, <span class="hljs-string">&#x27;bye.ini&#x27;</span>, <span class="hljs-string">&#x27;read_simple.ini&#x27;</span>, <span class="hljs-string">&#x27;welcome.ini&#x27;</span>]<br>files_found = p.read(files)<br>files_missing = <span class="hljs-built_in">set</span>(files) - <span class="hljs-built_in">set</span>(files_found)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Files found: &#x27;</span>, <span class="hljs-built_in">sorted</span>(files_found))<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Files missing: &#x27;</span>, <span class="hljs-built_in">sorted</span>(files_missing))<br></code></pre></td></tr></table></figure>
+
+
+
+<p>运行以上脚本，我们将得到如下输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ python3 read_many_config_file.py<br> <br><span class="hljs-comment"># 输出结果：</span><br>Files found:  [<span class="hljs-string">&#x27;read_simple.ini&#x27;</span>]<br>Files missing:  [<span class="hljs-string">&#x27;bye.ini&#x27;</span>, <span class="hljs-string">&#x27;hello.ini&#x27;</span>, <span class="hljs-string">&#x27;welcome.ini&#x27;</span>]<br></code></pre></td></tr></table></figure>
+
+
+
+<p>在上面的例子中，我们使用了Python中的configparser模块，它有助于管理配置文件。首先我们创建一个名为files的列表。read()函数将读取配置文件。在本例中，我们创建了一名为files_found的变量，用于存储目录中存在的配置文件名。接着我们创建了另一个名为files_missing的变量，用于返回目录中不存在的文件名。最后，我们打印出了存在和不存在的文件名。</p>
+<h2 id="在脚本中添加日志和警告代码"><a href="#在脚本中添加日志和警告代码" class="headerlink" title="在脚本中添加日志和警告代码"></a>在脚本中添加日志和警告代码</h2><p>这一部分中我们学习Python中的日志和警告模块。logging模块将记录程序中发生的事件。warnings向编程人员发出语言和库中发生的变化的警告。</p>
+<p>下面我们来看一个简单的日志示例。我们将编写一个名为logging_example.py的脚本并编写如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> logging<br> <br>LOG_FILENAME = <span class="hljs-string">&#x27;log.txt&#x27;</span><br>logging.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG,)<br>logging.debug(<span class="hljs-string">&#x27;This message should go to the log file.&#x27;</span>)<br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(LOG_FILENAME, <span class="hljs-string">&#x27;rt&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>        prg = f.read()<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;FILE:&#x27;</span>)<br><span class="hljs-built_in">print</span>(prg)<br></code></pre></td></tr></table></figure>
+
+
+
+<p>运行程序如下：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs vim">$ <span class="hljs-keyword">python3</span> logging_example.<span class="hljs-keyword">py</span><br> <br># 输出结果：<br>FILE:<br>DEBUG:roo<span class="hljs-variable">t:This</span> message should <span class="hljs-keyword">go</span> <span class="hljs-keyword">to</span> the <span class="hljs-built_in">log</span> <span class="hljs-keyword">file</span>.<br></code></pre></td></tr></table></figure>
+
+
+
+<p>查看 log.txt，我们可以看到脚本中打印的调试信息：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs vim">$ <span class="hljs-keyword">cat</span> <span class="hljs-built_in">log</span>.txt<br> <br># 输出结果： <br>DEBUG:roo<span class="hljs-variable">t:This</span> message should <span class="hljs-keyword">go</span> <span class="hljs-keyword">to</span> the <span class="hljs-built_in">log</span> <span class="hljs-keyword">file</span>.<br></code></pre></td></tr></table></figure>
+
+
+
+<p>下面我们编写一个名为logging_warnings_codes.py的脚本并添加如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> logging<br><span class="hljs-keyword">import</span> warnings<br> <br>logging.basicConfig(level=logging.INFO,)<br>warnings.warn(<span class="hljs-string">&#x27;This warning is not sent to the logs&#x27;</span>)<br>logging.captureWarnings(<span class="hljs-literal">True</span>)<br>warnings.warn(<span class="hljs-string">&#x27;This warning is sent to the logs&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>运行脚本如下：</p>
+<figure class="highlight vhdl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs vhdl">$ python3 logging_warnings_codes.py<br> <br># 输出结果：<br>logging_warnings_codes.py:<span class="hljs-number">5</span>: UserWarning: This <span class="hljs-literal">warning</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> sent <span class="hljs-keyword">to</span> the logs<br>  warnings.warn(<span class="hljs-symbol">&#x27;This</span> <span class="hljs-literal">warning</span> <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> sent <span class="hljs-keyword">to</span> the logs&#x27;)<br><span class="hljs-literal">WARNING</span>:py.warnings:logging_warnings_codes.py:<span class="hljs-number">7</span>: UserWarning: This <span class="hljs-literal">warning</span> <span class="hljs-keyword">is</span> sent <span class="hljs-keyword">to</span> the logs<br>  warnings.warn(<span class="hljs-symbol">&#x27;This</span> <span class="hljs-literal">warning</span> <span class="hljs-keyword">is</span> sent <span class="hljs-keyword">to</span> the logs&#x27;)<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="生成警告"><a href="#生成警告" class="headerlink" title="生成警告"></a>生成警告</h3><p>warn()用于生成警告。下面我们来看一个生成警告的简单示例。编写名为generate_warnings.py的脚本并加入如下代码：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs stylus">import warnings<br> <br>warnings<span class="hljs-selector-class">.simplefilter</span>(<span class="hljs-string">&#x27;error&#x27;</span>, UserWarning)<br><span class="hljs-function"><span class="hljs-title">print</span><span class="hljs-params">(<span class="hljs-string">&#x27;Before&#x27;</span>)</span></span><br>warnings<span class="hljs-selector-class">.warn</span>(<span class="hljs-string">&#x27;Write your warning message here&#x27;</span>)<br><span class="hljs-function"><span class="hljs-title">print</span><span class="hljs-params">(<span class="hljs-string">&#x27;after&#x27;</span>)</span></span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>运行脚本如下：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">python3</span> generate_warnings.<span class="hljs-keyword">py</span><br> <br># 运行结果：<br>Before<br>Traceback (most recent <span class="hljs-keyword">call</span> <span class="hljs-keyword">last</span>):<br>  File <span class="hljs-string">&quot;generate_warnings.py&quot;</span>, <span class="hljs-built_in">line</span> <span class="hljs-number">5</span>, in <span class="hljs-symbol">&lt;module&gt;</span><br>    warnings.warn(<span class="hljs-string">&#x27;Write your warning message here&#x27;</span>)<br>UserWarning: Write your warning message here<br></code></pre></td></tr></table></figure>
+
+
+
+<p>在上面的脚本中，我们通过warn()传入了一条警告消息。我们使用了一个简单过滤器，这样我们的警告会作为 error 来处理，该错误将由编程人员进行相应的处理。</p>
+<h2 id="为CPU和内存使用设置上限"><a href="#为CPU和内存使用设置上限" class="headerlink" title="为CPU和内存使用设置上限"></a>为CPU和内存使用设置上限</h2><p>这部分中我们将学习如何设置 CPU和内存的使用限制。首先编写一个放置CPU使用限制的脚本。创建一个名为put_cpu_limit.py的脚本并添加如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> resource<br><span class="hljs-keyword">import</span> sys<br><span class="hljs-keyword">import</span> signal<br><span class="hljs-keyword">import</span> time<br> <br><span class="hljs-keyword">def</span> <span class="hljs-title function_">time_expired</span>(<span class="hljs-params">n, stack</span>):<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;EXPIRED :&#x27;</span>, time.ctime())<br>        <span class="hljs-keyword">raise</span> SystemExit(<span class="hljs-string">&#x27;(time ran out)&#x27;</span>)<br>signal.signal(signal.SIGXCPU, time_expired)<br><span class="hljs-comment"># Adjust the CPU time limit</span><br>soft, hard = resource.getrlimit(resource.RLIMIT_CPU)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Soft limit start as :&#x27;</span>, soft)<br>resource.setrlimit(resource.RLIMIT_CPU, (<span class="hljs-number">10</span>, hard))<br>soft, hard = resource.getrlimit(resource.RLIMIT_CPU)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Soft limit changed to :&#x27;</span>, soft)<br><span class="hljs-built_in">print</span>()<br><span class="hljs-comment"># Consume some CPU time in a pointless exercise</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Starting:&#x27;</span>, time.ctime())<br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">200000</span>):<br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">200000</span>):<br>                v = i * i<br><span class="hljs-comment"># We should never make it this far</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Exiting :&#x27;</span>, time.ctime())<br></code></pre></td></tr></table></figure>
+
+
+
+<p>运行上述脚本如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">python3 put_cpu_limit.py</span><br>Soft limit start as : -1<br>Soft limit changed to : 10<br> <br>Starting: Sun Feb 24 23:57:27 2019<br>EXPIRED : Sun Feb 24 23:57:37 2019<br>(time ran out)<br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>译者注：</strong>实际运行结果可能不是10秒，Alan 在本地一台资源有限的虚拟机上运行打印时间相关15秒，而 Mac 本机上则刚好10秒</p>
+<p>在前面的脚本中，我们使用了setrlimit()来限制CPU的使用。在我们脚本中所设置的限制为10秒。</p>
+<h2 id="启动网页浏览器"><a href="#启动网页浏览器" class="headerlink" title="启动网页浏览器"></a>启动网页浏览器</h2><p>这一部分中，我们将学习Python中的webbrowser模块。这一模块中带有可以在浏览器应用中打开URL的函数。我们来看一个简单的示例。创建一个名为open_web.py的脚本，并添加如下代码：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-keyword">import</span> webbrowser<br>webbrowser.<span class="hljs-keyword">open</span>(<span class="hljs-string">&#x27;https://www.baidu.com&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+
+
+<p>运行脚本如下：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs vim">$ <span class="hljs-keyword">python3</span> open_web.<span class="hljs-keyword">py</span><br> <br>运行结果如下:<br>Url mentioned in <span class="hljs-keyword">open</span>() will <span class="hljs-keyword">be</span> opened in your browser.<br>webbrowser – Command <span class="hljs-built_in">line</span> interface<br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>译者注：</strong>实际在 MacOS 上测试未输出相关信息，命令行仅输出 True，虚拟机命令行进入，未安装浏览器，无返回内容</p>
+<p>我们还可以通过命令行来使用Python的webbrowser模块，可以使用所有的功能。要在命令行中使用webbrowser，运行命令如下：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">python3 -m webbrowser -n https:<span class="hljs-regexp">//</span>www.baidu.com/<br></code></pre></td></tr></table></figure>
+
+
+
+<p>这里，<a target="_blank" rel="noopener" href="https://www.baidu.com/">https://www.baidu.com/</a> 会在一个浏览窗口中进行打开。我们可以使用如下两个选项：</p>
+<ul>
+<li>-n：新窗口打开</li>
+<li>-t：新标签页打开</li>
+</ul>
+<h2 id="使用os模块处理目录和文件"><a href="#使用os模块处理目录和文件" class="headerlink" title="使用os模块处理目录和文件"></a>使用os模块处理目录和文件</h2><p>这一部分中，我们将学习Python中的os模块。Python的os模块有助于实现操作系统任务。要想实现这些操作系统任务，我们需要导入os模块。</p>
+<p>我们来看一些处理文件和目录相关示例：</p>
+<h3 id="创建和删除模块"><a href="#创建和删除模块" class="headerlink" title="创建和删除模块"></a>创建和删除模块</h3><p>这一部分中，我们将创建一个脚本来看可在文件系统中处理目录的函数，包含创建、列出和删除其中内容。创建一个名为os_dir_example.py的脚本并编写如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> os<br> <br>directory_name = <span class="hljs-string">&#x27;abcd&#x27;</span><br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Creating&#x27;</span>, directory_name)<br>os.makedirs(directory_name)<br>file_name = os.path.join(directory_name, <span class="hljs-string">&#x27;sample_example.txt&#x27;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Creating&#x27;</span>, file_name)<br><span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(file_name, <span class="hljs-string">&#x27;wt&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>        f.write(<span class="hljs-string">&#x27;sample example file&#x27;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Cleaning up&#x27;</span>)<br>os.unlink(file_name)<br>os.rmdir(directory_name) <span class="hljs-comment"># Will delete the directory</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>运行脚本如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ python3 os_dir_example.py<br> <br><span class="hljs-comment"># 输出结果：</span><br>Creating abcd<br>Creating abcd/sample_example.txt<br>Cleaning up<br></code></pre></td></tr></table></figure>
+
+
+
+<p>使用mkdir()创建目录时，其所有父目录必须已经被创建。但在使用makedirs()创建目录时，会创建任意目录，即便是指定的路径并不存在。unlink()会删除文件路径， rmdir()会删除目录路径。</p>
+<h3 id="检查文件系统内容"><a href="#检查文件系统内容" class="headerlink" title="检查文件系统内容"></a>检查文件系统内容</h3><p>这一部分中，我们将使用 listdir()列出目录中的所有内容。创建一个名为list_dir.py的脚本并编写如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> os<br><span class="hljs-keyword">import</span> sys<br> <br><span class="hljs-built_in">print</span>(<span class="hljs-built_in">sorted</span>(os.listdir(sys.argv[<span class="hljs-number">1</span>])))<br></code></pre></td></tr></table></figure>
+
+<p>运行脚本如下：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs awk">$ python3 list_dir.py <span class="hljs-regexp">/home/</span>student<br> <br><span class="hljs-comment"># 输出结果：</span><br>[<span class="hljs-string">&#x27;.bash_history&#x27;</span>, <span class="hljs-string">&#x27;.bash_logout&#x27;</span>, <span class="hljs-string">&#x27;.bashrc&#x27;</span>, <span class="hljs-string">&#x27;.cache&#x27;</span>, <span class="hljs-string">&#x27;.local&#x27;</span>, <span class="hljs-string">&#x27;.profile&#x27;</span>, <span class="hljs-string">&#x27;.python_history&#x27;</span>, <span class="hljs-string">&#x27;.ssh&#x27;</span>, <span class="hljs-string">&#x27;.viminfo&#x27;</span>, <span class="hljs-string">&#x27;Chapter01&#x27;</span>, <span class="hljs-string">&#x27;Chapter02&#x27;</span>, <span class="hljs-string">&#x27;Chapter03&#x27;</span>, <span class="hljs-string">&#x27;Chapter04&#x27;</span>, <span class="hljs-string">&#x27;__pycache__&#x27;</span>]<br></code></pre></td></tr></table></figure>
+
+
+
+<p>通过使用listdir()，我们可以列出文件夹中的所有内容。</p>
+<h2 id="（使用-rsync）创建备份"><a href="#（使用-rsync）创建备份" class="headerlink" title="（使用 rsync）创建备份"></a>（使用 rsync）创建备份</h2><p>这是系统运维人员要做的最重要的工作。这一部分中，我们将学习使用rsync来进行备份。rsync命令用于拷贝本地和远程的文件和目录，并使用rsync执行数据备份。为此，我们来编写一个名为take_backup.py的脚本并编写如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> os<br><span class="hljs-keyword">import</span> shutil<br><span class="hljs-keyword">import</span> time<br><span class="hljs-keyword">from</span> sh <span class="hljs-keyword">import</span> rsync<br> <br><span class="hljs-keyword">def</span> <span class="hljs-title function_">check_dir</span>(<span class="hljs-params">os_dir</span>):<br>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> os.path.exists(os_dir):<br>                <span class="hljs-built_in">print</span>(os_dir, <span class="hljs-string">&#x27;does not exist.&#x27;</span>)<br>                exit(<span class="hljs-number">1</span>)<br> <br><span class="hljs-keyword">def</span> <span class="hljs-title function_">ask_for_confirm</span>():<br>        ans = <span class="hljs-built_in">input</span>(<span class="hljs-string">&#x27;Do you want to Continue? yes/no\n&#x27;</span>)<br>        <span class="hljs-keyword">global</span> con_exit<br>        <span class="hljs-keyword">if</span> ans == <span class="hljs-string">&#x27;yes&#x27;</span>:<br>                con_exit = <span class="hljs-number">0</span><br>                <span class="hljs-keyword">return</span> con_exit<br>        <span class="hljs-keyword">elif</span> ans == <span class="hljs-string">&#x27;no&#x27;</span>:<br>                con_exit = <span class="hljs-number">1</span><br>                <span class="hljs-keyword">return</span> con_exit<br>        <span class="hljs-keyword">else</span>:<br>                <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Answer with yes or no.&#x27;</span>)<br>                ask_for_confirm()<br> <br><span class="hljs-keyword">def</span> <span class="hljs-title function_">delete_files</span>(<span class="hljs-params">ending</span>):<br>        <span class="hljs-keyword">for</span> r, d, f <span class="hljs-keyword">in</span> os.walk(backup_dir):<br>                <span class="hljs-keyword">for</span> files <span class="hljs-keyword">in</span> f:<br>                        <span class="hljs-keyword">if</span> files.endswith(<span class="hljs-string">&#x27;.&#x27;</span> + ending):<br>                                os.remove(os.path.join(r, files))<br> <br>backup_dir = <span class="hljs-built_in">input</span>(<span class="hljs-string">&#x27;Enter directory to backup\n&#x27;</span>) <span class="hljs-comment"># Enter directory name</span><br>check_dir(backup_dir)<br><span class="hljs-built_in">print</span>(backup_dir, <span class="hljs-string">&#x27;saved.&#x27;</span>)<br>time.sleep(<span class="hljs-number">3</span>)<br>backup_to_dir = <span class="hljs-built_in">input</span>(<span class="hljs-string">&#x27;Where to backup?\n&#x27;</span>)<br>check_dir(backup_to_dir)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Doing the backup now!&#x27;</span>)<br>ask_for_confirm()<br><span class="hljs-keyword">if</span> con_exit == <span class="hljs-number">1</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Aborting the backup process!&#x27;</span>)<br>        exit(<span class="hljs-number">1</span>)<br>rsync(<span class="hljs-string">&#x27;-auhv&#x27;</span>, <span class="hljs-string">&#x27;--delete&#x27;</span>, <span class="hljs-string">&#x27;--exclude=list+found&#x27;</span>, <span class="hljs-string">&#x27;--exclude=/sys&#x27;</span>, <span class="hljs-string">&#x27;--exclude=/tmp&#x27;</span>, <span class="hljs-string">&#x27;--exclude=/proc&#x27;</span>, <span class="hljs-string">&#x27;--exclude=/mnt&#x27;</span>, <span class="hljs-string">&#x27;--exclude=/dev&#x27;</span>, <span class="hljs-string">&#x27;--exclude=/backup&#x27;</span>, backup_dir, backup_to_dir)<br></code></pre></td></tr></table></figure>
+
+<p>运行脚本结果如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ python3 take_backup.py<br>Enter directory to backup<br>/home/student/work<br>/home/student/work saved.<br>Where to backup?<br>/home/student/Desktop<br>Doing the backup now!<br>Do you want to Continue? <span class="hljs-built_in">yes</span>/no<br><span class="hljs-built_in">yes</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>译者注：</strong><br>1、如提示 ImportError: No module named ‘sh’请执行 pip3 install sh<br>2、Deskstop目录需自行创建</p>
+<p>现在查看Desktop&#x2F;目录，你会在该目录中发现 work 文件夹。rsync使用了一些选项，具体如下：</p>
+<ul>
+<li>-a: 存档</li>
+<li>-u: 升级</li>
+<li>-h: 易于阅读的格式</li>
+<li>-v: 详细信息（verbose）</li>
+<li>–delete: 在接收端删除不相关文件</li>
+<li>–exclude: 排队规则</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本章中我们学习了如何来自动化常规的运行任务。学习了通过不同技术来接收输入：运行时提示密码输入、执行外部命令、读取配置文件、在脚本中添加警告、通过脚本和命令行启动浏览器、使用os模块处理文件和目录，以及进行备份。</p>
+<p>下一章中，我们将学习os和处理数据的相关知识。同时我们还会学习tarfile模块以及如何进行使用。</p>
+<p>☞☞☞ <a target="_blank" rel="noopener" href="https://alanhou.org/handling-files-directories-data/">第五章 文件、目录和数据处理</a></p>
+<h2 id="课后问题"><a href="#课后问题" class="headerlink" title="课后问题"></a>课后问题</h2><ol>
+<li><p>如何使用readline模块？</p>
+</li>
+<li><p>读取、创建新文件、删除文件、列出当前目录文件的Linux命令分别是什么？</p>
+<p>cat、touch、rm、ls</p>
+</li>
+<li><p>Python 中的哪些包可用于运行 Linux&#x2F;Windows 命令？</p>
+<p>os </p>
+</li>
+<li><p>如何读取或为配置文件 init 设置新值？</p>
+</li>
+<li><p>列出可用于查看 CPU 使用情况的库？</p>
+</li>
+<li><p>列出从用户接收输入的不同方法？</p>
+</li>
+<li><p>sort和sorted之间的区别是什么？</p>
+</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>https://liyupin.github.io/2022/11/08/Python 模板/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Cper Liu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年11月8日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/11/08/redhat%20%E9%80%82%E9%85%8Dceph%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/11/08/paramiko/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
