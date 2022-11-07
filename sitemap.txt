@@ -219,9 +219,9 @@ https://liyupin.github.io/tags/k8s/
 https://liyupin.github.io/tags/mysql/
 https://liyupin.github.io/tags/newben/
 https://liyupin.github.io/tags/python100day/
+https://liyupin.github.io/tags/ceph/
 https://liyupin.github.io/tags/windows/
 https://liyupin.github.io/tags/%E6%8A%95%E8%B5%84/
-https://liyupin.github.io/tags/ceph/
 https://liyupin.github.io/tags/apace2-4/
 https://liyupin.github.io/tags/shell/
 https://liyupin.github.io/tags/A%E8%82%A1/
@@ -239,5 +239,5 @@ https://liyupin.github.io/categories/k8s/
 https://liyupin.github.io/categories/go/
 https://liyupin.github.io/categories/docker/
 https://liyupin.github.io/categories/python/
-https://liyupin.github.io/categories/windows/
 https://liyupin.github.io/categories/redhat/
+https://liyupin.github.io/categories/windows/

@@ -1961,6 +1961,13 @@
   </url>
   
   <url>
+    <loc>https://liyupin.github.io/tags/ceph/</loc>
+    <lastmod>2022-11-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://liyupin.github.io/tags/windows/</loc>
     <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -1969,13 +1976,6 @@
   
   <url>
     <loc>https://liyupin.github.io/tags/%E6%8A%95%E8%B5%84/</loc>
-    <lastmod>2022-11-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://liyupin.github.io/tags/ceph/</loc>
     <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2103,14 +2103,14 @@
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/categories/windows/</loc>
+    <loc>https://liyupin.github.io/categories/redhat/</loc>
     <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/categories/redhat/</loc>
+    <loc>https://liyupin.github.io/categories/windows/</loc>
     <lastmod>2022-11-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
