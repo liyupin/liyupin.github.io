@@ -16,16 +16,17 @@
   <meta name="author" content="Cper Liu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="docker file debain 系统换源12345678RUN sed -i s&#x2F;deb.debian.org&#x2F;mirrors.aliyun.com&#x2F;g &#x2F;etc&#x2F;apt&#x2F;sources.list &amp;&amp; ln -sf &#x2F;usr&#x2F;share&#x2F;zoneinfo&#x2F;Asia&#x2F;Shanghai &#x2F;etc&#x2F;localtime &amp;&amp; echo &amp;#x27;Asia&#x2F;Shan">
+    <meta name="description" content="docker file debain 系统换源12345678RUN sed -i s&#x2F;deb.debian.org&#x2F;mirrors.aliyun.com&#x2F;g &#x2F;etc&#x2F;apt&#x2F;sources.list &amp;&amp; ln -sf &#x2F;usr&#x2F;share&#x2F;zoneinfo&#x2F;Asia&#x2F;Shanghai &#x2F;etc&#x2F;localtime &amp;&amp; echo &amp;#x27;Asia&#x2F;Sha">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
 <meta property="og:url" content="https://liyupin.github.io/2022/11/08/docker%20file%20debain%20%E7%B3%BB%E7%BB%9F%E6%8D%A2%E6%BA%90/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="docker file debain 系统换源12345678RUN sed -i s&#x2F;deb.debian.org&#x2F;mirrors.aliyun.com&#x2F;g &#x2F;etc&#x2F;apt&#x2F;sources.list &amp;&amp; ln -sf &#x2F;usr&#x2F;share&#x2F;zoneinfo&#x2F;Asia&#x2F;Shanghai &#x2F;etc&#x2F;localtime &amp;&amp; echo &amp;#x27;Asia&#x2F;Shan">
+<meta property="og:description" content="docker file debain 系统换源12345678RUN sed -i s&#x2F;deb.debian.org&#x2F;mirrors.aliyun.com&#x2F;g &#x2F;etc&#x2F;apt&#x2F;sources.list &amp;&amp; ln -sf &#x2F;usr&#x2F;share&#x2F;zoneinfo&#x2F;Asia&#x2F;Shanghai &#x2F;etc&#x2F;localtime &amp;&amp; echo &amp;#x27;Asia&#x2F;Sha">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-11-07T16:44:47.476Z">
-<meta property="article:modified_time" content="2022-11-07T16:44:47.476Z">
+<meta property="article:published_time" content="2022-11-07T16:44:00.000Z">
+<meta property="article:modified_time" content="2022-11-08T05:54:17.902Z">
 <meta property="article:author" content="Cper Liu">
+<meta property="article:tag" content="debain">
 <meta name="twitter:card" content="summary_large_image">
   
   
@@ -287,7 +288,8 @@
             
               <div class="markdown-body">
                 
-                <h1 id="docker-file-debain-系统换源"><a href="#docker-file-debain-系统换源" class="headerlink" title="docker file debain 系统换源"></a>docker file debain 系统换源</h1><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile"><br><span class="hljs-keyword">RUN</span><span class="language-bash"> sed -i s/deb.debian.org/mirrors.aliyun.com/g /etc/apt/sources.list &amp;&amp; <span class="hljs-built_in">ln</span> -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime &amp;&amp; <span class="hljs-built_in">echo</span> <span class="hljs-string">&#x27;Asia/Shanghai&#x27;</span> &gt;/etc/timezone</span><br><span class="hljs-keyword">RUN</span><span class="language-bash"> apt update &amp;&amp; \</span><br><span class="language-bash">        apt-get install -y locales &amp;&amp; \</span><br><span class="language-bash">        apt-get -y install ttf-wqy-zenhei &amp;&amp; \</span><br><span class="language-bash">        apt-get -y install xfonts-intl-chinese  &amp;&amp; \</span><br><span class="language-bash">        dpkg-reconfigure locales &amp;&amp; localedef -c -f UTF-8 -i zh_CN zh_CN.utf8 &amp;&amp; \</span><br><span class="language-bash">        apt install -y curl</span><br></code></pre></td></tr></table></figure>
+                <hr>
+<h1 id="docker-file-debain-系统换源"><a href="#docker-file-debain-系统换源" class="headerlink" title="docker file debain 系统换源"></a>docker file debain 系统换源</h1><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile"><br><span class="hljs-keyword">RUN</span><span class="language-bash"> sed -i s/deb.debian.org/mirrors.aliyun.com/g /etc/apt/sources.list &amp;&amp; <span class="hljs-built_in">ln</span> -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime &amp;&amp; <span class="hljs-built_in">echo</span> <span class="hljs-string">&#x27;Asia/Shanghai&#x27;</span> &gt;/etc/timezone</span><br><span class="hljs-keyword">RUN</span><span class="language-bash"> apt update &amp;&amp; \</span><br><span class="language-bash">        apt-get install -y locales &amp;&amp; \</span><br><span class="language-bash">        apt-get -y install ttf-wqy-zenhei &amp;&amp; \</span><br><span class="language-bash">        apt-get -y install xfonts-intl-chinese  &amp;&amp; \</span><br><span class="language-bash">        dpkg-reconfigure locales &amp;&amp; localedef -c -f UTF-8 -i zh_CN zh_CN.utf8 &amp;&amp; \</span><br><span class="language-bash">        apt install -y curl</span><br></code></pre></td></tr></table></figure>
 
 
                 
@@ -297,6 +299,34 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/linux/" class="category-chain-item">linux</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/debain/">#debain</a>
+      
+    </div>
   
 </div>
 
@@ -349,7 +379,7 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/11/08/docker%20%E5%AE%89%E8%A3%85/" title="">
+                      <a href="/2022/11/08/devop%205.26%20%E5%BF%AB%E9%80%9F%E5%AE%89%E8%A3%85/" title="">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile"></span>
                         <span class="visible-mobile">上一篇</span>
@@ -359,7 +389,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/11/08/devop%205.26%20%E5%BF%AB%E9%80%9F%E5%AE%89%E8%A3%85/" title="">
+                      <a href="/2022/11/08/docker%20%E5%AE%89%E8%A3%85/" title="">
                         <span class="hidden-mobile"></span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>

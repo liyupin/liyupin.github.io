@@ -16,16 +16,17 @@
   <meta name="author" content="Cper Liu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="docker 安装 1、分发文件到远程节点 Python实现分发数据块到多台服务器上代码如下： 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808">
+    <meta name="description" content="docker 安装 1、分发文件到远程节点 Python实现分发数据块到多台服务器上代码如下： 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
 <meta property="og:url" content="https://liyupin.github.io/2022/11/08/docker%20%E5%AE%89%E8%A3%85/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="docker 安装 1、分发文件到远程节点 Python实现分发数据块到多台服务器上代码如下： 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808">
+<meta property="og:description" content="docker 安装 1、分发文件到远程节点 Python实现分发数据块到多台服务器上代码如下： 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-11-07T16:44:47.589Z">
-<meta property="article:modified_time" content="2022-11-07T16:44:47.589Z">
+<meta property="article:published_time" content="2022-11-07T16:44:00.000Z">
+<meta property="article:modified_time" content="2022-11-08T05:53:55.947Z">
 <meta property="article:author" content="Cper Liu">
+<meta property="article:tag" content="docker">
 <meta name="twitter:card" content="summary_large_image">
   
   
@@ -287,7 +288,8 @@
             
               <div class="markdown-body">
                 
-                <p>docker 安装</p>
+                <hr>
+<p>docker 安装</p>
 <p>1、分发文件到远程节点</p>
 <p>Python实现分发数据块到多台服务器上<br>代码如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># coding: utf-8</span><br><br><span class="hljs-keyword">import</span> paramiko<br><span class="hljs-keyword">import</span> re<br><span class="hljs-keyword">import</span> os<br><span class="hljs-keyword">from</span> time <span class="hljs-keyword">import</span> sleep<br><br><span class="hljs-comment"># 定义一个类，表示一台远端linux主机</span><br><br><span class="hljs-comment"># 参考https://www.cnblogs.com/haigege/p/5517422.html wyc</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Linux</span>(<span class="hljs-title class_ inherited__">object</span>):<br>    <span class="hljs-comment"># 通过IP, 用户名，密码，超时时间初始化一个远程Linux主机</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, ip, username, password, timeout=<span class="hljs-number">3000</span></span>):<br>        self.ip = ip<br>        self.username = username<br>        self.password = password<br>        self.timeout = timeout<br>        <span class="hljs-comment"># transport和chanel</span><br>        self.t = <span class="hljs-string">&#x27;&#x27;</span><br>        self.chan = <span class="hljs-string">&#x27;&#x27;</span><br>        <span class="hljs-comment"># 链接失败的重试次数</span><br>        self.try_times = <span class="hljs-number">3</span><br><br>    <span class="hljs-comment"># 调用该方法连接远程主机</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">connect</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>            <span class="hljs-comment"># 连接过程中可能会抛出异常，比如网络不通、链接超时</span><br>            <span class="hljs-keyword">try</span>:<br>                self.t = paramiko.Transport(sock=(self.ip, <span class="hljs-number">22</span>))<br>                self.t.connect(username=self.username, password=self.password)<br>                self.chan = self.t.open_session()<br>                self.chan.settimeout(self.timeout)<br>                self.chan.get_pty()<br>                self.chan.invoke_shell()<br>                <span class="hljs-comment"># 如果没有抛出异常说明连接成功，直接返回</span><br>                <span class="hljs-built_in">print</span> (<span class="hljs-string">u&#x27;连接%s成功&#x27;</span> % self.ip)<br>                <span class="hljs-comment"># 接收到的网络数据解码为str</span><br>                <span class="hljs-built_in">print</span> (self.chan.recv(<span class="hljs-number">65535</span>).decode(<span class="hljs-string">&#x27;utf-8&#x27;</span>))<br>                <span class="hljs-keyword">return</span><br>            <span class="hljs-comment"># 这里不对可能的异常如socket.error, socket.timeout细化，直接一网打尽</span><br>            <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e1:<br>                <span class="hljs-keyword">if</span> self.try_times != <span class="hljs-number">0</span>:<br>                    <span class="hljs-built_in">print</span> (<span class="hljs-string">u&#x27;连接%s失败，进行重试&#x27;</span> %self.ip)<br>                    self.try_times -= <span class="hljs-number">1</span><br>                <span class="hljs-keyword">else</span>:<br>                    <span class="hljs-built_in">print</span> (<span class="hljs-string">u&#x27;重试3次失败，结束程序&#x27;</span>)<br>                    exit(<span class="hljs-number">1</span>)<br>     <br>    <span class="hljs-comment"># 断开连接</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">close</span>(<span class="hljs-params">self</span>):<br>        self.chan.close()<br>        self.t.close()<br>     <br>    <span class="hljs-comment"># 发送要执行的命令</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">send</span>(<span class="hljs-params">self, cmd</span>):<br>        cmd += <span class="hljs-string">&#x27;\r&#x27;</span><br>        <span class="hljs-comment"># 通过命令执行提示符来判断命令是否执行完成</span><br>        p = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;:~ #&#x27;</span>)<br>     <br>        result = <span class="hljs-string">&#x27;&#x27;</span><br>        <span class="hljs-comment"># 发送要执行的命令</span><br>        self.chan.send(cmd)<br>        <span class="hljs-comment"># 回显很长的命令可能执行较久，通过循环分批次取回回显</span><br>        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>            sleep(<span class="hljs-number">0.5</span>)<br>            ret = self.chan.recv(<span class="hljs-number">65535</span>)<br>            ret = ret.decode(<span class="hljs-string">&#x27;utf-8&#x27;</span>)<br>            result += ret<br>            <span class="hljs-keyword">if</span> p.search(ret):<br>                <span class="hljs-built_in">print</span> (result)<br>                <span class="hljs-keyword">return</span> result<br>    <span class="hljs-comment"># ------获取本地指定目录及其子目录下的所有文件------</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__get_all_files_in_local_dir</span>(<span class="hljs-params">self, local_dir</span>):<br>        <span class="hljs-comment"># 保存所有文件的列表</span><br>        all_files = <span class="hljs-built_in">list</span>()<br>     <br>        <span class="hljs-comment"># 获取当前指定目录下的所有目录及文件，包含属性值</span><br>        files = os.listdir(local_dir)<br>        <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> files:<br>            <span class="hljs-comment"># local_dir目录中每一个文件或目录的完整路径</span><br>            filename = os.path.join(local_dir, x)<br>            <span class="hljs-comment"># 如果是目录，则递归处理该目录</span><br>            <span class="hljs-keyword">if</span> os.path.isdir(x):<br>                all_files.extend(self.__get_all_files_in_local_dir(filename))<br>            <span class="hljs-keyword">else</span>:<br>                all_files.append(filename)<br>        <span class="hljs-keyword">return</span> all_files<br>     <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">sftp_put_dir</span>(<span class="hljs-params">self, local_dir, remote_dir</span>):<br>        t = paramiko.Transport(sock=(self.ip, <span class="hljs-number">22</span>))<br>        t.connect(username=self.username, password=self.password)<br>        sftp = paramiko.SFTPClient.from_transport(t)<br>     <br>        <span class="hljs-comment"># 去掉路径字符穿最后的字符&#x27;/&#x27;，如果有的话</span><br>        <span class="hljs-keyword">if</span> remote_dir[-<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;/&#x27;</span>:<br>            remote_dir = remote_dir[<span class="hljs-number">0</span>:-<span class="hljs-number">1</span>]<br>     <br>        <span class="hljs-comment"># 获取本地指定目录及其子目录下的所有文件</span><br>        all_files = self.__get_all_files_in_local_dir(local_dir)<br>        <span class="hljs-comment"># 依次put每一个文件</span><br>        <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> all_files:<br>            filename = os.path.split(x)[-<span class="hljs-number">1</span>]<br>            remote_filename = remote_dir + <span class="hljs-string">&#x27;/&#x27;</span> + filename<br>            <span class="hljs-built_in">print</span> (x)<br>            <span class="hljs-built_in">print</span> (remote_filename)<br>            <span class="hljs-built_in">print</span> (<span class="hljs-string">u&#x27;Put文件%s传输到%s中...&#x27;</span> % (filename,self.ip))<br>            sftp.put(x, remote_filename)<br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    <span class="hljs-comment"># host = Linux(&#x27;172.16.10.40&#x27;, &#x27;root&#x27;, &#x27;imlytek!40&#x27;)</span><br>    <span class="hljs-comment"># host.connect()</span><br>    <span class="hljs-comment"># host.send(&#x27;ls -l&#x27;)</span><br>    remote_path = <span class="hljs-string">r&#x27;/imlytek/smpt&#x27;</span><br>    local_path = <span class="hljs-string">r&#x27;D:\TSTP&#x27;</span><br>    <span class="hljs-comment"># host.sftp_put_dir(local_path, remote_path)</span><br>    hostArray=[[<span class="hljs-string">&#x27;172.16.10.40&#x27;</span>,<span class="hljs-string">&#x27;root&#x27;</span>,<span class="hljs-string">&#x27;iflstek!40&#x27;</span>],[<span class="hljs-string">&#x27;172.16.10.51&#x27;</span>,<span class="hljs-string">&#x27;root&#x27;</span>,<span class="hljs-string">&#x27;x1f@2013&#x27;</span>]]<br>    <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> hostArray:<br>      host = Linux(x[<span class="hljs-number">0</span>], x[<span class="hljs-number">1</span>], x[<span class="hljs-number">2</span>])<br>      host.sftp_put_dir(local_path, remote_path)<br>    <span class="hljs-comment">#host.close()</span><br></code></pre></td></tr></table></figure>
@@ -303,6 +305,34 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/linux/" class="category-chain-item">linux</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/docker/">#docker</a>
+      
+    </div>
   
 </div>
 
@@ -355,7 +385,7 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/11/08/docker/" title="">
+                      <a href="/2022/11/08/docker%20file%20debain%20%E7%B3%BB%E7%BB%9F%E6%8D%A2%E6%BA%90/" title="">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile"></span>
                         <span class="visible-mobile">上一篇</span>
@@ -365,7 +395,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/11/08/docker%20file%20debain%20%E7%B3%BB%E7%BB%9F%E6%8D%A2%E6%BA%90/" title="">
+                      <a href="/2022/11/08/docker/" title="">
                         <span class="hidden-mobile"></span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>

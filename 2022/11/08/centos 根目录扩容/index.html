@@ -16,16 +16,17 @@
   <meta name="author" content="Cper Liu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="centos 根目录扩容1234567vgcfgrestore centos  -f  &#x2F;etc&#x2F;lvm&#x2F;archive centos_00001-8517388.vgumount &#x2F;dev&#x2F;mapper&#x2F;centos-homelvremove  &#x2F;dev&#x2F;centos&#x2F;homelvextend -l +100%FREE &#x2F;dev&#x2F;centos&#x2F;rootxfs_growfs &#x2F;dev&#x2F;centos">
+    <meta name="description" content="centos 根目录扩容1234567vgcfgrestore centos  -f  &#x2F;etc&#x2F;lvm&#x2F;archive centos_00001-8517388.vgumount &#x2F;dev&#x2F;mapper&#x2F;centos-homelvremove  &#x2F;dev&#x2F;centos&#x2F;homelvextend -l +100%FREE &#x2F;dev&#x2F;centos&#x2F;rootxfs_growfs &#x2F;dev&#x2F;cento">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
 <meta property="og:url" content="https://liyupin.github.io/2022/11/08/centos%20%E6%A0%B9%E7%9B%AE%E5%BD%95%E6%89%A9%E5%AE%B9/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="centos 根目录扩容1234567vgcfgrestore centos  -f  &#x2F;etc&#x2F;lvm&#x2F;archive centos_00001-8517388.vgumount &#x2F;dev&#x2F;mapper&#x2F;centos-homelvremove  &#x2F;dev&#x2F;centos&#x2F;homelvextend -l +100%FREE &#x2F;dev&#x2F;centos&#x2F;rootxfs_growfs &#x2F;dev&#x2F;centos">
+<meta property="og:description" content="centos 根目录扩容1234567vgcfgrestore centos  -f  &#x2F;etc&#x2F;lvm&#x2F;archive centos_00001-8517388.vgumount &#x2F;dev&#x2F;mapper&#x2F;centos-homelvremove  &#x2F;dev&#x2F;centos&#x2F;homelvextend -l +100%FREE &#x2F;dev&#x2F;centos&#x2F;rootxfs_growfs &#x2F;dev&#x2F;cento">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-11-07T16:44:46.979Z">
-<meta property="article:modified_time" content="2022-11-07T16:44:46.979Z">
+<meta property="article:published_time" content="2022-11-07T16:44:00.000Z">
+<meta property="article:modified_time" content="2022-11-08T05:55:54.108Z">
 <meta property="article:author" content="Cper Liu">
+<meta property="article:tag" content="centos">
 <meta name="twitter:card" content="summary_large_image">
   
   
@@ -287,7 +288,8 @@
             
               <div class="markdown-body">
                 
-                <h1 id="centos-根目录扩容"><a href="#centos-根目录扩容" class="headerlink" title="centos 根目录扩容"></a>centos 根目录扩容</h1><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs awk">vgcfgrestore centos  -f  <span class="hljs-regexp">/etc/</span>lvm/archive centos_00001-<span class="hljs-number">8517388</span>.vg<br>umount <span class="hljs-regexp">/dev/m</span>apper/centos-home<br>lvremove  <span class="hljs-regexp">/dev/</span>centos/home<br>lvextend -l +<span class="hljs-number">100</span>%FREE <span class="hljs-regexp">/dev/</span>centos/root<br>xfs_growfs <span class="hljs-regexp">/dev/</span>centos/root<br>df -h /<br>sed -i  <span class="hljs-string">&#x27;$d&#x27;</span> <span class="hljs-regexp">/etc/</span>fstab<br></code></pre></td></tr></table></figure>
+                <hr>
+<h1 id="centos-根目录扩容"><a href="#centos-根目录扩容" class="headerlink" title="centos 根目录扩容"></a>centos 根目录扩容</h1><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs awk">vgcfgrestore centos  -f  <span class="hljs-regexp">/etc/</span>lvm/archive centos_00001-<span class="hljs-number">8517388</span>.vg<br>umount <span class="hljs-regexp">/dev/m</span>apper/centos-home<br>lvremove  <span class="hljs-regexp">/dev/</span>centos/home<br>lvextend -l +<span class="hljs-number">100</span>%FREE <span class="hljs-regexp">/dev/</span>centos/root<br>xfs_growfs <span class="hljs-regexp">/dev/</span>centos/root<br>df -h /<br>sed -i  <span class="hljs-string">&#x27;$d&#x27;</span> <span class="hljs-regexp">/etc/</span>fstab<br></code></pre></td></tr></table></figure>
 
 <p>Redhat-Server7.6根目录扩容</p>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs awk">umount <span class="hljs-regexp">/dev/m</span>apper/rhel-home<br>lvremove <span class="hljs-regexp">/dev/</span>rhel/home<br>lvextend -l +<span class="hljs-number">100</span>%FREE <span class="hljs-regexp">/dev/</span>rhel/root<br>xfs_growfs <span class="hljs-regexp">/dev/</span>rhel/root<br>df -h /<br>sed -i <span class="hljs-string">&#x27;/rhel-home / s/^\(.*\)$/#\1/g&#x27;</span> <span class="hljs-regexp">/etc/</span>fstab<br>cat <span class="hljs-regexp">/etc/</span>fstab<br></code></pre></td></tr></table></figure>
@@ -300,6 +302,34 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/linux/" class="category-chain-item">linux</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/centos/">#centos</a>
+      
+    </div>
   
 </div>
 
@@ -362,7 +392,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/11/08/CentOS%207%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96%E8%84%9A%E6%9C%AC/" title="">
+                      <a href="/2022/11/08/centosredhat%E6%90%AD%E5%BB%BA%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8/" title="">
                         <span class="hidden-mobile"></span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>

@@ -16,17 +16,18 @@
   <meta name="author" content="Cper Liu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="首板票监控说明： 1、以首板当日开盘价画水平线 2、以首板当日收盘价画水平线 观察后期走势：  1.强势：后期股价一直高于首板日收盘价  2.一般：后期股价回落与首板日收盘价，不破开盘价 3.弱势：后期股价跌破首板日开盘价 123456789101112131415161718192021222324252627282930 kubectl get pvc -n devopsNAME">
+    <meta name="description" content="监控观察  首板票监控说明： 1、以首板当日开盘价画水平线 2、以首板当日收盘价画水平线 观察后期走势：  1.强势：后期股价一直高于首板日收盘价  2.一般：后期股价回落与首板日收盘价，不破开盘价 3.弱势：后期股价跌破首板日开盘价 123456789101112131415161718192021222324252627282930 kubectl get pvc -n devopsNAME">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
 <meta property="og:url" content="https://liyupin.github.io/2022/11/08/20221102/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="首板票监控说明： 1、以首板当日开盘价画水平线 2、以首板当日收盘价画水平线 观察后期走势：  1.强势：后期股价一直高于首板日收盘价  2.一般：后期股价回落与首板日收盘价，不破开盘价 3.弱势：后期股价跌破首板日开盘价 123456789101112131415161718192021222324252627282930 kubectl get pvc -n devopsNAME">
+<meta property="og:description" content="监控观察  首板票监控说明： 1、以首板当日开盘价画水平线 2、以首板当日收盘价画水平线 观察后期走势：  1.强势：后期股价一直高于首板日收盘价  2.一般：后期股价回落与首板日收盘价，不破开盘价 3.弱势：后期股价跌破首板日开盘价 123456789101112131415161718192021222324252627282930 kubectl get pvc -n devopsNAME">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="c:/Users/liyupi/AppData/Roaming/Typora/typora-user-images/image-20221102084707387.png">
-<meta property="article:published_time" content="2022-11-07T16:44:46.774Z">
-<meta property="article:modified_time" content="2022-11-07T16:44:46.774Z">
+<meta property="article:published_time" content="2022-11-07T16:44:00.000Z">
+<meta property="article:modified_time" content="2022-11-08T05:59:36.526Z">
 <meta property="article:author" content="Cper Liu">
+<meta property="article:tag" content="tz">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="c:/Users/liyupi/AppData/Roaming/Typora/typora-user-images/image-20221102084707387.png">
   
@@ -289,7 +290,8 @@
             
               <div class="markdown-body">
                 
-                <p><img src="C:\Users\liyupi\AppData\Roaming\Typora\typora-user-images\image-20221102084707387.png" srcset="/img/loading.gif" lazyload alt="image-20221102084707387"></p>
+                <h1 id="监控观察"><a href="#监控观察" class="headerlink" title="监控观察"></a>监控观察</h1><hr>
+<p><img src="C:\Users\liyupi\AppData\Roaming\Typora\typora-user-images\image-20221102084707387.png" srcset="/img/loading.gif" lazyload alt="image-20221102084707387"></p>
 <p>首板票监控说明：</p>
 <p>1、以首板当日开盘价画水平线</p>
 <p>2、以首板当日收盘价画水平线</p>
@@ -298,10 +300,6 @@
 <p> 2.一般：后期股价回落与首板日收盘价，不破开盘价</p>
 <p>3.弱势：后期股价跌破首板日开盘价</p>
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs apache"> <span class="hljs-attribute">kubectl</span> get pvc -n devops<br><span class="hljs-attribute">NAME</span>                               STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS       AGE<br><span class="hljs-attribute">devops</span>-analysis-volume             Bound    pvc-<span class="hljs-number">16605645</span>-<span class="hljs-number">4823</span>-<span class="hljs-number">4089</span>-<span class="hljs-number">8</span>a09-<span class="hljs-number">7</span>c7ed3924b8d   <span class="hljs-number">10</span>Gi       RWO            openebs-hostpath   <span class="hljs-number">110</span>d<br><span class="hljs-attribute">devops</span>-es-volume                   Bound    pvc-<span class="hljs-number">8094</span>a36a-<span class="hljs-number">789</span>a-<span class="hljs-number">43</span>ae-a9c6-cabe3efd7944   <span class="hljs-number">10</span>Gi       RWO            openebs-hostpath   <span class="hljs-number">110</span>d<br><span class="hljs-attribute">devops</span>-gitea-devops-gitea-volume   Bound    pvc-<span class="hljs-number">56676482</span>-b4f0-<span class="hljs-number">4250</span>-a691-eed4e796d3f7   <span class="hljs-number">300</span>Gi      RWO            openebs-hostpath   <span class="hljs-number">109</span>d<br><span class="hljs-attribute">devops</span>-gitlab                      Bound    pvc-<span class="hljs-number">6693</span>d33a-<span class="hljs-number">365</span>e-<span class="hljs-number">4</span>a3f-bda9-b3b3bf24da33   <span class="hljs-number">5</span>Gi        RWO            openebs-hostpath   <span class="hljs-number">110</span>d<br><span class="hljs-attribute">devops</span>-grafana-volume              Bound    pvc-<span class="hljs-number">36461</span>cf0-<span class="hljs-number">54</span>ca-<span class="hljs-number">43</span>b7-a3ba-cc16fd2d93be   <span class="hljs-number">10</span>Gi       RWO            openebs-hostpath   <span class="hljs-number">110</span>d<br><span class="hljs-attribute">devops</span>-jenkins-volume              Bound    pvc-<span class="hljs-number">7</span>a190d23-f264-<span class="hljs-number">474</span>e-ba3a-<span class="hljs-number">18</span>cd27d653de   <span class="hljs-number">10</span>Gi       RWO            openebs-hostpath   <span class="hljs-number">110</span>d<br><span class="hljs-attribute">devops</span>-minio-volume                Bound    pvc-fee67240-<span class="hljs-number">589</span>a-<span class="hljs-number">46</span>ac-a47e-<span class="hljs-number">01104</span>c173d90   <span class="hljs-number">10</span>Gi       RWO            openebs-hostpath   <span class="hljs-number">110</span>d<br><span class="hljs-attribute">devops</span>-mysql-volume                Bound    pvc-f6829b45-e3a5-<span class="hljs-number">46</span>ff-<span class="hljs-number">961</span>d-c54678381460   <span class="hljs-number">10</span>Gi       RWO            openebs-hostpath   <span class="hljs-number">110</span>d<br><span class="hljs-attribute">jenkins</span>-devops-jenkins-volume      Bound    pvc-<span class="hljs-number">2</span>aca1ad0-<span class="hljs-number">2</span>af8-<span class="hljs-number">4</span>aab-a772-<span class="hljs-number">79</span>d0ef70b684   <span class="hljs-number">10</span>Gi       RWO            openebs-hostpath   <span class="hljs-number">110</span>d<span class="hljs-meta"></span><br><span class="hljs-meta">[root@master1 ~]#</span><br><span class="hljs-meta"></span><br><span class="hljs-meta">nodeName: node1</span><br><span class="hljs-meta"></span><br><span class="hljs-meta">node-role.kubernetes.io/node=true</span><br><span class="hljs-meta">nodeSelector:</span><br><span class="hljs-meta">  node-role.kubernetes.io：node</span><br><span class="hljs-meta"></span><br><span class="hljs-meta"></span><br><span class="hljs-meta">rsync -av --progress  /var/openebs/local/pvc-7a190d23-f264-474e-ba3a-18cd27d653de/* node1:/var/openebs/local/pvc-577e6674-8a25-4d86-896a-5de33f6c9384</span><br><span class="hljs-meta"></span><br><span class="hljs-meta"></span><br><span class="hljs-meta">vgcfgrestore centos  -f  /etc/lvm/archive centos_00001-8517388.vg</span><br><span class="hljs-meta">umount /dev/mapper/centos-home</span><br><span class="hljs-meta">lvremove  /dev/centos/home</span><br><span class="hljs-meta">lvextend -l +100%FREE /dev/centos/root</span><br><span class="hljs-meta">xfs_growfs /dev/centos/root</span><br><span class="hljs-meta">df -h /</span><br><span class="hljs-meta">sed -i  &#x27;$d&#x27; /etc/fstab</span><br></code></pre></td></tr></table></figure>
-
-
-
-
                 
               </div>
             
@@ -309,6 +307,34 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/tz/" class="category-chain-item">tz</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/tz/">#tz</a>
+      
+    </div>
   
 </div>
 
@@ -361,17 +387,11 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/11/08/CentOS%207%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96%E8%84%9A%E6%9C%AC/" title="">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile"></span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/11/08/%E6%9C%80%E8%BF%91%E6%A6%9C/" title="">
+                      <a href="/2022/11/08/CentOS%207%E7%B3%BB%E7%BB%9F%E4%BC%98%E5%8C%96%E8%84%9A%E6%9C%AC/" title="">
                         <span class="hidden-mobile"></span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
