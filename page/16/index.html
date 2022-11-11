@@ -58,7 +58,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -99,7 +99,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>Fluid</strong>
+      <strong>CPERLYP</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -238,6 +238,39 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2022/07/12/docker%20%E6%89%93%E5%8D%B0%E5%87%BA%E6%9D%A5%E7%9A%84%E6%97%A5%E5%BF%97%E4%B8%8E%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%97%B6%E9%97%B4%E4%B8%8D%E4%B8%80%E8%87%B4/" target="_self">
+          docker 打印出来的日志与服务器时间不一致
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/12/docker%20%E6%89%93%E5%8D%B0%E5%87%BA%E6%9D%A5%E7%9A%84%E6%97%A5%E5%BF%97%E4%B8%8E%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%97%B6%E9%97%B4%E4%B8%8D%E4%B8%80%E8%87%B4/" target="_self">
+        <div>
+          docker 打印出来的日志与服务器时间不一致docker 打印出来的日志与服务器时间不一致  docker的时间与宿主机是一致的  解决方法 进入dokcer内后，执行以下操作： 12ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtimeecho &quot;Asia/Shanghai&quot; &gt; /etc/timezone
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-07-12 08:31" pubdate>
+              2022-07-12
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2022/07/12/Docker-Compose%20%E6%90%AD%E5%BB%BA%20Confluence(%E6%9C%80%E6%96%B0%E7%89%88)%20Wiki%20%E7%8E%AF%E5%A2%83/" target="_self">
           Docker-Compose 搭建 Confluence(最新版) Wiki 环境
         </a>
@@ -279,7 +312,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2022/07/12/confluence%E9%87%8D%E7%BD%AEadmin%E5%AF%86%E7%A0%81/" target="_self">
         <div>
-          confluence重置admin密码 复方法：  运行此sql 找到你的管理员帐户：  123456789MY_PASS&#x3D;rootexport MYSQL_PWD&#x3D;$MY_PASSMY_USER&#x3D;rootMY_HOST&#x3D;127.0.0.1MY_PORT&#x3D;3306MY_DB&#x3D;confluenceMYCMD&#x3D;&quot;mysql -u$MY_USER   -pMY_PASS -h$MY_HOST
+          confluence重置admin密码 复方法：  运行此sql 找到你的管理员帐户：  123456789MY_PASS=rootexport MYSQL_PWD=$MY_PASSMY_USER=rootMY_HOST=127.0.0.1MY_PORT=3306MY_DB=confluenceMYCMD=&quot;mysql -u$MY_USER   -pMY_PASS -h$MY_HOST
         </div>
       </a>
 
@@ -312,7 +345,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2022/07/12/Confluence%E6%98%AF%E4%B8%80%E4%B8%AA%E4%B8%93%E4%B8%9A%E7%9A%84%E4%BC%81%E4%B8%9A%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86%E4%B8%8E%E5%8D%8F%E5%90%8C%E8%BD%AF%E4%BB%B6%EF%BC%8C%E4%B9%9F%E5%8F%AF%E4%BB%A5%E7%94%A8%E4%BA%8E%E6%9E%84%E5%BB%BA%E4%BC%81%E4%B8%9Awiki%E3%80%82/" target="_self">
         <div>
-          Confluence是一个专业的企业知识管理与协同软件，也可以用于构建企业wiki。 一、准备工作 下载confluence6.7.1 1wget https:&#x2F;&#x2F;downloads.atlassian.com&#x2F;software&#x2F;confluence&#x2F;downloads&#x2F;atlassian-confluence-6.7.1-x64.bin -P &#x2F;opt  下载破解器 1https:&#x2F;&#x2F;file
+          Confluence是一个专业的企业知识管理与协同软件，也可以用于构建企业wiki。 一、准备工作 下载confluence6.7.1 1wget https://downloads.atlassian.com/software/confluence/downloads/atlassian-confluence-6.7.1-x64.bin -P /opt  下载破解器 1https://file
         </div>
       </a>
 
@@ -411,7 +444,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2022/07/12/Ceph%20pool%20%E7%AE%A1%E7%90%86%EF%BC%88%E5%9F%BA%E7%A1%80%E6%93%8D%E4%BD%9C%EF%BC%89/" target="_self">
         <div>
-          Ceph pool 管理（基础操作）显示&#x2F;查询 pool1 显示所有pool 1ceph osd pool ls  2 查询 pool 当前状态 1ceph osd pool stats &amp;#123;pool_name&amp;#125;  3 查询 pool 的使用状态 1ceph df  创建 pool1ceph osd pool create &amp;#123;pool-name&amp;#125;
+          Ceph pool 管理（基础操作）显示&#x2F;查询 pool1 显示所有pool 1ceph osd pool ls  2 查询 pool 当前状态 1ceph osd pool stats &#123;pool_name&#125;  3 查询 pool 的使用状态 1ceph df  创建 pool1ceph osd pool create &#123;pool-name&#125;
         </div>
       </a>
 
@@ -444,7 +477,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2022/07/12/ceph%20ansible%E9%83%A8%E7%BD%B2ceph%E9%9B%86%E7%BE%A4/" target="_self">
         <div>
-          ceph ansible部署ceph集群参考：https:&#x2F;&#x2F;docs.ceph.com&#x2F;ceph-ansible&#x2F;master&#x2F; 项目地址：https:&#x2F;&#x2F;github.com&#x2F;ceph&#x2F;ceph-ansible 节点规划： 主机名	public-ip	磁盘	角色node1	192.168.93.20	系统盘: sdaosd盘: sdb	ceph-ansible,monitor,mgr,mds
+          ceph ansible部署ceph集群参考：https://docs.ceph.com/ceph-ansible/master/ 项目地址：https://github.com/ceph/ceph-ansible 节点规划： 主机名	public-ip	磁盘	角色node1	192.168.93.20	系统盘: sdaosd盘: sdb	ceph-ansible,monitor,mgr,mds
         </div>
       </a>
 
@@ -510,40 +543,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2022/07/12/centos7%20%E5%AE%89%E8%A3%85docker/" target="_self">
         <div>
-          centos7 安装docker安装 Docker1234567mv  &#x2F;etc&#x2F;yum.repos.d&#x2F;  &#x2F;etc&#x2F;yum.repos.d.bk&#x2F;mkdir -p &#x2F;etc&#x2F;yum.repos.d&#x2F;curl -o  &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;repo&#x2F;Centos-7.repocurl -o  &#x2F;e
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-12 08:28" pubdate>
-              2022-07-12
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/07/12/centos7%20NFS%20%E6%90%AD%E5%BB%BA/" target="_self">
-          在 centos 7 上搭建 nfs
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/12/centos7%20NFS%20%E6%90%AD%E5%BB%BA/" target="_self">
-        <div>
-          NFS 搭建NFS 搭建在 centos 7 上搭建 nfs 安装     nfs-utils  1yum install -y nfs-utils   关闭防火墙  12345sed -i &amp;#x27;s&#x2F;SELINUX&#x3D;enforcing&#x2F;SELINUX&#x3D;permissive&#x2F;&amp;#x27; &#x2F;etc&#x2F;selinux&#x2F;configsetenforce 0 systemctl stop fire
+          centos7 安装docker安装 Docker1234567mv  /etc/yum.repos.d/  /etc/yum.repos.d.bk/mkdir -p /etc/yum.repos.d/curl -o  /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repocurl -o  /e
         </div>
       </a>
 

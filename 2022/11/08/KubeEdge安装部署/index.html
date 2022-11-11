@@ -24,7 +24,7 @@
 <meta property="og:description" content="KubeEdge安装部署安装KubeEdge时master服务器一要要注意k8s的版本！！，我之前k8s版本是1.15，一直出问题，然后把k8s版本更新到1.22，一下子就搞定了（我的其他文章有详细的k8s安装包含docker安装部署，以及bug持续更新ing，有兴趣可以去看看）1.cloud需要先装k8s，docker1.edge需要先装docker，不要装k8s！！！所有主机关闭防火墙 su">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-11-07T16:44:00.000Z">
-<meta property="article:modified_time" content="2022-06-30T18:19:34.470Z">
+<meta property="article:modified_time" content="2022-11-11T10:48:18.010Z">
 <meta property="article:author" content="Cper Liu">
 <meta property="article:tag" content="kubeedge">
 <meta name="twitter:card" content="summary_large_image">
@@ -69,7 +69,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -110,7 +110,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>Fluid</strong>
+      <strong>CPERLYP</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -234,7 +234,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3k 字
+          2.8k 字
         
       </span>
     
@@ -245,7 +245,7 @@
         
         
         
-          25 分钟
+          24 分钟
         
       </span>
     
@@ -292,30 +292,36 @@
 <h1 id="KubeEdge安装部署"><a href="#KubeEdge安装部署" class="headerlink" title="KubeEdge安装部署"></a>KubeEdge安装部署</h1><p>安装KubeEdge时master服务器一要要注意k8s的版本！！，我之前k8s版本是1.15，一直出问题，然后把k8s版本更新到1.22，一下子就搞定了<br>（我的其他文章有详细的k8s安装包含docker安装部署，以及bug持续更新ing，有兴趣可以去看看）<br>1.cloud需要先装k8s，docker<br>1.edge需要先装docker，不要装k8s！！！<br>所有主机关闭防火墙</p>
 <p>sudo systemctl stop ufw<br>sudo systemctl disable ufw</p>
 <p>所有主机一定要关闭swap，否则会导致kubelet无法启动</p>
-<h1 id="查看swap分区情况"><a href="#查看swap分区情况" class="headerlink" title="查看swap分区情况"></a>查看swap分区情况</h1><p>sudo swapon -s</p>
-<h1 id="临时关闭swap"><a href="#临时关闭swap" class="headerlink" title="临时关闭swap"></a>临时关闭swap</h1><p>sudo swapoff -a</p>
-<h1 id="永久禁用swap分区"><a href="#永久禁用swap分区" class="headerlink" title="永久禁用swap分区"></a>永久禁用swap分区</h1><p>sudo vi &#x2F;etc&#x2F;fstab</p>
-<h1 id="禁用swap分区那一行"><a href="#禁用swap分区那一行" class="headerlink" title="禁用swap分区那一行"></a>禁用swap分区那一行</h1><p>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>master：192.168.40.2<br>edge：192.168.40.4</p>
+<h1 id="查看swap分区情况"><a href="#查看swap分区情况" class="headerlink" title="查看swap分区情况"></a>查看swap分区情况</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo swapon -s<br><span class="hljs-comment"># 临时关闭swap</span><br>sudo swapoff -a<br><span class="hljs-comment"># 永久禁用swap分区</span><br>sudo vi /etc/fstab<br><span class="hljs-comment"># 禁用swap分区那一行</span><br></code></pre></td></tr></table></figure>
+
+
+<p>master：192.168.40.2<br>edge：192.168.40.4</p>
 <p>一：cloud端安装（master：192.168.40.2）<br>准备下载包</p>
-<p>wget <a target="_blank" rel="noopener" href="https://github.com/kubeedge/kubeedge/releases/download/v1.10.0/keadm-v1.10.0-linux-amd64.tar.gz">https://github.com/kubeedge/kubeedge/releases/download/v1.10.0/keadm-v1.10.0-linux-amd64.tar.gz</a></p>
-<h1 id="同时提前下载kubeedge压缩包和校验文件"><a href="#同时提前下载kubeedge压缩包和校验文件" class="headerlink" title="同时提前下载kubeedge压缩包和校验文件"></a>同时提前下载kubeedge压缩包和校验文件</h1><p>wget <a target="_blank" rel="noopener" href="https://github.com/kubeedge/kubeedge/releases/download/v1.10.0/kubeedge-v1.10.0-linux-amd64.tar.gz">https://github.com/kubeedge/kubeedge/releases/download/v1.10.0/kubeedge-v1.10.0-linux-amd64.tar.gz</a><br>wget <a target="_blank" rel="noopener" href="https://github.com/kubeedge/kubeedge/releases/download/v1.10.0/checksum_kubeedge-v1.10.0-linux-amd64.tar.gz.txt">https://github.com/kubeedge/kubeedge/releases/download/v1.10.0/checksum_kubeedge-v1.10.0-linux-amd64.tar.gz.txt</a><br>1<br>2<br>3<br>4<br>避免下载过慢，将kubeedge-v1.10.0-linux-amd64.tar.gz文件和checksum_kubeedge-v1.10.0-linux-amd64.tar.gz.txt预先下载存放</p>
-<p>sudo mkdir &#x2F;etc&#x2F;kubeedge&#x2F;<br>sudo cp kubeedge-v1.10.0-linux-amd64.tar.gz &#x2F;etc&#x2F;kubeedge&#x2F;<br>sudo cp checksum_kubeedge-v1.10.0-linux-amd64.tar.gz.txt &#x2F;etc&#x2F;kubeedge&#x2F;<br>1<br>2<br>3<br>使用keadm安装kubeedge的云端组件cloudcore</p>
-<p>sudo keadm init –advertise-address&#x3D;192.168.40.4 –kubeedge-version&#x3D;1.10.0<br>1<br>–advertise-address&#x3D;xxx.xx.xx.xx 这里的xxx.xx.xx.xx换成你master机器的ip,可以是内网地址，也可以是公网ip地址，–kubeedge-version&#x3D;1.10.0 意思是指定安装的kubeEdge的版本，如果你默认不指定那么keadm会自动去下载最新的版本。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">wget https://github.com/kubeedge/kubeedge/releases/download/v1.10.0/keadm-v1.10.0-linux-amd64.tar.gz<br><span class="hljs-comment"># 同时提前下载kubeedge压缩包和校验文件</span><br>wget https://github.com/kubeedge/kubeedge/releases/download/v1.10.0/kubeedge-v1.10.0-linux-amd64.tar.gz<br>wget https://github.com/kubeedge/kubeedge/releases/download/v1.10.0/checksum_kubeedge-v1.10.0-linux-amd64.tar.gz.txt<br><br></code></pre></td></tr></table></figure>
+<p>避免下载过慢，将kubeedge-v1.10.0-linux-amd64.tar.gz文件和checksum_kubeedge-v1.10.0-linux-amd64.tar.gz.txt预先下载存放</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo <span class="hljs-built_in">mkdir</span> /etc/kubeedge/<br>sudo <span class="hljs-built_in">cp</span> kubeedge-v1.10.0-linux-amd64.tar.gz /etc/kubeedge/<br>sudo <span class="hljs-built_in">cp</span> checksum_kubeedge-v1.10.0-linux-amd64.tar.gz.txt /etc/kubeedge/<br></code></pre></td></tr></table></figure>
+<p>使用keadm安装kubeedge的云端组件cloudcore</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo keadm init --advertise-address=192.168.40.4 --kubeedge-version=1.10.0<br></code></pre></td></tr></table></figure>
+<p>–advertise-address&#x3D;xxx.xx.xx.xx 这里的xxx.xx.xx.xx换成你master机器的ip,可以是内网地址，也可以是公网ip地址，–kubeedge-version&#x3D;1.10.0 意思是指定安装的kubeEdge的版本，如果你默认不指定那么keadm会自动去下载最新的版本。</p>
 <p>重点！！！：如果出了问题，大部分问题都是下载问题，可以手动下载kubeedge文件：<br>红框里面这些文件都是必须的，其他文件自动生成的</p>
 <p>成功：</p>
 <p>我们可以看到cloudcore守护进程已经在运行了，cloudcore会监听本地的10000和10002端口</p>
-<p>ps -ef|grep cloudcore<br>1</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ps -ef|grep cloudcore<br></code></pre></td></tr></table></figure>
 <p>cloudcore可能不会自动启动，我们将其加入systemd自启动管理中</p>
-<p>sudo cp &#x2F;etc&#x2F;kubeedge&#x2F;cloudcore.service &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;<br>sudo systemctl daemon-reload<br>sudo systemctl start cloudcore.service<br>sudo systemctl enable cloudcore.service<br>1<br>2<br>3<br>4<br>获得边缘设备接入的token（后面边缘端加入云端需要用到token）</p>
-<p>sudo keadm gettoken<br>3d68b3620337e71200fd622f35a537395362f48f0f371a67ec110950625ee508.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTU4MjQyODV9.ypZ8BopEyDCCgPE7ZHixmN0EpsFtmfXTzt8I2CkGk8U<br>1<br>2<br>二：边缘端安装（edge：192.168.40.4）<br>和master一样，需要这三个文件，直接复制进去</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo <span class="hljs-built_in">cp</span> /etc/kubeedge/cloudcore.service /etc/systemd/system/<br>sudo systemctl daemon-reload<br>sudo systemctl start cloudcore.service<br>sudo systemctl <span class="hljs-built_in">enable</span> cloudcore.service<br></code></pre></td></tr></table></figure>
+<p>获得边缘设备接入的token（后面边缘端加入云端需要用到token）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo keadm gettoken<br>3d68b3620337e71200fd622f35a537395362f48f0f371a67ec110950625ee508.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTU4MjQyODV9.ypZ8BopEyDCCgPE7ZHixmN0EpsFtmfXTzt8I2CkGk8U<br></code></pre></td></tr></table></figure>
+<p>二：边缘端安装（edge：192.168.40.4）<br>和master一样，需要这三个文件，直接复制进去</p>
 <p>下载解压安装keadm</p>
-<p>tar -xvf keadm-v1.10.0-linux-amd64.tar.gz<br>sudo cp keadm-v1.10.0-linux-amd64&#x2F;keadm&#x2F;keadm &#x2F;usr&#x2F;bin&#x2F;<br>1<br>2<br>sudo mkdir &#x2F;etc&#x2F;kubeedge&#x2F;<br>sudo cp kubeedge-v1.10.0-linux-amd64.tar.gz &#x2F;etc&#x2F;kubeedge&#x2F;<br>sudo cp checksum_kubeedge-v1.10.0-linux-amd64.tar.gz.txt &#x2F;etc&#x2F;kubeedge&#x2F;<br>1<br>2<br>3<br>加入集群，keadm会安装edgecore和mqtt协议的实现软件mosquitto，mosquitto会监听localhost:1183端口</p>
-<p>keadm join –cloudcore-ipport&#x3D;192.168.40.2:10000 –token&#x3D;3d68b3620337e71200fd622f35a537395362f48f0f371a67ec110950625ee508.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTU4MjQyODV9.ypZ8BopEyDCCgPE7ZHixmN0EpsFtmfXTzt8I2CkGk8U –kubeedge-version&#x3D;1.10.0<br>1<br>–cloudcore-ipport是边缘节点能访问的云master主机的IP端口号，–token是上面云matster生成的识别码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">tar -xvf keadm-v1.10.0-linux-amd64.tar.gz<br>sudo <span class="hljs-built_in">cp</span> keadm-v1.10.0-linux-amd64/keadm/keadm /usr/bin/<br><br>sudo <span class="hljs-built_in">mkdir</span> /etc/kubeedge/<br>sudo <span class="hljs-built_in">cp</span> kubeedge-v1.10.0-linux-amd64.tar.gz /etc/kubeedge/<br>sudo <span class="hljs-built_in">cp</span> checksum_kubeedge-v1.10.0-linux-amd64.tar.gz.txt /etc/kubeedge/<br></code></pre></td></tr></table></figure>
+<p>加入集群，keadm会安装edgecore和mqtt协议的实现软件mosquitto，mosquitto会监听localhost:1183端口</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">keadm <span class="hljs-built_in">join</span> --cloudcore-ipport=192.168.40.2:10000 --token=3d68b3620337e71200fd622f35a537395362f48f0f371a67ec110950625ee508.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTU4MjQyODV9.ypZ8BopEyDCCgPE7ZHixmN0EpsFtmfXTzt8I2CkGk8U --kubeedge-version=1.10.0<br><br>–cloudcore-ipport是边缘节点能访问的云master主机的IP端口号，–token是上面云matster生成的识别码<br></code></pre></td></tr></table></figure>
 <p>安装成功</p>
-<p>kubeedge-v1.10.0-linux-amd64&#x2F;edge&#x2F;edgecore<br>kubeedge-v1.10.0-linux-amd64&#x2F;version</p>
-<p>KubeEdge edgecore is running, For logs visit: journalctl -u edgecore.service -xe<br>1<br>2<br>3<br>4<br>发现服务失败，使用journalctl -u edgecore.service -xe查看日志</p>
-<p>journalctl -u edgecore.service -xe<br>1<br>查看edge边缘已加入master云端</p>
-<p>kubectl get nodes<br>1</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">kubeedge-v1.10.0-linux-amd64/edge/edgecore<br>kubeedge-v1.10.0-linux-amd64/version<br><br>KubeEdge edgecore is running, For logs visit: journalctl -u edgecore.service -xe<br></code></pre></td></tr></table></figure>
+<p>发现服务失败，使用journalctl -u edgecore.service -xe查看日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">journalctl -u edgecore.service -xe<br></code></pre></td></tr></table></figure>
+<p>查看edge边缘已加入master云端</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">kubectl get nodes<br><br></code></pre></td></tr></table></figure>
 
                 
               </div>
@@ -378,21 +384,23 @@
         </div>
       
       
-      <div class="license-meta-item">
-        <div>许可协议</div>
-        <div>
-          
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
             
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
             
-              <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
-              <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                <i class="iconfont icon-by"></i>
-              </span>
-              </a>
-            
-          
+          </div>
         </div>
-      </div>
+      
     </div>
     <div class="license-icon iconfont"></div>
   </div>
@@ -578,22 +586,34 @@
     var boardCtn = jQuery('#board-ctn');
     var boardTop = boardCtn.offset().top;
 
-    window.tocbot.init({
+    window.tocbot.init(Object.assign({
       tocSelector     : '#toc-body',
       contentSelector : '.markdown-body',
-      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
       linkClass       : 'tocbot-link',
       activeLinkClass : 'tocbot-active-link',
       listClass       : 'tocbot-list',
       isCollapsedClass: 'tocbot-is-collapsed',
       collapsibleClass: 'tocbot-is-collapsible',
-      collapseDepth   : CONFIG.toc.collapseDepth || 0,
       scrollSmooth    : true,
-      headingsOffset  : -boardTop
-    });
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
     if (toc.find('.toc-list-item').length > 0) {
       toc.css('visibility', 'visible');
     }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
   });
 </script>
 
@@ -622,6 +642,21 @@
       window.anchors.options.class = 'anchorjs-link-left';
     }
     window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
   });
 </script>
 

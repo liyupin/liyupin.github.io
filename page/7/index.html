@@ -58,7 +58,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -99,7 +99,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>Fluid</strong>
+      <strong>CPERLYP</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -238,6 +238,67 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2022/08/18/python100day-31-35/" target="_self">
+          python100day-31-35
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/08/18/python100day-31-35/" target="_self">
+        <div>
+          玩转Linux操作系统 说明：本文中对Linux命令的讲解都是基于名为CentOS的Linux发行版本，我自己使用的是阿里云服务器，系统版本为CentOS Linux release 7.6.1810。不同的Linux发行版本在Shell命令和工具程序上会有一些差别，但是这些差别是很小的。  操作系统发展史只有硬件没有软件的计算机系统被称之为“裸机”，我们很难用“裸机”来完成计算机日常的工作（如存
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-08-18 16:26" pubdate>
+              2022-08-18
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/python100day/" class="category-chain-item">python100day</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/python/">#python</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2022/08/18/filebeat-%E6%97%A5%E5%BF%97%E9%87%87%E9%9B%86/" target="_self">
           filebeat 日志采集
         </a>
@@ -307,7 +368,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2022/08/17/k8s%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0-%E8%B0%83%E5%BA%A6%E5%99%A8%E6%A1%86%E6%9E%B6/" target="_self">
         <div>
-          调度器框架前言在上一篇文档中，我们找到了sheduler调度功能主逻辑的入口: P1-调度器入口篇 那么在本篇，我们基于找到的入口，来进入调度器框架内部，看一看整体的逻辑流程,本篇先跳过调度的算法(Predicates断言选择、Priority优先级排序)，只关注pkg&#x2F;scheduler目录内的scheduler框架相关的逻辑流向，摸清scheduler框架本身的代码结构，调度算法留在后面的文章
+          调度器框架前言在上一篇文档中，我们找到了sheduler调度功能主逻辑的入口: P1-调度器入口篇 那么在本篇，我们基于找到的入口，来进入调度器框架内部，看一看整体的逻辑流程,本篇先跳过调度的算法(Predicates断言选择、Priority优先级排序)，只关注pkg/scheduler目录内的scheduler框架相关的逻辑流向，摸清scheduler框架本身的代码结构，调度算法留在后面的文章
         </div>
       </a>
 
@@ -368,7 +429,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2022/08/17/k8s%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0-%E8%B0%83%E5%BA%A6%E5%99%A8%E5%85%A5%E5%8F%A3/" target="_self">
         <div>
-          调度器入口前言本篇介绍scheduler的初始化相关逻辑 入口之前入口函数是位于cmd&#x2F;kube-scheduler&#x2F;scheduler.go中的main()方法,调用的是app.NewSchedulerCommand()方法，跳转至此方法，可以看到函数上方的注释： 1234&#x2F;&#x2F; NewSchedulerCommand creates a *cobra.Command object with de
+          调度器入口前言本篇介绍scheduler的初始化相关逻辑 入口之前入口函数是位于cmd/kube-scheduler/scheduler.go中的main()方法,调用的是app.NewSchedulerCommand()方法，跳转至此方法，可以看到函数上方的注释： 1234// NewSchedulerCommand creates a *cobra.Command object with de
         </div>
       </a>
 
@@ -490,7 +551,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2022/08/10/python100day-16-20/" target="_self">
         <div>
-          Python语言进阶Python语言进阶重要知识点 生成式（推导式）的用法 123456789101112prices &#x3D; &amp;#123;    &amp;#x27;AAPL&amp;#x27;: 191.88,    &amp;#x27;GOOG&amp;#x27;: 1186.96,    &amp;#x27;IBM&amp;#x27;: 149.24,    &amp;#x27;ORCL&amp;#x27;: 48.44,    &amp;#x27;ACN&amp;#x2
+          Python语言进阶Python语言进阶重要知识点 生成式（推导式）的用法 123456789101112prices = &#123;    &#x27;AAPL&#x27;: 191.88,    &#x27;GOOG&#x27;: 1186.96,    &#x27;IBM&#x27;: 149.24,    &#x27;ORCL&#x27;: 48.44,    &#x27;ACN&#x2
         </div>
       </a>
 
@@ -666,7 +727,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2022/08/05/Shell-declare%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/" target="_self">
         <div>
-          Shell declare的使用方法帮助declare声明变量总结如下： 12345678910declare [+&#x2F;-][选项] 变量名选项：   -：给变量舍得类型属性   +：取消变量的类型属性  -a：将变量声明为数组型  -i：将变量声明为整型  -x：将变量声明为环境变量  -r：将变量声明为只读变量  -p：查看变量的被声明的类型  1、变量声明为数值型1declare -i num
+          Shell declare的使用方法帮助declare声明变量总结如下： 12345678910declare [+/-][选项] 变量名选项：   -：给变量舍得类型属性   +：取消变量的类型属性  -a：将变量声明为数组型  -i：将变量声明为整型  -x：将变量声明为环境变量  -r：将变量声明为只读变量  -p：查看变量的被声明的类型  1、变量声明为数值型1declare -i num
         </div>
       </a>
 
@@ -727,7 +788,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2022/08/05/gitea%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D/" target="_self">
         <div>
-          Gitea安装，备份及恢复官网：https:&#x2F;&#x2F;gitea.io&#x2F;en-us&#x2F; 安装环境安装查看有没有安装git 1git --version    安装git1apt install git    安装sqlite31apt install sqlite3  下载gitea 在官方地址下载匹配的版本文件，替换后面的URL即可 1wget -O gitea https:&#x2F;&#x2F;dl.gitea.io&#x2F;
+          Gitea安装，备份及恢复官网：https://gitea.io/en-us/ 安装环境安装查看有没有安装git 1git --version    安装git1apt install git    安装sqlite31apt install sqlite3  下载gitea 在官方地址下载匹配的版本文件，替换后面的URL即可 1wget -O gitea https://dl.gitea.io/
         </div>
       </a>
 
@@ -767,67 +828,6 @@
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/linux/">#linux</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/08/05/python100day-14/" target="_self">
-          python100day-14
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/08/05/python100day-14/" target="_self">
-        <div>
-          网络编程入门计算机网络基础计算机网络是独立自主的计算机互联而成的系统的总称，组建计算机网络最主要的目的是实现多台计算机之间的通信和资源共享。今天计算机网络中的设备和计算机网络的用户已经多得不可计数，而计算机网络也可以称得上是一个“复杂巨系统”，对于这样的系统，我们不可能用一两篇文章把它讲清楚，有兴趣的读者可以自行阅读Andrew S.Tanenbaum老师的经典之作《计算机网络》或Kurose和R
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-08-05 09:14" pubdate>
-              2022-08-05
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/python100day/" class="category-chain-item">python100day</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/python/">#python</a>
             
           </div>
         

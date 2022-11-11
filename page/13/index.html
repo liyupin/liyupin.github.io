@@ -58,7 +58,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -99,7 +99,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>Fluid</strong>
+      <strong>CPERLYP</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -238,6 +238,39 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2022/07/13/sed/" target="_self">
+          sed
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/13/sed/" target="_self">
+        <div>
+          sed 取版本号1echo httpd-2.4.41.tar.bz2|sed -rn &#x27;/^(.*[0-9.]+)\.[[:alpha:]]+.*$/\1/p&#x27;  取后缀1
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-07-13 14:34" pubdate>
+              2022-07-13
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2022/07/13/traefik%20%E9%85%8D%E7%BD%AE%E8%B6%85%E6%97%B6%E8%AE%BE%E7%BD%AE/" target="_self">
           traefik 配置超时设置
         </a>
@@ -246,7 +279,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2022/07/13/traefik%20%E9%85%8D%E7%BD%AE%E8%B6%85%E6%97%B6%E8%AE%BE%E7%BD%AE/" target="_self">
         <div>
-          traefik 配置超时设置配置详解traefik 默认没有配置文件，需要自己根据官网参考文件进行整理，下面我根据官网信息，进行整理优化了一个主配置文件，纤细信息如下： 1234[root@trarfik-test config]# more traefik.toml##开启debug 模式，Default,falsedebug &#x3D; true   ##日志级别, “DEBUG”, “INFO”,
+          traefik 配置超时设置配置详解traefik 默认没有配置文件，需要自己根据官网参考文件进行整理，下面我根据官网信息，进行整理优化了一个主配置文件，纤细信息如下： 1234[root@trarfik-test config]# more traefik.toml##开启debug 模式，Default,falsedebug = true   ##日志级别, “DEBUG”, “INFO”,
         </div>
       </a>
 
@@ -411,7 +444,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2022/07/13/nexcloud%20%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE%E5%A2%9E%E9%87%8F%E5%90%8C%E6%AD%A5%E5%88%B0%20nas%20%E5%A4%87%E4%BB%BD%E7%9B%AE%E5%BD%95/" target="_self">
         <div>
-          nexcloud 备份数据增量同步到 nas 备份目录安装nfsyum install -y nfs-utils rpcbind #创建nexcloud数据备份目录 1mkdir -p &#x2F;nas-data&#x2F;  nas 备份目录 192.168.0.43:&#x2F;volume1&#x2F;develop&#x2F;backup&#x2F;confluence 挂载nas 备份目录 1mount -t nfs 192.168.0.43:
+          nexcloud 备份数据增量同步到 nas 备份目录安装nfsyum install -y nfs-utils rpcbind #创建nexcloud数据备份目录 1mkdir -p /nas-data/  nas 备份目录 192.168.0.43:/volume1/develop/backup/confluence 挂载nas 备份目录 1mount -t nfs 192.168.0.43:
         </div>
       </a>
 
@@ -444,7 +477,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2022/07/13/linux%E9%9D%9E%E4%BA%A4%E4%BA%92%E5%BC%8F%E4%BF%AE%E6%94%B9%E5%AF%86%E7%A0%81%EF%BC%88%E4%BB%85%E9%99%90root%EF%BC%89/" target="_self">
         <div>
-          linux非交互式修改密码（仅限root）1234567# chpasswd命令使用起来很简洁[root@host_221-81 ~]# echo &quot;root:l%t99QiK$rR0$MAD&quot; | chpasswd # 使用passwd命令，也可以实现非交互式修改密码[root@host_221-81 ~]# echo &amp;#x27;l%t99QiK$rR0$MAD&amp;#x27;
+          linux非交互式修改密码（仅限root）1234567# chpasswd命令使用起来很简洁[root@host_221-81 ~]# echo &quot;root:l%t99QiK$rR0$MAD&quot; | chpasswd # 使用passwd命令，也可以实现非交互式修改密码[root@host_221-81 ~]# echo &#x27;l%t99QiK$rR0$MAD&#x27;
         </div>
       </a>
 
@@ -477,7 +510,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2022/07/13/harbor%E9%85%8D%E7%BD%AEhttps%E8%AE%BF%E9%97%AE/" target="_self">
         <div>
-          harbor配置https访问参考文档： https:&#x2F;&#x2F;goharbor.io&#x2F;docs&#x2F;1.10&#x2F;install-config&#x2F;configure-https&#x2F; https:&#x2F;&#x2F;goharbor.io&#x2F;docs&#x2F;1.10&#x2F;install-config&#x2F;troubleshoot-installation&#x2F;#https 默认情况下，Harbor不附带证书。可以在没有安全性的情况下部署Harbor，
+          harbor配置https访问参考文档： https://goharbor.io/docs/1.10/install-config/configure-https/ https://goharbor.io/docs/1.10/install-config/troubleshoot-installation/#https 默认情况下，Harbor不附带证书。可以在没有安全性的情况下部署Harbor，
         </div>
       </a>
 
@@ -511,39 +544,6 @@
       <a class="index-excerpt index-excerpt__noimg" href="/2022/07/13/python%20%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/" target="_self">
         <div>
           python 面向对象编程1面向过程与面向对象产生背景 科学计算为目标的必然产物鸡兔同笼：  先假设全部为鸡    软件应用领域的扩张和系统膨胀之后运而生    编程方法1. 自顶向下 2. 自底向上  代码主体结构1. 面向过程由变量加上数据、算法 2. 面向对象由对象+交互  数据操作主体1.
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-07-13 14:34" pubdate>
-              2022-07-13
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/07/13/Windows%20Server%202012%20R2%E8%BF%90%E8%A1%8C%E5%8D%A1%E9%A1%BF%EF%BC%8C%E8%AE%BF%E9%97%AE%E5%8A%A0%E8%BD%BD%E9%80%9F%E5%BA%A6%E6%85%A2/" target="_self">
-          Windows Server 2012 R2运行卡顿，访问加载速度慢
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2022/07/13/Windows%20Server%202012%20R2%E8%BF%90%E8%A1%8C%E5%8D%A1%E9%A1%BF%EF%BC%8C%E8%AE%BF%E9%97%AE%E5%8A%A0%E8%BD%BD%E9%80%9F%E5%BA%A6%E6%85%A2/" target="_self">
-        <div>
-          Windows Server 2012 R2运行卡顿，访问加载速度慢现象描述  系统运行卡顿 CPU、内存时高时低 内部部署平台web访问速度慢，加载半天 删除系统垃圾仍旧卡顿 重启无效  解决办法  WIN+R键打开运行输入“cmd”打开系统命令行  输入命令netsh int tcp show global，查看ECN功能开启状态  输入命令netsh int tcp set global e
         </div>
       </a>
 
