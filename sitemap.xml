@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://liyupin.github.io/2022/12/08/alpine-%E6%9B%B4%E6%8D%A2%E6%BA%90/</loc>
+    
+    <lastmod>2022-12-07</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://liyupin.github.io/2022/12/07/ovirt4-3-engine-%E9%83%A8%E7%BD%B2/</loc>
     
     <lastmod>2022-12-07</lastmod>
@@ -1946,6 +1955,13 @@
 
   
   <url>
+    <loc>https://liyupin.github.io/tags/openeuler/</loc>
+    <lastmod>2022-12-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://liyupin.github.io/tags/%E8%82%A1%E7%A5%A8/</loc>
     <lastmod>2022-12-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -1968,13 +1984,6 @@
   
   <url>
     <loc>https://liyupin.github.io/tags/centos/</loc>
-    <lastmod>2022-12-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://liyupin.github.io/tags/openeuler/</loc>
     <lastmod>2022-12-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2017,6 +2026,13 @@
   
   <url>
     <loc>https://liyupin.github.io/tags/linux/</loc>
+    <lastmod>2022-12-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/tags/alpine/</loc>
     <lastmod>2022-12-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2163,6 +2179,13 @@
   </url>
   
   <url>
+    <loc>https://liyupin.github.io/tags/vcsa/</loc>
+    <lastmod>2022-12-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://liyupin.github.io/tags/windows/</loc>
     <lastmod>2022-12-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -2171,13 +2194,6 @@
   
   <url>
     <loc>https://liyupin.github.io/tags/%E6%8A%95%E8%B5%84/</loc>
-    <lastmod>2022-12-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://liyupin.github.io/tags/vcsa/</loc>
     <lastmod>2022-12-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2242,6 +2258,13 @@
 
   
   <url>
+    <loc>https://liyupin.github.io/categories/linux/</loc>
+    <lastmod>2022-12-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://liyupin.github.io/categories/%E6%8A%95%E8%B5%84/</loc>
     <lastmod>2022-12-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -2250,13 +2273,6 @@
   
   <url>
     <loc>https://liyupin.github.io/categories/tz/</loc>
-    <lastmod>2022-12-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://liyupin.github.io/categories/linux/</loc>
     <lastmod>2022-12-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
