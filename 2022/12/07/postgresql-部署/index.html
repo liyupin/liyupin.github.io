@@ -1,0 +1,759 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Cper Liu">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="postgresql安装部署一、下载安装：1、下载： 官网下载地址：https:&#x2F;&#x2F;www.[postgresql](https:&#x2F;&#x2F;jiuaidu.com&#x2F;jianzhan&#x2F;tag&#x2F;11260&#x2F;).org&#x2F;download&#x2F;linux&#x2F;redhat&#x2F; 也可以用这个：https:&#x2F;&#x2F;www.enterprisedb.com&#x2F;download-postgresql-binaries 从上述地址可以看">
+<meta property="og:type" content="article">
+<meta property="og:title" content="postgresql 部署">
+<meta property="og:url" content="https://liyupin.github.io/2022/12/07/postgresql-%E9%83%A8%E7%BD%B2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="postgresql安装部署一、下载安装：1、下载： 官网下载地址：https:&#x2F;&#x2F;www.[postgresql](https:&#x2F;&#x2F;jiuaidu.com&#x2F;jianzhan&#x2F;tag&#x2F;11260&#x2F;).org&#x2F;download&#x2F;linux&#x2F;redhat&#x2F; 也可以用这个：https:&#x2F;&#x2F;www.enterprisedb.com&#x2F;download-postgresql-binaries 从上述地址可以看">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-12-07T14:37:00.000Z">
+<meta property="article:modified_time" content="2022-12-07T14:38:15.684Z">
+<meta property="article:author" content="Cper Liu">
+<meta property="article:tag" content="postgresql">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>postgresql 部署 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"liyupin.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>CPERLYP</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="postgresql 部署"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-12-07 22:37" pubdate>
+          2022年12月7日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          57 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">postgresql 部署</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="postgresql安装部署"><a href="#postgresql安装部署" class="headerlink" title="postgresql安装部署"></a>postgresql安装部署</h1><h3 id="一、下载安装："><a href="#一、下载安装：" class="headerlink" title="一、下载安装："></a>一、下载<a target="_blank" rel="noopener" href="https://jiuaidu.com/jianzhan/tag/3663/">安装</a>：</h3><p>1、下载：</p>
+<p>官网下载地址：<a href="https://www.[postgresql](https://jiuaidu.com/jianzhan/tag/11260/).org/download/linux/redhat/">https://www.[postgresql](https://jiuaidu.com/jianzhan/tag/11260/).org/download/linux/redhat/</a></p>
+<p>也可以用这个：<a target="_blank" rel="noopener" href="https://www.enterprisedb.com/download-postgresql-binaries">https://www.enterprisedb.com/download-postgresql-binaries</a></p>
+<p>从上述地址可以看到，其实官方从11开始已经没有二进制版本提供了，都是使用对应平台的发行版yum安装了。</p>
+<p>去官网看other linux，已经没有最新的二进制包了。</p>
+<p><a target="_blank" rel="noopener" href="https://www.postgresql.org/download/linux/#generic">https://www.postgresql.org/download/linux/#generic</a></p>
+<p>2、安装：</p>
+<p>我们使用官方提供的yum方式安装</p>
+<p><a target="_blank" rel="noopener" href="https://www.postgresql.org/download/linux/redhat/">https://www.postgresql.org/download/linux/redhat/</a></p>
+<p>选择对应的平台与版本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Install the repository RPM:sudo yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm <span class="hljs-comment"># Install PostgreSQL:sudo yum install -y postgresql13-server # Optionally initialize the database and enable automatic start:sudo /usr/pgsql-13/bin/postgresql-13-setup initdbsudo systemctl enable postgresql-13sudo systemctl start postgresql-13</span></span><br></code></pre></td></tr></table></figure>
+
+<h3 id="二、初始化配置："><a href="#二、初始化配置：" class="headerlink" title="二、初始化配置："></a>二、初始化配置：</h3><p>默认安装目录：</p>
+<p>bin目录：&#x2F;usr&#x2F;pgsql-13&#x2F;bin</p>
+<p>data目录：&#x2F;var&#x2F;lib&#x2F;pgsql&#x2F;13&#x2F;data</p>
+<p>1、修改data目录</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gradle"># 暂停服务systemctl stop postgresql-<span class="hljs-number">13</span># 移动data目录：mv <span class="hljs-regexp">/var/</span>lib<span class="hljs-regexp">/pgsql /</span>data<span class="hljs-regexp">/apps/</span>pgsql# 修改配置，第<span class="hljs-number">46</span>行vim <span class="hljs-regexp">/data/</span>apps<span class="hljs-regexp">/pgsql/</span><span class="hljs-number">13</span><span class="hljs-regexp">/data/</span>postgresql.conf...data_directory = \<span class="hljs-string">&#x27;/data/apps/pgsql/13/data\&#x27;...# 修改postgres用户家目录，否则使用su - postgres的时候会报错：su: warning: cannot change directory to /var/lib/pgsql: No such file or directoryvim /etc/passwd...postgres:x:26:26:PostgreSQL Server:/data/apps/pgsql:/bin/bash # 修改启动项里的data目录路径PGDATAvim /usr/lib/systemd/system/postgresql-13.service...Environment=PGDATA=/data/apps/pgsql/13/data/... # 启动服务systemctl daemon-reloadsystemctl start postgresql-13.service</span><br></code></pre></td></tr></table></figure>
+
+<p>2、登录修改超级用户密码：</p>
+<p>需要从root切换到postgres用户，修改密码：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">USER</span>  postgres  <span class="hljs-keyword">with</span> <span class="hljs-keyword">PASSWORD</span> <span class="hljs-string">&#x27;postgres&#x27;</span>;#修改postgres用户密码<br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"># 切换用户到postgres[root@dev-predictionio<span class="hljs-number">-206</span> bin]# su - postgresLast <span class="hljs-keyword">login</span>: Mon Sep  <span class="hljs-number">6</span> <span class="hljs-number">10</span>:<span class="hljs-number">22</span>:<span class="hljs-number">28</span> CST <span class="hljs-number">2021</span> <span class="hljs-keyword">on</span> pts/<span class="hljs-number">0</span># 直接用postgres超级用户登录，默认不需要密码，psql直接回车就以postgres用户进入了postgres数据库-bash<span class="hljs-number">-4.2</span>$ psql -U postgrespsql (<span class="hljs-number">13.4</span>)<span class="hljs-keyword">Type</span> &quot;help&quot; <span class="hljs-keyword">for</span> help.# 修改超级用户密码为：postgrespostgres=# <span class="hljs-keyword">alter</span> <span class="hljs-keyword">role</span> postgres <span class="hljs-keyword">with</span> <span class="hljs-keyword">password</span> \<span class="hljs-string">&#x27;postgres\&#x27;</span>;<span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">ROLE</span># 退出postgres-# \q<br></code></pre></td></tr></table></figure>
+
+<p>在postgres用户下重载配置</p>
+<p>修改用户</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"># 修改用户认证模式trust为md5bash<span class="hljs-number">-4.2</span>$ vim /data/apps/pgsql/<span class="hljs-number">13</span>/data/pg_hba.conf# IPv4 <span class="hljs-keyword">local</span> connections:host    <span class="hljs-keyword">all</span>             <span class="hljs-keyword">all</span>             <span class="hljs-keyword">all</span>                     md5host    <span class="hljs-keyword">all</span>             <span class="hljs-keyword">all</span>             <span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span>/<span class="hljs-number">32</span>            md5host    <span class="hljs-keyword">all</span>             <span class="hljs-keyword">all</span>             <span class="hljs-number">0.0</span><span class="hljs-number">.0</span><span class="hljs-number">.0</span>/<span class="hljs-number">0</span>               md5# IPv6 <span class="hljs-keyword">local</span> connections:host    <span class="hljs-keyword">all</span>             <span class="hljs-keyword">all</span>             ::<span class="hljs-number">1</span>/<span class="hljs-number">128</span>                 md5 # 重载配置-bash<span class="hljs-number">-4.2</span>$  export PGPORT=<span class="hljs-number">5432</span>-bash<span class="hljs-number">-4.2</span>$ export PGDATE=postgres-bash<span class="hljs-number">-4.2</span>$  export PGDATA=/data/apps/pgsql/<span class="hljs-number">13</span>/data-bash<span class="hljs-number">-4.2</span>$  export PGUSER=postgres-bash<span class="hljs-number">-4.2</span>$ vim /etc/profile-bash<span class="hljs-number">-4.2</span>$ source /etc/profile-bash<span class="hljs-number">-4.2</span>$ pg_ctl reloadserver signaled-bash<span class="hljs-number">-4.2</span>$ exitlogout <br></code></pre></td></tr></table></figure>
+
+<p>3、创建新用户：</p>
+<p>如上所述，先切换到Linux用户postgres，并执行psql：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">[root@dev-predictionio<span class="hljs-number">-206</span> data]# su - postgresLast <span class="hljs-keyword">login</span>: Mon Sep  <span class="hljs-number">6</span> <span class="hljs-number">13</span>:<span class="hljs-number">57</span>:<span class="hljs-number">07</span> CST <span class="hljs-number">2021</span> <span class="hljs-keyword">on</span> pts/<span class="hljs-number">4</span>-bash<span class="hljs-number">-4.2</span>$ psqlpsql (<span class="hljs-number">13.4</span>)<span class="hljs-keyword">Type</span> &quot;help&quot; <span class="hljs-keyword">for</span> help. postgres=# # 现在位于数据库提示符下。# 创建数据库新用户，如 dbuser：postgres=# <span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">USER</span> wangshuangxi <span class="hljs-keyword">WITH</span> <span class="hljs-keyword">PASSWORD</span> \<span class="hljs-string">&#x27;123456\&#x27;</span>;<span class="hljs-keyword">CREATE</span> ROLEpostgres=# <span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">USER</span> dbuser <span class="hljs-keyword">WITH</span> <span class="hljs-keyword">PASSWORD</span> \<span class="hljs-string">&#x27;*****\&#x27;</span>;注意：语句要以分号结尾。密码要用单引号括起来。<span class="hljs-number">3</span>、创建用户数据库，如exampledb：postgres=# <span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">DATABASE</span> exampledb <span class="hljs-keyword">OWNER</span> dbuser;<span class="hljs-number">4</span>、将exampledb数据库的所有权限都赋予dbuser：postgres=# <span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">ALL</span> <span class="hljs-keyword">PRIVILEGES</span> <span class="hljs-keyword">ON</span> <span class="hljs-keyword">DATABASE</span> exampledb <span class="hljs-keyword">TO</span> dbuser;<span class="hljs-number">5</span>、使用命令 \q 退出psql：postgres=# \q <span class="hljs-number">6</span>、创建Linux普通用户，与刚才新建的数据库用户同名，如 dbuser： $ sudo adduser dbuser $ sudo passwd dbuser <span class="hljs-number">7</span>、以dbuser的身份连接数据库exampledb： $ su - dbuser <span class="hljs-keyword">Password</span>: Last <span class="hljs-keyword">login</span>: Wed Mar <span class="hljs-number">1</span> <span class="hljs-number">11</span>:<span class="hljs-number">52</span>:<span class="hljs-number">07</span> CST <span class="hljs-number">2017</span> <span class="hljs-keyword">on</span> pts/ [dbuser@master ~]$ psql -d exampledb<br></code></pre></td></tr></table></figure>
+
+<p>4、开启远程访问：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"># 修改配置文件，添加监听地址，改为*vim postgresql.conflisten_addresses = \<span class="hljs-string">&#x27;*\&#x27;</span>  # 修改pg_hba.conf，添加远程主机地址，放在第一行：允许任意用户从任意机器上以密码方式访问数据库，把下行添加为第一条规则：host    <span class="hljs-keyword">all</span>             <span class="hljs-keyword">all</span>             <span class="hljs-number">0.0</span><span class="hljs-number">.0</span><span class="hljs-number">.0</span>/<span class="hljs-number">0</span>               md5 # 重启服务：sudo systemctl <span class="hljs-keyword">restart</span> postgresql<span class="hljs-number">-13.</span>service<br></code></pre></td></tr></table></figure>
+
+<p>5、通过navicat连接访问：</p>
+<p>连接成功如下：</p>
+<h3 id="三、安装pgadmin图形管理界面"><a href="#三、安装pgadmin图形管理界面" class="headerlink" title="三、安装pgadmin图形管理界面"></a>三、安装pgadmin图形管理界面</h3><p>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/whitebai/p/13094540.html">https://www.cnblogs.com/whitebai/p/13094540.html</a></p>
+<p>查看官网安装方式：<a target="_blank" rel="noopener" href="https://www.pgadmin.org/download/pgadmin-4-rpm/">https://www.pgadmin.org/download/pgadmin-4-rpm/</a></p>
+<p>我们选择rpm包的安装方式：（也可以选择python或者其他方式）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">安装基础repo包sudo rpm -i https://ftp.postgresql.org/pub/pgadmin/pgadmin4/yum/pgadmin4-redhat-repo-2-1.noarch.rpm <span class="hljs-comment"># To install pgAdmin, run one of the following commands:# Install for both desktop and web modes.# 同时安装桌面版与web版sudo yum install pgadmin4 # Install for desktop mode only.sudo yum install pgadmin4-desktop # Install for web mode only.# 只安装web版，（我们只需要安装这个就可以了）sudo yum install pgadmin4-web</span></span><br></code></pre></td></tr></table></figure>
+
+<p>安装过程有点长，可能需要输入y确认。</p>
+<p>安装完成后：启动web初始化配置：</p>
+<p>Finally, if you have installed pgadmin4 or pgadmin4-web, run the web setup script to configure the system to run in web mode:</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gradle">#  sudo <span class="hljs-regexp">/usr/</span>pgadmin4<span class="hljs-regexp">/bin/</span>setup-web.shSetting up pgAdmin <span class="hljs-number">4</span> in web mode on a Redhat based platform...Creating configuration database...NOTE: Configuring authentication <span class="hljs-keyword">for</span> SERVER mode. Enter the email address and password to use <span class="hljs-keyword">for</span> the initial pgAdmin user account: Email address: ops@lgitt.comPassword: Retype password:pgAdmin <span class="hljs-number">4</span> - Application Initialisation====================================== Creating storage and log directories...Configuring SELinux...setsebool:  SELinux is disabled.setsebool:  SELinux is disabled.The Apache web server is not running. We can enable and start the web server <span class="hljs-keyword">for</span> you to finish pgAdmin <span class="hljs-number">4</span> installation. <span class="hljs-keyword">Continue</span> (y<span class="hljs-regexp">/n)? yCreated symlink from /</span>etc<span class="hljs-regexp">/systemd/</span>system<span class="hljs-regexp">/multi-user.target.wants/</span>httpd.service to <span class="hljs-regexp">/usr/</span>lib<span class="hljs-regexp">/systemd/</span>system<span class="hljs-regexp">/httpd.service.Apache successfully enabled.Apache successfully started.You can now start using pgAdmin 4 in web mode at http:/</span><span class="hljs-regexp">/127.0.0.1/</span>pgadmin4<br></code></pre></td></tr></table></figure>
+
+<p>输入地址：<a target="_blank" rel="noopener" href="http://192.168.90.206/pgadmin4/">http://192.168.90.206/pgadmin4/</a></p>
+<p>如下：</p>
+<p>登录后如图所示：</p>
+<h3 id="四、安装插件mysql-fdw-（可选）"><a href="#四、安装插件mysql-fdw-（可选）" class="headerlink" title="四、安装插件mysql-fdw （可选）"></a>四、安装插件mysql-fdw （可选）</h3><p>网上很多编译安装的方法，官网也是编译安装的，编译安装依赖包太多，因为只是插件，这里直接采用yum安装：</p>
+<h3 id="yum安装mysql-fdw"><a href="#yum安装mysql-fdw" class="headerlink" title="yum安装mysql-fdw"></a>yum安装mysql-fdw</h3><figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs clean"># 首先查找一下fdwyum search postgresql|grep fdw# 找到了对应包名，安装：yum install mysql_fdw_13<br></code></pre></td></tr></table></figure>
+
+<p>源码编译安装参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/funnyzpc/p/14223167.html">https://www.cnblogs.com/funnyzpc/p/14223167.html</a></p>
+<p>准备libmysqlclient</p>
+<p>注意：若mysql与postgresql在同一台linux机上，则无需安装mysql工具，请略过本段</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">wget</span> https://dev.mysql.com/get/Downloads/MySQL-<span class="hljs-number">8</span>.<span class="hljs-number">0</span>/mysql-<span class="hljs-number">8</span>.<span class="hljs-number">0</span>.<span class="hljs-number">22</span>-linux-glibc2.<span class="hljs-number">17</span>-x86_64-minimal.tar.xztar -xf mysql-<span class="hljs-number">8</span>.<span class="hljs-number">0</span>.<span class="hljs-number">22</span>-linux-glibc2.<span class="hljs-number">17</span>-x86_64-minimal.tar.xzmv mysql-<span class="hljs-number">8</span>.<span class="hljs-number">0</span>.<span class="hljs-number">22</span>-linux-glibc2.<span class="hljs-number">17</span>-x86_64-minimal /data/apps/mysql-clientchown -R mysql:mysql /data/apps/mysql-client<br></code></pre></td></tr></table></figure>
+
+<p>配置环境变量</p>
+<ul>
+<li>配置文件</li>
+</ul>
+<p>vi &#x2F;etc&#x2F;profile</p>
+<ul>
+<li>添加mysql环境变量</li>
+</ul>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"># mysql-clientexport MYSQL_HOME=/data/apps/mysql-clientexport <span class="hljs-type">PATH</span>=$<span class="hljs-type">PATH</span>:$MYSQL_HOME/binexport LD_LIBRARY_PATH=$PG_HOME/lib:$MYSQL_HOME/lib:$LD_LIBRARY_PATH<br></code></pre></td></tr></table></figure>
+
+<p>确保pgsql的环境变量存在：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"># pgsqlexport PG_HOME=/usr/pgsql<span class="hljs-number">-13</span>/export <span class="hljs-type">PATH</span>=$<span class="hljs-type">PATH</span>:$PG_HOME/bin<br></code></pre></td></tr></table></figure>
+
+<p>刷新配置</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gradle"><span class="hljs-keyword">source</span> <span class="hljs-regexp">/etc/</span>profile<br></code></pre></td></tr></table></figure>
+
+<h3 id="下载并编译mysql-fdw"><a href="#下载并编译mysql-fdw" class="headerlink" title="下载并编译mysql_fdw"></a>下载并编译mysql_fdw</h3><p>下载地址:</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/EnterpriseDB/mysql_fdw/releases">https://github.com/EnterpriseDB/mysql_fdw/releases</a></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">tar</span> xf mysql_fdw-REL-<span class="hljs-number">2</span>_6_0.tar.gzcd mysql_fdw-REL-<span class="hljs-number">2</span>_6_0make USE_PGXS=<span class="hljs-number">1</span>make USE_PGXS=<span class="hljs-number">1</span> install<br></code></pre></td></tr></table></figure>
+
+<p>编译报错：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gradle"># make USE_PGXS=<span class="hljs-number">1</span>Makefile:<span class="hljs-number">39</span>: <span class="hljs-regexp">/usr/</span>pgsql-<span class="hljs-number">13</span><span class="hljs-regexp">/lib/</span>pgxs<span class="hljs-regexp">/src/m</span>akefiles/pgxs.mk: No such <span class="hljs-keyword">file</span> or directoryMakefile:<span class="hljs-number">44</span>: *** PostgreSQL <span class="hljs-number">9.6</span>, <span class="hljs-number">10</span>, <span class="hljs-number">11</span>, <span class="hljs-number">12</span>, or <span class="hljs-number">13</span> is required to <span class="hljs-keyword">compile</span> <span class="hljs-keyword">this</span> extension.  Stop.<br></code></pre></td></tr></table></figure>
+
+
+
+<p>解决办法：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">yum <span class="hljs-keyword">install</span> postgresql13-devel -y<br></code></pre></td></tr></table></figure>
+
+<p>如果遇到依赖报错：</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada"><span class="hljs-comment">--&gt; Finished Dependency ResolutionError: Package: postgresql13-devel-13.4-1PGDG.rhel7.x86_64 (pgdg13)           Requires: llvm-toolset-7-clang &gt;= 4.0.1 You could try using --skip-broken to work around the problem You could try running: rpm -Va --nofiles --nodigest</span><br></code></pre></td></tr></table></figure>
+
+<p>解决办法：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">yum <span class="hljs-keyword">install </span>centos-release-<span class="hljs-keyword">scl-rh </span>-yyum <span class="hljs-keyword">install </span>postgresql13-devel -y<br></code></pre></td></tr></table></figure>
+
+<p>编译完，重启pgsql</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">systemctl</span> restart postgresql-<span class="hljs-number">13</span>.service <br></code></pre></td></tr></table></figure>
+
+<h2 id="问题处理"><a href="#问题处理" class="headerlink" title="问题处理"></a>问题处理</h2><p>1 .-bash-4.2$  psql -U postgres<br>psql: error while loading shared libraries: libpq.so.rh-postgresql10-5: cannot open shared object file: No such file or directory</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">cd</span> /etc/ld.<span class="hljs-keyword">so</span>.<span class="hljs-keyword">conf</span>.d<br>[root@engine ld.<span class="hljs-keyword">so</span>.<span class="hljs-keyword">conf</span>.d]# <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;/opt/rh/rh-postgresql10/root/usr/lib64&quot;</span>&gt;&gt;pgsql.<span class="hljs-keyword">conf</span><br>[root@engine ld.<span class="hljs-keyword">so</span>.<span class="hljs-keyword">conf</span>.d]# ldconfig<br><br></code></pre></td></tr></table></figure>
+
+<p>2.-bash-4.2$ psql<br>-bash: psql: command not found</p>
+<p>将postgresql 的 bin 目录添加到环境变量中（需要确认postgresql的安装位置）。</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs perl">export PATH=<span class="hljs-string">&quot;/opt/rh/rh-postgresql10/root/usr/bin/:$PATH&quot;</span><br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" class="category-chain-item">数据库</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/postgresql/">#postgresql</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>postgresql 部署</div>
+      <div>https://liyupin.github.io/2022/12/07/postgresql-部署/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Cper Liu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年12月7日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/12/07/ovirt4-3-engine-%E9%83%A8%E7%BD%B2/" title="ovirt4.3 engine 部署">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ovirt4.3 engine 部署</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/12/07/vcsa%E9%87%8D%E7%BD%AE%E7%AE%A1%E7%90%86%E5%91%98%E5%AF%86%E7%A0%81/" title="vcsa重置管理员密码">
+                        <span class="hidden-mobile">vcsa重置管理员密码</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
