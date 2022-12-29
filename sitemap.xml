@@ -2057,13 +2057,6 @@
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/tags/centos7/</loc>
-    <lastmod>2022-12-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://liyupin.github.io/tags/ovirt/</loc>
     <lastmod>2022-12-29</lastmod>
     <changefreq>weekly</changefreq>
@@ -2092,6 +2085,13 @@
   </url>
   
   <url>
+    <loc>https://liyupin.github.io/tags/centos7/</loc>
+    <lastmod>2022-12-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://liyupin.github.io/tags/debain/</loc>
     <lastmod>2022-12-29</lastmod>
     <changefreq>weekly</changefreq>
@@ -2113,13 +2113,6 @@
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/tags/log/</loc>
-    <lastmod>2022-12-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://liyupin.github.io/tags/fio/</loc>
     <lastmod>2022-12-29</lastmod>
     <changefreq>weekly</changefreq>
@@ -2134,14 +2127,14 @@
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/tags/traefik/</loc>
+    <loc>https://liyupin.github.io/tags/k8s/</loc>
     <lastmod>2022-12-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/tags/k8s/</loc>
+    <loc>https://liyupin.github.io/tags/log/</loc>
     <lastmod>2022-12-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2177,6 +2170,13 @@
   
   <url>
     <loc>https://liyupin.github.io/tags/python100day/</loc>
+    <lastmod>2022-12-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://liyupin.github.io/tags/traefik/</loc>
     <lastmod>2022-12-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2325,14 +2325,14 @@
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/categories/ansible/</loc>
+    <loc>https://liyupin.github.io/categories/centos8/</loc>
     <lastmod>2022-12-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/categories/centos8/</loc>
+    <loc>https://liyupin.github.io/categories/ansible/</loc>
     <lastmod>2022-12-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2381,14 +2381,14 @@
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
+    <loc>https://liyupin.github.io/categories/docker/</loc>
     <lastmod>2022-12-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://liyupin.github.io/categories/docker/</loc>
+    <loc>https://liyupin.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
     <lastmod>2022-12-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
