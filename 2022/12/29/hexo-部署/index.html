@@ -16,22 +16,22 @@
   <meta name="author" content="Cper Liu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="mysql8.0版本忘记root密码解决方法一、免密登录mysql1、停止mysql服务 cmd窗口输入net stop mysql，若为windows下集成环境则直接通过工具停止服务，若为centos6：service mysqld stop,若为centos7：systemctl stop mysqld 配置skip-grant-tables，重启mysql 1234ubuntu@ubuntu">
+    <meta name="description" content="hexo部署doc-compose.yml 12345678910111213141516171819version: &quot;3.9&quot;services:  hexo-blog:    build:      context: .      args:        NODE_VERSION: 16    container_name: hexo-blog    image: hex">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mysql8.0版本忘记root密码解决方法">
-<meta property="og:url" content="https://liyupin.github.io/2022/12/08/mysql8-0%E7%89%88%E6%9C%AC%E5%BF%98%E8%AE%B0root%E5%AF%86%E7%A0%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:title" content="hexo 部署">
+<meta property="og:url" content="https://liyupin.github.io/2022/12/29/hexo-%E9%83%A8%E7%BD%B2/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="mysql8.0版本忘记root密码解决方法一、免密登录mysql1、停止mysql服务 cmd窗口输入net stop mysql，若为windows下集成环境则直接通过工具停止服务，若为centos6：service mysqld stop,若为centos7：systemctl stop mysqld 配置skip-grant-tables，重启mysql 1234ubuntu@ubuntu">
+<meta property="og:description" content="hexo部署doc-compose.yml 12345678910111213141516171819version: &quot;3.9&quot;services:  hexo-blog:    build:      context: .      args:        NODE_VERSION: 16    container_name: hexo-blog    image: hex">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-12-08T15:28:00.000Z">
-<meta property="article:modified_time" content="2022-12-08T15:30:50.038Z">
+<meta property="article:published_time" content="2022-12-29T07:59:00.000Z">
+<meta property="article:modified_time" content="2022-12-29T07:59:22.388Z">
 <meta property="article:author" content="Cper Liu">
-<meta property="article:tag" content="mysql">
+<meta property="article:tag" content="md">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>mysql8.0版本忘记root密码解决方法 - Hexo</title>
+  <title>hexo 部署 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -211,7 +211,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="mysql8.0版本忘记root密码解决方法"></span>
+            <span id="subtitle" data-typed-text="hexo 部署"></span>
           
         </div>
 
@@ -222,8 +222,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-12-08 23:28" pubdate>
-          2022年12月8日 晚上
+        <time datetime="2022-12-29 15:59" pubdate>
+          2022年12月29日 下午
         </time>
       </span>
     
@@ -234,7 +234,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.2k 字
+          1.3k 字
         
       </span>
     
@@ -245,7 +245,7 @@
         
         
         
-          19 分钟
+          11 分钟
         
       </span>
     
@@ -283,83 +283,58 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">mysql8.0版本忘记root密码解决方法</h1>
+            <h1 style="display: none">hexo 部署</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="mysql8-0版本忘记root密码解决方法"><a href="#mysql8-0版本忘记root密码解决方法" class="headerlink" title="mysql8.0版本忘记root密码解决方法"></a>mysql8.0版本忘记root密码解决方法</h1><h2 id="一、免密登录mysql"><a href="#一、免密登录mysql" class="headerlink" title="一、免密登录mysql"></a>一、免密登录mysql</h2><p>1<strong>、停止mysql服务</strong></p>
-<p>cmd窗口输入net stop mysql，若为windows下集成环境则直接通过工具停止服务，若为centos6：service mysqld stop,若为<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=centos7&spm=00.20.300.7020">centos7</a>：systemctl stop mysqld</p>
-<p>配置skip-grant-tables，重启mysql</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">ubuntu@ubuntu-desktop:~$ grep gran /etc/mysql/mysql.conf.d/mysqld.cnf<br>skip-grant-tables<br><br>systemctl restart mysql<br></code></pre></td></tr></table></figure>
+                <h1 id="hexo部署"><a href="#hexo部署" class="headerlink" title="hexo部署"></a>hexo部署</h1><p>doc-compose.yml</p>
+<figure class="highlight nestedtext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs nestedtext"><span class="hljs-attribute">version</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;3.9&quot;</span><br><span class="hljs-attribute">services</span><span class="hljs-punctuation">:</span><br>  <span class="hljs-attribute">hexo-blog</span><span class="hljs-punctuation">:</span><br>    <span class="hljs-attribute">build</span><span class="hljs-punctuation">:</span><br>      <span class="hljs-attribute">context</span><span class="hljs-punctuation">:</span> <span class="hljs-string">.</span><br>      <span class="hljs-attribute">args</span><span class="hljs-punctuation">:</span><br>        <span class="hljs-attribute">NODE_VERSION</span><span class="hljs-punctuation">:</span> <span class="hljs-string">16</span><br>    <span class="hljs-attribute">container_name</span><span class="hljs-punctuation">:</span> <span class="hljs-string">hexo-blog</span><br>    <span class="hljs-attribute">image</span><span class="hljs-punctuation">:</span> <span class="hljs-string">hexo-blog:latest</span><br>    <span class="hljs-attribute">restart</span><span class="hljs-punctuation">:</span> <span class="hljs-string">always</span><br>    <span class="hljs-attribute">environment</span><span class="hljs-punctuation">:</span><br>      <span class="hljs-attribute">HEXO_SERVER_PORT</span><span class="hljs-punctuation">:</span> <span class="hljs-string">4080</span><br>    <span class="hljs-attribute">ports</span><span class="hljs-punctuation">:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">&#x27;8080:4080&#x27;</span><br>    <span class="hljs-attribute">volumes</span><span class="hljs-punctuation">:</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">./data/blog:/root/blog</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">/root/.ssh:/root/.ssh</span><br>      <span class="hljs-bullet">-</span> <span class="hljs-string">./.gitconfig:/root/.gitconfig</span><br><br></code></pre></td></tr></table></figure>
+
+
+<h1 id="Docker部署hexo脚本"><a href="#Docker部署hexo脚本" class="headerlink" title="Docker部署hexo脚本"></a>Docker部署hexo脚本</h1><h2 id="文件说明"><a href="#文件说明" class="headerlink" title="文件说明"></a>文件说明</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs bash">.<br>├── Dockerfile              <span class="hljs-comment"># docker镜像配置文件</span><br>├── docker-compose.yml      <span class="hljs-comment"># docker-compose脚本</span><br>├── docker-entrypoint.sh    <span class="hljs-comment"># 容器启动配置脚本</span><br>├── README.md<br>├── docs<br>│   └── CHANGE_LOG.md<br>└── shell<br>    ├── exec.sh             <span class="hljs-comment"># 进入docker容器</span><br>    ├── logs.sh             <span class="hljs-comment"># 查看容器日志</span><br>    ├── restart.sh          <span class="hljs-comment"># 重启容器</span><br>    ├── stop.sh             <span class="hljs-comment"># 停止容器</span><br>    └── start.sh            <span class="hljs-comment"># 启动容器</span><br></code></pre></td></tr></table></figure>
 
 
 
-<p><strong>2、设置免密登录</strong></p>
-<p>mysqld –console –<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=skip&spm=00.20.300.7020">skip</a>-grant-tables –shared-memory</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">mysql&gt; update mysql.user <span class="hljs-built_in">set</span> authentication_string=<span class="hljs-string">&#x27;&#x27;</span>  <span class="hljs-built_in">where</span> user=<span class="hljs-string">&#x27;root&#x27;</span>  and host=<span class="hljs-string">&#x27;localhost&#x27;</span>;<br>Query OK, 1 row affected (0.02 sec)<br>Rows matched: 1  Changed: 1  Warnings: 0<br></code></pre></td></tr></table></figure>
+<h2 id="初始化一个博客"><a href="#初始化一个博客" class="headerlink" title="初始化一个博客"></a>初始化一个博客</h2><ol>
+<li>将本项目clone到<code>/home/blog</code>下</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> /home/blog<br>git <span class="hljs-built_in">clone</span> https://github.com/xia5800/docker-hexo.git<br></code></pre></td></tr></table></figure>
 
-<p>【mysqld –skip-grant-tables实测在mysql8.0中已失效】</p>
-<p><strong>3、另开一个cmd窗口</strong></p>
-<p><strong>登录mysql，password直接回车即可（这边需要另开一个cmd窗口）</strong></p>
-<h2 id="二、重新设置mysql密码"><a href="#二、重新设置mysql密码" class="headerlink" title="二、重新设置mysql密码"></a>二、重新设置mysql密码</h2><p><strong>1、进入到mysql数据库，设置空密码</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">update mysql.user <span class="hljs-built_in">set</span> authentication_string=<span class="hljs-string">&#x27;&#x27;</span>  <span class="hljs-built_in">where</span> user=<span class="hljs-string">&#x27;root&#x27;</span>  and host=<span class="hljs-string">&#x27;localhost&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<ol start="2">
+<li>给shell脚本添加可执行权限</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> shell<br><span class="hljs-built_in">chmod</span> a+x *.sh<br></code></pre></td></tr></table></figure>
 
-<p><strong>2、重启mysql，用空密码进入数据库，修改root密码</strong></p>
-<p><strong>（</strong>若为windows下集成环境则直接通过工具重启服务，若为centos6：service mysqld restart，若为centos7：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">systemctl restart mysqld**）**<br>alter user <span class="hljs-string">&#x27;root&#x27;</span>@<span class="hljs-string">&#x27;localhost&#x27;</span>  IDENTIFIED WITH mysql_native_password BY <span class="hljs-string">&#x27;23456&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<ol start="3">
+<li>启动</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 因为要初始化博客以及安装插件、主题等，可能需要等待比较长的一段时间 ps:容器成功启动不代表hexo已经启动完毕</span><br>./start.sh<br></code></pre></td></tr></table></figure>
 
+<ol start="4">
+<li>浏览器访问<code>http://服务器ip:8080</code></li>
+</ol>
+<h2 id="更新博客"><a href="#更新博客" class="headerlink" title="更新博客"></a>更新博客</h2><p>hexo启动成功之后，如果上传了新文章或者对以前的文章进行了更改, 只需要执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> shell<br>./restart.sh<br></code></pre></td></tr></table></figure>
 
-
-<p>3、flush privileges;&#x2F;&#x2F;刷新权限列表</p>
-<p>4、重新登陆，新密码生效。**</p>
-<h2 id="三、在mysql8-0中的无效方法"><a href="#三、在mysql8-0中的无效方法" class="headerlink" title="三、在mysql8.0中的无效方法"></a>三、在mysql8.0中的无效方法</h2><p><strong>无效方法一：</strong><br>修改成功，但是不符合mysql密码加密要求<br><strong>无效方法二：</strong><br>update user set authentication_string&#x3D;password(‘23456’) where user&#x3D;‘root’;<br>password()加密函数在mysql8.0版本中不支持，已做调整。</p>
-<h2 id="ERROR-698-28000-Access-denied-for-user-‘root’-’localhost’解决方法"><a href="#ERROR-698-28000-Access-denied-for-user-‘root’-’localhost’解决方法" class="headerlink" title="ERROR 698 (28000): Access denied for user ‘root’@’localhost’解决方法"></a>ERROR 698 (28000): Access denied for user ‘root’@’localhost’解决方法</h2><h3 id="1、问题描述"><a href="#1、问题描述" class="headerlink" title="1、问题描述"></a>1、问题描述</h3><p>在使用如下指令进入mysql shell界面时：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">mysql -u root -p<br></code></pre></td></tr></table></figure>
-
-
-<p>报错：ERROR 698 (28000): Access denied for user ‘root‘@’localhost’</p>
-<p>参考博客：出现ERROR 698 (28000): Access denied for user ‘root‘@‘localhost‘ 的解决方法</p>
-<h3 id="2、问题原理"><a href="#2、问题原理" class="headerlink" title="2、问题原理"></a>2、问题原理</h3><p>一般出现这种情况多数是安装新版本mysql，root密码是随机的，也不是空密码，所以要通过查看随机密码进入，再进行修改原来的密码。</p>
-<h3 id="3、解决方法"><a href="#3、解决方法" class="headerlink" title="3、解决方法"></a>3、解决方法</h3><h4 id="3-1-其它用户登录MySQL"><a href="#3-1-其它用户登录MySQL" class="headerlink" title="3.1  其它用户登录MySQL"></a>3.1  其它用户登录MySQL</h4><p>既然我们无法通过root用户进入MySQL，那我们就只能通过其他用户登录MySQL。</p>
-<p>在我们下载安装MySQL的过程中，系统会自动给我们创建一个用户，我们借助如下指令便可以查看该用户信息：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo <span class="hljs-built_in">cat</span> /etc/mysql/debian.cnf<br><br></code></pre></td></tr></table></figure>
-
-<p>然后使用该用户名和密码进入MySQL：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">mysql -u debian-sys-maint -p<br><br><span class="hljs-comment"># 用户：debian-sys-maint</span><br><br><span class="hljs-comment"># 密码：7F6TVXxve2hh4EHI</span><br><br><br></code></pre></td></tr></table></figure>
-
-<h4 id="3-2-查看user表"><a href="#3-2-查看user表" class="headerlink" title="3.2 查看user表"></a>3.2 查看user表</h4><p>在mysql中输入指令，结果如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">use mysql;<br>select user,plugin from user;<br></code></pre></td></tr></table></figure>
-
-<h4 id="3-3-修改root密码格式"><a href="#3-3-修改root密码格式" class="headerlink" title="3.3 修改root密码格式"></a>3.3 修改root密码格式</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">update user <span class="hljs-built_in">set</span> plugin=<span class="hljs-string">&#x27;mysql_native_password&#x27;</span> <span class="hljs-built_in">where</span> user=<span class="hljs-string">&#x27;root&#x27;</span>; <span class="hljs-comment"># 修改其密码格式</span><br>select user,plugin from user; <span class="hljs-comment"># 查询其用户</span><br></code></pre></td></tr></table></figure>
+<p>即可对博客内容进行更新。</p>
+<p>博客的存放路径为：<code>./data/blog/source/_posts</code></p>
+<h2 id="查看博客运行日志"><a href="#查看博客运行日志" class="headerlink" title="查看博客运行日志"></a>查看博客运行日志</h2><p>查看docker容器的日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> shell<br>./logs.sh<br></code></pre></td></tr></table></figure>
 
 
 
-
-<p>2</p>
-<p>执行完这一步，不要忘记刷新权限（可以理解为高并发，可能还没处理完数据让他缓存，就执行下一步操作可能会出错）。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">flush privileges;<br></code></pre></td></tr></table></figure>
-
-
-
-<h4 id="3-4-增加root密码"><a href="#3-4-增加root密码" class="headerlink" title="3.4 增加root密码"></a>3.4 增加root密码</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">alter user <span class="hljs-string">&#x27;root&#x27;</span>@<span class="hljs-string">&#x27;localhost&#x27;</span> identified by <span class="hljs-string">&#x27;123456&#x27;</span>;<br></code></pre></td></tr></table></figure>
-
-
-<p>再次刷新权限：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">flush privileges;<br></code></pre></td></tr></table></figure>
+<h2 id="进入容器"><a href="#进入容器" class="headerlink" title="进入容器"></a>进入容器</h2><p>某些时候，例如：<code>想给博客装一个hexo插件，但是我服务器上没有安装node</code>。<br>这个时候，可以进入容器，执行<code>npm install xxxx</code></p>
+<p>进入容器的方法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> shell<br>./exec.sh<br></code></pre></td></tr></table></figure>
 
 
 
-<h4 id="3-5-退出登录"><a href="#3-5-退出登录" class="headerlink" title="3.5 退出登录"></a>3.5 退出登录</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">exit</span><br></code></pre></td></tr></table></figure>
+<h2 id="以下插件已经安装过了"><a href="#以下插件已经安装过了" class="headerlink" title="以下插件已经安装过了"></a>以下插件已经安装过了</h2><p>已安装的插件,参考：<a target="_blank" rel="noopener" href="https://easyhexo.com/3-Plugins-use-and-config/">插件安装与配置</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># next主题本地搜索插件</span><br>npm install hexo-generator-searchdb --save<br><span class="hljs-comment"># 文章字数统计插件</span><br>npm install hexo-word-counter --save<br><span class="hljs-comment"># 生成sitemap插件</span><br>npm install hexo-generator-sitemap --save<br></code></pre></td></tr></table></figure>
 
-
-
-<h4 id="3-6-重启mysql服务"><a href="#3-6-重启mysql服务" class="headerlink" title="3.6 重启mysql服务"></a>3.6 重启mysql服务</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">service mysql restart<br></code></pre></td></tr></table></figure>
-
-
-
-<h4 id="3-7-root登录"><a href="#3-7-root登录" class="headerlink" title="3.7 root登录"></a>3.7 root登录</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">mysql -u root -p<br></code></pre></td></tr></table></figure>
-
+<p>已安装的主题</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># next主题</span><br>git <span class="hljs-built_in">clone</span> https://github.com/next-theme/hexo-theme-next.git themes/next<br></code></pre></td></tr></table></figure>
 
                 
               </div>
@@ -378,7 +353,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/db/" class="category-chain-item">db</a>
+  <a href="/categories/web/" class="category-chain-item">web</a>
   
   
 
@@ -393,7 +368,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/mysql/">#mysql</a>
+        <a href="/tags/md/">#md</a>
       
     </div>
   
@@ -405,8 +380,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>mysql8.0版本忘记root密码解决方法</div>
-      <div>https://liyupin.github.io/2022/12/08/mysql8-0版本忘记root密码解决方法/</div>
+      <div>hexo 部署</div>
+      <div>https://liyupin.github.io/2022/12/29/hexo-部署/</div>
     </div>
     <div class="license-meta">
       
@@ -418,7 +393,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年12月8日</div>
+          <div>2022年12月29日</div>
         </div>
       
       
@@ -450,18 +425,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/12/29/hexo-%E9%83%A8%E7%BD%B2/" title="hexo 部署">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">hexo 部署</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/12/08/etcd-mvcc-database-space-exceeded-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" title="etcd mvcc: database space exceeded 异常处理">
-                        <span class="hidden-mobile">etcd mvcc: database space exceeded 异常处理</span>
+                      <a href="/2022/12/08/mysql8-0%E7%89%88%E6%9C%AC%E5%BF%98%E8%AE%B0root%E5%AF%86%E7%A0%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" title="mysql8.0版本忘记root密码解决方法">
+                        <span class="hidden-mobile">mysql8.0版本忘记root密码解决方法</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
