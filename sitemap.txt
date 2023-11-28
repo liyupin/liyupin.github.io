@@ -222,11 +222,11 @@ https://liyupin.github.io/2022/07/18/taskfile%20%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%8
 https://liyupin.github.io/2022/07/21/Ubuntu18-04-%E6%9B%B4%E6%8D%A2%E5%9B%BD%E5%86%85%E6%BA%90/
 https://liyupin.github.io/2022/07/01/ubuntu20.04%20%E4%BD%BF%E7%94%A8root%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95%E7%B3%BB%E7%BB%9F/
 https://liyupin.github.io/
+https://liyupin.github.io/tags/openeuler/
 https://liyupin.github.io/tags/%E8%82%A1%E7%A5%A8/
 https://liyupin.github.io/tags/tz/
 https://liyupin.github.io/tags/ecos-pro/
 https://liyupin.github.io/tags/centos/
-https://liyupin.github.io/tags/openeuler/
 https://liyupin.github.io/tags/deploy/
 https://liyupin.github.io/tags/kvm/
 https://liyupin.github.io/tags/kubeedge/
@@ -237,11 +237,11 @@ https://liyupin.github.io/tags/ubuntu/
 https://liyupin.github.io/tags/alpine/
 https://liyupin.github.io/tags/centos7/
 https://liyupin.github.io/tags/ovirt/
+https://liyupin.github.io/tags/ceph/
 https://liyupin.github.io/tags/gitea/
 https://liyupin.github.io/tags/devops/
 https://liyupin.github.io/tags/debain/
 https://liyupin.github.io/tags/docker/
-https://liyupin.github.io/tags/ceph/
 https://liyupin.github.io/tags/etcd/
 https://liyupin.github.io/tags/log/
 https://liyupin.github.io/tags/fio/
@@ -269,9 +269,9 @@ https://liyupin.github.io/tags/A%E8%82%A1/
 https://liyupin.github.io/tags/openEuler/
 https://liyupin.github.io/tags/%E6%B3%A2%E6%B5%AA%E7%90%86%E8%AE%BA/
 https://liyupin.github.io/tags/kylin/
+https://liyupin.github.io/categories/linux/
 https://liyupin.github.io/categories/%E6%8A%95%E8%B5%84/
 https://liyupin.github.io/categories/tz/
-https://liyupin.github.io/categories/linux/
 https://liyupin.github.io/categories/ecos/
 https://liyupin.github.io/categories/python100day/
 https://liyupin.github.io/categories/shell/

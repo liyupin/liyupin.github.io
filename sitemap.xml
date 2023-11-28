@@ -2018,6 +2018,13 @@
 
   
   <url>
+    <loc>https://liyupin.github.io/tags/openeuler/</loc>
+    <lastmod>2023-11-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://liyupin.github.io/tags/%E8%82%A1%E7%A5%A8/</loc>
     <lastmod>2023-11-28</lastmod>
     <changefreq>weekly</changefreq>
@@ -2040,13 +2047,6 @@
   
   <url>
     <loc>https://liyupin.github.io/tags/centos/</loc>
-    <lastmod>2023-11-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://liyupin.github.io/tags/openeuler/</loc>
     <lastmod>2023-11-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2123,6 +2123,13 @@
   </url>
   
   <url>
+    <loc>https://liyupin.github.io/tags/ceph/</loc>
+    <lastmod>2023-11-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://liyupin.github.io/tags/gitea/</loc>
     <lastmod>2023-11-28</lastmod>
     <changefreq>weekly</changefreq>
@@ -2145,13 +2152,6 @@
   
   <url>
     <loc>https://liyupin.github.io/tags/docker/</loc>
-    <lastmod>2023-11-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://liyupin.github.io/tags/ceph/</loc>
     <lastmod>2023-11-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2349,6 +2349,13 @@
 
   
   <url>
+    <loc>https://liyupin.github.io/categories/linux/</loc>
+    <lastmod>2023-11-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://liyupin.github.io/categories/%E6%8A%95%E8%B5%84/</loc>
     <lastmod>2023-11-28</lastmod>
     <changefreq>weekly</changefreq>
@@ -2357,13 +2364,6 @@
   
   <url>
     <loc>https://liyupin.github.io/categories/tz/</loc>
-    <lastmod>2023-11-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://liyupin.github.io/categories/linux/</loc>
     <lastmod>2023-11-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
